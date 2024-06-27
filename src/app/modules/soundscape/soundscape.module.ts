@@ -9,13 +9,15 @@ import { SoundscapeComponent } from './page/soundscape.component';
 import { SharedComponentsModule } from '../../shared/shared.module';
 import { FormsModule } from '@angular/forms';
 import { SoundLevelsChartComponent } from './components/sound-levels-chart/sound-levels-chart.component';
+import { TemporalEvolutionSoundLevelChartComponent } from './components/temporal-evolution-sound-level-chart/temporal-evolution-sound-level-chart.component';
 
 
 
 @NgModule({
   declarations: [
     SoundscapeComponent,
-    SoundLevelsChartComponent
+    SoundLevelsChartComponent,
+    TemporalEvolutionSoundLevelChartComponent
   ],
   imports: [
     CommonModule,

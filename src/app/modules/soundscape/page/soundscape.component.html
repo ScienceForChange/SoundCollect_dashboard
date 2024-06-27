@@ -26,6 +26,7 @@
   <div #map class="map-container"></div>
   @if(observations.length > 0){
     <app-sound-levels-chart class="card" [observations]="observations" />
+    <app-temporal-evolution-sound-level-chart class="card" [observations]="observations"/>
   }
 </div>
 
