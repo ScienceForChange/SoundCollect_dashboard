@@ -21,6 +21,7 @@ import { CandlestickChart, CandlestickSeriesOption } from 'echarts/charts';
 import { CanvasRenderer } from 'echarts/renderers';
 import { Observations } from '../../../../models/observations';
 import { CallbackDataParams } from 'echarts/types/dist/shared';
+import { valueOrDefault } from 'chart.js/dist/helpers/helpers.core';
 
 type EChartsOption = echarts.ComposeOption<
   | GridComponentOption
@@ -37,7 +38,6 @@ type EChartsOption = echarts.ComposeOption<
 // type SingleTooltipFormatterParams = Unified<TooltipFormatterParams>
 // // multiple params
 // type MultipleTooltipFormatterParams = SingleTooltipFormatterParams[]
-
 
 @Component({
   selector: 'app-temporal-evolution-sound-level-chart',
@@ -83,17 +83,17 @@ export class TemporalEvolutionSoundLevelChartComponent
     // // console.log('diff', Math.ceil(hoursBetween))
   }
 
-  tooltipCallback(params: CallbackDataParams[]):string {
-    let values: string[] = []
+  tooltipCallback(params: CallbackDataParams[]): string {
+    let values: string[] = [];
     params.forEach((param) => {
-      const data = param.data as number[]
-      const name = param.seriesName
-      const date = param.name
-      const LAmax = data[0]
-      const L10 = data[1]
-      const L90 = data[2]
-      const LAmin = data[3]
-      const Leq = data[4]
+      const data = param.data as number[];
+      const name = param.seriesName;
+      const date = param.name;
+      const LAmax = data[0];
+      const L10 = data[1];
+      const L90 = data[2];
+      const LAmin = data[3];
+      const Leq = data[4];
       const html = `
       Hora: ${date} <br>
       LAeq: ${Leq} <br>
@@ -101,12 +101,11 @@ export class TemporalEvolutionSoundLevelChartComponent
       L90: ${L90} <br>
       LAmin: ${LAmin} <br>
       LAmax: ${LAmax} <br>
-      `
-      values.push(html)
-    })
-    return values.join('<br>')
+      `;
+      values.push(html);
+    });
+    return values.join('<br>');
   }
-
 
   ngAfterViewInit(): void {
     const chartDom = document.getElementById('candelstick-chart-container');
@@ -115,6 +114,9 @@ export class TemporalEvolutionSoundLevelChartComponent
     const last100Obs = this.observations.slice(-100);
     const dates = last100Obs.map(
       (observation) => observation.attributes.created_at
+    );
+    const hours = Array.from({ length: 24 }, (_, i) =>
+      i.toString().padStart(2, '0')
     );
     const soundLevelsByTime: {
       day: string[][];
@@ -126,7 +128,9 @@ export class TemporalEvolutionSoundLevelChartComponent
       night: [],
     };
 
-    last100Obs.forEach((observation) => {
+    last100Obs
+    .sort((a,b) => new Date(a.attributes.created_at).getHours() - new Date(b.attributes.created_at).getHours() )
+    .forEach((observation) => {
       const hour = new Date(observation.attributes.created_at).getHours();
       if (hour >= 7 && hour <= 19) {
         soundLevelsByTime.day.push([
@@ -135,6 +139,7 @@ export class TemporalEvolutionSoundLevelChartComponent
           observation.attributes.L90,
           observation.attributes.LAmin,
           observation.attributes.Leq,
+          observation.attributes.created_at
         ]);
         return;
       }
@@ -145,6 +150,7 @@ export class TemporalEvolutionSoundLevelChartComponent
           observation.attributes.L90,
           observation.attributes.LAmin,
           observation.attributes.Leq,
+          observation.attributes.created_at
         ]);
         return;
       }
@@ -155,10 +161,53 @@ export class TemporalEvolutionSoundLevelChartComponent
           observation.attributes.L90,
           observation.attributes.LAmin,
           observation.attributes.Leq,
+          observation.attributes.created_at
         ]);
         return;
       }
     });
+    console.log('soundLevelsByTime', soundLevelsByTime.day.map((data) => new Date(data[5]).getHours()));
+
+    const seriesData:any[] = []
+    let arr: any[] = []
+    const t = soundLevelsByTime.day.forEach((obs,idx) => {
+      const hour = new Date(obs[5]).getHours();
+      for(let i = 0; i < 24; i++){
+        //If hour and idx are the same, I want to add it to seriesData and delete from soundLevelsByTime.day
+        if(hour === i){
+          console.log('hour,idx,i', hour,idx,i)
+          arr.push(obs);
+          soundLevelsByTime.day.splice(idx, 1);
+          console.log('arr', arr)
+        } else {
+          arr.push([])
+        }
+      }
+      if(arr.length === 24){
+        seriesData.push(arr)
+        arr = []
+      }
+    })
+    console.log('seriesData', seriesData)
+    if (soundLevelsByTime.day.length > 24) {
+      while (soundLevelsByTime.day.length) {
+        seriesData.push(soundLevelsByTime.day.splice(0, 24));
+      }
+    }
+   const a: CandlestickSeriesOption[] =  seriesData.map((data) => {
+      return {
+        name: 'Dia',
+        type: 'candlestick',
+        itemStyle: {
+          color: '#F8766D',
+          color0: '#F8766D',
+          borderColor: '#F8766D',
+          borderColor0: '#F8766D',
+        },
+        data: data,
+      };
+    });
+    // console.log('seriesData', a)
 
     this.options = {
       legend: {
@@ -169,7 +218,7 @@ export class TemporalEvolutionSoundLevelChartComponent
         trigger: 'axis',
         formatter: function (params) {
           // const ids = params.map(candel => candel.data[5]);
-          let p = params as CallbackDataParams[]
+          let p = params as CallbackDataParams[];
           let values: string[] = [];
           p.forEach((param) => {
             const data = param.data as number[];
@@ -190,7 +239,7 @@ export class TemporalEvolutionSoundLevelChartComponent
             values.push(html);
           });
           return values.join('<br>');
-      },
+        },
         axisPointer: {
           animation: false,
           type: 'cross',
@@ -202,44 +251,45 @@ export class TemporalEvolutionSoundLevelChartComponent
         },
       },
       xAxis: {
-        data: dates,
+        data: hours,
       },
       yAxis: {},
-      series: [
-        {
-          name: 'Dia',
-          type: 'candlestick',
-          itemStyle:{
-            color: '#F8766D',
-            color0: '#F8766D',
-            borderColor: '#F8766D',
-            borderColor0: '#F8766D',
-          },
-          data: soundLevelsByTime.day,
-        },
-        {
-          name: 'Tarda',
-          itemStyle:{
-            color: '#00BA38',
-            color0: '#00BA38',
-            borderColor: '#00BA38',
-            borderColor0: '#00BA38',
-          },
-          type: 'candlestick',
-          data: soundLevelsByTime.afternoon,
-        },
-        {
-          name: 'Nit',
-          itemStyle:{
-            color: '#FF61CC',
-            color0: '#FF61CC',
-            borderColor: '#FF61CC',
-            borderColor0: '#FF61CC',
-          },
-          type: 'candlestick',
-          data: soundLevelsByTime.afternoon,
-        },
-      ],
+      series:a,
+      // series: [
+      //   // {
+      //   //   name: 'Dia',
+      //   //   type: 'candlestick',
+      //   //   itemStyle: {
+      //   //     color: '#F8766D',
+      //   //     color0: '#F8766D',
+      //   //     borderColor: '#F8766D',
+      //   //     borderColor0: '#F8766D',
+      //   //   },
+      //   //   data: soundLevelsByTime.day,
+      //   // },
+      //   // {
+      //   //   name: 'Tarda',
+      //   //   itemStyle: {
+      //   //     color: '#00BA38',
+      //   //     color0: '#00BA38',
+      //   //     borderColor: '#00BA38',
+      //   //     borderColor0: '#00BA38',
+      //   //   },
+      //   //   type: 'candlestick',
+      //   //   data: soundLevelsByTime.afternoon,
+      //   // },
+      //   // {
+      //   //   name: 'Nit',
+      //   //   itemStyle: {
+      //   //     color: '#FF61CC',
+      //   //     color0: '#FF61CC',
+      //   //     borderColor: '#FF61CC',
+      //   //     borderColor0: '#FF61CC',
+      //   //   },
+      //   //   type: 'candlestick',
+      //   //   data: soundLevelsByTime.afternoon,
+      //   // },
+      // ],
     };
     this.myChart.hideLoading();
 
