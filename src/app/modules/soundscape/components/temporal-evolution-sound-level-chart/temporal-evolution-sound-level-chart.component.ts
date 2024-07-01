@@ -5,6 +5,7 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 
 import * as echarts from 'echarts/core';
 import {
@@ -21,8 +22,7 @@ import { CandlestickChart, CandlestickSeriesOption } from 'echarts/charts';
 import { CanvasRenderer } from 'echarts/renderers';
 import { Observations } from '../../../../models/observations';
 import { CallbackDataParams } from 'echarts/types/dist/shared';
-import { valueOrDefault } from 'chart.js/dist/helpers/helpers.core';
-import { last, map } from 'rxjs';
+import { SeriesOption } from 'echarts';
 
 type EChartsOption = echarts.ComposeOption<
   | GridComponentOption
@@ -31,6 +31,65 @@ type EChartsOption = echarts.ComposeOption<
   | DataZoomComponentOption
   | TooltipComponentOption
 >;
+interface ColorOptions {
+  color: string;
+  color0: string;
+  borderColor: string;
+  borderColor0: string;
+}
+interface Colors {
+  s1: { [key: string]: ColorOptions };
+  s2: { [key: string]: ColorOptions };
+}
+
+const colors: Colors = {
+  s1: {
+    day: {
+      color: 'rgba(248, 118, 109, 1)',
+      color0: 'rgba(248, 118, 109, 1)',
+      borderColor: 'rgba(248, 118, 109, 1)',
+      borderColor0: 'rgba(248, 118, 109, 1)',
+    },
+    afternoon: {
+      color: 'rgba(0, 186, 56, 1)',
+      color0: 'rgba(0, 186, 56, 1)',
+      borderColor: 'rgba(0, 186, 56, 1)',
+      borderColor0: 'rgba(0, 186, 56, 1)',
+    },
+    night: {
+      color: 'rgba(255, 97, 204, 1)',
+      color0: 'rgba(255, 97, 204, 1)',
+      borderColor: 'rgba(255, 97, 204, 1)',
+      borderColor0: 'rgba(255, 97, 204, 1)',
+    },
+  },
+  s2: {
+    day: {
+      color: 'rgba(248, 118, 109, 0.2)',
+      color0: 'rgba(248, 118, 109, 0.2)',
+      borderColor: 'rgba(248, 118, 109, 1)',
+      borderColor0: 'rgba(248, 118, 109, 1)',
+    },
+    afternoon: {
+      color: 'rgba(0, 186, 56, 0.2)',
+      color0: 'rgba(0, 186, 56, 0.2)',
+      borderColor: 'rgba(0, 186, 56, 1)',
+      borderColor0: 'rgba(0, 186, 56, 1)',
+    },
+    night: {
+      color: 'rgba(255, 97, 204, 0.2)',
+      color0: 'rgba(255, 97, 204, 0.2)',
+      borderColor: 'rgba(255, 97, 204, 1)',
+      borderColor0: 'rgba(255, 97, 204, 1)',
+    },
+  },
+};
+
+const DAYTIME: { [key: string]: string } = {
+  day: 'Dia',
+  afternoon: 'Tarda',
+  night: 'Nit',
+};
 
 @Component({
   selector: 'app-temporal-evolution-sound-level-chart',
@@ -52,6 +111,9 @@ export class TemporalEvolutionSoundLevelChartComponent
     text: 'Carregant...',
     color: '#FF7A1F',
   };
+  public firstDay!: Date;
+  public lastDay!: Date;
+  public filtersForm!: FormGroup;
 
   ngOnInit(): void {
     echarts.use([
@@ -62,9 +124,89 @@ export class TemporalEvolutionSoundLevelChartComponent
       DataZoomComponent,
       TooltipComponent,
     ]);
+    // console.log('obs',this.observations.map((obs) => obs.attributes.created_at))
+    this.firstDay = new Date(this.observations[0].attributes.created_at);
+    this.lastDay = new Date(
+      this.observations[this.observations.length - 1].attributes.created_at
+    );
+    this.filtersForm = new FormGroup({
+      daysFilterS1: new FormControl([this.firstDay, this.lastDay], []),
+      daysFilterS2: new FormControl(undefined, []),
+    });
   }
 
-  private groupObsByHours(chartObservations: (string | number)[][]): number[][] {
+  public onSubmit(): void {
+    const { daysFilterS1, daysFilterS2 } = this.filtersForm.value;
+    console.log('daysFilterS1', daysFilterS1);
+    console.log('daysFilterS2', daysFilterS2);
+
+    const obsS1 = this.observations.filter((obs) => {
+      const isBeforeToday =
+        new Date(obs.attributes.created_at) <= daysFilterS1[1];
+      const isAfterLastDay30 =
+        new Date(obs.attributes.created_at) >= daysFilterS1[0];
+      if (isBeforeToday && isAfterLastDay30) return true;
+      return false;
+    });
+
+    const obsS2 = this.observations.filter((obs) => {
+      const isBeforeToday =
+        new Date(obs.attributes.created_at) <= daysFilterS2[1];
+      const isAfterLastDay30 =
+        new Date(obs.attributes.created_at) >= daysFilterS2[0];
+      if (isBeforeToday && isAfterLastDay30) return true;
+      return false;
+    });
+
+    console.log('obsS1', obsS1);
+    console.log('obsS2', obsS2);
+    this.updateChart(obsS1, obsS2);
+  }
+
+  private updateChart(s1: Observations[], s2: Observations[]) {
+    console.log('updatechart');
+    const series = [];
+    if (s1.length > 0) {
+      const soundLevelsByTimeS1 = this.groupObsByTime(s1);
+      const dayObsS1 = this.groupObsByHours(soundLevelsByTimeS1.day);
+      const afternoonObsS1 = this.groupObsByHours(
+        soundLevelsByTimeS1.afternoon
+      );
+      const nightObsS1 = this.groupObsByHours(soundLevelsByTimeS1.night);
+      const dayS1 = this.createSeries(dayObsS1, 'day');
+      const afternoonS1 = this.createSeries(afternoonObsS1, 'afternoon');
+      const nightS1 = this.createSeries(nightObsS1, 'night');
+      series.push(dayS1, afternoonS1, nightS1);
+    }
+    if (s2.length > 0) {
+      const soundLevelsByTimeS2 = this.groupObsByTime(s2);
+      const dayObsS2 = this.groupObsByHours(soundLevelsByTimeS2.day);
+      const afternoonObsS2 = this.groupObsByHours(
+        soundLevelsByTimeS2.afternoon
+      );
+      const nightObsS2 = this.groupObsByHours(soundLevelsByTimeS2.night);
+      const dayS2 = this.createSeries(dayObsS2, 'day', true);
+      const afternoonS2 = this.createSeries(afternoonObsS2, 'afternoon', true);
+      const nightS2 = this.createSeries(nightObsS2, 'night', true);
+      series.push(dayS2, afternoonS2, nightS2);
+    }
+    console.log('series', series);
+    const dataLegend = series.map((serie) => serie.name) as string[]
+    //Update data chart with the new one
+    this.options = {
+      legend: {
+        data: dataLegend,
+        inactiveColor: '#777',
+      },
+      series: series as CandlestickSeriesOption[],
+    };
+
+    this.options && this.myChart.setOption(this.options);
+  }
+
+  private groupObsByHours(
+    chartObservations: (string | number)[][]
+  ): number[][] {
     // Grpoup by hour
     const groupByHour = chartObservations.reduce(
       (acc: { [key: number]: number[][] }, curr) => {
@@ -111,14 +253,92 @@ export class TemporalEvolutionSoundLevelChartComponent
       }
     }
 
-    return Object.values(AvgByHour)
+    return Object.values(AvgByHour);
+  }
+
+  private groupObsByTime(observations: Observations[]): {
+    day: (string | number)[][];
+    afternoon: (string | number)[][];
+    night: (string | number)[][];
+  } {
+    const soundLevelsByTime: {
+      day: (string | number)[][];
+      afternoon: (string | number)[][];
+      night: (string | number)[][];
+    } = {
+      day: [],
+      afternoon: [],
+      night: [],
+    };
+    //Order and group by hour of a day.
+    observations
+      .sort(
+        (a, b) =>
+          new Date(a.attributes.created_at).getHours() -
+          new Date(b.attributes.created_at).getHours()
+      )
+      .forEach((observation) => {
+        const hour = new Date(observation.attributes.created_at).getHours();
+        //The order of the first 4 numbers are important
+        if (hour >= 7 && hour <= 19) {
+          soundLevelsByTime.day.push([
+            +observation.attributes.L90,
+            +observation.attributes.L10,
+            +observation.attributes.LAmin,
+            +observation.attributes.LAmax,
+            +observation.attributes.Leq,
+            observation.attributes.created_at,
+          ]);
+          return;
+        }
+        if (hour >= 20 && hour <= 23) {
+          soundLevelsByTime.afternoon.push([
+            +observation.attributes.L90,
+            +observation.attributes.L10,
+            +observation.attributes.LAmin,
+            +observation.attributes.LAmax,
+            +observation.attributes.Leq,
+            observation.attributes.created_at,
+          ]);
+          return;
+        }
+        if (hour >= 0 && hour <= 6) {
+          soundLevelsByTime.night.push([
+            +observation.attributes.L90,
+            +observation.attributes.L10,
+            +observation.attributes.LAmin,
+            +observation.attributes.LAmax,
+            +observation.attributes.Leq,
+            observation.attributes.created_at,
+          ]);
+          return;
+        }
+      });
+    return soundLevelsByTime;
+  }
+
+  private createSeries(
+    obs: number[][],
+    type: string,
+    isS2?: boolean
+  ): SeriesOption {
+    const color = isS2 ? colors.s2[type] : colors.s1[type];
+    const name = DAYTIME[type];
+    const serieName = isS2 ? 'Serie 2' : 'Serie 1';
+    const serie = {
+      name: name + ' ' + serieName,
+      itemStyle: color,
+      type: 'candlestick',
+      data: obs,
+    };
+    return serie as SeriesOption;
   }
 
   ngAfterViewInit(): void {
     const chartDom = document.getElementById('candelstick-chart-container');
     this.myChart = echarts.init(chartDom);
     this.myChart.showLoading('default', this.loadingOptions);
-    const last100Obs = this.observations.slice(-100);
+    const last100Obs = this.observations;
 
     //Filter falsy values
     const filteredObs = last100Obs.filter((observation) => {
@@ -135,69 +355,15 @@ export class TemporalEvolutionSoundLevelChartComponent
       i.toString().padStart(2, '0')
     );
 
-    const soundLevelsByTime: {
-      day: (string | number)[][];
-      afternoon: (string | number)[][];
-      night: (string | number)[][];
-    } = {
-      day: [],
-      afternoon: [],
-      night: [],
-    };
-
     //Order and group by hour of a day.
-    filteredObs
-      .sort(
-        (a, b) =>
-          new Date(a.attributes.created_at).getHours() -
-          new Date(b.attributes.created_at).getHours()
-      )
-      .forEach((observation) => {
-        const hour = new Date(observation.attributes.created_at).getHours();
-        if (hour >= 7 && hour <= 19) {
-          soundLevelsByTime.day.push([
-            +observation.attributes.LAmax,
-            +observation.attributes.L10,
-            +observation.attributes.L90,
-            +observation.attributes.LAmin,
-            +observation.attributes.Leq,
-            observation.attributes.created_at,
-          ]);
-          return;
-        }
-        if (hour >= 20 && hour <= 23) {
-          soundLevelsByTime.afternoon.push([
-            +observation.attributes.LAmax,
-            +observation.attributes.L10,
-            +observation.attributes.L90,
-            +observation.attributes.LAmin,
-            +observation.attributes.Leq,
-            observation.attributes.created_at,
-          ]);
-          return;
-        }
-        if (hour >= 0 && hour <= 6) {
-          soundLevelsByTime.night.push([
-            +observation.attributes.LAmax,
-            +observation.attributes.L10,
-            +observation.attributes.L90,
-            +observation.attributes.LAmin,
-            +observation.attributes.Leq,
-            observation.attributes.created_at,
-          ]);
-          return;
-        }
-      });
-      const dayObs = this.groupObsByHours(soundLevelsByTime.day)
-      const afternoonObs = this.groupObsByHours(soundLevelsByTime.afternoon)
-      const nightObs = this.groupObsByHours(soundLevelsByTime.night)
-
-
-
+    const soundLevelsByTime = this.groupObsByTime(filteredObs);
+    const dayObs = this.groupObsByHours(soundLevelsByTime.day);
+    const afternoonObs = this.groupObsByHours(soundLevelsByTime.afternoon);
+    const nightObs = this.groupObsByHours(soundLevelsByTime.night);
 
     this.options = {
       legend: {
-        data: ['Dia', 'Tarda', 'Nit'],
+        data: ['Dia Serie 1', 'Tarda Serie 1', 'Nit Serie 1'],
         inactiveColor: '#777',
       },
       tooltip: {
@@ -210,10 +376,10 @@ export class TemporalEvolutionSoundLevelChartComponent
             //No create tooltip for undefined values
             if (data.length === 1) return;
             const date = param.name;
-            const LAmax = data[1];
+            const L90 = data[1];
             const L10 = data[2];
-            const L90 = data[3];
-            const LAmin = data[4];
+            const LAmin = data[3];
+            const LAmax = data[4];
             const Leq = data[5];
             const html = `
             Hora: ${date} <br>
@@ -243,35 +409,20 @@ export class TemporalEvolutionSoundLevelChartComponent
       yAxis: {},
       series: [
         {
-          name: 'Dia',
+          name: 'Dia Serie 1',
+          itemStyle: colors.s1['day'],
           type: 'candlestick',
-          itemStyle: {
-            color: '#F8766D',
-            color0: '#F8766D',
-            borderColor: '#F8766D',
-            borderColor0: '#F8766D',
-          },
           data: dayObs,
         },
         {
-          name: 'Tarda',
-          itemStyle: {
-            color: '#00BA38',
-            color0: '#00BA38',
-            borderColor: '#00BA38',
-            borderColor0: '#00BA38',
-          },
+          name: 'Tarda Serie 1',
+          itemStyle: colors.s1['afternoon'],
           type: 'candlestick',
           data: afternoonObs,
         },
         {
-          name: 'Nit',
-          itemStyle: {
-            color: '#FF61CC',
-            color0: '#FF61CC',
-            borderColor: '#FF61CC',
-            borderColor0: '#FF61CC',
-          },
+          name: 'Nit Serie 1',
+          itemStyle: colors.s1['night'],
           type: 'candlestick',
           data: nightObs,
         },
