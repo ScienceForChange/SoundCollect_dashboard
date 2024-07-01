@@ -22,6 +22,7 @@ import { CanvasRenderer } from 'echarts/renderers';
 import { Observations } from '../../../../models/observations';
 import { CallbackDataParams } from 'echarts/types/dist/shared';
 import { valueOrDefault } from 'chart.js/dist/helpers/helpers.core';
+import { last, map } from 'rxjs';
 
 type EChartsOption = echarts.ComposeOption<
   | GridComponentOption
@@ -30,14 +31,6 @@ type EChartsOption = echarts.ComposeOption<
   | DataZoomComponentOption
   | TooltipComponentOption
 >;
-// type Unified<T> = Exclude<T, T[]>
-// type TooltipFormatterCallback = Exclude<NonNullable<TooltipComponentOption['formatter']>, string>
-// // single and multiple params
-// type TooltipFormatterParams = Parameters<TooltipFormatterCallback>[0]
-// // single params
-// type SingleTooltipFormatterParams = Unified<TooltipFormatterParams>
-// // multiple params
-// type MultipleTooltipFormatterParams = SingleTooltipFormatterParams[]
 
 @Component({
   selector: 'app-temporal-evolution-sound-level-chart',
@@ -69,42 +62,56 @@ export class TemporalEvolutionSoundLevelChartComponent
       DataZoomComponent,
       TooltipComponent,
     ]);
-    // const firstDate = this.observations[0].attributes.created_at;
-    // const lastDate =
-    //   this.observations[this.observations.length - 1].attributes.created_at;
-    // // const hoursBetween = (new Date(lastDate).getTime() - new Date(firstDate).getTime())/ (1000 * 3600)
-    // console.log(
-    //   'firstDate',
-    //   firstDate,
-    //   new Date(firstDate).getTime(),
-    //   new Date(new Date(firstDate).getTime())
-    // );
-    // console.log('lastDate', lastDate, new Date(lastDate).getTime());
-    // // console.log('diff', Math.ceil(hoursBetween))
   }
 
-  tooltipCallback(params: CallbackDataParams[]): string {
-    let values: string[] = [];
-    params.forEach((param) => {
-      const data = param.data as number[];
-      const name = param.seriesName;
-      const date = param.name;
-      const LAmax = data[0];
-      const L10 = data[1];
-      const L90 = data[2];
-      const LAmin = data[3];
-      const Leq = data[4];
-      const html = `
-      Hora: ${date} <br>
-      LAeq: ${Leq} <br>
-      L10: ${L10} <br>
-      L90: ${L90} <br>
-      LAmin: ${LAmin} <br>
-      LAmax: ${LAmax} <br>
-      `;
-      values.push(html);
-    });
-    return values.join('<br>');
+  private groupObsByHours(chartObservations: (string | number)[][]): number[][] {
+    // Grpoup by hour
+    const groupByHour = chartObservations.reduce(
+      (acc: { [key: number]: number[][] }, curr) => {
+        const hour = new Date(curr[5]).getHours();
+        //Extract date of curr to have only array of numbers
+        curr.pop();
+        if (!acc[hour]) {
+          acc[hour] = [curr as number[]];
+        }
+        acc[hour].push(curr as number[]);
+        return acc;
+      },
+      {}
+    );
+    const AvgByHour: {
+      [key: number]: number[];
+    } = [];
+    //Calculate avg and update de value at groupByHour
+    for (const keyOfHours in groupByHour) {
+      const data = groupByHour[keyOfHours];
+      const avg = data
+        .reduce(
+          (acc, curr) => {
+            return [
+              acc[0] + curr[0],
+              acc[1] + curr[1],
+              acc[2] + curr[2],
+              acc[3] + curr[3],
+              acc[4] + curr[4],
+            ];
+            //Have to sum each value of acc array with the curr array
+          },
+          [0, 0, 0, 0, 0]
+        )
+        .map((value: number) => parseFloat((value / data.length).toFixed(2)));
+
+      AvgByHour[keyOfHours] = avg;
+    }
+
+    //Adding rest of the hours with empty values
+    for (let hour = 0; hour <= 24; hour++) {
+      if (!AvgByHour.hasOwnProperty(hour)) {
+        AvgByHour[hour] = [];
+      }
+    }
+
+    return Object.values(AvgByHour)
   }
 
   ngAfterViewInit(): void {
@@ -112,102 +119,81 @@ export class TemporalEvolutionSoundLevelChartComponent
     this.myChart = echarts.init(chartDom);
     this.myChart.showLoading('default', this.loadingOptions);
     const last100Obs = this.observations.slice(-100);
-    const dates = last100Obs.map(
-      (observation) => observation.attributes.created_at
-    );
+
+    //Filter falsy values
+    const filteredObs = last100Obs.filter((observation) => {
+      return (
+        +observation.attributes.Leq &&
+        +observation.attributes.LAmax &&
+        +observation.attributes.L10 &&
+        +observation.attributes.L90 &&
+        +observation.attributes.LAmin
+      );
+    });
+
     const hours = Array.from({ length: 24 }, (_, i) =>
       i.toString().padStart(2, '0')
     );
+
     const soundLevelsByTime: {
-      day: string[][];
-      afternoon: string[][];
-      night: string[][];
+      day: (string | number)[][];
+      afternoon: (string | number)[][];
+      night: (string | number)[][];
     } = {
       day: [],
       afternoon: [],
       night: [],
     };
 
-    last100Obs
-    .sort((a,b) => new Date(a.attributes.created_at).getHours() - new Date(b.attributes.created_at).getHours() )
-    .forEach((observation) => {
-      const hour = new Date(observation.attributes.created_at).getHours();
-      if (hour >= 7 && hour <= 19) {
-        soundLevelsByTime.day.push([
-          observation.attributes.LAmax,
-          observation.attributes.L10,
-          observation.attributes.L90,
-          observation.attributes.LAmin,
-          observation.attributes.Leq,
-          observation.attributes.created_at
-        ]);
-        return;
-      }
-      if (hour >= 20 && hour <= 23) {
-        soundLevelsByTime.afternoon.push([
-          observation.attributes.LAmax,
-          observation.attributes.L10,
-          observation.attributes.L90,
-          observation.attributes.LAmin,
-          observation.attributes.Leq,
-          observation.attributes.created_at
-        ]);
-        return;
-      }
-      if (hour >= 0 && hour <= 6) {
-        soundLevelsByTime.night.push([
-          observation.attributes.LAmax,
-          observation.attributes.L10,
-          observation.attributes.L90,
-          observation.attributes.LAmin,
-          observation.attributes.Leq,
-          observation.attributes.created_at
-        ]);
-        return;
-      }
-    });
-    console.log('soundLevelsByTime', soundLevelsByTime.day.map((data) => new Date(data[5]).getHours()));
-
-    const seriesData:any[] = []
-    let arr: any[] = []
-    const t = soundLevelsByTime.day.forEach((obs,idx) => {
-      const hour = new Date(obs[5]).getHours();
-      for(let i = 0; i < 24; i++){
-        //If hour and idx are the same, I want to add it to seriesData and delete from soundLevelsByTime.day
-        if(hour === i){
-          console.log('hour,idx,i', hour,idx,i)
-          arr.push(obs);
-          soundLevelsByTime.day.splice(idx, 1);
-          console.log('arr', arr)
-        } else {
-          arr.push([])
+    //Order and group by hour of a day.
+    filteredObs
+      .sort(
+        (a, b) =>
+          new Date(a.attributes.created_at).getHours() -
+          new Date(b.attributes.created_at).getHours()
+      )
+      .forEach((observation) => {
+        const hour = new Date(observation.attributes.created_at).getHours();
+        if (hour >= 7 && hour <= 19) {
+          soundLevelsByTime.day.push([
+            +observation.attributes.LAmax,
+            +observation.attributes.L10,
+            +observation.attributes.L90,
+            +observation.attributes.LAmin,
+            +observation.attributes.Leq,
+            observation.attributes.created_at,
+          ]);
+          return;
         }
-      }
-      if(arr.length === 24){
-        seriesData.push(arr)
-        arr = []
-      }
-    })
-    console.log('seriesData', seriesData)
-    if (soundLevelsByTime.day.length > 24) {
-      while (soundLevelsByTime.day.length) {
-        seriesData.push(soundLevelsByTime.day.splice(0, 24));
-      }
-    }
-   const a: CandlestickSeriesOption[] =  seriesData.map((data) => {
-      return {
-        name: 'Dia',
-        type: 'candlestick',
-        itemStyle: {
-          color: '#F8766D',
-          color0: '#F8766D',
-          borderColor: '#F8766D',
-          borderColor0: '#F8766D',
-        },
-        data: data,
-      };
-    });
-    // console.log('seriesData', a)
+        if (hour >= 20 && hour <= 23) {
+          soundLevelsByTime.afternoon.push([
+            +observation.attributes.LAmax,
+            +observation.attributes.L10,
+            +observation.attributes.L90,
+            +observation.attributes.LAmin,
+            +observation.attributes.Leq,
+            observation.attributes.created_at,
+          ]);
+          return;
+        }
+        if (hour >= 0 && hour <= 6) {
+          soundLevelsByTime.night.push([
+            +observation.attributes.LAmax,
+            +observation.attributes.L10,
+            +observation.attributes.L90,
+            +observation.attributes.LAmin,
+            +observation.attributes.Leq,
+            observation.attributes.created_at,
+          ]);
+          return;
+        }
+      });
+      const dayObs = this.groupObsByHours(soundLevelsByTime.day)
+      const afternoonObs = this.groupObsByHours(soundLevelsByTime.afternoon)
+      const nightObs = this.groupObsByHours(soundLevelsByTime.night)
+
+
+
 
     this.options = {
       legend: {
@@ -217,17 +203,18 @@ export class TemporalEvolutionSoundLevelChartComponent
       tooltip: {
         trigger: 'axis',
         formatter: function (params) {
-          // const ids = params.map(candel => candel.data[5]);
           let p = params as CallbackDataParams[];
           let values: string[] = [];
           p.forEach((param) => {
             const data = param.data as number[];
+            //No create tooltip for undefined values
+            if (data.length === 1) return;
             const date = param.name;
-            const LAmax = data[0];
-            const L10 = data[1];
-            const L90 = data[2];
-            const LAmin = data[3];
-            const Leq = data[4];
+            const LAmax = data[1];
+            const L10 = data[2];
+            const L90 = data[3];
+            const LAmin = data[4];
+            const Leq = data[5];
             const html = `
             Hora: ${date} <br>
             LAeq: ${Leq} <br>
@@ -254,42 +241,41 @@ export class TemporalEvolutionSoundLevelChartComponent
         data: hours,
       },
       yAxis: {},
-      series:a,
-      // series: [
-      //   // {
-      //   //   name: 'Dia',
-      //   //   type: 'candlestick',
-      //   //   itemStyle: {
-      //   //     color: '#F8766D',
-      //   //     color0: '#F8766D',
-      //   //     borderColor: '#F8766D',
-      //   //     borderColor0: '#F8766D',
-      //   //   },
-      //   //   data: soundLevelsByTime.day,
-      //   // },
-      //   // {
-      //   //   name: 'Tarda',
-      //   //   itemStyle: {
-      //   //     color: '#00BA38',
-      //   //     color0: '#00BA38',
-      //   //     borderColor: '#00BA38',
-      //   //     borderColor0: '#00BA38',
-      //   //   },
-      //   //   type: 'candlestick',
-      //   //   data: soundLevelsByTime.afternoon,
-      //   // },
-      //   // {
-      //   //   name: 'Nit',
-      //   //   itemStyle: {
-      //   //     color: '#FF61CC',
-      //   //     color0: '#FF61CC',
-      //   //     borderColor: '#FF61CC',
-      //   //     borderColor0: '#FF61CC',
-      //   //   },
-      //   //   type: 'candlestick',
-      //   //   data: soundLevelsByTime.afternoon,
-      //   // },
-      // ],
+      series: [
+        {
+          name: 'Dia',
+          type: 'candlestick',
+          itemStyle: {
+            color: '#F8766D',
+            color0: '#F8766D',
+            borderColor: '#F8766D',
+            borderColor0: '#F8766D',
+          },
+          data: dayObs,
+        },
+        {
+          name: 'Tarda',
+          itemStyle: {
+            color: '#00BA38',
+            color0: '#00BA38',
+            borderColor: '#00BA38',
+            borderColor0: '#00BA38',
+          },
+          type: 'candlestick',
+          data: afternoonObs,
+        },
+        {
+          name: 'Nit',
+          itemStyle: {
+            color: '#FF61CC',
+            color0: '#FF61CC',
+            borderColor: '#FF61CC',
+            borderColor0: '#FF61CC',
+          },
+          type: 'candlestick',
+          data: nightObs,
+        },
+      ],
     };
     this.myChart.hideLoading();
 
