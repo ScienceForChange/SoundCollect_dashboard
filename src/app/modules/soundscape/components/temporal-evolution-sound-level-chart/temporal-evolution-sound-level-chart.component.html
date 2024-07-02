@@ -1,0 +1,28 @@
+<div class="flex gap-3 align-items-end mb-4 p-1 pt-4">
+  <form [formGroup]="filtersForm" class="flex gap-2 align-items-end">
+    <div class="flex-auto">
+      <label for="daysFilterS1" class="font-bold block mb-2"> Serie 1</label>
+      <p-calendar
+        formControlName="daysFilterS1"
+        [showIcon]="true"
+        dateFormat="dd-mm-yy"
+        [panelStyleClass]="'card p-0'"
+        [selectionMode]="'range'"
+        [maxDate]="lastDay"
+      />
+    </div>
+    <div>
+      <label for="daysFilterS2" class="font-bold block mb-2"> Serie 2</label>
+      <p-calendar
+        formControlName="daysFilterS2"
+        [showIcon]="true"
+        dateFormat="dd-mm-yy"
+        [panelStyleClass]="'card p-0'"
+        [selectionMode]="'range'"
+      />
+    </div>
+    <p-button [disabled]="this.filterState !== this.filterStates.FILTER" label="Filtrar" (onClick)="onSubmit()"/>
+  </form>
+  <p-button icon="pi pi-times" [disabled]="this.filterState !== this.filterStates.CLEAN" (onClick)="resetFormToInitialValues()"/>
+</div>
+<div id="candelstick-chart-container"></div>
