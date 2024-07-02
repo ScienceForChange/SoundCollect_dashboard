@@ -1,9 +1,11 @@
-import { AfterViewInit, Component, HostListener, Input } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit, inject } from '@angular/core';
 import { Observations } from '../../../../models/observations';
 import * as echarts from 'echarts/core';
 import { BarChart, PieChart } from 'echarts/charts';
 import { CanvasRenderer } from 'echarts/renderers';
 import { GridComponent, LegendComponent } from 'echarts/components';
+import { ObservationsService } from '../../../../services/observations/observations.service';
+import { Subscription } from 'rxjs';
 
 echarts.use([GridComponent, LegendComponent, BarChart, CanvasRenderer,PieChart]);
 
@@ -12,17 +14,19 @@ echarts.use([GridComponent, LegendComponent, BarChart, CanvasRenderer,PieChart])
   templateUrl: './perception-chart.component.html',
   styleUrl: './perception-chart.component.scss'
 })
-export class PerceptionChartComponent implements AfterViewInit{
+export class PerceptionChartComponent implements OnInit, OnDestroy{
 
-  @Input() observations: Observations[];
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     this.chart.resize();
   }
+  private observations!: Observations[];
   private chart: echarts.ECharts;
   private option! : echarts.EChartsCoreOption;
   private data:number[][] = [];
   public pie: number = 0;
+  private observationsService = inject(ObservationsService);
+  private observations$!: Subscription;
 
 
   public pieOptions: {value:number, label:string}[] = [
@@ -39,12 +43,24 @@ export class PerceptionChartComponent implements AfterViewInit{
     ['Poc segur', 'Segur', 'Molt segur'],
   ]
 
+
+  ngOnInit(): void {
+    let chartDom = document.getElementById('perceptionChart')!;
+    this.chart = echarts.init(chartDom);
+    this.observations$ = this.observationsService.observations$.subscribe((observations: Observations[]) => {
+      this.observations = observations;
+      this.data = this.getDataFromObservations();
+      this.updateChart();
+    });
+  }
+
   ngAfterViewInit(): void {
     let chartDom = document.getElementById('perceptionChart')!;
     this.chart = echarts.init(chartDom);
     this.data = this.getDataFromObservations();
     this.updateChart();
   }
+  
   public updateChart(): void {
     this.option = {
       title: {
@@ -108,6 +124,10 @@ export class PerceptionChartComponent implements AfterViewInit{
     data.push(security);
 
     return data;
+  }
+
+  ngOnDestroy(): void {
+    this.observations$.unsubscribe();
   }
 
 }

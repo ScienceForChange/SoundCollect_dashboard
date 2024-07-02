@@ -1,9 +1,11 @@
-import { AfterViewInit, Component, HostListener, Input } from '@angular/core';
+import { AfterViewInit, Component, HostListener, Input, OnDestroy, OnInit, inject } from '@angular/core';
 import { Observations } from '../../../../models/observations';
 import * as echarts from 'echarts/core';
 import { BarChart, PieChart } from 'echarts/charts';
 import { CanvasRenderer } from 'echarts/renderers';
 import { GridComponent, LegendComponent } from 'echarts/components';
+import { ObservationsService } from '../../../../services/observations/observations.service';
+import { Subscription } from 'rxjs';
 
 echarts.use([GridComponent, LegendComponent, BarChart, CanvasRenderer,PieChart]);
 
@@ -12,23 +14,32 @@ echarts.use([GridComponent, LegendComponent, BarChart, CanvasRenderer,PieChart])
   templateUrl: './pressure-chart.component.html',
   styleUrl: './pressure-chart.component.scss'
 })
-export class PressureChartComponent implements AfterViewInit {
-
-  @Input() observations: Observations[];
-  private chart: echarts.ECharts;
-  private option! : echarts.EChartsCoreOption;
-  public totalObservationTypes:number = 0
-  private quietTypesLabel = ['Matí (7:00 - 19:00)', 'Vespre (19:00 - 23:00)', 'Nit (23:00 - 7:00)'];
-  private dBLevels = ['< = 35', '35-40', '40-45', '45-50', '50-55', '55-60', '60-65', '65-70', '70-75', '75-80', '> 80'];
+export class PressureChartComponent implements OnInit, OnDestroy{
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     this.chart.resize();
   }
+  private observations!: Observations[];
+  private chart: echarts.ECharts;
+  private option! : echarts.EChartsCoreOption;
+  private observationsService = inject(ObservationsService);
+  private observations$!: Subscription;
+  public totalObservationTypes:number = 0
+  private quietTypesLabel = ['Matí (7:00 - 19:00)', 'Vespre (19:00 - 23:00)', 'Nit (23:00 - 7:00)'];
+  private dBLevels = ['< = 35', '35-40', '40-45', '45-50', '50-55', '55-60', '60-65', '65-70', '70-75', '75-80', '> 80'];
 
-  ngAfterViewInit(): void {
+  ngOnInit(): void {
     let chartDom = document.getElementById('pressureChart')!;
     this.chart = echarts.init(chartDom);
+    this.observations$ = this.observationsService.observations$.subscribe((observations: Observations[]) => {
+      this.observations = observations;
+      this.updateChart();
+    });
+  }
+
+
+  private updateChart(): void {
 
     const rawData:number[][] = this.getDataFromObservations();
 
@@ -138,5 +149,8 @@ export class PressureChartComponent implements AfterViewInit {
     if(dBLevel > 75 && dBLevel <= 80) return 9;
     return 10;
 
+  }
+  ngOnDestroy(): void {
+    this.observations$.unsubscribe();
   }
 }

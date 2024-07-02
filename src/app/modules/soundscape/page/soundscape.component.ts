@@ -6,7 +6,6 @@ import { Observations } from '../../../models/observations';
 import { ObservationsService } from '../../../services/observations/observations.service';
 import { Subscription, min } from 'rxjs';
 import { GeoJSONObject} from '@turf/turf';
-import * as turf from '@turf/turf';
 
 export interface Feature<G extends GeoJSON.Geometry | null = GeoJSON.Geometry, P = { [name: string]: any } | null> extends GeoJSONObject {
   type: "Feature";
@@ -36,11 +35,10 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
   private map!: Map;
   private draw!: MapboxDraw;
   private observationsService = inject(ObservationsService);
-  private AllObservations = signal<Observations[]>([]);
   private observations$!: Subscription;
   private observationSelectedId: string = '';
 
-  public observations: Observations[] = [];
+  public observations!: Observations[];
   public points: [number, number][] = [];
   public polylines = signal<Feature[]>([]);
   public startPoints = signal<Feature[]>([]);
@@ -65,30 +63,41 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
     clusterMaxZoom: 17,
   };
 
-  private hourRage:{[key: string]: number[] | null[]} = {
-    [TimeFilter.MORNING]: [7, 19],
-    [TimeFilter.AFTERNOON]: [19, 23],
-    [TimeFilter.NIGHT]: [23, 7],
-    [TimeFilter.WHOLEDAY]: [null, null],
+  private hourRage:{[key: string]: string[] | null[]} = {
+    [TimeFilter.MORNING]:   ["07:00:00", "19:00:00"],
+    [TimeFilter.AFTERNOON]: ["19:00:00", "23:59:59"],
+    [TimeFilter.NIGHT]:     ["00:00:00", "07:00:00"],
+    [TimeFilter.WHOLEDAY]:  ["00:00:00", "23:59:59"],
   };
-
 
   constructor() {
 
     this.observations$ = this.observationsService.observations$.subscribe((observations) => {
 
-      this.AllObservations.update(() => observations);
+      this.observations = observations
       this.polylines.update(() => this.observationsService.getLineStringFromObservations(this.observations));
       this.startPoints.update(() => this.observationsService.getStartPointsFromObservations(this.observations));
-      this.observations = this.AllObservations()
       this.updateMapSource();
+
     })
 
     effect(() => {
       if (this.polygonFilter()){
-        let initalHour = this.hourRage[this.timeFilter()][0];
-        let finalHour = this.hourRage[this.timeFilter()][1];
-        this.getFilteredObservationsForSoundscape(initalHour, finalHour, this.polygonFilter().geometry.coordinates[0]);
+        let initalHour = this.hourRage[this.timeFilter()][0] ? String(this.hourRage[this.timeFilter()][0]) : "00:00:00";
+        let finalHour = this.hourRage[this.timeFilter()][1] ? String(this.hourRage[this.timeFilter()][1]) : "23:59:59";
+        this.observationsService.getObservationsByPolygonAndHours(
+          this.polygonFilter().geometry.coordinates[0].map((coo:number) => String(coo).replace(',', ' ')),
+          [initalHour, finalHour]
+        ).subscribe({
+          next: (observations) => {
+            this.observations = observations;
+            console.log(observations);
+            this.updateMapSource();
+          },
+          error: (error) => {
+            console.error(error);
+          }
+        });
       }
     });
 
@@ -104,7 +113,7 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
   public deletePolygonFilter() {
     this.draw.delete(this.polygonFilter().id);
     this.selectedPolygon = undefined;
-    this.polygonFilter.update(() => undefined)
+    this.polygonFilter.update(() => undefined);
     this.observationsService.getAllObservations();
   }
 
@@ -399,22 +408,21 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
     this.addObservationsToMap();
 
   }
+
   private onDrawSelect(event: any) {
     this.selectedPolygon = event.features[0] ? event.features[0] : undefined;
   }
 
   private onDrawCreated(event: any) {
-    this.getFilteredObservations(event)
+    this.getFilteredObservations(event);
   }
 
   private onDrawUpdated(event: any) {
-    this.getFilteredObservations(event)
+    this.getFilteredObservations(event);
   }
 
   private getFilteredObservations(event: any) {
-    this.polygonFilter.update(() => event.features[0])
-    this.getFilteredObservationsForSoundscape(null, null, this.polygonFilter().geometry.coordinates[0]);
-    this.updateMapSource();
+    this.polygonFilter.update(() => event.features[0]);
   }
 
   private getBboxFromPoints(): [[number, number], [number, number]] {
@@ -542,7 +550,6 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
       }
     });
 
-
     this.map.on('mouseenter', 'LineString', (e:any) => {
       this.map.getCanvas().style.cursor = 'pointer';
       for( let feature of e.features) {
@@ -592,24 +599,9 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
 
   }
 
-  private getFilteredObservationsForSoundscape(minHour: number | null = null, maxHour: number | null = null, polygon: number[][]){
-    this.observations = this.AllObservations();
-    this.observations = this.observations.filter((obs) => {
-      const polygonTurf = turf.polygon([polygon]);
-      let point = turf.point([
-        Number(obs.attributes.longitude),
-        Number(obs.attributes.latitude),
-      ]);
-      return turf.booleanPointInPolygon(point, polygonTurf);
-
-    })
-    //TODO filtrar por hora
-  }
-
-
-
   ngOnDestroy(): void {
     this.observations$.unsubscribe();
+    this.observationsService.getAllObservations();
   }
 }
 
