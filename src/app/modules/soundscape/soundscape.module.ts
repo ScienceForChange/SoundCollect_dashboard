@@ -24,7 +24,7 @@ import { QualitativeDataChartComponent } from './components/qualitative-data-cha
   declarations: [
     SoundscapeComponent,
     SoundLevelsChartComponent,
-    TemporalEvolutionSoundLevelChartComponent
+    TemporalEvolutionSoundLevelChartComponent,
     SoundTypesChartComponent,
     QuasChartComponent,
     PerceptionChartComponent,
@@ -39,7 +39,7 @@ import { QualitativeDataChartComponent } from './components/qualitative-data-cha
     SharedComponentsModule,
     FormsModule,
     ReactiveFormsModule,
-    CalendarModule
+    CalendarModule,
     SelectButtonModule,
     FormsModule
   ]
