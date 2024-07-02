@@ -169,7 +169,7 @@ export class TemporalEvolutionSoundLevelChartComponent
       if (isBefore && isAfter) return true;
       return false;
     });
-
+    
     const obsS2 = this.observations.filter((obs) => {
       const isBefore =
         new Date(obs.attributes.created_at) <= daysFilterS2[1];
@@ -219,7 +219,7 @@ export class TemporalEvolutionSoundLevelChartComponent
       series: series as CandlestickSeriesOption[],
     };
 
-    this.options && this.myChart.setOption(this.options);
+    this.myChart.setOption(this.options);
   }
 
   public resetFormToInitialValues(): void {
@@ -357,7 +357,7 @@ export class TemporalEvolutionSoundLevelChartComponent
   ): SeriesOption {
     const color = isS2 ? colors.s2[type] : colors.s1[type];
     const name = DAYTIME[type];
-    const serieName = isS2 ? 'Serie 2' : 'Serie 1';
+    const serieName = isS2 ? 'Sèrie 2' : 'Sèrie 1';
     const serie = {
       name: name + ' ' + serieName,
       itemStyle: color,
@@ -371,10 +371,9 @@ export class TemporalEvolutionSoundLevelChartComponent
     const chartDom = document.getElementById('candelstick-chart-container');
     this.myChart = echarts.init(chartDom);
     this.myChart.showLoading('default', this.loadingOptions);
-    const last100Obs = this.observations;
 
     //Filter falsy values
-    const filteredObs = last100Obs.filter((observation) => {
+    const filteredObs =  this.observations.filter((observation) => {
       return (
         +observation.attributes.Leq &&
         +observation.attributes.LAmax &&
@@ -383,6 +382,7 @@ export class TemporalEvolutionSoundLevelChartComponent
         +observation.attributes.LAmin
       );
     });
+    this.observations = filteredObs
 
     const hours = Array.from({ length: 24 }, (_, i) =>
       i.toString().padStart(2, '0')
@@ -396,8 +396,13 @@ export class TemporalEvolutionSoundLevelChartComponent
 
     this.options = {
       legend: {
-        data: ['Dia Serie 1', 'Tarda Serie 1', 'Nit Serie 1'],
+        data: ['Dia Sèrie 1', 'Tarda Sèrie 1', 'Nit Sèrie 1'],
         inactiveColor: '#777',
+        orient: 'horizontal', // Lay out the legend items horizontally
+        left: 'center', // Center align the legend
+        top: '0', // Position the legend at the bottom of the chart
+        width: '350px', // Adjust the width to control when items wrap to the next line
+        itemGap: 20, // Adjust the gap between legend items
       },
       tooltip: {
         trigger: 'item',
@@ -435,23 +440,26 @@ export class TemporalEvolutionSoundLevelChartComponent
       },
       xAxis: {
         data: hours,
+        name: 'Hores',
       },
-      yAxis: {},
+      yAxis: {
+        name: 'Nivell de pressió sonora (dBA)',
+      },
       series: [
         {
-          name: 'Dia Serie 1',
+          name: 'Dia Sèrie 1',
           itemStyle: colors.s1['day'],
           type: 'candlestick',
           data: dayObs,
         },
         {
-          name: 'Tarda Serie 1',
+          name: 'Tarda Sèrie 1',
           itemStyle: colors.s1['afternoon'],
           type: 'candlestick',
           data: afternoonObs,
         },
         {
-          name: 'Nit Serie 1',
+          name: 'Nit Sèrie 1',
           itemStyle: colors.s1['night'],
           type: 'candlestick',
           data: nightObs,
