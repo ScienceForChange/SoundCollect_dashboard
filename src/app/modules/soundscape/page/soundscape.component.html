@@ -25,10 +25,9 @@
 <div class="flex flex-wrap w-full">
   <div #map class="map-container"></div>
   @if(observations.length > 0){
-  
-    <app-temporal-evolution-sound-level-chart class="card" [observations]="observations"/>
-  
-    <!--TODO Gráfico Evolución temporal sobre los niveles de sonido dB(A) en un periodo de tiempo -->
+    <div class="w-full flex">
+     <app-temporal-evolution-sound-level-chart class="card" [observations]="observations"/>
+    </div>
 
     <div class="col-12 md:col-7 flex">
       <app-sound-levels-chart class="card w-full" [observations]="observations" />
