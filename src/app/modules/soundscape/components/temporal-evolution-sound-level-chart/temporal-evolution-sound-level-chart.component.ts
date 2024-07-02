@@ -24,6 +24,7 @@ import { CandlestickChart, CandlestickSeriesOption } from 'echarts/charts';
 import { CanvasRenderer } from 'echarts/renderers';
 import { CallbackDataParams } from 'echarts/types/dist/shared';
 import { SeriesOption } from 'echarts';
+import energeticAvg from '../../../../../utils/energeticAvg';
 
 type EChartsOption = echarts.ComposeOption<
   | GridComponentOption
@@ -254,39 +255,53 @@ export class TemporalEvolutionSoundLevelChartComponent
       },
       {}
     );
-    const AvgByHour: {
+    const avgByHour: {
       [key: number]: number[];
     } = [];
     //Calculate avg and update de value at groupByHour
     for (const keyOfHours in groupByHour) {
       const data = groupByHour[keyOfHours];
-      const avg = data
-        .reduce(
-          (acc, curr) => {
-            return [
-              acc[0] + curr[0],
-              acc[1] + curr[1],
-              acc[2] + curr[2],
-              acc[3] + curr[3],
-              acc[4] + curr[4],
-            ];
-            //Have to sum each value of acc array with the curr array
-          },
-          [0, 0, 0, 0, 0]
-        )
-        .map((value: number) => parseFloat((value / data.length).toFixed(2)));
+      // Get all values for each hour
+      const L90 = data.map((chartObs) => chartObs[0])
+      const L10 = data.map((chartObs) => chartObs[1])
+      const LAmin = data.map((chartObs) => chartObs[2])
+      const LAmax = data.map((chartObs) => chartObs[3])
+      const Leq = data.map((chartObs) => chartObs[4])
+      //Calculate energetic average
+      const avgL90 = energeticAvg(L90)
+      const avgL10 = energeticAvg(L10)
+      const avgLAmin = energeticAvg(LAmin)
+      const avgLAmax = energeticAvg(LAmax)
+      const avgLeq = energeticAvg(Leq)
 
-      AvgByHour[keyOfHours] = avg;
+    const avg = [avgL90,avgL10,avgLAmin,avgLAmax,avgLeq]
+      // const avg = data
+      //   .reduce(
+      //     (acc, curr) => {
+      //       return [
+      //         acc[0] + curr[0],
+      //         acc[1] + curr[1],
+      //         acc[2] + curr[2],
+      //         acc[3] + curr[3],
+      //         acc[4] + curr[4],
+      //       ];
+      //       //Have to sum each value of acc array with the curr array
+      //     },
+      //     [0, 0, 0, 0, 0]
+      //   )
+      //   .map((value: number) => parseFloat((value / data.length).toFixed(2)));
+
+      avgByHour[keyOfHours] = avg;
     }
 
     //Adding rest of the hours with empty values
     for (let hour = 0; hour <= 24; hour++) {
-      if (!AvgByHour.hasOwnProperty(hour)) {
-        AvgByHour[hour] = [];
+      if (!avgByHour.hasOwnProperty(hour)) {
+        avgByHour[hour] = [];
       }
     }
 
-    return Object.values(AvgByHour);
+    return Object.values(avgByHour);
   }
 
   private groupObsByTime(observations: Observations[]): {
