@@ -24,6 +24,7 @@ import { CandlestickChart, CandlestickSeriesOption } from 'echarts/charts';
 import { CanvasRenderer } from 'echarts/renderers';
 import { CallbackDataParams } from 'echarts/types/dist/shared';
 import { SeriesOption } from 'echarts';
+import energeticAvg from '../../../../../utils/energeticAvg';
 
 type EChartsOption = echarts.ComposeOption<
   | GridComponentOption
@@ -169,7 +170,7 @@ export class TemporalEvolutionSoundLevelChartComponent
       if (isBefore && isAfter) return true;
       return false;
     });
-
+    
     const obsS2 = this.observations.filter((obs) => {
       const isBefore =
         new Date(obs.attributes.created_at) <= daysFilterS2[1];
@@ -219,7 +220,7 @@ export class TemporalEvolutionSoundLevelChartComponent
       series: series as CandlestickSeriesOption[],
     };
 
-    this.options && this.myChart.setOption(this.options);
+    this.myChart.setOption(this.options);
   }
 
   public resetFormToInitialValues(): void {
@@ -254,39 +255,53 @@ export class TemporalEvolutionSoundLevelChartComponent
       },
       {}
     );
-    const AvgByHour: {
+    const avgByHour: {
       [key: number]: number[];
     } = [];
     //Calculate avg and update de value at groupByHour
     for (const keyOfHours in groupByHour) {
       const data = groupByHour[keyOfHours];
-      const avg = data
-        .reduce(
-          (acc, curr) => {
-            return [
-              acc[0] + curr[0],
-              acc[1] + curr[1],
-              acc[2] + curr[2],
-              acc[3] + curr[3],
-              acc[4] + curr[4],
-            ];
-            //Have to sum each value of acc array with the curr array
-          },
-          [0, 0, 0, 0, 0]
-        )
-        .map((value: number) => parseFloat((value / data.length).toFixed(2)));
+      // Get all values for each hour
+      const L90 = data.map((chartObs) => chartObs[0])
+      const L10 = data.map((chartObs) => chartObs[1])
+      const LAmin = data.map((chartObs) => chartObs[2])
+      const LAmax = data.map((chartObs) => chartObs[3])
+      const Leq = data.map((chartObs) => chartObs[4])
+      //Calculate energetic average
+      const avgL90 = energeticAvg(L90)
+      const avgL10 = energeticAvg(L10)
+      const avgLAmin = energeticAvg(LAmin)
+      const avgLAmax = energeticAvg(LAmax)
+      const avgLeq = energeticAvg(Leq)
 
-      AvgByHour[keyOfHours] = avg;
+    const avg = [avgL90,avgL10,avgLAmin,avgLAmax,avgLeq]
+      // const avg = data
+      //   .reduce(
+      //     (acc, curr) => {
+      //       return [
+      //         acc[0] + curr[0],
+      //         acc[1] + curr[1],
+      //         acc[2] + curr[2],
+      //         acc[3] + curr[3],
+      //         acc[4] + curr[4],
+      //       ];
+      //       //Have to sum each value of acc array with the curr array
+      //     },
+      //     [0, 0, 0, 0, 0]
+      //   )
+      //   .map((value: number) => parseFloat((value / data.length).toFixed(2)));
+
+      avgByHour[keyOfHours] = avg;
     }
 
     //Adding rest of the hours with empty values
     for (let hour = 0; hour <= 24; hour++) {
-      if (!AvgByHour.hasOwnProperty(hour)) {
-        AvgByHour[hour] = [];
+      if (!avgByHour.hasOwnProperty(hour)) {
+        avgByHour[hour] = [];
       }
     }
 
-    return Object.values(AvgByHour);
+    return Object.values(avgByHour);
   }
 
   private groupObsByTime(observations: Observations[]): {
@@ -357,7 +372,7 @@ export class TemporalEvolutionSoundLevelChartComponent
   ): SeriesOption {
     const color = isS2 ? colors.s2[type] : colors.s1[type];
     const name = DAYTIME[type];
-    const serieName = isS2 ? 'Serie 2' : 'Serie 1';
+    const serieName = isS2 ? 'Sèrie 2' : 'Sèrie 1';
     const serie = {
       name: name + ' ' + serieName,
       itemStyle: color,
@@ -371,10 +386,9 @@ export class TemporalEvolutionSoundLevelChartComponent
     const chartDom = document.getElementById('candelstick-chart-container');
     this.myChart = echarts.init(chartDom);
     this.myChart.showLoading('default', this.loadingOptions);
-    const last100Obs = this.observations;
 
     //Filter falsy values
-    const filteredObs = last100Obs.filter((observation) => {
+    const filteredObs =  this.observations.filter((observation) => {
       return (
         +observation.attributes.Leq &&
         +observation.attributes.LAmax &&
@@ -383,6 +397,7 @@ export class TemporalEvolutionSoundLevelChartComponent
         +observation.attributes.LAmin
       );
     });
+    this.observations = filteredObs
 
     const hours = Array.from({ length: 24 }, (_, i) =>
       i.toString().padStart(2, '0')
@@ -396,8 +411,13 @@ export class TemporalEvolutionSoundLevelChartComponent
 
     this.options = {
       legend: {
-        data: ['Dia Serie 1', 'Tarda Serie 1', 'Nit Serie 1'],
+        data: ['Dia Sèrie 1', 'Tarda Sèrie 1', 'Nit Sèrie 1'],
         inactiveColor: '#777',
+        orient: 'horizontal', // Lay out the legend items horizontally
+        left: 'center', // Center align the legend
+        top: '0', // Position the legend at the bottom of the chart
+        width: '350px', // Adjust the width to control when items wrap to the next line
+        itemGap: 20, // Adjust the gap between legend items
       },
       tooltip: {
         trigger: 'item',
@@ -435,23 +455,26 @@ export class TemporalEvolutionSoundLevelChartComponent
       },
       xAxis: {
         data: hours,
+        name: 'Hores',
       },
-      yAxis: {},
+      yAxis: {
+        name: 'Nivell de pressió sonora (dBA)',
+      },
       series: [
         {
-          name: 'Dia Serie 1',
+          name: 'Dia Sèrie 1',
           itemStyle: colors.s1['day'],
           type: 'candlestick',
           data: dayObs,
         },
         {
-          name: 'Tarda Serie 1',
+          name: 'Tarda Sèrie 1',
           itemStyle: colors.s1['afternoon'],
           type: 'candlestick',
           data: afternoonObs,
         },
         {
-          name: 'Nit Serie 1',
+          name: 'Nit Sèrie 1',
           itemStyle: colors.s1['night'],
           type: 'candlestick',
           data: nightObs,
