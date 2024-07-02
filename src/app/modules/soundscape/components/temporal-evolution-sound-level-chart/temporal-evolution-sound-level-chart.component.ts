@@ -7,6 +7,8 @@ import {
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
+import type { Observations } from '../../../../models/observations';
+
 import * as echarts from 'echarts/core';
 import {
   GridComponent,
@@ -20,7 +22,6 @@ import {
 } from 'echarts/components';
 import { CandlestickChart, CandlestickSeriesOption } from 'echarts/charts';
 import { CanvasRenderer } from 'echarts/renderers';
-import { Observations } from '../../../../models/observations';
 import { CallbackDataParams } from 'echarts/types/dist/shared';
 import { SeriesOption } from 'echarts';
 
@@ -107,6 +108,7 @@ export class TemporalEvolutionSoundLevelChartComponent
     this.myChart.resize();
   }
   private options: EChartsOption;
+  private initialOptions:EChartsOption;
   private loadingOptions = {
     text: 'Carregant...',
     color: '#FF7A1F',
@@ -114,6 +116,11 @@ export class TemporalEvolutionSoundLevelChartComponent
   public firstDay!: Date;
   public lastDay!: Date;
   public filtersForm!: FormGroup;
+  public filterStates = {
+    FILTER: 'filter',
+    CLEAN: 'clean'
+  };
+  public filterState!: string;
 
   ngOnInit(): void {
     echarts.use([
@@ -124,7 +131,6 @@ export class TemporalEvolutionSoundLevelChartComponent
       DataZoomComponent,
       TooltipComponent,
     ]);
-    // console.log('obs',this.observations.map((obs) => obs.attributes.created_at))
     this.firstDay = new Date(this.observations[0].attributes.created_at);
     this.lastDay = new Date(
       this.observations[this.observations.length - 1].attributes.created_at
@@ -133,38 +139,51 @@ export class TemporalEvolutionSoundLevelChartComponent
       daysFilterS1: new FormControl([this.firstDay, this.lastDay], []),
       daysFilterS2: new FormControl(undefined, []),
     });
+
+    // Subscribe to form value changes
+    this.filtersForm.valueChanges.subscribe((values) => {
+
+        // Check if all form values are true
+        const allValuesTrue = Object.values(values).every((value) => {
+          // Assuming the value structure is [Date, Date] for daysFilterS1 and possibly undefined for daysFilterS2
+          // Adjust the condition based on your actual value structure and requirements
+          if (Array.isArray(value)) {
+            return value.every((date) => date instanceof Date);
+          }
+          return value === true; // Adjust this condition based on your needs
+        });
+  
+        // Update filterState based on the check
+        this.filterState = allValuesTrue && this.filterStates.FILTER
+    });
   }
 
   public onSubmit(): void {
     const { daysFilterS1, daysFilterS2 } = this.filtersForm.value;
-    console.log('daysFilterS1', daysFilterS1);
-    console.log('daysFilterS2', daysFilterS2);
 
     const obsS1 = this.observations.filter((obs) => {
-      const isBeforeToday =
+      const isBefore =
         new Date(obs.attributes.created_at) <= daysFilterS1[1];
-      const isAfterLastDay30 =
+      const isAfter =
         new Date(obs.attributes.created_at) >= daysFilterS1[0];
-      if (isBeforeToday && isAfterLastDay30) return true;
+      if (isBefore && isAfter) return true;
       return false;
     });
 
     const obsS2 = this.observations.filter((obs) => {
-      const isBeforeToday =
+      const isBefore =
         new Date(obs.attributes.created_at) <= daysFilterS2[1];
-      const isAfterLastDay30 =
+      const isAfter =
         new Date(obs.attributes.created_at) >= daysFilterS2[0];
-      if (isBeforeToday && isAfterLastDay30) return true;
+      if (isBefore && isAfter) return true;
       return false;
     });
 
-    console.log('obsS1', obsS1);
-    console.log('obsS2', obsS2);
     this.updateChart(obsS1, obsS2);
+    this.filterState = this.filterStates.CLEAN;
   }
 
   private updateChart(s1: Observations[], s2: Observations[]) {
-    console.log('updatechart');
     const series = [];
     if (s1.length > 0) {
       const soundLevelsByTimeS1 = this.groupObsByTime(s1);
@@ -190,8 +209,7 @@ export class TemporalEvolutionSoundLevelChartComponent
       const nightS2 = this.createSeries(nightObsS2, 'night', true);
       series.push(dayS2, afternoonS2, nightS2);
     }
-    console.log('series', series);
-    const dataLegend = series.map((serie) => serie.name) as string[]
+    const dataLegend = series.map((serie) => serie.name) as string[];
     //Update data chart with the new one
     this.options = {
       legend: {
@@ -202,6 +220,21 @@ export class TemporalEvolutionSoundLevelChartComponent
     };
 
     this.options && this.myChart.setOption(this.options);
+  }
+
+  public resetFormToInitialValues(): void {
+    // Define initial values or reset to default
+    const initialValues: {daysFilterS1: [Date,Date], daysFilterS2:[]} = {
+      daysFilterS1: [this.firstDay, this.lastDay],
+      daysFilterS2: [],
+    };
+  
+    //Update the form values
+    
+    this.filtersForm.setValue(initialValues);
+    this.filterState = undefined;
+      // Set the new options on the chart, making sure to replace the old options
+    this.myChart.setOption(this.initialOptions,true);
   }
 
   private groupObsByHours(
@@ -367,21 +400,19 @@ export class TemporalEvolutionSoundLevelChartComponent
         inactiveColor: '#777',
       },
       tooltip: {
-        trigger: 'axis',
+        trigger: 'item',
         formatter: function (params) {
-          let p = params as CallbackDataParams[];
+          let p = params as CallbackDataParams;
           let values: string[] = [];
-          p.forEach((param) => {
-            const data = param.data as number[];
-            //No create tooltip for undefined values
-            if (data.length === 1) return;
-            const date = param.name;
-            const L90 = data[1];
-            const L10 = data[2];
-            const LAmin = data[3];
-            const LAmax = data[4];
-            const Leq = data[5];
-            const html = `
+          const data = p.data as number[];
+          const date = p.name;
+          const L90 = data[1];
+          const L10 = data[2];
+          const LAmin = data[3];
+          const LAmax = data[4];
+          const Leq = data[5];
+          const html = `
+            <b>${p.seriesName}</b> <br>
             Hora: ${date} <br>
             LAeq: ${Leq} <br>
             L10: ${L10} <br>
@@ -389,8 +420,7 @@ export class TemporalEvolutionSoundLevelChartComponent
             LAmin: ${LAmin} <br>
             LAmax: ${LAmax} <br>
             `;
-            values.push(html);
-          });
+          values.push(html);
           return values.join('<br>');
         },
         axisPointer: {
@@ -429,7 +459,7 @@ export class TemporalEvolutionSoundLevelChartComponent
       ],
     };
     this.myChart.hideLoading();
-
+    this.initialOptions = this.options
     this.options && this.myChart.setOption(this.options);
   }
 }
