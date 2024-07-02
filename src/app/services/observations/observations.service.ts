@@ -26,42 +26,20 @@ export class ObservationsService {
   constructor(private http: HttpClient) {}
 
   public getAllObservations(): void {
+    this.loading$.next(true);
     this.http
       .get<{ success: string; data: Observations[] }>(
         `${environment.BACKEND_BASE_URL}/observations`
       )
-      .subscribe(({ data }) => {
-
-        // //TODO: esto debería hacerse en el backend
-        // data.map((obs) => {
-        //   //modificamos el path para añadir un número de coordenadas random cerca de las coordenadas de la observación (obs.attributes.latitude, obs.attributes.longitude)
-        //   obs.attributes.path = [];
-        //   let start!: [number, number];
-        //   for (let i = 0; i < Math.floor(Math.random() * (10 - 3 + 1) + 3); i++) {
-
-        //     let end: [number, number] = [Number(obs.attributes.longitude) + Math.random() * 0.0005, Number(obs.attributes.latitude) + Math.random() * 0.0005];
-        //     if(i == 0) start = [Number(obs.attributes.longitude) + Math.random() * 0.0005, Number(obs.attributes.latitude) + Math.random() * 0.0005];
-
-        //     obs.attributes.path.push({
-        //       start:  start,
-        //       end:    end,
-        //       parameters:{
-        //         pause:  Math.random() < 0.2 ? true : false,
-        //         LAeq:   Math.floor(Math.random() * 140),
-        //         LAeqT:  Math.floor(Math.random() * 140),
-        //         L10:    Math.floor(Math.random() * 140),
-        //         L90:    Math.floor(Math.random() * 140)
-        //       }
-        //     });
-
-        //     start = end;
-        //   }
-        //   return obs;
-        // });
-
-        this.observations$.next(data);
-        this.loading$.next(false);
-
+      .subscribe({
+        next: ({ data }) => {
+          this.observations$.next(data);
+          this.loading$.next(false);
+        },
+        error: (error) => {
+          console.error(error);
+          this.loading$.next(false);
+        },
       });
   }
 
@@ -403,6 +381,27 @@ export class ObservationsService {
 
     return points;
 
+  }
+
+  public getObservationsByPolygonAndHours(polygon: Number[], hourInterval: [string, string]): Observable<Observations[]> {
+    this.loading$.next(true);
+    return this.http.post<{ success: string; data: Observations[] }>(
+      `${environment.BACKEND_BASE_URL}/observations/in-polygon`,
+      {
+        concern: 'inside',
+        polygon : polygon,
+        interval: {
+          "start" : `${hourInterval[0]}`,
+          "end" : `${hourInterval[1]}`,
+        }
+  }
+    ).pipe(
+      map(({ data }) => {
+        this.observations$.next(data);
+        this.loading$.next(false);
+        return data;
+      })
+    );
   }
 
 }

@@ -1,9 +1,11 @@
-import { AfterViewInit, Component, HostListener, Input } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit, inject } from '@angular/core';
 import { Observations } from '../../../../models/observations';
 import * as echarts from 'echarts/core';
 import { BarChart, PieChart } from 'echarts/charts';
 import { CanvasRenderer } from 'echarts/renderers';
 import { GridComponent, LegendComponent } from 'echarts/components';
+import { ObservationsService } from '../../../../services/observations/observations.service';
+import { Subscription } from 'rxjs';
 
 echarts.use([GridComponent, LegendComponent, BarChart, CanvasRenderer,PieChart]);
 
@@ -12,23 +14,32 @@ echarts.use([GridComponent, LegendComponent, BarChart, CanvasRenderer,PieChart])
   templateUrl: './quas-chart.component.html',
   styleUrl: './quas-chart.component.scss'
 })
-export class QuasChartComponent implements AfterViewInit{
-
-  @Input() observations: Observations[];
-  private chart: echarts.ECharts;
-  private option! : echarts.EChartsCoreOption;
-  public totalObservationTypes:number = 0
-  private quietTypesLabel = ['Moderament tranquil', 'Bastant tranquil', 'Molt tranquil'];
-  private dBLevels = ['< = 35', '35-40', '40-45', '45-50', '50-55', '55-60', '60-65', '65-70', '70-75', '75-80', '> 80'];
+export class QuasChartComponent implements OnInit, OnDestroy{
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     this.chart.resize();
   }
+  private observations!: Observations[];
+  private chart: echarts.ECharts;
+  private option! : echarts.EChartsCoreOption;
+  public totalObservationTypes:number = 0
+  private observationsService = inject(ObservationsService);
+  private observations$!: Subscription;
+  private quietTypesLabel = ['Moderament tranquil', 'Bastant tranquil', 'Molt tranquil'];
+  private dBLevels = ['< = 35', '35-40', '40-45', '45-50', '50-55', '55-60', '60-65', '65-70', '70-75', '75-80', '> 80'];
 
-  ngAfterViewInit(): void {
+
+  ngOnInit(): void {
     let chartDom = document.getElementById('quasChart')!;
     this.chart = echarts.init(chartDom);
+    this.observations$ = this.observationsService.observations$.subscribe((observations: Observations[]) => {
+      this.observations = observations;
+      this.updateChart();
+    });
+  }
+
+  private updateChart(): void {
 
     const rawData:number[][] = this.getDataFromObservations();
 
@@ -133,5 +144,8 @@ export class QuasChartComponent implements AfterViewInit{
 
   }
 
+  ngOnDestroy(): void {
+    this.observations$.unsubscribe();
+  }
 
 }
