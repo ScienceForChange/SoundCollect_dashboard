@@ -1824,8 +1824,8 @@
   }
 
   .p-selectbutton .p-button {
-    background: #6c757d;
-    border: 1px solid #6c757d;
+    background: var(--orange-light);
+    border: 1px solid var(--orange-light);
     color: #ffffff;
     transition: background-color 0.15s, border-color 0.15s, box-shadow 0.15s;
   }
@@ -1834,8 +1834,8 @@
     color: #ffffff;
   }
   .p-selectbutton .p-button:not(.p-disabled):not(.p-highlight):hover {
-    background: #5a6268;
-    border-color: #545b62;
+    background: var(--orange);
+    border-color: var(--orange);
     color: #ffffff;
   }
   .p-selectbutton
@@ -1847,8 +1847,8 @@
     color: #ffffff;
   }
   .p-selectbutton .p-button.p-highlight {
-    background: #545b62;
-    border-color: #4e555b;
+    background: var(--orange);
+    border-color: var(--orange);
     color: #ffffff;
   }
   .p-selectbutton .p-button.p-highlight .p-button-icon-left,
@@ -1856,8 +1856,8 @@
     color: #ffffff;
   }
   .p-selectbutton .p-button.p-highlight:hover {
-    background: #545b62;
-    border-color: #4e555b;
+    background: var(--orange-light);
+    border-color: var(--orange-light);
     color: #ffffff;
   }
   .p-selectbutton .p-button.p-highlight:hover .p-button-icon-left,

@@ -1,0 +1,13 @@
+<h2>{{ 'soundscape.perception.title' | translate }}</h2>
+<div class="mt-5 flex justify-content-center">
+  <p-selectButton
+    [options]="pieOptions"
+    [(ngModel)]="pie"
+    optionLabel="label"
+    optionValue="value"
+    allowEmpty="false"
+    (onChange)="updateChart()"
+    >
+  </p-selectButton>
+</div>
+<div class="mt-8" id="perceptionChart"></div>

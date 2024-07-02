@@ -115,6 +115,7 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
       style: this.mapSettings.mapStyle, // style URL
       center: this.mapSettings.centerMapLocation, // starting position [lng, lat]
       zoom: this.mapSettings.zoom, // starting zoom
+      cooperativeGestures: true
     });
 
     this.map.on('load', () => this.onMapLoad());

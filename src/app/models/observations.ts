@@ -75,7 +75,7 @@ export interface ObservationsRelationships {
 }
 
 export interface ObservationsType {
-    id:          number | string;
+    id:          number;
     name:        string;
     description: string;
 }

@@ -12,7 +12,7 @@
   z-index: 2;
   position: absolute;
   pointer-events: none;
-  padding: 1rem;
+  padding: 1.2rem;
   .tools{
     display: flex;
     flex-direction: column;
@@ -37,4 +37,7 @@
 .map-container {
   height: calc(100vh - 1rem);
   width: 100%;
+  border-radius: 12px;
+  margin: 0.5rem;
+  border: 1px solid var(--surface-border);
 }
