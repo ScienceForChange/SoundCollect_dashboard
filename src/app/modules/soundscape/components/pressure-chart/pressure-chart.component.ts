@@ -8,17 +8,17 @@ import { GridComponent, LegendComponent } from 'echarts/components';
 echarts.use([GridComponent, LegendComponent, BarChart, CanvasRenderer,PieChart]);
 
 @Component({
-  selector: 'app-quas-chart',
-  templateUrl: './quas-chart.component.html',
-  styleUrl: './quas-chart.component.scss'
+  selector: 'app-pressure-chart',
+  templateUrl: './pressure-chart.component.html',
+  styleUrl: './pressure-chart.component.scss'
 })
-export class QuasChartComponent implements AfterViewInit{
+export class PressureChartComponent implements AfterViewInit {
 
   @Input() observations: Observations[];
   private chart: echarts.ECharts;
   private option! : echarts.EChartsCoreOption;
   public totalObservationTypes:number = 0
-  private quietTypesLabel = ['Moderament tranquil', 'Bastant tranquil', 'Molt tranquil'];
+  private quietTypesLabel = ['Matí (7:00 - 19:00)', 'Vespre (19:00 - 23:00)', 'Nit (23:00 - 7:00)'];
   private dBLevels = ['< = 35', '35-40', '40-45', '45-50', '50-55', '55-60', '60-65', '65-70', '70-75', '75-80', '> 80'];
 
   @HostListener('window:resize', ['$event'])
@@ -27,7 +27,7 @@ export class QuasChartComponent implements AfterViewInit{
   }
 
   ngAfterViewInit(): void {
-    let chartDom = document.getElementById('quasChart')!;
+    let chartDom = document.getElementById('pressureChart')!;
     this.chart = echarts.init(chartDom);
 
     const rawData:number[][] = this.getDataFromObservations();
@@ -63,7 +63,7 @@ export class QuasChartComponent implements AfterViewInit{
 
     this.option = {
       title: {
-        subtext: 'Tranquilitat',
+        subtext: 'Franja horària',
         left: 'center',
       },
       grid,
@@ -110,8 +110,15 @@ export class QuasChartComponent implements AfterViewInit{
       dBLevels.push(dBArrayToPush);
     };
     this.observations.forEach(obs => {
-      if((obs.attributes.Leq && obs.attributes.quiet) && Number(obs.attributes.quiet) > 2){
-        dBLevels[Number(obs.attributes.quiet) - 3][this.getIndexOfdBLevel(Number(obs.attributes.Leq))] ++;
+      const date = new Date(obs.attributes.created_at).getHours();
+      if(date >= 7 && date < 19){
+        dBLevels[0][this.getIndexOfdBLevel(Number(obs.attributes.Leq))]++;
+      }
+      if(date >= 19 && date < 23){
+        dBLevels[1][this.getIndexOfdBLevel(Number(obs.attributes.Leq))]++;
+      }
+      if(date >= 23 || date < 7){
+        dBLevels[2][this.getIndexOfdBLevel(Number(obs.attributes.Leq))]++;
       }
     });
     return dBLevels;
@@ -132,6 +139,4 @@ export class QuasChartComponent implements AfterViewInit{
     return 10;
 
   }
-
-
 }

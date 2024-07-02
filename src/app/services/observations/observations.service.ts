@@ -103,7 +103,7 @@ export class ObservationsService {
           others: 0,
           'non-binary': 0,
           'prefer-not-to-say': 0,
-          null: 0,
+          // null: 0,
         };
 
         const uniqueUserProfiles = Object.keys(observationsByUser).map(
@@ -149,7 +149,7 @@ export class ObservationsService {
               observationsByUserGender['non-binary']++;
               break;
             default:
-              observationsByUserGender.null++;
+              // observationsByUserGender.null++;
               break;
           }
         });

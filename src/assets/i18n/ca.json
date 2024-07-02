@@ -34,7 +34,7 @@
     },
     "filter":{
       "morning": "Matí (7:00 - 19:00)",
-      "afternoon": "Tarda (19:00 - 23:00)",
+      "afternoon": "Vespre (19:00 - 23:00)",
       "night": "Nit (23:00 - 7:00)",
       "wholeDay": "Tot el dia"
     },
@@ -45,11 +45,16 @@
       "title": "Tipus de so"
     },
     "quas":{
-      "title": "Distribució de nivells de pressió sonora a l'àrea tranquil·la"
+      "title": "Anàlisi de variables qualitatives - quantitatives"
     },
     "perception":{
       "title": "Descripció de la percepció del espai"
-
+    },
+    "pressure":{
+      "title": "Distribució de nivells de pressió sonora a l'àrea tranquil·la"
+    },
+    "qualitativeData":{
+      "title": "Dades qualitatives"
     }
   }
 }
