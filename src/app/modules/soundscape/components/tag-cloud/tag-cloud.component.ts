@@ -5,6 +5,9 @@ import { Subscription } from 'rxjs';
 import * as _ from 'lodash';
 import 'chartjs-chart-wordcloud';
 import { Chart } from 'chart.js';
+import { WordCloudController, WordElement } from 'chartjs-chart-wordcloud';
+
+Chart.register(WordCloudController, WordElement);
 
 @Component({
   selector: 'app-tag-cloud',
@@ -17,37 +20,47 @@ export class TagCloudComponent implements OnInit, OnDestroy{
   private observationsService = inject(ObservationsService);
   private observations$!: Subscription;
   public text!: string;
-  public tags!: { [word: string]: number };
+  public tags!: {key: string; value: number;}[];
   public chart!: Chart;
+  public stopWords!: string[];
+
   ngOnInit() {
-    this.observations$ = this.observationsService.observations$.subscribe((observations: Observations[]) => {
-      this.observations = observations;
-      this.updateCloud();
-      this.getTagsFromObservations();
-      this.tags = this.getWordFrequency();
-      //ordenamos tags por el valor de la frecuencia
-      this.tags = _.fromPairs(_.toPairs(this.tags).sort((a:any, b:any) => b[1] - a[1]));
-      let canvas = document.getElementById('tagCloud') as HTMLCanvasElement;
-      this.chart = new Chart(canvas, {
-        type: 'wordCloud',
-        data: {
-          labels: _.fromPairs(_.toPairs(this.tags).map((value:number, key:string) => key)),
-          datasets: [{
-            data: _.fromPairs(_.toPairs(this.tags).map((value:number) => value)),
-          }]
-        },
-        options: {
-          plugins: {
-            legend: {
-              display: false
-            }
-          }
-        }
+
+    fetch('assets/stopWords/ca.json').then(response => response.json()).then(data => {
+      this.stopWords = data;
+      this.observations$ = this.observationsService.observations$.subscribe((observations: Observations[]) => {
+        this.observations = observations;
+        this.getTagsFromObservations();
+        this.getWordFrequency();
+        this.tags = this.tags.sort((a, b) => b.value - a.value).slice(0, 40);
+        if(this.tags.length > 0) this.updateCloud();
       });
     });
   }
 
   private updateCloud(): void {
+    const canvas = document.getElementById('tagCloud') as HTMLCanvasElement;
+    if(this.chart) this.chart.destroy();
+    this.chart = new Chart(canvas.getContext("2d") , {
+      type: "wordCloud",
+      data: {
+        labels: this.tags.map((d) => d.key),
+        datasets: [
+          {
+            label: "",
+            data: this.tags.map((d) => d.value * 8)
+          }
+        ]
+      },
+      options: {
+        plugins: {
+          legend: {
+            display: false
+          }
+        }
+      }
+    });
+
     // Update the tag cloud
   }
 
@@ -56,11 +69,22 @@ export class TagCloudComponent implements OnInit, OnDestroy{
       this.text = this.text + " " + obs.attributes.protection.toLocaleLowerCase();
     })
   }
-  getWordFrequency(): { [word: string]: number } {
-    const wordsArray = _.words(this.text);
 
-    const wordCount = _.countBy(wordsArray.filter((word: string) => isNaN(Number(word))));
-    return wordCount;
+  private getWordFrequency(): void {
+
+
+    const wordsArray = _.words(this.text);
+    const wordCount:[string, number][] = Object.entries(
+      _.countBy(
+        wordsArray
+        .filter((word: string) => isNaN(Number(word)))
+        .filter((word: string) => !this.stopWords.includes(word))
+      )
+    );
+
+    this.tags = wordCount.map((word: [string, number]) => {
+      return { key: word[0], value: word[1] };
+    });
   }
 
   ngOnDestroy() {
