@@ -6,6 +6,7 @@ import { CanvasRenderer } from 'echarts/renderers';
 import * as echarts from 'echarts/core';
 import { Subscription } from 'rxjs';
 import { ObservationsService } from '../../../../services/observations/observations.service';
+import energeticAvg from '../../../../../utils/energeticAvg';
 
 
 type EChartsOption = echarts.EChartsCoreOption;
@@ -165,9 +166,9 @@ export class SoundLevelsChartComponent implements OnInit, OnDestroy {
     }
   }
 
-  private getDataFromObservations(): Number[] {
+  private getDataFromObservations(): number[] {
 
-    let data: Number[][] = Array.from({length: 24}, () => []);
+    let data: number[][] = Array.from({length: 24}, () => []);
 
     this.observations.forEach(observation => {
       let hour = new Date(observation.attributes.created_at).getHours();
@@ -179,8 +180,8 @@ export class SoundLevelsChartComponent implements OnInit, OnDestroy {
 
     const result = data.map(hourData => {
       if(hourData.length === 0) return 0;
-      let sum = hourData.reduce((a, b) => Number(a) + Number(b));
-      let avg = Number(sum)/hourData.length;
+      console.log(hourData);
+      let avg = energeticAvg(hourData);
       this.max = Math.max(Number(this.max), Number(avg));
       return  Number((avg).toFixed(2));
     });
