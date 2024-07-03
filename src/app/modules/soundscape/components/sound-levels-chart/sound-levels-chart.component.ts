@@ -180,7 +180,6 @@ export class SoundLevelsChartComponent implements OnInit, OnDestroy {
 
     const result = data.map(hourData => {
       if(hourData.length === 0) return 0;
-      console.log(hourData);
       let avg = energeticAvg(hourData);
       this.max = Math.max(Number(this.max), Number(avg));
       return  Number((avg).toFixed(2));
