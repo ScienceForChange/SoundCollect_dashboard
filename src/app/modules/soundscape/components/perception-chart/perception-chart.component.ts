@@ -86,32 +86,32 @@ export class PerceptionChartComponent implements OnInit, OnDestroy{
     let data: number[][] = [];
 
     let quiet: number[] = Array.from({length: this.legendsLabels[0].length}, () => 0);
-    let cleaning: number[] = Array.from({length: this.legendsLabels[1].length}, () => 0);
+    let cleanliness: number[] = Array.from({length: this.legendsLabels[1].length}, () => 0);
     let accessibility: number[] = Array.from({length: this.legendsLabels[2].length}, () => 0);
-    let security: number[] = Array.from({length: this.legendsLabels[3].length}, () => 0);
+    let safety: number[] = Array.from({length: this.legendsLabels[3].length}, () => 0);
 
     this.observations.forEach(obs => {
       if(Number(obs.attributes.quiet)){
         quiet[Number(obs.attributes.quiet) - 1] ++;
       }
 
-      if(Number(obs.attributes.quiet) && Number(obs.attributes.quiet) <= 3){
-        cleaning[Number(obs.attributes.quiet) - 1] = cleaning[Number(obs.attributes.quiet) - 1] + 10;
+      if(Number(obs.attributes.cleanliness) && Number(obs.attributes.cleanliness) <= 3){
+        cleanliness[Number(obs.attributes.cleanliness) - 1] ++;
       }
 
-      if(Number(obs.attributes.quiet) && Number(obs.attributes.quiet) <= 3){
-        accessibility[Number(obs.attributes.quiet) - 1] = accessibility[Number(obs.attributes.quiet) - 1] + 5;
+      if(Number(obs.attributes.accessibility) && Number(obs.attributes.accessibility) <= 3){
+        accessibility[Number(obs.attributes.accessibility) - 1]++;
       }
 
-      if(Number(obs.attributes.quiet) && Number(obs.attributes.quiet) <= 3){
-        security[Number(obs.attributes.quiet) - 1] = security[Number(obs.attributes.quiet) - 1] + 2;
+      if(Number(obs.attributes.safety) && Number(obs.attributes.safety) <= 3){
+        safety[Number(obs.attributes.safety) - 1] ++;
       }
     });
 
     data.push(quiet);
-    data.push(cleaning);
+    data.push(cleanliness);
     data.push(accessibility);
-    data.push(security);
+    data.push(safety);
 
     return data;
   }
