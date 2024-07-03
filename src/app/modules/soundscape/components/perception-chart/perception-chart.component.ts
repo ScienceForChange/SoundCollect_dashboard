@@ -54,13 +54,6 @@ export class PerceptionChartComponent implements OnInit, OnDestroy{
     });
   }
 
-  ngAfterViewInit(): void {
-    let chartDom = document.getElementById('perceptionChart')!;
-    this.chart = echarts.init(chartDom);
-    this.data = this.getDataFromObservations();
-    this.updateChart();
-  }
-  
   public updateChart(): void {
     this.option = {
       title: {
