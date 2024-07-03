@@ -91,7 +91,6 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
         ).subscribe({
           next: (observations) => {
             this.observations = observations;
-            console.log(observations);
             this.updateMapSource();
           },
           error: (error) => {
