@@ -40,15 +40,19 @@ export class SoundTypesChartComponent implements OnInit, OnDestroy{
 
   private updateChart(): void {
 
-    const rawData:number[][] = this.getDataFromObservations().cuantity;
+    const data = this.getDataFromObservations();
+    const types = data.types;
+    const rawData = data.cuantity;
 
-    if(rawData.length === 0) {
-      return;
-    }
-    for (let i = 0; i < rawData[0].length; ++i) {
-      for (let j:number = 0; j < rawData.length; ++j) {
-        this.totalObservationTypes += rawData[j][i];
+    if(rawData.length > 0) {
+      for (let i = 0; i < rawData[0].length; ++i) {
+        for (let j:number = 0; j < rawData.length; ++j) {
+          this.totalObservationTypes += rawData[j][i];
+        }
       }
+    }
+    else{
+      this.totalObservationTypes = 0;
     }
 
     const grid = {
@@ -58,7 +62,7 @@ export class SoundTypesChartComponent implements OnInit, OnDestroy{
       bottom: 10
     };
 
-    const series = this.getDataFromObservations().types.map((name, sid) => {
+    const series = types.map((name, sid) => {
       return {
         name,
         type: 'bar',
@@ -96,7 +100,7 @@ export class SoundTypesChartComponent implements OnInit, OnDestroy{
       },
       series
     };
-
+    this.chart.clear();
     this.chart.setOption(this.option);
 
   }

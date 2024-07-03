@@ -3,7 +3,9 @@ import {
   Component,
   HostListener,
   Input,
+  OnDestroy,
   OnInit,
+  inject,
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
@@ -25,6 +27,8 @@ import { CanvasRenderer } from 'echarts/renderers';
 import { CallbackDataParams } from 'echarts/types/dist/shared';
 import { SeriesOption } from 'echarts';
 import energeticAvg from '../../../../../utils/energeticAvg';
+import { ObservationsService } from '../../../../services/observations/observations.service';
+import { Subscription } from 'rxjs';
 
 type EChartsOption = echarts.ComposeOption<
   | GridComponentOption
@@ -99,9 +103,11 @@ const DAYTIME: { [key: string]: string } = {
   styleUrl: './temporal-evolution-sound-level-chart.component.scss',
 })
 export class TemporalEvolutionSoundLevelChartComponent
-  implements OnInit, AfterViewInit
+  implements OnInit, AfterViewInit, OnDestroy
 {
   @Input() observations: Observations[];
+  private observationsService = inject(ObservationsService);
+  private subscriptions = new Subscription();
 
   private myChart!: echarts.ECharts;
   @HostListener('window:resize', ['$event'])
@@ -109,7 +115,7 @@ export class TemporalEvolutionSoundLevelChartComponent
     this.myChart.resize();
   }
   private options: EChartsOption;
-  private initialOptions:EChartsOption;
+  private initialOptions: EChartsOption;
   private loadingOptions = {
     text: 'Carregant...',
     color: '#FF7A1F',
@@ -119,7 +125,7 @@ export class TemporalEvolutionSoundLevelChartComponent
   public filtersForm!: FormGroup;
   public filterStates = {
     FILTER: 'filter',
-    CLEAN: 'clean'
+    CLEAN: 'clean',
   };
   public filterState!: string;
 
@@ -132,18 +138,44 @@ export class TemporalEvolutionSoundLevelChartComponent
       DataZoomComponent,
       TooltipComponent,
     ]);
-    this.firstDay = new Date(this.observations[0].attributes.created_at);
-    this.lastDay = new Date(
-      this.observations[this.observations.length - 1].attributes.created_at
+    const obsSubscription = this.observationsService.observations$.subscribe(
+      (observations: Observations[]) => {
+        this.observations = observations;
+        this.firstDay = new Date(this.observations[0].attributes.created_at);
+        this.lastDay = new Date(
+          this.observations[this.observations.length - 1].attributes.created_at
+        );
+        // Define initial values or reset to default
+        const initialValues: { daysFilterS1: [Date, Date]; daysFilterS2: [] } =
+          {
+            daysFilterS1: [this.firstDay, this.lastDay],
+            daysFilterS2: [],
+          };
+
+        if (!this.filtersForm) return;
+        //Update min day and max day at form
+        //TODO: See why is not updating the value when clean the filter.
+        this.filtersForm.setValue(initialValues);
+        const obsS1: Observations[] = this.observations.filter((obs) => {
+          const isBefore = new Date(obs.attributes.created_at) <= this.lastDay;
+          const isAfter = new Date(obs.attributes.created_at) >= this.firstDay;
+          if (isBefore && isAfter) return true;
+          return false;
+        });
+
+        this.updateChart(obsS1, []);
+      }
     );
+    this.subscriptions.add(obsSubscription);
+
     this.filtersForm = new FormGroup({
       daysFilterS1: new FormControl([this.firstDay, this.lastDay], []),
       daysFilterS2: new FormControl(undefined, []),
     });
 
     // Subscribe to form value changes
-    this.filtersForm.valueChanges.subscribe((values) => {
-
+    const formSubscription = this.filtersForm.valueChanges.subscribe(
+      (values) => {
         // Check if all form values are true
         const allValuesTrue = Object.values(values).every((value) => {
           // Assuming the value structure is [Date, Date] for daysFilterS1 and possibly undefined for daysFilterS2
@@ -151,31 +183,30 @@ export class TemporalEvolutionSoundLevelChartComponent
           if (Array.isArray(value)) {
             return value.every((date) => date instanceof Date);
           }
-          return value === true; // Adjust this condition based on your needs
+          return value === true;
         });
-  
+
         // Update filterState based on the check
-        this.filterState = allValuesTrue && this.filterStates.FILTER
-    });
+        this.filterState = allValuesTrue && this.filterStates.FILTER;
+      }
+    );
+
+    this.subscriptions.add(formSubscription);
   }
 
   public onSubmit(): void {
     const { daysFilterS1, daysFilterS2 } = this.filtersForm.value;
 
     const obsS1 = this.observations.filter((obs) => {
-      const isBefore =
-        new Date(obs.attributes.created_at) <= daysFilterS1[1];
-      const isAfter =
-        new Date(obs.attributes.created_at) >= daysFilterS1[0];
+      const isBefore = new Date(obs.attributes.created_at) <= daysFilterS1[1];
+      const isAfter = new Date(obs.attributes.created_at) >= daysFilterS1[0];
       if (isBefore && isAfter) return true;
       return false;
     });
-    
+
     const obsS2 = this.observations.filter((obs) => {
-      const isBefore =
-        new Date(obs.attributes.created_at) <= daysFilterS2[1];
-      const isAfter =
-        new Date(obs.attributes.created_at) >= daysFilterS2[0];
+      const isBefore = new Date(obs.attributes.created_at) <= daysFilterS2[1];
+      const isAfter = new Date(obs.attributes.created_at) >= daysFilterS2[0];
       if (isBefore && isAfter) return true;
       return false;
     });
@@ -225,17 +256,17 @@ export class TemporalEvolutionSoundLevelChartComponent
 
   public resetFormToInitialValues(): void {
     // Define initial values or reset to default
-    const initialValues: {daysFilterS1: [Date,Date], daysFilterS2:[]} = {
+    const initialValues: { daysFilterS1: [Date, Date]; daysFilterS2: [] } = {
       daysFilterS1: [this.firstDay, this.lastDay],
       daysFilterS2: [],
     };
-  
+
     //Update the form values
-    
+
     this.filtersForm.setValue(initialValues);
     this.filterState = undefined;
-      // Set the new options on the chart, making sure to replace the old options
-    this.myChart.setOption(this.initialOptions,true);
+    // Set the new options on the chart, making sure to replace the old options
+    this.myChart.setOption(this.initialOptions, true);
   }
 
   private groupObsByHours(
@@ -262,34 +293,19 @@ export class TemporalEvolutionSoundLevelChartComponent
     for (const keyOfHours in groupByHour) {
       const data = groupByHour[keyOfHours];
       // Get all values for each hour
-      const L90 = data.map((chartObs) => chartObs[0])
-      const L10 = data.map((chartObs) => chartObs[1])
-      const LAmin = data.map((chartObs) => chartObs[2])
-      const LAmax = data.map((chartObs) => chartObs[3])
-      const Leq = data.map((chartObs) => chartObs[4])
+      const L90 = data.map((chartObs) => chartObs[0]);
+      const L10 = data.map((chartObs) => chartObs[1]);
+      const LAmin = data.map((chartObs) => chartObs[2]);
+      const LAmax = data.map((chartObs) => chartObs[3]);
+      const Leq = data.map((chartObs) => chartObs[4]);
       //Calculate energetic average
-      const avgL90 = energeticAvg(L90)
-      const avgL10 = energeticAvg(L10)
-      const avgLAmin = energeticAvg(LAmin)
-      const avgLAmax = energeticAvg(LAmax)
-      const avgLeq = energeticAvg(Leq)
+      const avgL90 = energeticAvg(L90);
+      const avgL10 = energeticAvg(L10);
+      const avgLAmin = energeticAvg(LAmin);
+      const avgLAmax = energeticAvg(LAmax);
+      const avgLeq = energeticAvg(Leq);
 
-    const avg = [avgL90,avgL10,avgLAmin,avgLAmax,avgLeq]
-      // const avg = data
-      //   .reduce(
-      //     (acc, curr) => {
-      //       return [
-      //         acc[0] + curr[0],
-      //         acc[1] + curr[1],
-      //         acc[2] + curr[2],
-      //         acc[3] + curr[3],
-      //         acc[4] + curr[4],
-      //       ];
-      //       //Have to sum each value of acc array with the curr array
-      //     },
-      //     [0, 0, 0, 0, 0]
-      //   )
-      //   .map((value: number) => parseFloat((value / data.length).toFixed(2)));
+      const avg = [avgL90, avgL10, avgLAmin, avgLAmax, avgLeq];
 
       avgByHour[keyOfHours] = avg;
     }
@@ -388,7 +404,7 @@ export class TemporalEvolutionSoundLevelChartComponent
     this.myChart.showLoading('default', this.loadingOptions);
 
     //Filter falsy values
-    const filteredObs =  this.observations.filter((observation) => {
+    const filteredObs = this.observations.filter((observation) => {
       return (
         +observation.attributes.Leq &&
         +observation.attributes.LAmax &&
@@ -397,7 +413,7 @@ export class TemporalEvolutionSoundLevelChartComponent
         +observation.attributes.LAmin
       );
     });
-    this.observations = filteredObs
+    this.observations = filteredObs;
 
     const hours = Array.from({ length: 24 }, (_, i) =>
       i.toString().padStart(2, '0')
@@ -482,7 +498,10 @@ export class TemporalEvolutionSoundLevelChartComponent
       ],
     };
     this.myChart.hideLoading();
-    this.initialOptions = this.options
+    this.initialOptions = this.options;
     this.options && this.myChart.setOption(this.options);
+  }
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 }

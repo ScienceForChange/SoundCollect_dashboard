@@ -22,12 +22,11 @@ export class PerceptionChartComponent implements OnInit, OnDestroy{
   }
   private observations!: Observations[];
   private chart: echarts.ECharts;
-  private option! : echarts.EChartsCoreOption;
-  private data:number[][] = [];
+  private option!: echarts.EChartsCoreOption;
+  private data: number[][] = [];
   public pie: number = 0;
   private observationsService = inject(ObservationsService);
   private observations$!: Subscription;
-
 
   public pieOptions: {value:number, label:string}[] = [
       { value: 0, label: 'Tranquilitat' },
@@ -41,8 +40,7 @@ export class PerceptionChartComponent implements OnInit, OnDestroy{
     ['Poc net', 'Net', 'Molt net'],
     ['Poc accessible', 'Accessible', 'Molt accessible'],
     ['Poc segur', 'Segur', 'Molt segur'],
-  ]
-
+  ];
 
   ngOnInit(): void {
     let chartDom = document.getElementById('perceptionChart')!;
@@ -54,13 +52,6 @@ export class PerceptionChartComponent implements OnInit, OnDestroy{
     });
   }
 
-  ngAfterViewInit(): void {
-    let chartDom = document.getElementById('perceptionChart')!;
-    this.chart = echarts.init(chartDom);
-    this.data = this.getDataFromObservations();
-    this.updateChart();
-  }
-  
   public updateChart(): void {
     this.option = {
       title: {
@@ -91,9 +82,8 @@ export class PerceptionChartComponent implements OnInit, OnDestroy{
     this.chart.setOption(this.option);
   }
 
-
   private getDataFromObservations(): number[][] {
-    let data: number[][] = []
+    let data: number[][] = [];
 
     let quiet: number[] = Array.from({length: this.legendsLabels[0].length}, () => 0);
     let cleaning: number[] = Array.from({length: this.legendsLabels[1].length}, () => 0);
