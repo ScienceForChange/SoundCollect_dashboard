@@ -18,6 +18,7 @@ import { PerceptionChartComponent } from './components/perception-chart/percepti
 import { PressureChartComponent } from './components/pressure-chart/pressure-chart.component';
 import { QualitativeDataChartComponent } from './components/qualitative-data-chart/qualitative-data-chart.component';
 import { TagCloudComponent } from './components/tag-cloud/tag-cloud.component';
+import { TonalFrequencyChartComponent } from './components/tonal-frequency-chart/tonal-frequency-chart.component';
 
 
 
@@ -32,6 +33,7 @@ import { TagCloudComponent } from './components/tag-cloud/tag-cloud.component';
     PressureChartComponent,
     QualitativeDataChartComponent,
     TagCloudComponent,
+    TonalFrequencyChartComponent,
   ],
   imports: [
     CommonModule,
