@@ -63,7 +63,6 @@ export class TonalFrequencyChartComponent {
       return {
         name,
         type: 'bar',
-        barWidth: '40%',
         label: {
           show: false,
         },
@@ -92,9 +91,12 @@ export class TonalFrequencyChartComponent {
         type: 'value'
       },
       tooltip: {
-        color: true,
+        trigger: 'axis',
         axisPointer: {
           type: 'shadow',
+          label: {
+            show: true
+          }
         }
       },
       series
