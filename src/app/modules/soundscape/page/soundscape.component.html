@@ -25,13 +25,9 @@
 <div class="flex flex-wrap w-full">
   <div #map class="map-container"></div>
 
-  @if(observations.length > 0){
-
-    <div class="col-12 flex">
-      <app-temporal-evolution-sound-level-chart class="card w-full" [observations]="observations"/>
-    </div>
-  }
-
+  <div class="col-12 flex">
+    <app-temporal-evolution-sound-level-chart class="card w-full" [observations]="observations"/>
+  </div>
   <div class="col-12 md:col-7 flex">
     <app-sound-levels-chart class="card w-full" />
   </div>
