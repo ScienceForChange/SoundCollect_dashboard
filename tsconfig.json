@@ -26,9 +26,13 @@
       "dom"
     ],
     "types":[
-      "node"
+      "node",
+      "node_modules/@types"
     ],
   },
+  "include": [
+    "src"
+  ],
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
