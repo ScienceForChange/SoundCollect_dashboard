@@ -34,6 +34,7 @@ export class SoundLevelsChartComponent implements OnInit, OnDestroy {
   private observationsService = inject(ObservationsService);
   private observations$!: Subscription;
   private option: EChartsOption;
+  private legendData: string[] = ['< 35 dBA', '35 - 40 dBA', '40 - 45 dBA', '45 - 50 dBA', '50 - 55 dBA', '55 - 60 dBA', '60 - 65 dBA', '65 - 70 dBA', '70 - 75 dBA', '75 - 80 dBA', '> 80 dBA'];
 
   ngOnInit(): void {
     let chartDom = document.getElementById('levelsChart')!;
@@ -46,14 +47,9 @@ export class SoundLevelsChartComponent implements OnInit, OnDestroy {
 
   private updateChart(): void {
     let data = this.getDataFromObservations();
-    let legendData: string[] = ['< 35 dBA', '35 - 40 dBA', '40 - 45 dBA', '45 - 50 dBA', '50 - 55 dBA', '55 - 60 dBA', '60 - 65 dBA', '65 - 70 dBA', '70 - 75 dBA', '75 - 80 dBA', '> 80 dBA'];
+
     if(this.observations) {
       this.option = {
-        legend: {
-          data: legendData,
-          orient: 'vertical',
-          left: 'left'
-        },
         polar: {
           radius: [10, '88%']
         },
@@ -79,10 +75,6 @@ export class SoundLevelsChartComponent implements OnInit, OnDestroy {
           axisLabel: {
             show: true,
             formatter: '{value} dBA',
-            textStyle: {
-              color: '#333',
-              fontSize: 12,
-            },
             label: {
               backgroundColor: '#6a7985'
             }
@@ -157,6 +149,18 @@ export class SoundLevelsChartComponent implements OnInit, OnDestroy {
         }),
         animation: true
       };
+
+      let legend: string[] = this.legendData.filter((label:any) => {
+        const found:any = this.option['series'];
+        return found.some((series:any) => series.name === label);
+      });
+
+      this.option['legend'] = {
+        data: legend,
+        orient: 'vertical',
+        left: 'left'
+      };
+
       this.chart.setOption(this.option);
     }
   }
