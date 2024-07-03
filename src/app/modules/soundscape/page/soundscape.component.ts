@@ -91,7 +91,6 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
         ).subscribe({
           next: (observations) => {
             this.observations = observations;
-            console.log(observations);
             this.updateMapSource();
           },
           error: (error) => {
@@ -583,7 +582,7 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
     this.polylines.update(() => this.observationsService.getLineStringFromObservations(this.observations));
     this.startPoints.update(() => this.observationsService.getStartPointsFromObservations(this.observations));
 
-    if (!this.map || !this.map.isSourceLoaded('polylines')) return;
+    if (!this.map || !this.map.getSource('polylines')) return;
     let source = this.map.getSource('polylines') as mapboxgl.GeoJSONSource;
     source.setData({
       type: 'FeatureCollection',
