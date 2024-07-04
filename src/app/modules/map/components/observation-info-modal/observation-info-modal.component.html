@@ -105,7 +105,8 @@
           {{ observationSelected.attributes.LAmin }}
         </li>
       </ul>
-      <div id="line-chart-container"></div>
+      <app-laeq-tchart [observationSelected]="observationSelected"/>
+      <app-one-third-octave-chart [observationSelected]="observationSelected"/>
     </div>
   </div>
 
