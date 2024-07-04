@@ -6,6 +6,7 @@ import { CanvasRenderer } from 'echarts/renderers';
 import { GridComponent, LegendComponent } from 'echarts/components';
 import { ObservationsService } from '../../../../services/observations/observations.service';
 import { Subscription } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 
 echarts.use([GridComponent, LegendComponent, BarChart, CanvasRenderer,PieChart]);
 
@@ -26,20 +27,39 @@ export class PerceptionChartComponent implements OnInit, OnDestroy{
   private data: number[][] = [];
   public pie: number = 0;
   private observationsService = inject(ObservationsService);
+  private translations = inject(TranslateService);
   private observations$!: Subscription;
 
   public pieOptions: {value:number, label:string}[] = [
-      { value: 0, label: 'Tranquilitat' },
-      { value: 1, label: 'Neteja i manteniment' },
-      { value: 2, label: 'Accessibilitat' },
-      { value: 3, label: 'Seguretat' }
+      { value: 0, label: this.translations.instant('soundscape.perception.quiet') },
+      { value: 1, label: this.translations.instant('soundscape.perception.cleanliness') },
+      { value: 2, label: this.translations.instant('soundscape.perception.accessibility') },
+      { value: 3, label: this.translations.instant('soundscape.perception.safety') }
   ];
 
   private legendsLabels: string[][] = [
-    ['Gens tranquil', 'Poc tranquil', 'Moderament tranquil', 'Prou tranquil', 'Molt tranquil'],
-    ['Poc net', 'Net', 'Molt net'],
-    ['Poc accessible', 'Accessible', 'Molt accessible'],
-    ['Poc segur', 'Segur', 'Molt segur'],
+    [
+      this.translations.instant('soundscape.perception.notQuiet'),
+      this.translations.instant('soundscape.perception.littleQuiet'),
+      this.translations.instant('soundscape.perception.lowlyQuiet'),
+      this.translations.instant('soundscape.perception.fairlyQuiet'),
+      this.translations.instant('soundscape.perception.veryQuiet')
+    ],
+    [
+      this.translations.instant('soundscape.perception.dirty'),
+      this.translations.instant('soundscape.perception.clean'),
+      this.translations.instant('soundscape.perception.veryClean')
+    ],
+    [
+      this.translations.instant('soundscape.perception.notAccessible'),
+      this.translations.instant('soundscape.perception.accessible'),
+      this.translations.instant('soundscape.perception.veryAccessible')
+    ],
+    [
+      this.translations.instant('soundscape.perception.notSafe'),
+      this.translations.instant('soundscape.perception.safe'),
+      this.translations.instant('soundscape.perception.verySafe')
+    ]
   ];
 
   ngOnInit(): void {

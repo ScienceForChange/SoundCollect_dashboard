@@ -1,6 +1,7 @@
-import { AfterViewInit, Component, HostListener, Input } from '@angular/core';
+import { AfterViewInit, Component, HostListener, Input, inject } from '@angular/core';
 import { Observations } from '../../../../models/observations';
 import * as echarts from 'echarts';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-qualitative-data-chart',
@@ -10,11 +11,12 @@ import * as echarts from 'echarts';
 export class QualitativeDataChartComponent implements AfterViewInit {
   @Input() observations: Observations[];
   private chart: echarts.ECharts;
-  public totalObservationTypes:number = 0
+  public totalObservationTypes:number = 0;
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     this.chart.resize();
   }
+  private translate = inject(TranslateService);
 
   ngAfterViewInit(): void {
     const chartDom = document.getElementById('qualitativeDataChart')!;
@@ -28,14 +30,14 @@ export class QualitativeDataChartComponent implements AfterViewInit {
       xAxis: {
         min: -1,
         max: 1,
-        name: "Nivell d'activitat",
+        name: this.translate.instant('soundscape.quas.activityLevel'),
         nameLocation: 'middle',
         nameGap: 35,
       },
       yAxis: {
         min: -1,
         max: 1,
-        name: "Nivell d'agradabilitat",
+        name: this.translate.instant('soundscape.quas.pleasantnessLevel'),
         nameLocation: 'middle',
         nameGap: 35,
       },
@@ -44,7 +46,7 @@ export class QualitativeDataChartComponent implements AfterViewInit {
       },
       series: [
         {
-          name: 'Activitat / Agradabilitat',
+          name: this.translate.instant('soundscape.quas.activity&pleasantness'),
           type: 'scatter',
           data: [...closePoints, ...otherPoints],
           encode: { tooltip: [0, 1] },

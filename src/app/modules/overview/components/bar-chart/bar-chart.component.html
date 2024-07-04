@@ -10,9 +10,9 @@
         [maxDate]="today"
       />
     </form>
-    <p-button label="Setmanes" [disabled]="timeFilterSelected === timesFilter.WEEK" (onClick)="timeFilter(timesFilter.WEEK)" />
-    <p-button label="Mesos" [disabled]="timeFilterSelected === timesFilter.MONTH" (onClick)="timeFilter(timesFilter.MONTH)" />
-    <p-button label="Anys" [disabled]="timeFilterSelected === timesFilter.YEAR" (onClick)="timeFilter(timesFilter.YEAR)" />
+    <p-button label="{{'app.weeks' | translate }}" [disabled]="timeFilterSelected === timesFilter.WEEK" (onClick)="timeFilter(timesFilter.WEEK)" />
+    <p-button label="{{'app.months' | translate }}" [disabled]="timeFilterSelected === timesFilter.MONTH" (onClick)="timeFilter(timesFilter.MONTH)" />
+    <p-button label="{{'app.years' | translate }}" [disabled]="timeFilterSelected === timesFilter.YEAR" (onClick)="timeFilter(timesFilter.YEAR)" />
     <p-button icon="pi pi-times" [disabled]="timeFilterSelected === timesFilter.DELETE" (onClick)="timeFilter(timesFilter.DELETE)" />
   </div>
 

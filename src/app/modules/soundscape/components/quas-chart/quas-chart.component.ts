@@ -6,6 +6,7 @@ import { CanvasRenderer } from 'echarts/renderers';
 import { GridComponent, LegendComponent } from 'echarts/components';
 import { ObservationsService } from '../../../../services/observations/observations.service';
 import { Subscription } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 
 echarts.use([GridComponent, LegendComponent, BarChart, CanvasRenderer,PieChart]);
 
@@ -25,8 +26,13 @@ export class QuasChartComponent implements OnInit, OnDestroy{
   private option! : echarts.EChartsCoreOption;
   public totalObservationTypes:number = 0
   private observationsService = inject(ObservationsService);
+  private translations = inject(TranslateService);
   private observations$!: Subscription;
-  private quietTypesLabel = ['Moderament tranquil', 'Bastant tranquil', 'Molt tranquil'];
+  private quietTypesLabel = [
+    this.translations.instant('soundscape.quas.lowlyQuiet'),
+    this.translations.instant('soundscape.quas.fairlyQuiet'),
+    this.translations.instant('soundscape.quas.veryQuiet')
+  ];
   private dBLevels = ['< = 35', '35-40', '40-45', '45-50', '50-55', '55-60', '60-65', '65-70', '70-75', '75-80', '> 80'];
 
 
@@ -74,7 +80,7 @@ export class QuasChartComponent implements OnInit, OnDestroy{
 
     this.option = {
       title: {
-        subtext: 'Tranquilitat',
+        subtext: this.translations.instant('soundscape.quas.quiet'),
         left: 'center',
       },
       grid,
@@ -90,7 +96,7 @@ export class QuasChartComponent implements OnInit, OnDestroy{
         data: this.dBLevels
       },
       yAxis: {
-        name: 'Nombre d\'observacions',
+        name: this.translations.instant('soundscape.quas.obsNumber'),
         nameLocation: 'middle',
         nameGap: 35,
         type: 'value'

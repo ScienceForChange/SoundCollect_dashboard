@@ -8,6 +8,7 @@ import { BarChartComponent } from './components/bar-chart/bar-chart.component';
 import { CalendarModule } from 'primeng/calendar';
 import { ReactiveFormsModule } from '@angular/forms';
 import { GenderPipe } from '../../pipes/gender.pipe';
+import { SharedComponentsModule } from '../../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,12 @@ import { GenderPipe } from '../../pipes/gender.pipe';
     BarChartComponent,
     GenderPipe,
   ],
-  imports: [CommonModule, TableModule, CalendarModule, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    TableModule,
+    CalendarModule,
+    ReactiveFormsModule,
+    SharedComponentsModule,
+  ],
 })
 export class OverviewModule {}
