@@ -43,7 +43,31 @@
   },
   "map":{
     "observations": "Mapa",
-    "titleMenu": "Mapa"
+    "titleMenu": "Mapa",
+    "filters": {
+      "enable": "Aplicar filtres",
+      "disable": "Desactivar filtres",
+      "title": "Mostrar filtres",
+      "days": "Dies",
+      "hourRange": "Franja horària",
+      "soundTypes": "Tipus de sons",
+      "naturals": "Naturals",
+      "people": "Éssers humans",
+      "traffic": "Trànsit",
+      "others": "Altres sorolls",
+      "peopleTypes": "Tipus de persona usuaria",
+      "contributor": "Contribuent",
+      "citizen": "Ciutadà/na acústic/a",
+      "explorer": "Explorador/a acústic/a",
+      "traveler": "Viatger/a sonor/a",
+      "informer": "Informador/a expert/a",
+      "pressure": "Pressió sonora"
+    },
+    "layers": {
+      "title": "Tipus de mapa",
+      "standard": "Estandar",
+      "satellite": "Satèl·lit"
+    }
   },
   "overview":{
     "observations": "Resum",
