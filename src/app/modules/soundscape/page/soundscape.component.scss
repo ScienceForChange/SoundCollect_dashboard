@@ -4,40 +4,67 @@
   flex: 1 1 auto;
   position: relative;
 }
-#toolsBar{
+.container{
   display: flex;
-  width: 100%;
-  justify-content: end;
-  flex-basis: 1;
-  z-index: 2;
-  position: absolute;
-  pointer-events: none;
-  padding: 1.2rem;
-  .tools{
+  flex: 1 1 auto;
+  flex-direction: column;
+  position: relative;
+  #toolsBar{
+    position: sticky;
+    top: -204px; //-55px
+    margin-bottom: -70px;
     display: flex;
-    flex-direction: column;
-    width: max-content;
-    height: max-content;
-    pointer-events: none;
+    width: 100%;
     justify-content: end;
-    align-items: end;
-    *{
-      pointer-events: auto;
+    flex-basis: 1;
+    z-index: 2;
+    pointer-events: none;
+    padding: 1.2rem;
+    transition: top 0.3s ease-in-out;
+    &:hover{
+      top: -55px;
     }
-    .card{
-      border-radius: 4px;
+    .tools{
+      display: flex;
+      flex-direction: column;
+      width: max-content;
+      height: max-content;
+      pointer-events: none;
+      justify-content: end;
+      align-items: end;
+      *{
+        pointer-events: auto;
+      }
+      .card{
+        border-radius: 4px;
+      }
+    }
+    #timeFilters{
+      position: absolute;
+      top: 63px;
+      z-index: 10;
+      width: max-content;
+      margin-bottom: -124px;
+      align-self: flex-end;
+      .download{
+        margin-top: 1rem !important;
+        border-top: 1px solid #CCC;
+        padding-top: 1.3rem;
+      }
     }
   }
-}
-
-:host {
-  display: flex;
-  position: relative;
-}
-.map-container {
-  height: calc(100vh - 1rem);
-  width: 100%;
-  border-radius: 12px;
-  margin: 0.5rem;
-  border: 1px solid var(--surface-border);
+  :host {
+    display: flex;
+    position: relative;
+  }
+  .map-container {
+    position: relative;
+    top: 0;
+    height: calc(100vh - 1rem);
+    width: 100%;
+    border-radius: 12px;
+    margin: 0.5rem;
+    border: 1px solid var(--surface-border);
+    z-index: 1;
+  }
 }
