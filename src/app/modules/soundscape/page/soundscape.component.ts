@@ -69,7 +69,20 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
     [TimeFilter.NIGHT]:     ["00:00:00", "07:00:00"],
     [TimeFilter.WHOLEDAY]:  ["00:00:00", "23:59:59"],
   };
-
+  public items = [
+    {
+        label: 'Formato GPKG',
+        command: () => {
+            this.downloadFile('gpkg');
+        }
+    },
+    {
+        label: 'Formato KMZ',
+        command: () => {
+          this.downloadFile('KMZ');
+        }
+    },
+  ];
   constructor() {
 
     this.observations$ = this.observationsService.observations$.subscribe((observations) => {
@@ -596,6 +609,10 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
       features: this.startPoints()
     });
 
+  }
+
+  public downloadFile(option: string) {
+    console.log(option);
   }
 
   ngOnDestroy(): void {
