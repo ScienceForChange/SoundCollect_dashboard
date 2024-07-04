@@ -76,6 +76,28 @@
     </div>
     <div class="flex flex-column">
       <p-checkbox
+        formControlName="typeUser"
+        label="Tipus de persona usuaria"
+        [binary]="true"
+        [class]="'flex justify-content-between'"
+      />
+      <div
+        formGroupName="typeUsers"
+        class="card mt-3 mb-4 p-3 gap-2 flex flex-column filter"
+        *ngIf="filtersForm.value.typeUser"
+      >
+        @for (type of typesUsers; track $index) {
+        <p-checkbox
+          formControlName="{{ type.id }}"
+          [label]="type.value"
+          [binary]="true"
+          [class]="'flex justify-content-start'"
+        />
+        }
+      </div>
+    </div>
+    <div class="flex flex-column">
+      <p-checkbox
         formControlName="soundPressure"
         label="Pressió sonora"
         [binary]="true"

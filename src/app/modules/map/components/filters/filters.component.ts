@@ -30,10 +30,24 @@ export class MapFiltersComponent implements OnInit {
     { id: 3, value: 'Soroll del trànsit' },
     { id: 4, value: 'Altres sorolls' },
   ];
+  public typesUsers: {
+    id: number;
+    value: string;
+    min: number;
+    max?: number;
+  }[] = [
+    { id: 1, value: 'Contribuent', min: 0, max: 2 },
+    { id: 2, value: 'Ciutadà/na acústic/a', min: 3, max: 6 },
+    { id: 3, value: 'Explorador/a acústic', min: 7, max: 12 },
+    { id: 4, value: 'Viatger/a sonor/a', min: 13, max: 20 },
+    { id: 5, value: 'Informador/a expert/a', min: 21, max: 100 },
+  ];
 
   public filtersForm: FormGroup = new FormGroup({
     type: new FormControl(false, []),
     typeFilter: new FormGroup({}),
+    typeUser: new FormControl(false, []),
+    typeUsers: new FormGroup([]),
     soundPressure: new FormControl(false, []),
     soundPressureFilter: new FormControl([35, 80], []),
     days: new FormControl(false, []),
@@ -43,8 +57,16 @@ export class MapFiltersComponent implements OnInit {
   });
 
   ngOnInit(): void {
+    //Create an object {1: true,... } for each type of filter
     this.typesFilter.forEach((type) => {
       (this.filtersForm.get('typeFilter') as FormGroup).addControl(
+        String(type.id),
+        new FormControl(true, [])
+      );
+    });
+    //Create an object {1: true,... } for each type of user of filter
+    this.typesUsers.forEach((type) => {
+      (this.filtersForm.get('typeUsers') as FormGroup).addControl(
         String(type.id),
         new FormControl(true, [])
       );
@@ -56,7 +78,12 @@ export class MapFiltersComponent implements OnInit {
       } else {
         this.mapService.isFilterActive.next(false);
       }
-      //I want to create a debounce
+      //Get users selected
+      const users = Object.entries(values.typeUsers)
+        .filter((value) => value[1])
+        .map((value) => this.typesUsers[parseInt(value[0]) - 1]);
+      values.typeUsers = users;
+
       if (this.debounceTimer) clearTimeout(this.debounceTimer);
       this.debounceTimer = setTimeout(() => {
         this.filterData(values);
@@ -66,6 +93,7 @@ export class MapFiltersComponent implements OnInit {
 
   //Podría llamar a un servicio que lo que hace es encargarse de filtrar los datos.
   private filterData(values: FormFilterValues): void {
+    console.log('values', values)
     this.mapService.filterMapObservations(values);
   }
 }

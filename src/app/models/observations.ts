@@ -92,6 +92,8 @@ interface UserAttributes {
     profile:    Profile;
     created_at: Date;
     updated_at: Date;
+    level: number,
+    is_expert: boolean,
 }
 
 interface Profile {

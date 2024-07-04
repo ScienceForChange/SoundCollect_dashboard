@@ -79,6 +79,7 @@ export class MapService {
       this.mapObservations = data.map((obs) => ({
         id: obs.id,
         user_id: obs.relationships.user.id,
+        user_level: obs.relationships.user.attributes.level,
         latitude: obs.attributes.latitude,
         longitude: obs.attributes.longitude,
         created_at: new Date(obs.attributes.created_at),
@@ -116,161 +117,6 @@ export class MapService {
     this.map = map;
   }
 
-  //Funcion para caluclar el offset en circulo de las observaciones
-  // private calculateSpiderfiedPositionsCircle(count: number) {
-  //   const leavesSeparation = 80;
-  //   const leavesOffset = [0, 0];
-  //   const points = [];
-  //   const theta = (2 * Math.PI) / count;
-  //   let angle = theta;
-
-  //   for (let i = 0; i < count; i += 1) {
-  //     angle = theta * i;
-  //     const x = leavesSeparation * Math.cos(angle) + leavesOffset[0];
-  //     const y = leavesSeparation * Math.sin(angle) + leavesOffset[1];
-  //     points.push([x, y]);
-  //   }
-  //   return points;
-  // }
-
-  //Funcion para caluclar el offset en espiral de las observaciones
-  // private calculateSpiderfiedPositions(count: number) {
-  //   const legLengthStart = 25;
-  //   const legLengthFactor = 5;
-  //   const leavesSeparation = 40;
-  //   const leavesOffset = [0, 0];
-  //   const points = [];
-  //   let legLength = legLengthStart;
-  //   let angle = 0;
-
-  //   for (let i = 0; i < count; i += 1) {
-  //     angle += leavesSeparation / legLength + i * 0.0005;
-  //     const x = legLength * Math.cos(angle) + leavesOffset[0];
-  //     const y = legLength * Math.sin(angle) + leavesOffset[1];
-  //     points.push([x, y]);
-
-  //     legLength += (Math.PI * 2 * legLengthFactor) / angle;
-  //   }
-  //   return points;
-  // }
-
-  //Funcion para crear el GEOJSON de los markers spiderfy
-  // private spiderFyCluster(
-  //   source: mapboxgl.GeoJSONSource,
-  //   clusterId: number,
-  //   lngLat: { lat: number; lng: number }
-  // ): void {
-  //   //Consigo todos los markers que el cluster tiene
-  //   source.getClusterLeaves(clusterId, Infinity, 0, (err, features) => {
-  //     if (err) {
-  //       return console.error(err);
-  //     }
-
-  //     if (features?.length) {
-  //       // Calculate the spiderfied positions
-  //       const spiderfiedPositions =
-  //         features.length > 10
-  //           ? this.calculateSpiderfiedPositions(features.length)
-  //           : this.calculateSpiderfiedPositionsCircle(features.length);
-
-  //       // Create a new GeoJson of features with the updated positions
-  //       const geoJson = {
-  //         type: 'FeatureCollection' as const,
-  //         features: features.map((feature, index) => ({
-  //           type: 'Feature' as const,
-  //           ...feature,
-  //           properties: {
-  //             ...feature.properties,
-  //             iconOffset: spiderfiedPositions[index],
-  //           },
-  //           geometry: {
-  //             ...feature.geometry,
-  //             coordinates: [lngLat.lng, lngLat.lat],
-  //           },
-  //         })),
-  //       };
-
-  //       let source = this.map.getSource(
-  //         'observationsSpiderfy'
-  //       ) as mapboxgl.GeoJSONSource;
-  //       source.setData(geoJson as FeatureCollection<Geometry>);
-
-  //       this.map.setPaintProperty(
-  //         'clusters',
-  //         'circle-color',
-  //         'rgba(215, 177, 242, 0.5)'
-  //       );
-  //     }
-  //   });
-  // }
-
-  // private deletePointsSpiderfy(evt: any) {
-  //   const avoidLayers = [
-  //     'unclustered-point',
-  //     'unclustered-point-spiderfy',
-  //     'clusters',
-  //     'cluster-count',
-  //   ];
-  //   if (this.isMapReady) {
-  //     const features = this.map.queryRenderedFeatures(evt.point);
-  //     const isClickedOnPermitedLayer = features.some((feature) =>
-  //       avoidLayers.some((layer) => feature.layer.id.includes(layer))
-  //     );
-
-  //     const observationsSpiderfy = this.map.getSource(
-  //       'observationsSpiderfy'
-  //     ) as mapboxgl.GeoJSONSource;
-
-  //     if (evt.type === 'zoomstart') {
-  //       this.map.setPaintProperty('clusters', 'circle-color', '#D7B1F2');
-  //       observationsSpiderfy.setData(
-  //         this.initialGeoJson as FeatureCollection<Geometry>
-  //       );
-  //       return;
-  //     }
-
-  //     if (!isClickedOnPermitedLayer) {
-  //       this.map.setPaintProperty('clusters', 'circle-color', '#D7B1F2');
-  //       observationsSpiderfy.setData(
-  //         this.initialGeoJson as FeatureCollection<Geometry>
-  //       );
-  //     }
-  //   }
-  // }
-
-  //Center after click on a cluster
-  // private centerZoomCluster(evt: any) {
-  //   try {
-  //     const features = this.map.queryRenderedFeatures(evt.point, {
-  //       layers: ['clusters'],
-  //     });
-
-  //     if (features.length) {
-  //       const source = this.map.getSource(
-  //         'observations'
-  //       ) as mapboxgl.GeoJSONSource;
-  //       const clusterId = features[0].properties['cluster_id'];
-  //       const lngLat = evt.lngLat;
-
-  //       source.getClusterExpansionZoom(clusterId, (err, zoom) => {
-  //         if (err || !zoom) {
-  //           return console.error(err);
-  //         }
-  //         if (zoom > 17) {
-  //           this.spiderFyCluster(source, clusterId, lngLat);
-  //         } else {
-  //           this.map.easeTo({
-  //             center: lngLat,
-  //             zoom: zoom,
-  //           });
-  //         }
-  //       });
-  //     }
-  //   } catch (error) {
-  //     console.error('An error occurred:', error);
-  //   }
-  // }
-
   //Add mouse pointer on cluster hover
   private mouseEvent(evt: any) {
     if (evt.type === 'mouseenter' && evt.features.length === 1) {
@@ -289,8 +135,14 @@ export class MapService {
     //He de valorar los que son booleanos primero
     //El valor de si se aplican los filtros estará aquí.
     let mapObs = this.mapObservations;
-    const { type, days, soundPressure, hours } = values;
-    const { typeFilter, daysFilter, soundPressureFilter, hoursFilter } = values;
+    const { type, days, soundPressure, hours, typeUser } = values;
+    const {
+      typeFilter,
+      daysFilter,
+      soundPressureFilter,
+      hoursFilter,
+      typeUsers,
+    } = values;
     if (type) {
       const typesToFilter = Object.keys(typeFilter).filter(
         (key) => typeFilter[Number(key) as keyof typeof typeFilter]
@@ -300,6 +152,17 @@ export class MapService {
           typesToFilter.some((type) => Number(type) === Number(obsType))
         )
       );
+    }
+    if (typeUser) {
+      const usersMaxAndMin = typeUsers.map((user) => {
+        return { min: user.min, max: user.max };
+      });
+
+      mapObs = mapObs.filter((obs) => {
+        const userLevel = obs.user_level;
+        return usersMaxAndMin.some((user) => user.min <= userLevel && user.max >= userLevel);
+      });
+
     }
     if (days) {
       const isOneDate =
@@ -354,58 +217,6 @@ export class MapService {
   }
 
   private buildClustersAndLayers(features: Feature[]): void {
-    // // Add a new source from our GeoJSON data and set the
-    // this.map.addSource('observationsCluster', {
-    //   type: 'geojson',
-    //   data: {
-    //     type: 'FeatureCollection',
-    //     features: features as Feature<
-    //       Geometry,
-    //       {
-    //         [name: string]: any;
-    //       }
-    //     >[],
-    //   },
-    //   cluster: true,
-    //   clusterMaxZoom: this.mapSettings.clusterMaxZoom, // Max zoom to cluster points on
-    //   clusterRadius: 50, // Radius of each cluster when clustering points (defaults to 50)
-    // });
-    // //Cluster background color
-    // this.map.addLayer({
-    //   id: 'clusters',
-    //   type: 'circle',
-    //   source: 'observationsCluster',
-    //   filter: ['has', 'point_count'],
-    //   paint: {
-    //     'circle-color': '#D7B1F2',
-    //     'circle-radius': 20,
-    //     'circle-stroke-color': 'rgba(215, 177, 242, 0.5)',
-    //     'circle-stroke-width': 5,
-    //   },
-    // });
-    // //Cluster number count
-    // this.map.addLayer({
-    //   id: 'cluster-count',
-    //   type: 'symbol',
-    //   source: 'observationsCluster',
-    //   filter: ['has', 'point_count'],
-    //   layout: {
-    //     'text-field': '{point_count_abbreviated}',
-    //     'text-size': 12,
-    //   },
-    //   paint: {
-    //     'text-color': '#ffffff',
-    //   },
-    // });
-    // // //Markers
-    // this.map.addLayer({
-    //   id: 'unclustered-point',
-    //   type: 'circle',
-    //   source: 'observationsCluster',
-    //   filter: ['!has', 'point_count'],
-
-    // });
-
     //Añadir la fuente de datos para las lineas de atributo path
     this.map.addSource('observations', {
       type: 'geojson',
