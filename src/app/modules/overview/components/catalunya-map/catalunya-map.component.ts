@@ -44,7 +44,7 @@ export class CatalunyaMapComponent implements OnInit, AfterViewInit {
   options: EChartsOption;
   http: HttpClient = inject(HttpClient);
   observationService: ObservationsService = inject(ObservationsService);
-  private translateService: TranslateService = inject(TranslateService);
+  private translate: TranslateService = inject(TranslateService);
   loadingOptions = {
     text: 'Carregant...',
     color: '#FF7A1F',
@@ -80,7 +80,7 @@ export class CatalunyaMapComponent implements OnInit, AfterViewInit {
         const min = Math.min(...values.map((v: any) => v.value));
         this.options = {
           title: {
-            text: this.translateService.instant('overview.cataloniaMap.regions'),
+            text: this.translate.instant('overview.cataloniaMap.regions'),
             left: 'right',
           },
           tooltip: {
@@ -109,7 +109,7 @@ export class CatalunyaMapComponent implements OnInit, AfterViewInit {
                 '#a50026',
               ],
             },
-            text: [this.translateService.instant('overview.cataloniaMap.moreObs'), this.translateService.instant('overview.cataloniaMap.lessObs')],
+            text: [this.translate.instant('overview.cataloniaMap.moreObs'), this.translate.instant('overview.cataloniaMap.lessObs')],
             calculable: true,
           },
           toolbox: {
@@ -117,7 +117,7 @@ export class CatalunyaMapComponent implements OnInit, AfterViewInit {
           },
           series: [
             {
-              name: this.translateService.instant('overview.cataloniaMap.obsNumber'),
+              name: this.translate.instant('overview.cataloniaMap.obsNumber'),
               type: 'map',
               roam: false,
               map: 'CATALUNYA',
