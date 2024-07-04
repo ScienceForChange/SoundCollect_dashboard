@@ -1,15 +1,15 @@
 import { Component, HostListener, OnDestroy, OnInit, inject } from '@angular/core';
 import { Observations } from '../../../../models/observations';
 import * as echarts from 'echarts/core';
-import { BarChart, PieChart } from 'echarts/charts';
+import { BarChart } from 'echarts/charts';
 import { CanvasRenderer } from 'echarts/renderers';
-import { GridComponent, LegendComponent } from 'echarts/components';
+import { LegendComponent } from 'echarts/components';
 import { ObservationsService } from '../../../../services/observations/observations.service';
 import { Subscription } from 'rxjs';
 import { random } from 'lodash';
-import { number } from 'echarts';
+import { TranslateService } from '@ngx-translate/core';
 
-echarts.use([GridComponent, LegendComponent, BarChart, CanvasRenderer,PieChart]);
+echarts.use([LegendComponent, BarChart, CanvasRenderer,]);
 
 @Component({
   selector: 'app-tonal-frequency-chart',
@@ -27,8 +27,9 @@ export class TonalFrequencyChartComponent {
   private option! : echarts.EChartsCoreOption;
   public totalObservationTypes:number = 0
   private observationsService = inject(ObservationsService);
+  private translate = inject(TranslateService);
   private observations$!: Subscription;
-  private quietTypesLabel = ['Amb ponderació', 'Sense ponderació'];
+  private quietTypesLabel = [this.translate.instant('soundscape.tonalFrequency.ponderation'), this.translate.instant('soundscape.tonalFrequency.noPonderation')];
   private hertzLevels = ['50', '63', '80', '100', '125', '160', '200', '250', '315', '400', '500', '630', '800',
                          '1000', '1250', '1600', '2000', '2500', '3150', '4000', '5000', '6300', '8000',
                          '10000', '12500', '16000', '20000'];
@@ -77,7 +78,7 @@ export class TonalFrequencyChartComponent {
         top:40
       },
       xAxis: {
-        name: 'Freqüències (Hertz)',
+        name: this.translate.instant('soundscape.tonalFrequency.frequency'),
         nameLocation: 'middle',
         nameGap: 55,
         type: 'category',
@@ -85,7 +86,7 @@ export class TonalFrequencyChartComponent {
         axisLabel: { interval: 0, rotate: 45, fontSize: 10 , margin: 10 }
       },
       yAxis: {
-        name: 'Presió sonora dBA',
+        name: this.translate.instant('soundscape.tonalFrequency.presure'),
         nameLocation: 'middle',
         nameGap: 35,
         type: 'value'

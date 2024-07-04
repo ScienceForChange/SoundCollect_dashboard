@@ -17,19 +17,19 @@
       routerLinkActive="active-route"
     >
       <icon-map [iconClass]="'mr-2'" />
-      <span class="menu-item"> Mapa </span>
-    </a>
-  </li>
-  <li>
-    <a routerLink="/soundscape" routerLinkActive="active-route">
-      <icon-bar-chart [iconClass]="'mr-2'" />
-      <span class="menu-item"> {{'soundscape.titleMenu' | translate}} </span>
+      <span class="menu-item"> {{'map.titleMenu' | translate}} </span>
     </a>
   </li>
   <li>
     <a routerLink="/resum" routerLinkActive="active-route">
       <icon-bar-chart [iconClass]="'mr-2'" />
-      <span class="menu-item"> Resum </span>
+      <span class="menu-item"> {{'overview.titleMenu' | translate}}  </span>
+    </a>
+  </li>
+  <li>
+    <a routerLink="/soundscape" routerLinkActive="active-route">
+      <i class="pi pi-fw pi-volume-up mr-2" style="font-size: 2rem"></i>
+      <span class="menu-item"> {{'soundscape.titleMenu' | translate}} </span>
     </a>
   </li>
   <!-- <li>

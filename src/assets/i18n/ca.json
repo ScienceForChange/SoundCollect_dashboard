@@ -22,6 +22,42 @@
     "dateFormats": {
       "short": "dd/MM/yyyy",
       "long": "dd/MM/yyyy, HH:mm:ss"
+    },
+    "week": "Setmana",
+    "month": "Mes",
+    "year": "Any",
+    "weeks": "Setmanes",
+    "months": "Mesos",
+    "years": "Anys",
+    "genre": "Gènere",
+    "age": "Edat",
+    "man": "Home",
+    "woman": "Dona",
+    "other": "Altre",
+    "others": "Altres",
+    "unbinarized": "No binari",
+    "unknown": "Preferixo no dir-ho",
+    "terms": "Termes i condicions",
+    "privacy": "Política de privacitat",
+    "observations": "Observacions"
+  },
+  "map":{
+    "observations": "Mapa",
+    "titleMenu": "Mapa"
+  },
+  "overview":{
+    "observations": "Resum",
+    "titleMenu": "Resum",
+    "cataloniaMap":{
+      "regions": "Comarques de Catalunya",
+      "moreObs": "Més observacions",
+      "lessObs": "Menys observacions",
+      "obsNumber": "Nombre d'observacions"
+    },
+    "observationsNumber": {
+      "total": "Nombre de registres total",
+      "average": "Mitjana de registres per usuari/a",
+      "users": "Nombre total d'usuaris/es"
     }
   },
   "soundscape":{
@@ -42,22 +78,77 @@
       "title": "Visualització gradual dels nivells de so per hores"
     },
     "soundTypes":{
-      "title": "Tipus de so"
+      "title": "Tipus de so",
+      "traffic": "Trànsit",
+      "people": "Éssers humans",
+      "nature": "Sons naturals",
+      "others": "Altres sorolls"
     },
     "quas":{
-      "title": "Anàlisi de variables qualitatives - quantitatives"
+      "title": "Anàlisi de variables qualitatives - quantitatives",
+
+      "quiet": "Tranquilitat",
+
+      "lowlyQuiet":"Moderament tranquil",
+      "fairlyQuiet":"Prou tranquil",
+      "veryQuiet":"Molt tranquil",
+
+      "obsNumber": "Nombre d'observacions",
+
+      "activityLevel": "Nivell d'activitat",
+      "pleasantnessLevel": "Nivell d'agradabilitat",
+      "activity&pleasantness": "Activitat / Agradabilitat"
+
     },
     "perception":{
-      "title": "Descripció de la percepció del espai"
+      "title": "Descripció de la percepció del espai",
+
+      "quiet": "Tranquilitat",
+      "cleanliness": "Neteja i manteniment",
+      "accessibility": "Accessibilitat",
+      "safety": "Seguretat",
+
+      "notQuiet":"Gens tranquil",
+      "littleQuiet":"Poc tranquil",
+      "lowlyQuiet":"Moderament tranquil",
+      "fairlyQuiet":"Prou tranquil",
+      "veryQuiet":"Molt tranquil",
+
+      "dirty": "Poc net",
+      "clean": "Net",
+      "veryClean": "Molt net",
+
+      "notAccessible": "Poc accessible",
+      "accessible": "Accessible",
+      "veryAccessible": "Molt accessible",
+
+      "notSafe": "Poc segur",
+      "safe": "Segur",
+      "verySafe": "Molt segur"
+
     },
     "pressure":{
-      "title": "Distribució de nivells de pressió sonora a l'àrea tranquil·la"
+      "title": "Distribució de nivells de pressió sonora a l'àrea tranquil·la",
+
+      "morning": "Matí (7:00 - 19:00)",
+      "afternoon": "Vespre (19:00 - 23:00)",
+      "night": "Nit (23:00 - 7:00)",
+
+      "hourRange": "Franja horària",
+
+      "obsNumber": "Nombre d'observacions"
+
+
     },
     "qualitativeData":{
       "title": "Dades qualitatives"
     },
     "tonalFrequency":{
-      "title": "Gràfica d'1/3 d'octava"
+      "title": "Gràfica d'1/3 d'octava",
+      "frequency": "Freqüència (Hertz)",
+      "presure": "Pressió sonora (dB)",
+      "ponderation": "Amb onderació",
+      "noPonderation": "Sense ponderació"
     }
   }
 }
