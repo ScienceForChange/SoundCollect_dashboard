@@ -39,6 +39,15 @@ export interface ObservationsAttributes {
     humidity:               number | null;
     temperature:            string;
     pressure:               number | string;
+    pleasant:               number | string;
+    chaotic:                number | string;
+    vibrant:                number | string;
+    uneventful:             number | string;
+    calm:                   number | string;
+    annoying:               number | string;
+    eventfull:              number | string;
+    monotonous:             number | string;
+    overall:                number | string;
     user_id:                string;
     created_at:             string;
     updated_at:             Date;
