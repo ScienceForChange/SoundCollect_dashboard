@@ -49,6 +49,8 @@ interface Colors {
   s2: { [key: string]: ColorOptions };
 }
 
+let DAYTIME: { [key: string]: string } = {};
+
 const colors: Colors = {
   s1: {
     day: {
@@ -105,7 +107,6 @@ export class TemporalEvolutionSoundLevelChartComponent
   private observationsService = inject(ObservationsService);
   private translations = inject(TranslateService);
   private subscriptions = new Subscription();
-  private DAYTIME: { [key: string]: string } = {};
   private myChart!: echarts.ECharts;
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
@@ -135,7 +136,7 @@ export class TemporalEvolutionSoundLevelChartComponent
       DataZoomComponent,
       TooltipComponent,
     ]);
-    this.DAYTIME = {
+    DAYTIME = {
       day: this.translations.instant('soundscape.temporalEvolution.morning'),
       afternoon: this.translations.instant('soundscape.temporalEvolution.afternoon'),
       night: this.translations.instant('soundscape.temporalEvolution.night'),
@@ -389,7 +390,7 @@ export class TemporalEvolutionSoundLevelChartComponent
     isS2?: boolean
   ): SeriesOption {
     const color = isS2 ? colors.s2[type] : colors.s1[type];
-    const name = this.DAYTIME[type];
+    const name = DAYTIME[type];
     const serieName = isS2 ? this.translations.instant('soundscape.temporalEvolution.serie2') : this.translations.instant('soundscape.temporalEvolution.serie1');
     const serie = {
       name: name + ' ' + serieName,
