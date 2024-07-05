@@ -8,10 +8,10 @@
 >
   <div class="flex align-items-center">
     <p-radioButton value="light-v10" [(ngModel)]="layerId" (onClick)="toggleLayerVisibility('light-v10')"/>
-    <label for="light-v10" class="ml-2"> Estandar </label>
+    <label for="light-v10" class="ml-2"> {{"map.layers.standard" | translate}} </label>
   </div>
   <div class="flex align-items-center mt-3">
     <p-radioButton value="satellite-streets-v12" [(ngModel)]="layerId" (onClick)="toggleLayerVisibility('satellite-streets-v12')"/>
-    <label for="satellite-streets-v12" class="ml-2"> Satèl·lit </label>
+    <label for="satellite-streets-v12" class="ml-2"> {{"map.layers.satellite" | translate}} </label>
   </div>
 </p-sidebar>

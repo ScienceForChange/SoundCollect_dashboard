@@ -10,6 +10,7 @@ import {
 import { FormControl, FormGroup } from '@angular/forms';
 import { FormFilterValues } from '../../../../models/forms';
 import { MapService } from '../../service/map.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-map-filters',
@@ -18,6 +19,7 @@ import { MapService } from '../../service/map.service';
 })
 export class MapFiltersComponent implements OnInit {
   mapService = inject(MapService);
+  private translate = inject(TranslateService);
 
   @Input() showFilters?: WritableSignal<boolean>;
   @Input() isFilterActive: boolean = false;
@@ -25,10 +27,10 @@ export class MapFiltersComponent implements OnInit {
   private debounceTimer?: NodeJS.Timeout;
 
   public typesFilter: { id: number; value: string }[] = [
-    { id: 1, value: 'Sons naturals' },
-    { id: 2, value: 'Éssers humans' },
-    { id: 3, value: 'Soroll del trànsit' },
-    { id: 4, value: 'Altres sorolls' },
+    { id: 1, value: this.translate.instant('map.filters.naturals') },
+    { id: 2, value: this.translate.instant('map.filters.people') },
+    { id: 3, value: this.translate.instant('map.filters.traffic') },
+    { id: 4, value: this.translate.instant('map.filters.others') },
   ];
   public typesUsers: {
     id: number;
@@ -36,11 +38,11 @@ export class MapFiltersComponent implements OnInit {
     min: number;
     max?: number;
   }[] = [
-    { id: 1, value: 'Contribuent', min: 0, max: 2 },
-    { id: 2, value: 'Ciutadà/na acústic/a', min: 3, max: 6 },
-    { id: 3, value: 'Explorador/a acústic', min: 7, max: 12 },
-    { id: 4, value: 'Viatger/a sonor/a', min: 13, max: 20 },
-    { id: 5, value: 'Informador/a expert/a', min: 21, max: 100 },
+    { id: 1, value: this.translate.instant('map.filters.contributor'), min: 0, max: 2 },
+    { id: 2, value: this.translate.instant('map.filters.citizen'), min: 3, max: 6 },
+    { id: 3, value: this.translate.instant('map.filters.explorer'), min: 7, max: 12 },
+    { id: 4, value: this.translate.instant('map.filters.traveler'), min: 13, max: 20 },
+    { id: 5, value: this.translate.instant('map.filters.informer'), min: 21, max: 100 },
   ];
 
   public filtersForm: FormGroup = new FormGroup({

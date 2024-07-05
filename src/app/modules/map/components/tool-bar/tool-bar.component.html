@@ -7,7 +7,7 @@
         (onClick)="activeFilters()"
         [ngClass]="{ active: isFilterActive }"
         pTooltip="{{
-          isFilterActive ? 'Desactivar filtres' : 'Aplicar filtres'
+          isFilterActive ? ('map.filters.disable' | translate) : ('map.filters.enable' | translate)
         }}"
         tooltipPosition="bottom"
       >
@@ -19,14 +19,14 @@
       <p-button
         (onClick)="toggleShowFilters()"
         [ngClass]="{ active: showFilters }"
-        pTooltip="Mostrar filtres"
+        pTooltip="{{'map.filters.title' | translate}}"
         tooltipPosition="bottom"
       >
         <i class="pi pi-sliders-h"></i>
       </p-button>
       <p-button
         (onClick)="toggleShowMapLayers()"
-        pTooltip="Tipus de mapa"
+        pTooltip="{{'map.layers.title' | translate}}"
         tooltipPosition="bottom"
       >
         <i class="pi pi-clone"></i>
@@ -34,3 +34,4 @@
     </div>
   </ng-template>
 </p-toolbar>
+
