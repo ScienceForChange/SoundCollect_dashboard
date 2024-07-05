@@ -180,6 +180,9 @@
       "nightSerie1": "Nit Sèrie 1",
       "nightSerie2": "Nit Sèrie 2",
       "hours": "Hores",
+      "morning": "Dia",
+      "afternoon": "Vespre",
+      "night": "Nit",
       "pressureLevel": "Nivell de pressió sonora (dBA)"
     }
   }
