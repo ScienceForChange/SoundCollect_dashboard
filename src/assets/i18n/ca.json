@@ -122,7 +122,6 @@
       "activityLevel": "Nivell d'activitat",
       "pleasantnessLevel": "Nivell d'agradabilitat",
       "activity&pleasantness": "Activitat / Agradabilitat"
-
     },
     "perception":{
       "title": "Descripció de la percepció del espai",
@@ -149,7 +148,6 @@
       "notSafe": "Poc segur",
       "safe": "Segur",
       "verySafe": "Molt segur"
-
     },
     "pressure":{
       "title": "Distribució de nivells de pressió sonora a l'àrea tranquil·la",
@@ -161,8 +159,6 @@
       "hourRange": "Franja horària",
 
       "obsNumber": "Nombre d'observacions"
-
-
     },
     "qualitativeData":{
       "title": "Dades qualitatives"
