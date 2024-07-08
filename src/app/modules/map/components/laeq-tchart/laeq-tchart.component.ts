@@ -53,8 +53,7 @@ export class LAeqTChartComponent implements OnInit, AfterViewInit {
           (value) => Number(value)
         );
         const seconds = [...Array(LAeqT.length)].map((_, i) => i + 1);
-        console.log('seconds', seconds)
-        console.log(LAeqT)
+
         this.options = {
           xAxis: {
             type: 'category',

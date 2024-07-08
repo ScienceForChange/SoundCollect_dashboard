@@ -185,5 +185,10 @@
       "night": "Nit",
       "pressureLevel": "Nivell de pressió sonora (dBA)"
     }
+  },
+  "login":{
+    "title": "Accedeix al Dashboard",
+    "subtitle": "Inicia sessió per a continuar",
+    "submitButton": "Iniciar sessió"
   }
 }
