@@ -6,7 +6,7 @@ import {
   HttpInterceptor,
   HTTP_INTERCEPTORS,
 } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { AuthService } from '../services/auth/auth.service';
 import { Router } from '@angular/router';
@@ -21,12 +21,16 @@ export class ErrorInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     return next.handle(request).pipe(
       catchError((err) => {
+        console.log(err)
+        
         if ([401, 403].includes(err.status)) {
           // auto logout if 401 Unauthorized or 403 Forbidden response returned from api
           this.authService.logout();
         }
+        if(err.status !== 422){
+          this.router.navigate(['/error']);
+        };
 
-        this.router.navigate(['/error']);
         const error = err.error.message || err.statusText;
         return throwError(() => new Error(error));
       })
