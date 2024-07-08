@@ -1,25 +1,27 @@
 <div class="flex flex-column gap-4">
   <div class="grid align-items-stretch gap-4">
     <div class="col card mb-0 flex flex-column justify-content-between">
-      <h2 class="text-2xl text-center">Numero de registres total</h2>
+      <h2 class="text-2xl text-center">{{ "overview.observationsNumber.total" | translate }}</h2>
       <p class="text-4xl text-center">{{ totalObs }}</p>
     </div>
     <div class="col card flex flex-column justify-content-between">
       <h2 class="text-2xl text-center">
-        Numero de registres mitjans per mes per usuari
+        {{ "overview.observationsNumber.average" | translate }}
       </h2>
       <p class="text-4xl text-center">{{ averageObsPerUser }}</p>
     </div>
   </div>
   <div class="card flex flex-column justify-content-between">
-    <h2 class="text-2xl text-center">Numero total de persones usuaries</h2>
+    <h2 class="text-2xl text-center">
+      {{ "overview.observationsNumber.users" | translate }}
+    </h2>
     <p class="text-4xl text-center">{{ totalUsers }}</p>
     <div class="flex w-full">
       <div class="w-6">
         <p-table [value]="dataGenre">
           <ng-template pTemplate="header">
             <tr>
-              <th class="text-center">Gènere</th>
+              <th class="text-center">{{ "app.genre" | translate }}</th>
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-data>
@@ -35,12 +37,12 @@
         <p-table [value]="dataAge">
           <ng-template pTemplate="header">
             <tr>
-              <th class="text-center">Edad</th>
+              <th class="text-center">{{ "app.age" | translate }}</th>
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-data>
             <tr>
-              <td class="text-center">{{ data.age }} anys: {{ data.value }}</td>
+              <td class="text-center">{{ data.age }} {{ "app.years" | translate | lowercase }}: {{ data.value }}</td>
             </tr>
           </ng-template>
         </p-table>
@@ -48,13 +50,13 @@
     </div>
     <p class="text-center">
       <a href="https://home.soundcollectapp.com/aviso-legal/" target="_blank"
-        >Termes i condicions</a
+        >{{ "app.terms" | translate }}</a
       >
       i
       <a
         href="https://home.soundcollectapp.com/politica-de-privacidad/"
         target="_blank"
-      >Política de Privacitat</a>
+      >{{ "app.privacy" | translate }}</a>
     </p>
   </div>
 </div>

@@ -6,6 +6,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { CalendarModule } from 'primeng/calendar';
 import { SelectButtonModule } from 'primeng/selectbutton';
+import { SplitButtonModule } from 'primeng/splitbutton';
 
 import { SoundscapeComponent } from './page/soundscape.component';
 import { SharedComponentsModule } from '../../shared/shared.module';
@@ -38,6 +39,7 @@ import { TonalFrequencyChartComponent } from './components/tonal-frequency-chart
   imports: [
     CommonModule,
     ButtonModule,
+    SplitButtonModule,
     CheckboxModule,
     RadioButtonModule,
     SharedComponentsModule,
@@ -45,7 +47,6 @@ import { TonalFrequencyChartComponent } from './components/tonal-frequency-chart
     ReactiveFormsModule,
     CalendarModule,
     SelectButtonModule,
-    FormsModule
   ]
 })
 export class SoundscapeModule { }

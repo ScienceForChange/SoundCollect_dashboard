@@ -1,57 +1,66 @@
-<div id="toolsBar">
-  <div class="tools gap-3">
+<div class="container">
+  <div id="toolsBar">
+    <div class="tools gap-3">
 
-    @if (!polygonFilter()) {
-    <p-button (click)="drawPolygonFilter()">
-      <i class="pi pi-pencil mr-2"></i>
-      <span>{{ 'soundscape.map.createFilter' | translate}}</span>
-    </p-button>
-    }
-    @else {
-      <p-button (click)="deletePolygonFilter()">
-        <i class="pi pi-trash mr-2"></i>
-        <span>{{ 'soundscape.map.deleteFilter' | translate}}</span>
-      </p-button>
+      @if (!polygonFilter()) {
+        <p-button (click)="drawPolygonFilter()">
+          <i class="pi pi-pencil mr-2"></i>
+          <span>{{ 'soundscape.map.createFilter' | translate}}</span>
+        </p-button>
+      }
+      @else {
+        <p-button (click)="deletePolygonFilter()">
+          <i class="pi pi-trash mr-2"></i>
+          <span>{{ 'soundscape.map.deleteFilter' | translate}}</span>
+        </p-button>
 
-      <div id="timeFilters" class="card flex flex-column p-2 gap-2">
-        <p-radioButton name="dateFilter" [(ngModel)]="timeFilter" value="morning" label="{{ 'soundscape.filter.morning' | translate}}"/>
-        <p-radioButton name="dateFilter" [(ngModel)]="timeFilter" value="afternoon" label="{{ 'soundscape.filter.afternoon' | translate}}"/>
-        <p-radioButton name="dateFilter" [(ngModel)]="timeFilter" value="night" label="{{ 'soundscape.filter.night' | translate}}"/>
-        <p-radioButton name="dateFilter" [(ngModel)]="timeFilter" value="wholeDay" label="{{ 'soundscape.filter.wholeDay' | translate}}"/>
+        <div id="timeFilters" class="card flex flex-column p-2 gap-2">
+          <p-radioButton name="dateFilter" [(ngModel)]="timeFilter" value="morning" label="{{ 'soundscape.filter.morning' | translate}}"/>
+          <p-radioButton name="dateFilter" [(ngModel)]="timeFilter" value="afternoon" label="{{ 'soundscape.filter.afternoon' | translate}}"/>
+          <p-radioButton name="dateFilter" [(ngModel)]="timeFilter" value="night" label="{{ 'soundscape.filter.night' | translate}}"/>
+          <p-radioButton name="dateFilter" [(ngModel)]="timeFilter" value="wholeDay" label="{{ 'soundscape.filter.wholeDay' | translate}}"/>
+          <div class="download flex gap-2">
+            <p-button [disabled]="observations.length === 0">
+              <i class="pi pi-download mr-2"></i>
+              <span>{{ 'CSV' | translate}}</span>
+            </p-button>
+            <p-splitButton [buttonDisabled]="true" [menuButtonDisabled]="observations.length === 0" label="Archivo gráfico" icon="pi pi-download" [model]="items" />
+          </div>
+        </div>
+      }
       </div>
-    }
+  </div>
+  <div class="flex flex-wrap w-full">
+    <div #map class="map-container"></div>
+
+    <div class="col-12 flex">
+      <app-temporal-evolution-sound-level-chart class="card w-full" [observations]="observations"/>
     </div>
-</div>
-<div class="flex flex-wrap w-full">
-  <div #map class="map-container"></div>
+    <div class="col-12 md:col-7 flex">
+      <app-sound-levels-chart class="card w-full" />
+    </div>
+    <div class="col-12 md:col-5 flex">
+      <app-sound-types-chart class="card w-full" />
+    </div>
+    <div class="col-12 flex">
+      <app-tonal-frequency-chart class="card w-full" />
+    </div>
+    <div class="col-12 flex">
+      <app-perception-chart class="card w-full" />
+    </div>
+    <div class="col-12 flex">
+      <app-tag-cloud class="card w-full" />
+    </div>
+    <div class="col-12 flex">
+      <app-quas-chart class="card w-full" />
+    </div>
+    <div class="col-12 flex">
+      <app-qualitative-data-chart class="card w-full"/>
+    </div>
+    <div class="col-12 flex">
+      <app-pressure-chart class="card w-full" />
+    </div>
 
-  <div class="col-12 flex">
-    <app-temporal-evolution-sound-level-chart class="card w-full" [observations]="observations"/>
-  </div>
-  <div class="col-12 md:col-7 flex">
-    <app-sound-levels-chart class="card w-full" />
-  </div>
-  <div class="col-12 md:col-5 flex">
-    <app-sound-types-chart class="card w-full" />
-  </div>
-  <div class="col-12 flex">
-    <app-tonal-frequency-chart class="card w-full" />
-  </div>
-  <div class="col-12 flex">
-    <app-perception-chart class="card w-full" />
-  </div>
-  <div class="col-12 flex">
-    <app-tag-cloud class="card w-full" />
-  </div>
-  <div class="col-12 flex">
-    <app-quas-chart class="card w-full" />
-  </div>
-  <div class="col-12 flex">
-    <app-qualitative-data-chart class="card w-full"/>
-  </div>
-  <div class="col-12 flex">
-    <app-pressure-chart class="card w-full" />
   </div>
 
 </div>
-

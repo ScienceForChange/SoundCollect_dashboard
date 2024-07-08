@@ -6,6 +6,7 @@ import { filter } from 'rxjs/operators';
 import { AuthService } from '../../services/auth/auth.service';
 
 import { MessageService } from 'primeng/api';
+import { TranslateService } from '@ngx-translate/core';
 
 export interface UserLogin {
   email: string;
@@ -27,10 +28,10 @@ export interface UserLogin {
   ],
 })
 export class LoginComponent {
-
   private authService = inject(AuthService);
   private router = inject(Router);
   private messageService = inject(MessageService);
+  private translations = inject(TranslateService);
 
   private user!: UserLogin;
 
@@ -68,19 +69,11 @@ export class LoginComponent {
       });
   }
 
-  showSuccess() {
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Sesión iniciada',
-      detail: '¡Bienvenido!',
-    });
-  }
-
   showWarn() {
     this.messageService.add({
       severity: 'warn',
-      summary: 'Error',
-      detail: 'Email o contraseña son incorrectos',
+      summary:this.translations.instant('login.errorTitle'),
+      detail: this.translations.instant('login.errorSubtitle'),
     });
   }
 
@@ -99,17 +92,13 @@ export class LoginComponent {
     setTimeout(() => {
       this.authService.login(this.user).subscribe({
         next: () => {
-          this.showSuccess();
           this.loading = false;
         },
         error: (resp: any) => {
-          if (resp.status == 422) {
-            this.loginForm.controls['email'].markAsUntouched();
-            this.clear();
-            this.showWarn();
-
-            this.loginForm.controls['password'].reset();
-          }
+          this.loginForm.controls['email'].markAsUntouched();
+          this.clear();
+          this.showWarn();
+          this.loginForm.controls['password'].reset();
           this.loading = false;
         },
       });

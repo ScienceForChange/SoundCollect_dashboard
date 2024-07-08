@@ -7,6 +7,7 @@ import { GridComponent, LegendComponent } from 'echarts/components';
 import { __values } from 'tslib';
 import { ObservationsService } from '../../../../services/observations/observations.service';
 import { Subscription } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 
 echarts.use([GridComponent, LegendComponent, BarChart, CanvasRenderer,PieChart]);
 
@@ -26,6 +27,7 @@ export class SoundTypesChartComponent implements OnInit, OnDestroy{
   private option! : echarts.EChartsCoreOption;
   public totalObservationTypes:number = 0
   private observationsService = inject(ObservationsService);
+  private translations = inject(TranslateService);
   private observations$!: Subscription;
 
 
@@ -40,6 +42,7 @@ export class SoundTypesChartComponent implements OnInit, OnDestroy{
 
   private updateChart(): void {
 
+    this.totalObservationTypes = 0;
     const data = this.getDataFromObservations();
     const types = data.types;
     const rawData = data.cuantity;
@@ -87,7 +90,7 @@ export class SoundTypesChartComponent implements OnInit, OnDestroy{
           type: 'shadow',
         },
         formatter: (params:any) => {
-          return `${params.value} observacions`;
+          return `${params.value} ${this.translations.instant('app.observations').toLowerCase()}`;
         }
       },
       grid,

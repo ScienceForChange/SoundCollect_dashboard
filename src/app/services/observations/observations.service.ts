@@ -29,7 +29,7 @@ export class ObservationsService {
     this.loading$.next(true);
     this.http
       .get<{ success: string; data: Observations[] }>(
-        `${environment.BACKEND_BASE_URL}/observations`
+        `${environment.BACKEND_BASE_URL}/observations?with-levels=true`
       )
       .subscribe({
         next: ({ data }) => {
@@ -144,26 +144,6 @@ export class ObservationsService {
           ),
         };
       })
-    );
-  }
-
-  public getAllMapObservations(): Observable<MapObservation[]> {
-    return this.observations$.pipe(
-      filter((value) => value.length > 0),
-      map((observations) =>
-        observations.map((obs) => ({
-          id: obs.id,
-          user_id: obs.relationships.user.id,
-          latitude: obs.attributes.latitude,
-          longitude: obs.attributes.longitude,
-          created_at: new Date(obs.attributes.created_at),
-          types: obs.relationships.types.map((type) => type.id),
-          Leq: obs.attributes.Leq,
-          userType: obs.relationships.user.type,
-          quiet: obs.attributes.quiet,
-          path: obs.relationships.segments
-        }))
-      )
     );
   }
 

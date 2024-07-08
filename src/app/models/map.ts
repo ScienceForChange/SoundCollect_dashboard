@@ -1,4 +1,4 @@
-import { Segment } from "./observations";
+import { Segment } from './observations';
 
 export interface MapObservation {
   id: string;
@@ -11,6 +11,7 @@ export interface MapObservation {
   userType?: string;
   quiet?: string;
   path: Segment[];
+  user_level: number;
 }
 
 // export interface Geometry {

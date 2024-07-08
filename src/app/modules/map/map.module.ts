@@ -22,6 +22,8 @@ import { MapLayersComponent } from './components/map-layers/map-layers.component
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { ObservationInfoModalComponent } from './components/observation-info-modal/observation-info-modal.component';
 import { SharedComponentsModule } from '../../shared/shared.module';
+import { LAeqTChartComponent } from './components/laeq-tchart/laeq-tchart.component';
+import { OneThirdOctaveChartComponent } from './components/one-third-octave-chart/one-third-octave-chart.component';
 
 
 @NgModule({
@@ -31,6 +33,8 @@ import { SharedComponentsModule } from '../../shared/shared.module';
     MapFiltersComponent,
     MapLayersComponent,
     ObservationInfoModalComponent,
+    LAeqTChartComponent,
+    OneThirdOctaveChartComponent,
   ],
   imports: [
     FormsModule,

@@ -6,6 +6,7 @@ import { CanvasRenderer } from 'echarts/renderers';
 import { GridComponent, LegendComponent } from 'echarts/components';
 import { ObservationsService } from '../../../../services/observations/observations.service';
 import { Subscription } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 
 echarts.use([GridComponent, LegendComponent, BarChart, CanvasRenderer,PieChart]);
 
@@ -24,9 +25,14 @@ export class PressureChartComponent implements OnInit, OnDestroy{
   private chart: echarts.ECharts;
   private option! : echarts.EChartsCoreOption;
   private observationsService = inject(ObservationsService);
+  private translate = inject(TranslateService);
   private observations$!: Subscription;
   public totalObservationTypes:number = 0
-  private quietTypesLabel = ['Matí (7:00 - 19:00)', 'Vespre (19:00 - 23:00)', 'Nit (23:00 - 7:00)'];
+  private quietTypesLabel = [
+    this.translate.instant('soundscape.pressure.morning'),
+    this.translate.instant('soundscape.pressure.afternoon'),
+    this.translate.instant('soundscape.pressure.night')
+  ];
   private dBLevels = ['< = 35', '35-40', '40-45', '45-50', '50-55', '55-60', '60-65', '65-70', '70-75', '75-80', '> 80'];
 
   ngOnInit(): void {
@@ -74,7 +80,7 @@ export class PressureChartComponent implements OnInit, OnDestroy{
 
     this.option = {
       title: {
-        subtext: 'Franja horària',
+        subtext: this.translate.instant('soundscape.pressure.hourRange'),
         left: 'center',
       },
       grid,
@@ -90,7 +96,7 @@ export class PressureChartComponent implements OnInit, OnDestroy{
         data: this.dBLevels
       },
       yAxis: {
-        name: 'Nombre d\'observacions',
+        name: this.translate.instant('soundscape.pressure.obsNumber'),
         nameLocation: 'middle',
         nameGap: 35,
         type: 'value'
@@ -100,12 +106,12 @@ export class PressureChartComponent implements OnInit, OnDestroy{
         axisPointer: {
           type: 'shadow',
         },
-         formatter: function(params:any) {
-            var content = `<b>${params.seriesName}</b><br/>`;
-            content += params.name + ' dBA<br/>';
-            content += params.value + ' observacions';
-            return content;
-          }
+        formatter: function(params:any) {
+          var content = `<b>${params.seriesName}</b><br/>`;
+          content += params.name + ' dBA<br/>';
+          content += params.value + ' observacions';
+          return content;
+        }
       },
       series
     };

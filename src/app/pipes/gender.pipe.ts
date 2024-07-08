@@ -1,21 +1,23 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { Pipe, PipeTransform, inject } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 
 @Pipe({
   name: 'gender',
 })
 export class GenderPipe implements PipeTransform {
+  private translateService: TranslateService = inject(TranslateService);
   transform(value: unknown, ...args: unknown[]): unknown {
     switch (value) {
       case 'male':
-        return 'Home';
+        return this.translateService.instant('app.man');
       case 'female':
-        return 'Dona';
+        return this.translateService.instant('app.woman');
       case 'others':
-        return 'Altres';
+        return this.translateService.instant('app.others');
       case 'non-binary':
-        return 'No binari';
+        return this.translateService.instant('app.unbinarized');
       case 'prefer-not-to-say':
-        return 'Preferixo no dir-ho';
+        return this.translateService.instant('app.unknown');
       default:
         return 'Errors';
     }

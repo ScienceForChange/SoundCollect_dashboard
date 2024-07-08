@@ -23,6 +23,7 @@ import { MapChart, MapSeriesOption } from 'echarts/charts';
 import { CanvasRenderer } from 'echarts/renderers';
 import { HttpClient } from '@angular/common/http';
 import { ObservationsService } from '../../../../services/observations/observations.service';
+import { TranslateService } from '@ngx-translate/core';
 
 type EChartsOption = echarts.ComposeOption<
   | TitleComponentOption
@@ -43,6 +44,7 @@ export class CatalunyaMapComponent implements OnInit, AfterViewInit {
   options: EChartsOption;
   http: HttpClient = inject(HttpClient);
   observationService: ObservationsService = inject(ObservationsService);
+  private translate: TranslateService = inject(TranslateService);
   loadingOptions = {
     text: 'Carregant...',
     color: '#FF7A1F',
@@ -78,7 +80,7 @@ export class CatalunyaMapComponent implements OnInit, AfterViewInit {
         const min = Math.min(...values.map((v: any) => v.value));
         this.options = {
           title: {
-            text: 'Observacions per comarques',
+            text: this.translate.instant('overview.cataloniaMap.regions'),
             left: 'right',
           },
           tooltip: {
@@ -107,7 +109,7 @@ export class CatalunyaMapComponent implements OnInit, AfterViewInit {
                 '#a50026',
               ],
             },
-            text: ['Més observacions', 'Menys observacions'],
+            text: [this.translate.instant('overview.cataloniaMap.moreObs'), this.translate.instant('overview.cataloniaMap.lessObs')],
             calculable: true,
           },
           toolbox: {
@@ -115,7 +117,7 @@ export class CatalunyaMapComponent implements OnInit, AfterViewInit {
           },
           series: [
             {
-              name: 'Número de observacions',
+              name: this.translate.instant('overview.cataloniaMap.obsNumber'),
               type: 'map',
               roam: false,
               map: 'CATALUNYA',
