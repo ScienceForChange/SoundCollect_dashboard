@@ -175,40 +175,30 @@ export class QualitativeDataChartComponent implements AfterViewInit {
   private getDataFromObservations(): number[][] {
 
     let data = this.observations.map(observation => {
-      if(!observation.attributes.pleasant){
-        //mockup data
-        observation.attributes.pleasant = random(1, 5);
-        observation.attributes.chaotic = random(1, 5);
-        observation.attributes.vibrant = random(1, 5);
-        observation.attributes.uneventful = random(1, 5);
-        observation.attributes.calm = random(1, 5);
-        observation.attributes.annoying = random(1, 5);
-        observation.attributes.eventfull = random(1, 5);
-        observation.attributes.monotonous = random(1, 5);
+
+      if(observation.attributes.pleasant !== "N/A"){
+
+        const p:number  = Number(observation.attributes.pleasant);
+        const ch:number = Number(observation.attributes.chaotic);
+        const v:number  = Number(observation.attributes.vibrant);
+        const u:number  = Number(observation.attributes.uneventful);
+        const ca:number = Number(observation.attributes.calm);
+        const a:number  = Number(observation.attributes.annoying);
+        const e:number  = Number(observation.attributes.eventfull !== "N/A" ? observation.attributes.eventfull : 5);
+        const m:number  = Number(observation.attributes.monotonous);
+
+        const cos45:number = Math.cos(45 * Math.PI / 180);
+
+        const activityLevel     = (p - a) + (cos45 * (ca - ch)) + (cos45 * (v - m));
+        const pleasantnessLevel = (e - u) + (cos45 * (ch - ca)) + (cos45 * (v - m));
+
+        return [activityLevel / 9.657, pleasantnessLevel / 9.657];
 
       }
-      console.log(observation.attributes.pleasant, observation.attributes.chaotic, observation.attributes.vibrant, observation.attributes.uneventful, observation.attributes.calm, observation.attributes.annoying, observation.attributes.eventfull, observation.attributes.monotonous);
 
-
-      const p:number  = Number(observation.attributes.pleasant);
-      const ch:number = Number(observation.attributes.chaotic);
-      const v:number  = Number(observation.attributes.vibrant);
-      const u:number  = Number(observation.attributes.uneventful);
-      const ca:number = Number(observation.attributes.calm);
-      const a:number  = Number(observation.attributes.annoying);
-      const e:number  = Number(observation.attributes.eventfull);
-      const m:number  = Number(observation.attributes.monotonous);
-
-      const cos45:number = Math.cos(45 * Math.PI / 180);
-
-      const activityLevel     = (p - a) + (cos45 * (ca - ch)) + (cos45 * (v - m));
-      const pleasantnessLevel = (e - u) + (cos45 * (ch - ca)) + (cos45 * (v - m));
-
-      return [activityLevel, pleasantnessLevel];
+      return [];
 
     });
-
-    console.log(data);
 
     return data;
 
