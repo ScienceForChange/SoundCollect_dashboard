@@ -25,15 +25,14 @@ export class QualitativeDataChartComponent implements AfterViewInit {
   private translate = inject(TranslateService);
 
   ngAfterViewInit(): void {
+
     const chartDom = document.getElementById('qualitativeDataChart')!;
     this.chart = echarts.init(chartDom);
-
 
     this.observations$ = this.observationsService.observations$.subscribe((observations: Observations[]) => {
       this.observations = observations;
       this.updateChart();
     });
-
 
     /*
     const { closePoints, otherPoints } = this.classifyData(data);
@@ -192,7 +191,7 @@ export class QualitativeDataChartComponent implements AfterViewInit {
         const activityLevel     = (p - a) + (cos45 * (ca - ch)) + (cos45 * (v - m));
         const pleasantnessLevel = (e - u) + (cos45 * (ch - ca)) + (cos45 * (v - m));
 
-        return [activityLevel / 9.657, pleasantnessLevel / 9.657];
+        return [Math.round((activityLevel / 9.657) * 100) / 100, Math.round((pleasantnessLevel / 9.657) * 100) / 100];
 
       }
 
