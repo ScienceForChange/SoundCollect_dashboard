@@ -8,7 +8,7 @@ WORKDIR /app
 
 #Copies the package.json and package-lock.json files from your local directory
 #(where the Dockerfile is) to the ‘/app’ directory in the container.
-COPY package.* ./
+COPY package*.json ./
 
 RUN npm install
 
