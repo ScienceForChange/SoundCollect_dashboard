@@ -189,6 +189,8 @@
   "login":{
     "title": "Accedeix al Dashboard",
     "subtitle": "Inicia sessió per a continuar",
-    "submitButton": "Iniciar sessió"
+    "submitButton": "Iniciar sessió",
+    "errorTitle":"Error",
+    "errorSubtitle":"Usuari/a o contrasenya incorrectes"
   }
 }
