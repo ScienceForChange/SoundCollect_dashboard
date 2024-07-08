@@ -19,6 +19,7 @@ export class TagCloudComponent implements OnInit, OnDestroy{
   private observations!: Observations[];
   private observationsService = inject(ObservationsService);
   private observations$!: Subscription;
+  
   public text!: string;
   public tags!: {key: string; value: number;}[];
   public chart!: Chart;
@@ -36,9 +37,11 @@ export class TagCloudComponent implements OnInit, OnDestroy{
         if(this.tags.length > 0) this.updateCloud();
       });
     });
+
   }
 
   private updateCloud(): void {
+
     const canvas = document.getElementById('tagCloud') as HTMLCanvasElement;
     if(this.chart) this.chart.destroy();
     this.chart = new Chart(canvas.getContext("2d") , {
@@ -65,19 +68,21 @@ export class TagCloudComponent implements OnInit, OnDestroy{
   }
 
   private getTagsFromObservations(): void{
+
     this.observations.forEach((obs: Observations) => {
       this.text = this.text + " " + obs.attributes.protection.toLocaleLowerCase();
     })
+
   }
 
   private getWordFrequency(): void {
-
 
     const wordsArray = _.words(this.text);
     const wordCount:[string, number][] = Object.entries(
       _.countBy(
         wordsArray
         .filter((word: string) => isNaN(Number(word)))
+        .filter((word: string) => word.length > 2)
         .filter((word: string) => !this.stopWords.includes(word))
       )
     );
@@ -85,6 +90,7 @@ export class TagCloudComponent implements OnInit, OnDestroy{
     this.tags = wordCount.map((word: [string, number]) => {
       return { key: word[0], value: word[1] };
     });
+
   }
 
   ngOnDestroy() {

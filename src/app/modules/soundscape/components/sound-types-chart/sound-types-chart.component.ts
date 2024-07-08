@@ -42,6 +42,7 @@ export class SoundTypesChartComponent implements OnInit, OnDestroy{
 
   private updateChart(): void {
 
+    this.totalObservationTypes = 0;
     const data = this.getDataFromObservations();
     const types = data.types;
     const rawData = data.cuantity;

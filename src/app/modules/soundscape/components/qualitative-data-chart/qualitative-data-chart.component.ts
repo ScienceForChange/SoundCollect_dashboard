@@ -25,15 +25,14 @@ export class QualitativeDataChartComponent implements AfterViewInit {
   private translate = inject(TranslateService);
 
   ngAfterViewInit(): void {
+
     const chartDom = document.getElementById('qualitativeDataChart')!;
     this.chart = echarts.init(chartDom);
-
 
     this.observations$ = this.observationsService.observations$.subscribe((observations: Observations[]) => {
       this.observations = observations;
       this.updateChart();
     });
-
 
     /*
     const { closePoints, otherPoints } = this.classifyData(data);
@@ -175,7 +174,7 @@ export class QualitativeDataChartComponent implements AfterViewInit {
   private getDataFromObservations(): number[][] {
 
     let data = this.observations.map(observation => {
-
+      //TODO: cambiar la condición de pleasant por si el usuario es o no experto
       if(observation.attributes.pleasant !== "N/A"){
 
         const p:number  = Number(observation.attributes.pleasant);
@@ -184,7 +183,8 @@ export class QualitativeDataChartComponent implements AfterViewInit {
         const u:number  = Number(observation.attributes.uneventful);
         const ca:number = Number(observation.attributes.calm);
         const a:number  = Number(observation.attributes.annoying);
-        const e:number  = Number(observation.attributes.eventfull !== "N/A" ? observation.attributes.eventfull : 5);
+        //TODO: quitar condicion de eventfull cuando backend corrija el nombre del campo
+        const e:number  = Number(observation.attributes.eventful && observation.attributes.eventful !== "N/A" ? observation.attributes.eventful : 5);
         const m:number  = Number(observation.attributes.monotonous);
 
         const cos45:number = Math.cos(45 * Math.PI / 180);
@@ -192,7 +192,7 @@ export class QualitativeDataChartComponent implements AfterViewInit {
         const activityLevel     = (p - a) + (cos45 * (ca - ch)) + (cos45 * (v - m));
         const pleasantnessLevel = (e - u) + (cos45 * (ch - ca)) + (cos45 * (v - m));
 
-        return [activityLevel / 9.657, pleasantnessLevel / 9.657];
+        return [Math.round((activityLevel / 9.657) * 100) / 100, Math.round((pleasantnessLevel / 9.657) * 100) / 100];
 
       }
 
