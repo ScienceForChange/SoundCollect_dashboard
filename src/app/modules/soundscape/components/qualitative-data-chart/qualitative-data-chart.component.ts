@@ -174,7 +174,7 @@ export class QualitativeDataChartComponent implements AfterViewInit {
   private getDataFromObservations(): number[][] {
 
     let data = this.observations.map(observation => {
-
+      //TODO: cambiar la condición de pleasant por si el usuario es o no experto
       if(observation.attributes.pleasant !== "N/A"){
 
         const p:number  = Number(observation.attributes.pleasant);
