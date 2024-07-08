@@ -94,7 +94,6 @@ const colors: Colors = {
   },
 };
 
-
 @Component({
   selector: 'app-temporal-evolution-sound-level-chart',
   templateUrl: './temporal-evolution-sound-level-chart.component.html',
@@ -138,12 +137,14 @@ export class TemporalEvolutionSoundLevelChartComponent
     ]);
     DAYTIME = {
       day: this.translations.instant('soundscape.temporalEvolution.morning'),
-      afternoon: this.translations.instant('soundscape.temporalEvolution.afternoon'),
+      afternoon: this.translations.instant(
+        'soundscape.temporalEvolution.afternoon'
+      ),
       night: this.translations.instant('soundscape.temporalEvolution.night'),
-    }
+    };
     const obsSubscription = this.observationsService.observations$.subscribe(
       (observations: Observations[]) => {
-        if(observations.length === 0) return;
+        if (observations.length === 0) return;
         this.observations = observations;
         this.firstDay = new Date(this.observations[0].attributes.created_at);
         this.lastDay = new Date(
@@ -158,7 +159,6 @@ export class TemporalEvolutionSoundLevelChartComponent
 
         if (!this.filtersForm) return;
         //Update min day and max day at form
-        //TODO: See why is not updating the value when clean the filter.
         this.filtersForm.setValue(initialValues);
         const obsS1: Observations[] = this.observations.filter((obs) => {
           const isBefore = new Date(obs.attributes.created_at) <= this.lastDay;
@@ -168,6 +168,7 @@ export class TemporalEvolutionSoundLevelChartComponent
         });
 
         this.updateChart(obsS1, []);
+
       }
     );
     this.subscriptions.add(obsSubscription);
@@ -248,6 +249,7 @@ export class TemporalEvolutionSoundLevelChartComponent
     const dataLegend = series.map((serie) => serie.name) as string[];
     //Update data chart with the new one
     this.options = {
+      ...this.options,
       legend: {
         data: dataLegend,
         inactiveColor: '#777',
@@ -255,7 +257,10 @@ export class TemporalEvolutionSoundLevelChartComponent
       series: series as CandlestickSeriesOption[],
     };
 
-    this.myChart.setOption(this.options);
+
+      this.myChart.clear();
+      this.myChart.setOption(this.options,true);
+
   }
 
   public resetFormToInitialValues(): void {
@@ -265,12 +270,19 @@ export class TemporalEvolutionSoundLevelChartComponent
       daysFilterS2: [],
     };
 
+    
     //Update the form values
-
     this.filtersForm.setValue(initialValues);
     this.filterState = undefined;
-    // Set the new options on the chart, making sure to replace the old options
-    this.myChart.setOption(this.initialOptions, true);
+    //Get the inital observation values
+    const obsS1: Observations[] = this.observations.filter((obs) => {
+      const isBefore = new Date(obs.attributes.created_at) <= this.lastDay;
+      const isAfter = new Date(obs.attributes.created_at) >= this.firstDay;
+      if (isBefore && isAfter) return true;
+      return false;
+    });
+
+    this.updateChart(obsS1, []);
   }
 
   private groupObsByHours(
@@ -392,7 +404,9 @@ export class TemporalEvolutionSoundLevelChartComponent
   ): SeriesOption {
     const color = isS2 ? colors.s2[type] : colors.s1[type];
     const name = DAYTIME[type];
-    const serieName = isS2 ? this.translations.instant('soundscape.temporalEvolution.serie2') : this.translations.instant('soundscape.temporalEvolution.serie1');
+    const serieName = isS2
+      ? this.translations.instant('soundscape.temporalEvolution.serie2')
+      : this.translations.instant('soundscape.temporalEvolution.serie1');
     const serie = {
       name: name + ' ' + serieName,
       itemStyle: color,
@@ -407,6 +421,7 @@ export class TemporalEvolutionSoundLevelChartComponent
     this.myChart = echarts.init(chartDom);
     this.myChart.showLoading('default', this.loadingOptions);
 
+    //Podría probar aquí el actualizar y suscribir a las observaciones. Lo que estoy haciendo en el ngOnInit.
     //Filter falsy values
     const filteredObs = this.observations.filter((observation) => {
       return (
@@ -432,9 +447,13 @@ export class TemporalEvolutionSoundLevelChartComponent
     this.options = {
       legend: {
         data: [
-          this.translations.instant('soundscape.temporalEvolution.morningSerie1'),
-          this.translations.instant('soundscape.temporalEvolution.afternoonSerie1'),
-          this.translations.instant('soundscape.temporalEvolution.nightSerie1')
+          this.translations.instant(
+            'soundscape.temporalEvolution.morningSerie1'
+          ),
+          this.translations.instant(
+            'soundscape.temporalEvolution.afternoonSerie1'
+          ),
+          this.translations.instant('soundscape.temporalEvolution.nightSerie1'),
         ],
         inactiveColor: '#777',
         orient: 'horizontal', // Lay out the legend items horizontally
@@ -482,23 +501,31 @@ export class TemporalEvolutionSoundLevelChartComponent
         name: this.translations.instant('soundscape.temporalEvolution.hours'),
       },
       yAxis: {
-        name: this.translations.instant('soundscape.temporalEvolution.pressureLevel'),
+        name: this.translations.instant(
+          'soundscape.temporalEvolution.pressureLevel'
+        ),
       },
       series: [
         {
-          name: this.translations.instant('soundscape.temporalEvolution.morningSerie1'),
+          name: this.translations.instant(
+            'soundscape.temporalEvolution.morningSerie1'
+          ),
           itemStyle: colors.s1['day'],
           type: 'candlestick',
           data: dayObs,
         },
         {
-          name: this.translations.instant('soundscape.temporalEvolution.afternoonSerie1'),
+          name: this.translations.instant(
+            'soundscape.temporalEvolution.afternoonSerie1'
+          ),
           itemStyle: colors.s1['afternoon'],
           type: 'candlestick',
           data: afternoonObs,
         },
         {
-          name: this.translations.instant('soundscape.temporalEvolution.nightSerie1'),
+          name: this.translations.instant(
+            'soundscape.temporalEvolution.nightSerie1'
+          ),
           itemStyle: colors.s1['night'],
           type: 'candlestick',
           data: nightObs,
