@@ -192,5 +192,10 @@
     "submitButton": "Iniciar sessió",
     "errorTitle":"Error",
     "errorSubtitle":"Usuari/a o contrasenya incorrectes"
+  },
+  "error":{
+    "title":"Oops!",
+    "subtitle":"Alguna cosa no ha sortit bé.",
+    "button": "Tornar"
   }
 }

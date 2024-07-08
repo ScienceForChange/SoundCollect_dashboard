@@ -17,6 +17,7 @@ import { environment } from '../environments/environments';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { SoundscapeModule } from './modules/soundscape/soundscape.module';
 import { errorInterceptorProviders } from './interceptor/error.interceptor';
+import { ErrorModule } from './modules/error/error.module';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -27,6 +28,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     AppLayoutModule,
     AppRoutingModule,
     SharedComponentsModule,
+    ErrorModule,
     BrowserAnimationsModule,
     HttpClientModule,
     LoginModule,
@@ -34,10 +36,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     MapModule,
     SoundscapeModule,
     OverviewModule,
-    // HttpClientXsrfModule.withOptions({
-    //   cookieName: 'XSRF-TOKEN',
-    //   headerName: 'X-XSRF-TOKEN',
-    // }),
     TranslateModule.forRoot({
       defaultLanguage: environment.DEFAULT_LANGUAGE,
       loader: {
