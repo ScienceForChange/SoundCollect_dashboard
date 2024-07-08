@@ -19,7 +19,7 @@ export class TagCloudComponent implements OnInit, OnDestroy{
   private observations!: Observations[];
   private observationsService = inject(ObservationsService);
   private observations$!: Subscription;
-  
+
   public text!: string;
   public tags!: {key: string; value: number;}[];
   public chart!: Chart;
@@ -35,6 +35,10 @@ export class TagCloudComponent implements OnInit, OnDestroy{
         this.getWordFrequency();
         this.tags = this.tags.sort((a, b) => b.value - a.value).slice(0, 40);
         if(this.tags.length > 0) this.updateCloud();
+        else {
+          const canvas = document.getElementById('tagCloud') as HTMLCanvasElement;
+          canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+        }
       });
     });
 
@@ -69,6 +73,8 @@ export class TagCloudComponent implements OnInit, OnDestroy{
 
   private getTagsFromObservations(): void{
 
+    this.text = "";
+
     this.observations.forEach((obs: Observations) => {
       this.text = this.text + " " + obs.attributes.protection.toLocaleLowerCase();
     })
@@ -76,6 +82,8 @@ export class TagCloudComponent implements OnInit, OnDestroy{
   }
 
   private getWordFrequency(): void {
+
+    this.tags = [];
 
     const wordsArray = _.words(this.text);
     const wordCount:[string, number][] = Object.entries(
