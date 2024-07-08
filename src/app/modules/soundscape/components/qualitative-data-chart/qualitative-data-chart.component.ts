@@ -183,7 +183,6 @@ export class QualitativeDataChartComponent implements AfterViewInit {
         const u:number  = Number(observation.attributes.uneventful);
         const ca:number = Number(observation.attributes.calm);
         const a:number  = Number(observation.attributes.annoying);
-        console.log(observation.attributes.eventful);
         //TODO: quitar condicion de eventfull cuando backend corrija el nombre del campo
         const e:number  = Number(observation.attributes.eventful && observation.attributes.eventful !== "N/A" ? observation.attributes.eventful : 5);
         const m:number  = Number(observation.attributes.monotonous);
