@@ -7,12 +7,9 @@ import { ProfileComponent } from './modules/profile/components/profile/profile.c
 import { MapComponent } from './modules/map/page/map.component';
 import { OverviewComponent } from './modules/overview/page/overview/overview.component';
 import { SoundscapeComponent } from './modules/soundscape/page/soundscape.component';
+import { ErrorComponent } from './modules/error/page/error.component';
 
 const routes: Routes = [
-  // {
-  //   path: '',
-  //   component: LandingComponent,
-  // },
   {
     path: '',
     component: AppLayoutComponent,
@@ -39,6 +36,10 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
+  },
+  {
+    path: 'error',
+    component: ErrorComponent,
   },
 ];
 
