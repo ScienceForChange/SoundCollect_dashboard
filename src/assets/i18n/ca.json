@@ -39,7 +39,8 @@
     "unknown": "Preferixo no dir-ho",
     "terms": "Termes i condicions",
     "privacy": "Política de privacitat",
-    "observations": "Observacions"
+    "observations": "Observacions",
+    "logout": "Tancar sessió"
   },
   "map":{
     "observations": "Mapa",
