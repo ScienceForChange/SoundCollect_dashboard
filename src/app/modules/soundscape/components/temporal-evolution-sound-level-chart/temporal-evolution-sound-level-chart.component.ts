@@ -144,12 +144,11 @@ export class TemporalEvolutionSoundLevelChartComponent
     };
     const obsSubscription = this.observationsService.observations$.subscribe(
       (observations: Observations[]) => {
-        if (observations.length === 0) return;
         this.observations = observations;
-        this.firstDay = new Date(this.observations[0].attributes.created_at);
-        this.lastDay = new Date(
+        this.firstDay =  this.observations.length ? new Date(this.observations[0].attributes.created_at) : null
+        this.lastDay = this.observations.length ?  new Date(
           this.observations[this.observations.length - 1].attributes.created_at
-        );
+        ) : null
         // Define initial values or reset to default
         const initialValues: { daysFilterS1: [Date, Date]; daysFilterS2: [] } =
           {
