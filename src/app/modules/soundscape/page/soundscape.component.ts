@@ -87,6 +87,7 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
 
     this.observations$ = this.observationsService.observations$.subscribe((observations) => {
 
+      console.log('observations', observations)
       this.observations = observations
       this.polylines.update(() => this.observationsService.getLineStringFromObservations(this.observations));
       this.startPoints.update(() => this.observationsService.getStartPointsFromObservations(this.observations));
@@ -592,6 +593,7 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
 
   private updateMapSource() {
 
+    console.log('updateMapSource')
     this.polylines.update(() => this.observationsService.getLineStringFromObservations(this.observations));
     this.startPoints.update(() => this.observationsService.getStartPointsFromObservations(this.observations));
 

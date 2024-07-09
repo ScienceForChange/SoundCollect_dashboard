@@ -6,8 +6,11 @@ import { Observations, ObservationsDataChart } from '../../models/observations';
 import { MapObservation } from '../../models/map';
 import * as turf from '@turf/turf';
 
-export interface Feature<G extends GeoJSON.Geometry | null = GeoJSON.Geometry, P = { [name: string]: any } | null> extends turf.GeoJSONObject {
-  type: "Feature";
+export interface Feature<
+  G extends GeoJSON.Geometry | null = GeoJSON.Geometry,
+  P = { [name: string]: any } | null
+> extends turf.GeoJSONObject {
+  type: 'Feature';
   geometry: G;
   id?: string | number | undefined;
   properties: P;
@@ -31,8 +34,17 @@ export class ObservationsService {
       .get<{ success: string; data: Observations[] }>(
         `${environment.BACKEND_BASE_URL}/observations?with-levels=true`
       )
+      .pipe(
+        map((res) =>{
+          const observationsBetween20and80 = res.data.filter(
+            (obs) => +obs.attributes.Leq >= 20 && +obs.attributes.Leq <= 80
+          )
+        return observationsBetween20and80
+        }
+        )
+      )
       .subscribe({
-        next: ({ data }) => {
+        next: (data) => {
           this.observations$.next(data);
           this.loading$.next(false);
         },
@@ -47,8 +59,7 @@ export class ObservationsService {
     return this.observations$.pipe(
       filter((value) => value.length > 0),
       map((observations) => {
-
-        const observationsByUser: { [key: string]: {[key:number]:number} } =
+        const observationsByUser: { [key: string]: { [key: number]: number } } =
           observations.reduce((acc, obs) => {
             const userId = obs.relationships.user.id;
             if (!acc[userId]) {
@@ -60,13 +71,13 @@ export class ObservationsService {
             const month = new Date(obs.attributes.created_at).getMonth() + 1;
             acc[userId][month]++;
             return acc;
-          }, {} as { [key: string]: {[key:number]:number} });
-
+          }, {} as { [key: string]: { [key: number]: number } });
 
         const numberOfDifferentUsers = Object.keys(observationsByUser).length;
         const totalObservations = observations.length;
 
-        const averageObservationsPerUserPerMonth = (totalObservations / 12 / numberOfDifferentUsers);
+        const averageObservationsPerUserPerMonth =
+          totalObservations / 12 / numberOfDifferentUsers;
 
         const observationsByAge = {
           '<18': 0,
@@ -254,13 +265,14 @@ export class ObservationsService {
   }
 
   /*
-  * Función que recibe un array de observaciones y devuelve un array de polilineas con los segmentos de las observaciones para mostrar en el mapa
-  */
-  public getLineStringFromObservations(observations: Observations[] = this.observations$.getValue()): Feature[] | null {
+   * Función que recibe un array de observaciones y devuelve un array de polilineas con los segmentos de las observaciones para mostrar en el mapa
+   */
+  public getLineStringFromObservations(
+    observations: Observations[] = this.observations$.getValue()
+  ): Feature[] | null {
+    if (observations.length == 0) return [];
 
-    if(observations.length == 0) return [];
-
-    function getColor(value: number): string{
+    function getColor(value: number): string {
       switch (true) {
         case value <= 35:
           return '#B7CE8E';
@@ -290,98 +302,127 @@ export class ObservationsService {
     }
 
     //Crear polilineas para las observaciones, esto añade el borde negro a las observaciones para mejorar la visibilidad
-    let linestrings:Feature[] = observations.map((obs) => ({
+    let linestrings: Feature[] = observations.map((obs) => ({
       type: 'Feature',
       geometry: {
         type: 'LineString',
         //hacemos un reduce de sengments para combertirlos en un Linestring
-        coordinates: obs.relationships.segments.reduce((acc:turf.Position[], segment:any):turf.Position[] => {
-          acc.push([Number(segment.start_longitude), Number(segment.start_latitude)]);
-          if(segment.position == obs.relationships.segments.length) acc.push([Number(segment.end_longitude), Number(segment.end_latitude)]);
-          return acc;
-        }, [])
-
+        coordinates: obs.relationships.segments.reduce(
+          (acc: turf.Position[], segment: any): turf.Position[] => {
+            acc.push([
+              Number(segment.start_longitude),
+              Number(segment.start_latitude),
+            ]);
+            if (segment.position == obs.relationships.segments.length)
+              acc.push([
+                Number(segment.end_longitude),
+                Number(segment.end_latitude),
+              ]);
+            return acc;
+          },
+          []
+        ),
       },
       properties: {
-        id:     obs.id,
-        type:   'LineString',
-        color:  '#333',
-        width:  6
-      }
+        id: obs.id,
+        type: 'LineString',
+        color: '#333',
+        width: 6,
+      },
     }));
 
     //Obtener los segmentos de las polilineas
     linestrings = linestrings.concat(
-      observations.map((obs) => {
-        let segments:Feature[] = [];
-        for (let i = 0; i <= obs.relationships.segments.length - 1; i++) {
-          segments.push({
-            type: 'Feature',
-            geometry: {
-              type: 'LineString',
-              coordinates: [[Number(obs.relationships.segments[i].start_longitude),Number(obs.relationships.segments[i].start_latitude)], [Number(obs.relationships.segments[i].end_longitude), Number(obs.relationships.segments[i].end_latitude)]]
-            },
-            properties: {
-               id:   obs.id,
-              type:  'Line',
-              color: obs.relationships.segments[i].LAeq ? getColor(obs.relationships.segments[i].LAeq) : null,
-              width: 3,
-              pause: obs.relationships.segments[i].LAeq ? false : true //TODO: Añadir el valor de pause
-            }
-          });
-        }
-        return segments;
-      }).flat()
+      observations
+        .map((obs) => {
+          let segments: Feature[] = [];
+          for (let i = 0; i <= obs.relationships.segments.length - 1; i++) {
+            segments.push({
+              type: 'Feature',
+              geometry: {
+                type: 'LineString',
+                coordinates: [
+                  [
+                    Number(obs.relationships.segments[i].start_longitude),
+                    Number(obs.relationships.segments[i].start_latitude),
+                  ],
+                  [
+                    Number(obs.relationships.segments[i].end_longitude),
+                    Number(obs.relationships.segments[i].end_latitude),
+                  ],
+                ],
+              },
+              properties: {
+                id: obs.id,
+                type: 'Line',
+                color: obs.relationships.segments[i].LAeq
+                  ? getColor(obs.relationships.segments[i].LAeq)
+                  : null,
+                width: 3,
+                pause: obs.relationships.segments[i].LAeq ? false : true, //TODO: Añadir el valor de pause
+              },
+            });
+          }
+          return segments;
+        })
+        .flat()
     );
 
     return linestrings;
-
   }
 
-  public getStartPointsFromObservations(observations: Observations[] = this.observations$.getValue()): Feature[] | null {
+  public getStartPointsFromObservations(
+    observations: Observations[] = this.observations$.getValue()
+  ): Feature[] | null {
+    observations = observations.filter(
+      (obs) => obs.relationships.segments.length > 0
+    );
 
-    observations = observations.filter((obs) => obs.relationships.segments.length > 0);
-
-    if(observations.length == 0) return [];
+    if (observations.length == 0) return [];
 
     let points: Feature[] = observations.map((obs) => ({
-        type: 'Feature',
-        geometry: {
-          type: 'Point',
-          coordinates: [Number(obs.relationships.segments[0].start_longitude), Number(obs.relationships.segments[0].start_latitude)]
-        },
-        properties: {
-          id:     obs.id,
-          type:   'Point',
-          color:  '#333',
-          width:  6
-        }
-      })
-    );
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [
+          Number(obs.relationships.segments[0].start_longitude),
+          Number(obs.relationships.segments[0].start_latitude),
+        ],
+      },
+      properties: {
+        id: obs.id,
+        type: 'Point',
+        color: '#333',
+        width: 6,
+      },
+    }));
 
     return points;
-
   }
 
-  public getObservationsByPolygonAndHours(polygon: Number[], hourInterval: [string, string]): Observable<Observations[]> {
+  public getObservationsByPolygonAndHours(
+    polygon: Number[],
+    hourInterval: [string, string]
+  ): Observable<Observations[]> {
     this.loading$.next(true);
-    return this.http.post<{ success: string; data: Observations[] }>(
-      `${environment.BACKEND_BASE_URL}/observations/in-polygon`,
-      {
-        concern: 'inside',
-        polygon : polygon,
-        interval: {
-          "start" : `${hourInterval[0]}`,
-          "end" : `${hourInterval[1]}`,
+    return this.http
+      .post<{ success: string; data: Observations[] }>(
+        `${environment.BACKEND_BASE_URL}/observations/in-polygon`,
+        {
+          concern: 'inside',
+          polygon: polygon,
+          interval: {
+            start: `${hourInterval[0]}`,
+            end: `${hourInterval[1]}`,
+          },
         }
-  }
-    ).pipe(
-      map(({ data }) => {
+      )
+      .pipe(
+        map(({ data }) => {
         this.observations$.next(data);
         this.loading$.next(false);
-        return data;
-      })
-    );
+          return data;
+        })
+      );
   }
-
 }
