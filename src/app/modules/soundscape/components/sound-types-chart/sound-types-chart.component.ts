@@ -95,6 +95,9 @@ export class SoundTypesChartComponent implements OnInit, OnDestroy{
       },
       grid,
       yAxis: {
+        name: this.translations.instant('soundscape.soundTypes.axisY'),
+        nameLocation: 'middle',
+        nameGap: 35,
         type: 'value'
       },
       xAxis: {
