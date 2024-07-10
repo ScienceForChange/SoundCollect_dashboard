@@ -7,6 +7,7 @@
   [closeOnEscape]="true"
 >
   <form [formGroup]="filtersForm" class="flex flex-column p-1 pt-4 gap-2">
+  <!-- Filtro dias -->
     <div class="flex flex-column">
       <p-checkbox
         formControlName="days"
@@ -24,6 +25,7 @@
         *ngIf="filtersForm.value.days"
       />
     </div>
+    <!-- Filtro de tiempo -->
     <div class="flex flex-column">
       <p-checkbox
         formControlName="hours"
@@ -52,6 +54,7 @@
         />
       </div>
     </div>
+    <!-- Filtro tipos de sonido -->
     <div class="flex flex-column">
       <p-checkbox
         formControlName="type"
@@ -73,7 +76,33 @@
         />
         }
       </div>
+      <!-- Filtro pression sonora -->
+      <div class="flex flex-column">
+        <p-checkbox
+          formControlName="soundPressure"
+          label="{{ 'map.filters.pressure' | translate }}"
+          [binary]="true"
+          [class]="'flex justify-content-between'"
+        />
+        <div
+          class="card mt-3 mb-4 p-3 gap-2 flex flex-column filter"
+          *ngIf="filtersForm.value.soundPressure"
+        >
+          <small class="text-center mb-2">
+            {{ filtersForm.value.soundPressureFilter | soundPressureDisplay }}
+          </small>
+          <p-slider
+            formControlName="soundPressureFilter"
+            [step]="5"
+            [min]="35"
+            [max]="80"
+            [range]="true"
+            [className]="'ml-2 mb-2 mr-2'"
+          />
+        </div>
+      </div>
     </div>
+    <!-- Filtro tipo de usuario -->
     <div class="flex flex-column">
       <p-checkbox
         formControlName="typeUser"
@@ -94,40 +123,6 @@
           [class]="'flex justify-content-start'"
         />
         }
-      </div>
-    </div>
-    <div class="flex flex-column">
-      <p-checkbox
-        formControlName="soundPressure"
-        label="{{ 'map.filters.pressure' | translate }}"
-        [binary]="true"
-        [class]="'flex justify-content-between'"
-      />
-      <div
-        class="card mt-3 mb-4 p-3 gap-2 flex flex-column filter"
-        *ngIf="filtersForm.value.soundPressure"
-      >
-        <small class="text-center mb-2">
-          <!-- @if(filtersForm.value.soundPressureFilter[0] === 80 && filtersForm.value.soundPressureFilter[1] === 80){ >80 dBA} 
-          @else if(filtersForm.value.soundPressureFilter[0] === 35 && filtersForm.value.soundPressureFilter[1] === 35){  ≤35 dBA }
-          @else { 
-            @if(filtersForm.value.soundPressureFilter[0] === 35 && filtersForm.value.soundPressureFilter[1] === 80){ ≤35 - >80 dBA}
-            @else if(filtersForm.value.soundPressureFilter[1] === 80){ {{filtersForm.value.soundPressureFilter[0]}} - >80 dBA} 
-            @else if(filtersForm.value.soundPressureFilter[0] === 35){  ≤35 - {{filtersForm.value.soundPressureFilter[1]}} dBA  } 
-            @else { 
-               {{ filtersForm.value.soundPressureFilter[0] }} - {{ filtersForm.value.soundPressureFilter[1] }} dBA
-            }
-          } -->
-          {{ filtersForm.value.soundPressureFilter | soundPressureDisplay }}
-        </small>
-        <p-slider
-          formControlName="soundPressureFilter"
-          [step]="5"
-          [min]="35"
-          [max]="80"
-          [range]="true"
-          [className]="'ml-2 mb-2 mr-2'"
-        />
       </div>
     </div>
   </form>
