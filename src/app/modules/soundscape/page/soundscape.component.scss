@@ -16,6 +16,7 @@
     display: flex;
     width: 100%;
     justify-content: end;
+    gap:0.5rem;
     flex-basis: 1;
     z-index: 2;
     pointer-events: none;
@@ -23,6 +24,9 @@
     transition: top 0.3s ease-in-out;
     &:hover{
       top: -55px;
+    }
+    *{
+      pointer-events: auto;
     }
     .tools{
       display: flex;
@@ -68,3 +72,32 @@
     z-index: 1;
   }
 }
+
+:host ::ng-deep {
+  .floatSidebar {
+    z-index: 50 !important;
+    height: fit-content;
+    max-height: calc(100vh - 6rem);
+    margin: 4.5rem 0.5rem auto;
+    min-width: 390px;
+    border-radius: 12px;
+    background-color: var(--surface-overlay);
+    .p-sidebar-header {
+      padding: 0 0.15rem 0.5rem;
+    }
+    .p-sidebar-content {
+      padding: 0;
+    }
+  }
+  // Hide scrollbar for Chrome, Safari and Opera
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
+  // Hide scrollbar for Firefox
+  scrollbar-width: none;
+
+  // Hide scrollbar for IE and Edge
+  -ms-overflow-style: none;
+}
+

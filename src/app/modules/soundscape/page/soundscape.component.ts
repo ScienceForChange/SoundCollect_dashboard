@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild, effect, inject, signal } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild, WritableSignal, effect, inject, signal } from '@angular/core';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import mapboxgl, { LngLat, LngLatBounds, Map } from 'mapbox-gl';
 import MapboxDraw from '@mapbox/mapbox-gl-draw';
@@ -42,9 +42,11 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
   public points: [number, number][] = [];
   public polylines = signal<Feature[]>([]);
   public startPoints = signal<Feature[]>([]);
+  public showMapLayers?: boolean;
   public selectedPolygon: any | undefined = undefined;
   public polygonFilter = signal<any | undefined>(undefined);
   public timeFilter = signal<TimeFilter>(TimeFilter.WHOLEDAY);
+  public layerId: string = 'light-v10';
   public mapSettings: {
     zoom: number;
     mapStyle: string;
@@ -129,6 +131,13 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
     this.observationsService.getAllObservations();
   }
 
+  public toggleShowMapLayers(): void {
+    this.showMapLayers = !this.showMapLayers;
+  }
+
+  public toggleLayerVisibility(layerId: string) {
+    this.map.setStyle('mapbox://styles/mapbox/' + layerId);
+  }
 
   ngAfterViewInit(): void {
     this.map = new Map({
@@ -151,6 +160,11 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
     });
 
     this.map.addControl(geocoder, 'top-left');
+
+    //Added the obs to map when the style is loaded or toggled
+    this.map.on('style.load', () => {
+      this.addObservationsToMap();
+    });
   }
   /*
   * Evento de carga del mapa
@@ -417,7 +431,7 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
     //La función updatedSubareaPolygon se llama cuando se actualiza un polígono
     this.map.on('draw.update', this.onDrawUpdated.bind(this));
 
-    this.addObservationsToMap();
+    // this.addObservationsToMap();
 
   }
 
