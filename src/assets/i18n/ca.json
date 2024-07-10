@@ -107,7 +107,8 @@
       "traffic": "Trànsit",
       "people": "Éssers humans",
       "nature": "Sons naturals",
-      "others": "Altres sorolls"
+      "others": "Altres sorolls",
+      "axisY": "Nombre de registres"
     },
     "quas":{
       "title": "Anàlisi de variables qualitatives - quantitatives",
