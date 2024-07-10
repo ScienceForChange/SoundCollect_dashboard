@@ -79,6 +79,9 @@
       "lessObs": "Menys observacions",
       "obsNumber": "Nombre d'observacions"
     },
+    "barChart":{
+      "yAxis": "Nombre de registres"
+    },
     "observationsNumber": {
       "total": "Nombre de registres total",
       "average": "Mitjana de registres per mes per usuari/a",

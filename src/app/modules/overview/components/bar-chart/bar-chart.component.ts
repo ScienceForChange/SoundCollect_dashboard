@@ -15,6 +15,7 @@ import {
   ObservationsDataChart,
 } from '../../../../models/observations';
 import { FormControl, FormGroup } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
 
 type EChartsOption = echarts.ComposeOption<
   GridComponentOption | BarSeriesOption
@@ -26,6 +27,8 @@ type EChartsOption = echarts.ComposeOption<
   styleUrl: './bar-chart.component.scss',
 })
 export class BarChartComponent implements OnInit, AfterViewInit {
+  private translate = inject(TranslateService);
+
   private myChart!: echarts.ECharts;
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
@@ -81,7 +84,10 @@ export class BarChartComponent implements OnInit, AfterViewInit {
         data: observations.map((obs) => obs.date),
       },
       yAxis: {
-        type: 'value',
+        name: this.translate.instant('overview.barChart.yAxis'),
+        nameLocation: 'middle',
+        nameGap: 35,
+        type: 'value'
       },
       series: [
         {
@@ -176,8 +182,11 @@ export class BarChartComponent implements OnInit, AfterViewInit {
             rotate: 45, // Optional: you can rotate labels to prevent overlapping
           },
         },
-        yAxis: {
-          type: 'value',
+        yAxis:{
+          name: this.translate.instant('overview.barChart.yAxis'),
+          nameLocation: 'middle',
+          nameGap: 35,
+          type: 'value'
         },
         series: [
           {
