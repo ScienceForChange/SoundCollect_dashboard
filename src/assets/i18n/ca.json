@@ -89,7 +89,7 @@
     "observations": "Observacions",
     "titleMenu": "Paissatge sonor",
     "map":{
-      "createFilter": "Crear filtre",
+      "createFilter": "Crear zona d'estudi",
       "editFilter": "Editar filtre",
       "deleteFilter": "Eliminar filtre"
     },
