@@ -24,6 +24,7 @@ import { ObservationInfoModalComponent } from './components/observation-info-mod
 import { SharedComponentsModule } from '../../shared/shared.module';
 import { LAeqTChartComponent } from './components/laeq-tchart/laeq-tchart.component';
 import { OneThirdOctaveChartComponent } from './components/one-third-octave-chart/one-third-octave-chart.component';
+import { SoundPressureDisplayPipe } from '../../pipes/sound-pressure-display.pipe';
 
 
 @NgModule({
@@ -34,6 +35,7 @@ import { OneThirdOctaveChartComponent } from './components/one-third-octave-char
     MapLayersComponent,
     ObservationInfoModalComponent,
     LAeqTChartComponent,
+    SoundPressureDisplayPipe,
     OneThirdOctaveChartComponent,
   ],
   imports: [
