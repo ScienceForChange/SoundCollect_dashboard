@@ -55,7 +55,8 @@ export class SoundLevelsChartComponent implements OnInit, OnDestroy {
           radius: [10, '88%']
         },
         radiusAxis: {
-          max: this.max.toFixed(2),
+          max: 80,
+          // max: this.max.toFixed(2),
           z: 1,
           axisLine: {
             show: true,
@@ -162,6 +163,7 @@ export class SoundLevelsChartComponent implements OnInit, OnDestroy {
         left: 'left'
       };
 
+      console.log('this.option', this.option)
       this.chart.setOption(this.option);
     }
   }
