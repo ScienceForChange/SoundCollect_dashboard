@@ -168,8 +168,9 @@
     "tonalFrequency":{
       "title": "Gràfica d'1/3 d'octava",
       "frequency": "Freqüència (Hertz)",
-      "presure": "Pressió sonora (dB)",
-      "ponderation": "Amb onderació",
+      "presure": "Pressió sonora dB",
+      "pressurePonderation": "Pressió sonora dBA",
+      "ponderation": "Amb ponderació",
       "noPonderation": "Sense ponderació"
     },
     "temporalEvolution": {

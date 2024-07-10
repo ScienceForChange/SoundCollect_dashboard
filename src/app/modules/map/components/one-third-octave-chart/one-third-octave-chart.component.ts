@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, inject, Input, OnInit } from '@angular/core';
 import * as echarts from 'echarts/core';
 import { BarChart, PieChart } from 'echarts/charts';
 import { CanvasRenderer } from 'echarts/renderers';
@@ -7,6 +7,7 @@ import { EChartsOption } from 'echarts';
 import { Observations } from '../../../../models/observations';
 
 import { random } from 'lodash';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-one-third-octave-chart',
@@ -14,6 +15,8 @@ import { random } from 'lodash';
   styleUrl: './one-third-octave-chart.component.scss',
 })
 export class OneThirdOctaveChartComponent implements OnInit, AfterViewInit {
+  private translate = inject(TranslateService);
+
   @Input() observationSelected!: Observations;
 
   private myBarChart!: echarts.ECharts;
@@ -23,8 +26,8 @@ export class OneThirdOctaveChartComponent implements OnInit, AfterViewInit {
     color: '#FF7A1F',
   };
 
-  public totalObservationTypes:number = 0
-  private quietTypesLabel = ['Amb ponderació', 'Sense ponderació'];
+  public totalObservationTypes: number = 0;
+  private quietTypesLabel = [this.translate.instant('soundscape.tonalFrequency.ponderation'), this.translate.instant('soundscape.tonalFrequency.noPonderation')];
   private hertzLevels = [
     '50',
     '63',
@@ -65,20 +68,40 @@ export class OneThirdOctaveChartComponent implements OnInit, AfterViewInit {
     ]);
   }
 
+  private updateYAxis(event: any) {
+    let name = this.translate.instant('soundscape.tonalFrequency.presure');
+    let isWithPonderationSelected =
+      !Object.values(event.selected)[1] && Object.values(event.selected)[0];
+    if (isWithPonderationSelected)
+      name = this.translate.instant(
+        'soundscape.tonalFrequency.pressurePonderation'
+      );
+    this.options = {
+      ...this.options,
+      yAxis: {
+        name: name,
+        nameLocation: 'middle',
+        nameGap: 35,
+        type: 'value',
+      },
+    };
+    // Apply the updated options to the chart
+    this.myBarChart.setOption(this.options);
+  }
+
   ngAfterViewInit(): void {
     setTimeout(() => {
       // Access the CSS variable --blue-light
       const rootStyle = getComputedStyle(document.documentElement);
-      const blueLightColor = rootStyle
-        .getPropertyValue('--blue-light')
-        .trim();
+      const blueLightColor = rootStyle.getPropertyValue('--blue-light').trim();
       const chartDom = document.getElementById('bar-chart-container');
       this.myBarChart = echarts.init(chartDom);
       this.myBarChart.showLoading('default', this.loadingOptions);
+      this.myBarChart.on('legendselectchanged', this.updateYAxis.bind(this));
 
-      const rawData:number[][] = this.getDataFromObservations();
+      const rawData: number[][] = this.getDataFromObservations();
       for (let i = 0; i < rawData[0].length; ++i) {
-        for (let j:number = 0; j < rawData.length; ++j) {
+        for (let j: number = 0; j < rawData.length; ++j) {
           this.totalObservationTypes += rawData[j][i];
         }
       }
@@ -89,60 +112,59 @@ export class OneThirdOctaveChartComponent implements OnInit, AfterViewInit {
           label: {
             show: false,
           },
-          data: rawData[sid]
-        }
+          data: rawData[sid],
+        };
       });
-      
-    const grid = {
-      left: 50,
-      right: 50,
-      top: 100,
-      bottom: 80
-    };
-    this.options = {
-      grid,
-      legend: {
-        selectedMode: true,
-        top:40
-      },
-      xAxis: {
-        name: 'Freqüències (Hertz)',
-        nameLocation: 'middle',
-        nameGap: 55,
-        type: 'category',
-        data: this.hertzLevels,
-        axisLabel: { interval: 0, rotate: 45, fontSize: 10 , margin: 10 }
-      },
-      yAxis: {
-        name: 'Presió sonora dBA',
-        nameLocation: 'middle',
-        nameGap: 35,
-        type: 'value'
-      },
-      tooltip: {
-        trigger: 'axis',
-        axisPointer: {
-          type: 'shadow',
-          label: {
-            show: true
-          }
-        }
-      },
-      series
 
-    }
+      const grid = {
+        left: 50,
+        right: 50,
+        top: 100,
+        bottom: 80,
+      };
+      this.options = {
+        grid,
+        legend: {
+          selectedMode: true,
+          top: 40,
+        },
+        xAxis: {
+          name: this.translate.instant('soundscape.tonalFrequency.frequency'),
+          nameLocation: 'middle',
+          nameGap: 55,
+          type: 'category',
+          data: this.hertzLevels,
+          axisLabel: { interval: 0, rotate: 45, fontSize: 10, margin: 10 },
+        },
+        yAxis: {
+          name: this.translate.instant('soundscape.tonalFrequency.presure'),
+          nameLocation: 'middle',
+          nameGap: 35,
+          type: 'value',
+        },
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'shadow',
+            label: {
+              show: true,
+            },
+          },
+        },
+        series,
+      };
       this.myBarChart.hideLoading();
       this.options && this.myBarChart.setOption(this.options);
     }, 100);
   }
 
   private getDataFromObservations(): number[][] {
-    let dBLevels:number[][] = [];
+    let dBLevels: number[][] = [];
     let pond: number[] = [];
     let noPond: number[] = [];
     this.hertzLevels.forEach(() => {
-      pond.push(random(0,1000));
-      noPond.push(random(0,1000));
+      pond.push(random(0, 1000));
+      noPond.push(random(0, 1000));
     });
     dBLevels.push(pond);
     dBLevels.push(noPond);
