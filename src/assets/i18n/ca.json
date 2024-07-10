@@ -81,7 +81,7 @@
     },
     "observationsNumber": {
       "total": "Nombre de registres total",
-      "average": "Mitjana de registres per usuari/a",
+      "average": "Mitjana de registres per mes per usuari/a",
       "users": "Nombre total d'usuaris/es"
     }
   },
