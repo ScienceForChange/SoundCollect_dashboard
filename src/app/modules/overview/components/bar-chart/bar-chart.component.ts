@@ -28,6 +28,7 @@ type EChartsOption = echarts.ComposeOption<
 })
 export class BarChartComponent implements OnInit, AfterViewInit {
   private translate = inject(TranslateService);
+  private observationService: ObservationsService = inject(ObservationsService);
 
   private myChart!: echarts.ECharts;
   @HostListener('window:resize', ['$event'])
@@ -46,7 +47,9 @@ export class BarChartComponent implements OnInit, AfterViewInit {
     const firstDayOfWeek = new Date(
       today.setDate(today.getDate() - today.getDay() + 1 + i)
     );
-    return firstDayOfWeek.toLocaleDateString('ca-ES', { weekday: 'long' });
+    return firstDayOfWeek.toLocaleDateString(this.translate.currentLang, {
+      weekday: 'long',
+    });
   });
   private observations: ObservationsDataChart[] = [];
   private obsFiltered: ObservationsDataChart[] = [];
@@ -59,7 +62,6 @@ export class BarChartComponent implements OnInit, AfterViewInit {
     text: 'Carregant...',
     color: '#FF7A1F',
   };
-  private observationService: ObservationsService = inject(ObservationsService);
   public filtersForm: FormGroup = new FormGroup({
     daysFilter: new FormControl([this.lastDay30, new Date()], []),
   });
@@ -77,17 +79,17 @@ export class BarChartComponent implements OnInit, AfterViewInit {
             if (isBeforeToday && isAfterLastDay30) return true;
             return false;
           });
-          const dataXaxis = this.obsFiltered.map((obs) => obs.date)
-          const dataSerie = this.obsFiltered.map((obs) => obs.count)
+          const dataXaxis = this.obsFiltered.map((obs) => obs.date);
+          const dataSerie = this.obsFiltered.map((obs) => obs.count);
 
-          this.updateChart(dataXaxis,dataSerie);
+          this.updateChart(dataXaxis, dataSerie);
           this.timeFilterSelected = this.timesFilter.DELETE;
         }
       }
     );
   }
 
-  private updateChart(xAxis: string[],serieData:number[]) {
+  private updateChart(xAxis: string[], serieData: number[]) {
     this.options = {
       xAxis: {
         type: 'category',
@@ -123,7 +125,7 @@ export class BarChartComponent implements OnInit, AfterViewInit {
       return false;
     });
     let filteredObsByTime = obsFiltered;
-    let dataXaxis: string[]= [];
+    let dataXaxis: string[] = [];
     let dataSerie: number[] = [];
     if (filter !== this.timesFilter.DELETE) {
       if (filter === this.timesFilter.WEEK) {
@@ -160,12 +162,12 @@ export class BarChartComponent implements OnInit, AfterViewInit {
           }).length;
         });
       }
-      if(filter === this.timesFilter.YEAR){
-        dataXaxis = obsFiltered.reduce((acc,curr) => {
-          const year = curr.completeDay.getFullYear()
+      if (filter === this.timesFilter.YEAR) {
+        dataXaxis = obsFiltered.reduce((acc, curr) => {
+          const year = curr.completeDay.getFullYear();
           if (acc.includes(year)) return acc;
           return [...acc, year];
-        },[])
+        }, []);
         dataSerie = dataXaxis.map((year) => {
           return obsFiltered.filter((obs) => {
             const obsMonth = obs.completeDay.getFullYear();
@@ -174,8 +176,8 @@ export class BarChartComponent implements OnInit, AfterViewInit {
         });
       }
     } else {
-      dataXaxis = filteredObsByTime.map((obs) => obs.date)
-      dataSerie = filteredObsByTime.map((obs) => obs.count)
+      dataXaxis = filteredObsByTime.map((obs) => obs.date);
+      dataSerie = filteredObsByTime.map((obs) => obs.count);
     }
     console.log('dataXaxis', dataXaxis);
     console.log('dataSerie', dataSerie);
@@ -197,7 +199,33 @@ export class BarChartComponent implements OnInit, AfterViewInit {
         return false;
       });
       this.obsFiltered = arr30DaysBefore;
+      // Generate labels for months
+      let lastMonth: number | null = null;
+      const months: any[] = [];
 
+      arr30DaysBefore
+        .map((obs) => obs.completeDay)
+        .forEach((date, index) => {
+          const currentMonth = new Date(date).getMonth();
+          if (currentMonth !== lastMonth) {
+            // Place the month label in the middle of the month's data or at the first occurrence
+            // Generate month and year separately and then combine with a "-"
+            const month = new Date(date).toLocaleDateString(
+              this.translate.currentLang,
+              { month: 'long' }
+            );
+            const year = new Date(date).toLocaleDateString(
+              this.translate.currentLang,
+              { year: 'numeric' }
+            );
+            const monthLabel = `${month.charAt(0).toUpperCase()+month.slice(1)} / ${year}`; // Combine month and year with a "-"
+            months.push(monthLabel);
+            lastMonth = currentMonth;
+          } else {
+            months.push('');
+          }
+        });
+      console.log(months);
       this.options = {
         tooltip: {
           trigger: 'axis',
@@ -208,14 +236,29 @@ export class BarChartComponent implements OnInit, AfterViewInit {
             return params[0].data + ' ';
           },
         },
-        xAxis: {
-          type: 'category',
-          data: arr30DaysBefore.map((obs) => obs.date),
-          axisLabel: {
-            interval: 0, // This forces displaying all labels
-            rotate: 45, // Optional: you can rotate labels to prevent overlapping
+        xAxis: [
+          {
+            type: 'category',
+            data: arr30DaysBefore.map((obs) => obs.completeDay.getDate()),
+            axisLabel: {
+              interval: 0, // This forces displaying all labels
+              rotate: 0, // Optional: you can rotate labels to prevent overlapping
+            },
+            position: 'bottom',
           },
-        },
+          {
+            type: 'category',
+            data: months,
+            position: 'bottom',
+            offset: 30,
+            axisLine: {
+              show: false, // This will not show the xAxis line
+            },
+            axisTick: {
+              show: false, // This will not show the tick marks
+            },
+          },
+        ],
         yAxis: {
           name: this.translate.instant('overview.barChart.yAxis'),
           nameLocation: 'middle',
