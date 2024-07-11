@@ -76,7 +76,7 @@ export class TagCloudComponent implements OnInit, OnDestroy{
     this.text = "";
 
     this.observations.forEach((obs: Observations) => {
-      this.text = this.text + " " + obs.attributes.protection.toLocaleLowerCase();
+      if(obs.attributes.protection !== null) this.text = this.text + " " + obs.attributes.protection.toLocaleLowerCase();
     })
 
   }
