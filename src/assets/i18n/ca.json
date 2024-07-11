@@ -146,6 +146,12 @@
       "clean": "Net",
       "veryClean": "Molt net",
 
+      "veryBad": "Molt dolent",
+      "bad": "Dolent",
+      "medium": "Mitjà",
+      "good": "Bé",
+      "verGood": "Molt bé",
+
       "notAccessible": "Poc accessible",
       "accessible": "Accessible",
       "veryAccessible": "Molt accessible",
