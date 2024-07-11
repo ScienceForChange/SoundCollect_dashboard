@@ -46,19 +46,25 @@ export class PerceptionChartComponent implements OnInit, OnDestroy{
       this.translations.instant('soundscape.perception.veryQuiet')
     ],
     [
-      this.translations.instant('soundscape.perception.dirty'),
-      this.translations.instant('soundscape.perception.clean'),
-      this.translations.instant('soundscape.perception.veryClean')
+      this.translations.instant('soundscape.perception.veryBad'),
+      this.translations.instant('soundscape.perception.bad'),
+      this.translations.instant('soundscape.perception.medium'),
+      this.translations.instant('soundscape.perception.good'),
+      this.translations.instant('soundscape.perception.verGood')
     ],
     [
-      this.translations.instant('soundscape.perception.notAccessible'),
-      this.translations.instant('soundscape.perception.accessible'),
-      this.translations.instant('soundscape.perception.veryAccessible')
+      this.translations.instant('soundscape.perception.veryBad'),
+      this.translations.instant('soundscape.perception.bad'),
+      this.translations.instant('soundscape.perception.medium'),
+      this.translations.instant('soundscape.perception.good'),
+      this.translations.instant('soundscape.perception.verGood')
     ],
     [
-      this.translations.instant('soundscape.perception.notSafe'),
-      this.translations.instant('soundscape.perception.safe'),
-      this.translations.instant('soundscape.perception.verySafe')
+      this.translations.instant('soundscape.perception.veryBad'),
+      this.translations.instant('soundscape.perception.bad'),
+      this.translations.instant('soundscape.perception.medium'),
+      this.translations.instant('soundscape.perception.good'),
+      this.translations.instant('soundscape.perception.verGood')
     ]
   ];
 
@@ -109,24 +115,34 @@ export class PerceptionChartComponent implements OnInit, OnDestroy{
     let cleanliness: number[] = Array.from({length: this.legendsLabels[1].length}, () => 0);
     let accessibility: number[] = Array.from({length: this.legendsLabels[2].length}, () => 0);
     let safety: number[] = Array.from({length: this.legendsLabels[3].length}, () => 0);
+    //let numeric = 0;
+    //let noNumeric = 0;
+
 
     this.observations.forEach(obs => {
+
       if(Number(obs.attributes.quiet)){
         quiet[Number(obs.attributes.quiet) - 1] ++;
       }
 
-      if(Number(obs.attributes.cleanliness) && Number(obs.attributes.cleanliness) <= 3){
+
+      if(Number(obs.attributes.cleanliness)){
         cleanliness[Number(obs.attributes.cleanliness) - 1] ++;
       }
 
-      if(Number(obs.attributes.accessibility) && Number(obs.attributes.accessibility) <= 3){
+      if(Number(obs.attributes.accessibility)){
         accessibility[Number(obs.attributes.accessibility) - 1]++;
       }
 
-      if(Number(obs.attributes.safety) && Number(obs.attributes.safety) <= 3){
+      if(Number(obs.attributes.safety)){
         safety[Number(obs.attributes.safety) - 1] ++;
       }
+
     });
+
+    //console.log("Total de observaciones" ,this.observations.length);
+    //console.log("Observacion con valor númerico", numeric);
+    //console.log("Observacion con valor NO númerico", noNumeric);
 
     data.push(quiet);
     data.push(cleanliness);

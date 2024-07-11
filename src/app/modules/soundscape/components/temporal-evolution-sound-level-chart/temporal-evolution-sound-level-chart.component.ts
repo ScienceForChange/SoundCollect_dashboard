@@ -8,8 +8,8 @@ import {
   inject,
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-
-import type { Observations } from '../../../../models/observations';
+import { Subscription } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 
 import * as echarts from 'echarts/core';
 import {
@@ -26,10 +26,11 @@ import { CandlestickChart, CandlestickSeriesOption } from 'echarts/charts';
 import { CanvasRenderer } from 'echarts/renderers';
 import { CallbackDataParams } from 'echarts/types/dist/shared';
 import { SeriesOption } from 'echarts';
+
+import type { Observations } from '../../../../models/observations';
 import energeticAvg from '../../../../../utils/energeticAvg';
 import { ObservationsService } from '../../../../services/observations/observations.service';
-import { Subscription } from 'rxjs';
-import { TranslateService } from '@ngx-translate/core';
+
 
 type EChartsOption = echarts.ComposeOption<
   | GridComponentOption
@@ -94,6 +95,11 @@ const colors: Colors = {
   },
 };
 
+//I create this global variables to be able to pass the translation to
+//Tooltip of the chart
+let hourWord = ''
+let numOfObsWord = ''
+
 @Component({
   selector: 'app-temporal-evolution-sound-level-chart',
   templateUrl: './temporal-evolution-sound-level-chart.component.html',
@@ -127,6 +133,9 @@ export class TemporalEvolutionSoundLevelChartComponent
   public filterState!: string;
 
   ngOnInit(): void {
+    hourWord = this.translations.instant('soundscape.temporalEvolution.tooltip.hour')
+    numOfObsWord = this.translations.instant('soundscape.temporalEvolution.tooltip.numObs')
+
     echarts.use([
       GridComponent,
       CandlestickChart,
@@ -295,8 +304,9 @@ export class TemporalEvolutionSoundLevelChartComponent
         curr.pop();
         if (!acc[hour]) {
           acc[hour] = [curr as number[]];
+        } else {
+          acc[hour].push(curr as number[]);
         }
-        acc[hour].push(curr as number[]);
         return acc;
       },
       {}
@@ -320,7 +330,7 @@ export class TemporalEvolutionSoundLevelChartComponent
       const avgLAmax = energeticAvg(LAmax);
       const avgLeq = energeticAvg(Leq);
 
-      const avg = [avgL90, avgL10, avgLAmin, avgLAmax, avgLeq];
+      const avg = [avgL90, avgL10, avgLAmin, avgLAmax, avgLeq, data.length];
 
       avgByHour[keyOfHours] = avg;
     }
@@ -473,9 +483,11 @@ export class TemporalEvolutionSoundLevelChartComponent
           const LAmin = data[3];
           const LAmax = data[4];
           const Leq = data[5];
+          const numOfObs = data[6]
           const html = `
             <b>${p.seriesName}</b> <br>
-            Hora: ${date} <br>
+            ${hourWord}: ${date} <br>
+            ${numOfObsWord}: ${numOfObs} <br>
             LAeq: ${Leq} <br>
             L10: ${L10} <br>
             L90: ${L90} <br>
