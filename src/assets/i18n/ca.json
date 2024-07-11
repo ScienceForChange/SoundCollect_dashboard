@@ -189,7 +189,11 @@
       "morning": "Dia",
       "afternoon": "Vespre",
       "night": "Nit",
-      "pressureLevel": "Nivell de pressió sonora (dBA)"
+      "pressureLevel": "Nivell de pressió sonora (dBA)",
+      "tooltip":{
+        "hour":"Hora",
+        "numObs":"Observacions"
+      }
     }
   },
   "login":{
