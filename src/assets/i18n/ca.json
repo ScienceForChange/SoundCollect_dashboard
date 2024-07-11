@@ -68,8 +68,12 @@
       "title": "Tipus de mapa",
       "standard": "Estandar",
       "satellite": "Satèl·lit"
+    },
+    "laeqtChart":{
+      "axisX": "Temps (segons)",
+      "axisY": "Nivell de pressió sonora (dBA)"
     }
-  },
+    },
   "overview":{
     "observations": "Resum",
     "titleMenu": "Resum",
