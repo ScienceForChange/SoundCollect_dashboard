@@ -200,32 +200,20 @@ export class BarChartComponent implements OnInit, AfterViewInit {
       });
       this.obsFiltered = arr30DaysBefore;
       // Generate labels for months
-      let lastMonth: number | null = null;
-      const months: any[] = [];
+      // let lastMonth: number | null = null;
+      // const months: string[] = arr30DaysBefore
+      //   .map((obs) => {
+      //     const month = obs.completeDay.toLocaleDateString(
+      //     this.translate.currentLang,
+      //     { month: 'long' }
+      //   )
+      //   const year = obs.completeDay.getFullYear()
+      //   const monthLabel = `${month.charAt(0).toUpperCase()+month.slice(1)} / ${year}`;
+      //   return monthLabel
+      // })
+        
 
-      arr30DaysBefore
-        .map((obs) => obs.completeDay)
-        .forEach((date, index) => {
-          const currentMonth = new Date(date).getMonth();
-          if (currentMonth !== lastMonth) {
-            // Place the month label in the middle of the month's data or at the first occurrence
-            // Generate month and year separately and then combine with a "-"
-            const month = new Date(date).toLocaleDateString(
-              this.translate.currentLang,
-              { month: 'long' }
-            );
-            const year = new Date(date).toLocaleDateString(
-              this.translate.currentLang,
-              { year: 'numeric' }
-            );
-            const monthLabel = `${month.charAt(0).toUpperCase()+month.slice(1)} / ${year}`; // Combine month and year with a "-"
-            months.push(monthLabel);
-            lastMonth = currentMonth;
-          } else {
-            months.push('');
-          }
-        });
-      console.log(months);
+      // console.log(months);
       this.options = {
         tooltip: {
           trigger: 'axis',
@@ -239,25 +227,25 @@ export class BarChartComponent implements OnInit, AfterViewInit {
         xAxis: [
           {
             type: 'category',
-            data: arr30DaysBefore.map((obs) => obs.completeDay.getDate()),
+            data: arr30DaysBefore.map((obs) => obs.date),
             axisLabel: {
               interval: 0, // This forces displaying all labels
-              rotate: 0, // Optional: you can rotate labels to prevent overlapping
+              rotate: 45, // Optional: you can rotate labels to prevent overlapping
             },
             position: 'bottom',
           },
-          {
-            type: 'category',
-            data: months,
-            position: 'bottom',
-            offset: 30,
-            axisLine: {
-              show: false, // This will not show the xAxis line
-            },
-            axisTick: {
-              show: false, // This will not show the tick marks
-            },
-          },
+          // {
+          //   type: 'category',
+          //   data: months,
+          //   position: 'bottom',
+          //   offset: 30,
+          //   axisLine: {
+          //     show: false, // This will not show the xAxis line
+          //   },
+          //   axisTick: {
+          //     show: false, // This will not show the tick marks
+          //   },
+          // },
         ],
         yAxis: {
           name: this.translate.instant('overview.barChart.yAxis'),
