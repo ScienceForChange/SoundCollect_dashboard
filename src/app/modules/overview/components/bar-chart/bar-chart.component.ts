@@ -111,7 +111,6 @@ export class BarChartComponent implements OnInit, AfterViewInit {
     // let dayOfYear = (today.valueOf() - yearStart.valueOf() + 1) / 86400000;
     const day = new Intl.DateTimeFormat('ca', { weekday: 'long' }).format(date);
     return day;
-    console.log('dayOfYear', day);
     // return Math.ceil(dayOfYear / 7);
   }
 
@@ -179,8 +178,7 @@ export class BarChartComponent implements OnInit, AfterViewInit {
       dataXaxis = filteredObsByTime.map((obs) => obs.date);
       dataSerie = filteredObsByTime.map((obs) => obs.count);
     }
-    console.log('dataXaxis', dataXaxis);
-    console.log('dataSerie', dataSerie);
+
     this.obsFiltered = filteredObsByTime;
     this.updateChart(dataXaxis, dataSerie);
     this.timeFilterSelected = filter;

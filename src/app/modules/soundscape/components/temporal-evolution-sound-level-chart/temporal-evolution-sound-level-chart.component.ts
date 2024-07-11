@@ -467,7 +467,7 @@ export class TemporalEvolutionSoundLevelChartComponent
           let p = params as CallbackDataParams;
           let values: string[] = [];
           const data = p.data as number[];
-          const date = p.name;
+          const date = p.name+':00';
           const L90 = data[1];
           const L10 = data[2];
           const LAmin = data[3];
@@ -498,11 +498,15 @@ export class TemporalEvolutionSoundLevelChartComponent
       xAxis: {
         data: hours,
         name: this.translations.instant('soundscape.temporalEvolution.hours'),
+        nameGap: 35,
+        nameLocation: 'middle',
       },
       yAxis: {
         name: this.translations.instant(
           'soundscape.temporalEvolution.pressureLevel'
         ),
+        nameLocation: 'middle',
+        nameGap: 35,
       },
       series: [
         {
