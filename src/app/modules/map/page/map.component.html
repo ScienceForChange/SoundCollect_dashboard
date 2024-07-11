@@ -6,9 +6,11 @@
 />
 <app-map-filters [showFilters]="showFilters" [isFilterActive]="activeFilters" />
 <app-map-layers [showMapLayers]="showMapLayers" />
-<app-observation-info-modal
-  [isOpen]="isOpenObservationInfoModal"
-  [observationSelected]="observationSelected"
-  (hideModal)="hideModal()"
-/>
+@if(isOpenObservationInfoModal){
+  <app-observation-info-modal
+    [isOpen]="isOpenObservationInfoModal"
+    [observationSelected]="observationSelected"
+    (hideModal)="hideModal()"
+  />
+}
 <div #mapDiv class="map-container"></div>

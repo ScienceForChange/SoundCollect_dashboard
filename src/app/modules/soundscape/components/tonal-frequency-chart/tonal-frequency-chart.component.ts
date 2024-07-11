@@ -40,6 +40,25 @@ export class TonalFrequencyChartComponent {
       this.observations = observations;
       this.updateChart();
     });
+    this.chart.on('legendselectchanged', this.updateYAxis.bind(this))
+
+  }
+
+  private updateYAxis(event:any){
+      let name = this.translate.instant('soundscape.tonalFrequency.presure');
+      let isWithPonderationSelected= !Object.values(event.selected)[1] && Object.values(event.selected)[0]
+      if(isWithPonderationSelected) name = this.translate.instant('soundscape.tonalFrequency.pressurePonderation')
+      this.option = {
+        ...this.option,
+        yAxis: {
+          name: name,
+          nameLocation: 'middle',
+          nameGap: 35,
+          type: 'value'
+        },
+  }
+  // Apply the updated options to the chart
+  this.chart.setOption(this.option);
   }
 
   private updateChart(): void {

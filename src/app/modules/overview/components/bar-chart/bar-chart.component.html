@@ -3,6 +3,7 @@
     <form [formGroup]="filtersForm" class="flex flex-column gap-2">
       <p-calendar
         formControlName="daysFilter"
+        readonlyInput
         [showIcon]="true"
         dateFormat="dd-mm-yy"
         [panelStyleClass]="'card p-0'"

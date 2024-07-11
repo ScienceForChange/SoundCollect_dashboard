@@ -7,10 +7,11 @@
   [closeOnEscape]="true"
 >
   <form [formGroup]="filtersForm" class="flex flex-column p-1 pt-4 gap-2">
+  <!-- Filtro dias -->
     <div class="flex flex-column">
       <p-checkbox
         formControlName="days"
-        label="{{'map.filters.days' | translate}}"
+        label="{{ 'map.filters.days' | translate }}"
         [binary]="true"
         [class]="'flex justify-content-between'"
       />
@@ -24,10 +25,11 @@
         *ngIf="filtersForm.value.days"
       />
     </div>
+    <!-- Filtro de tiempo -->
     <div class="flex flex-column">
       <p-checkbox
         formControlName="hours"
-        label="{{'map.filters.hourRange' | translate}}"
+        label="{{ 'map.filters.hourRange' | translate }}"
         [binary]="true"
         [class]="'flex justify-content-between'"
       />
@@ -38,8 +40,7 @@
         <small class="text-center mb-2">
           @if(filtersForm.value.hoursFilter[0] ===
           filtersForm.value.hoursFilter[1]){
-          {{ filtersForm.value.hoursFilter[0] }}:00h }
-          @else {
+          {{ filtersForm.value.hoursFilter[0] }}:00h } @else {
           {{ filtersForm.value.hoursFilter[0] }}:00h -
           {{ filtersForm.value.hoursFilter[1] }}:00h }
         </small>
@@ -53,10 +54,11 @@
         />
       </div>
     </div>
+    <!-- Filtro tipos de sonido -->
     <div class="flex flex-column">
       <p-checkbox
         formControlName="type"
-        label="{{'map.filters.soundTypes' | translate}}"
+        label="{{ 'map.filters.soundTypes' | translate }}"
         [binary]="true"
         [class]="'flex justify-content-between'"
       />
@@ -74,11 +76,37 @@
         />
         }
       </div>
+      <!-- Filtro pression sonora -->
+      <div class="flex flex-column">
+        <p-checkbox
+          formControlName="soundPressure"
+          label="{{ 'map.filters.pressure' | translate }}"
+          [binary]="true"
+          [class]="'flex justify-content-between'"
+        />
+        <div
+          class="card mt-3 mb-4 p-3 gap-2 flex flex-column filter"
+          *ngIf="filtersForm.value.soundPressure"
+        >
+          <small class="text-center mb-2">
+            {{ filtersForm.value.soundPressureFilter | soundPressureDisplay }}
+          </small>
+          <p-slider
+            formControlName="soundPressureFilter"
+            [step]="5"
+            [min]="35"
+            [max]="80"
+            [range]="true"
+            [className]="'ml-2 mb-2 mr-2'"
+          />
+        </div>
+      </div>
     </div>
+    <!-- Filtro tipo de usuario -->
     <div class="flex flex-column">
       <p-checkbox
         formControlName="typeUser"
-        label="{{'map.filters.peopleTypes' | translate}}"
+        label="{{ 'map.filters.peopleTypes' | translate }}"
         [binary]="true"
         [class]="'flex justify-content-between'"
       />
@@ -95,31 +123,6 @@
           [class]="'flex justify-content-start'"
         />
         }
-      </div>
-    </div>
-    <div class="flex flex-column">
-      <p-checkbox
-        formControlName="soundPressure"
-        label="{{'map.filters.pressure' | translate}}"
-        [binary]="true"
-        [class]="'flex justify-content-between'"
-      />
-      <div
-        class="card mt-3 mb-4 p-3 gap-2 flex flex-column filter"
-        *ngIf="filtersForm.value.soundPressure"
-      >
-        <small class="text-center mb-2">
-          @if(filtersForm.value.soundPressureFilter === 85){ dBA >85 } @else {
-          dBA {{ filtersForm.value.soundPressureFilter }} }
-        </small>
-        <p-slider
-          formControlName="soundPressureFilter"
-          [step]="5"
-          [min]="35"
-          [max]="80"
-          [range]="true"
-          [className]="'ml-2 mb-2 mr-2'"
-        />
       </div>
     </div>
   </form>

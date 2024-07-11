@@ -81,7 +81,7 @@
     },
     "observationsNumber": {
       "total": "Nombre de registres total",
-      "average": "Mitjana de registres per usuari/a",
+      "average": "Mitjana de registres per mes per usuari/a",
       "users": "Nombre total d'usuaris/es"
     }
   },
@@ -89,7 +89,7 @@
     "observations": "Observacions",
     "titleMenu": "Paissatge sonor",
     "map":{
-      "createFilter": "Crear filtre",
+      "createFilter": "Crear zona d'estudi",
       "editFilter": "Editar filtre",
       "deleteFilter": "Eliminar filtre"
     },
@@ -107,7 +107,8 @@
       "traffic": "Trànsit",
       "people": "Éssers humans",
       "nature": "Sons naturals",
-      "others": "Altres sorolls"
+      "others": "Altres sorolls",
+      "axisY": "Nombre de registres"
     },
     "quas":{
       "title": "Anàlisi de variables qualitatives - quantitatives",
@@ -167,8 +168,9 @@
     "tonalFrequency":{
       "title": "Gràfica d'1/3 d'octava",
       "frequency": "Freqüència (Hertz)",
-      "presure": "Pressió sonora (dB)",
-      "ponderation": "Amb onderació",
+      "presure": "Pressió sonora dB",
+      "pressurePonderation": "Pressió sonora dBA",
+      "ponderation": "Amb ponderació",
       "noPonderation": "Sense ponderació"
     },
     "temporalEvolution": {

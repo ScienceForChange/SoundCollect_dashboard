@@ -20,6 +20,7 @@ import { PressureChartComponent } from './components/pressure-chart/pressure-cha
 import { QualitativeDataChartComponent } from './components/qualitative-data-chart/qualitative-data-chart.component';
 import { TagCloudComponent } from './components/tag-cloud/tag-cloud.component';
 import { TonalFrequencyChartComponent } from './components/tonal-frequency-chart/tonal-frequency-chart.component';
+import { SidebarModule } from 'primeng/sidebar';
 
 
 
@@ -47,6 +48,7 @@ import { TonalFrequencyChartComponent } from './components/tonal-frequency-chart
     ReactiveFormsModule,
     CalendarModule,
     SelectButtonModule,
+    SidebarModule
   ]
 })
 export class SoundscapeModule { }
