@@ -126,15 +126,15 @@ export class PerceptionChartComponent implements OnInit, OnDestroy{
       }
 
 
-      if(Number(obs.attributes.cleanliness) && Number(obs.attributes.cleanliness)){
+      if(Number(obs.attributes.cleanliness)){
         cleanliness[Number(obs.attributes.cleanliness) - 1] ++;
       }
 
-      if(Number(obs.attributes.accessibility) && Number(obs.attributes.accessibility)){
+      if(Number(obs.attributes.accessibility)){
         accessibility[Number(obs.attributes.accessibility) - 1]++;
       }
 
-      if(Number(obs.attributes.safety) && Number(obs.attributes.safety)){
+      if(Number(obs.attributes.safety)){
         safety[Number(obs.attributes.safety) - 1] ++;
       }
 
