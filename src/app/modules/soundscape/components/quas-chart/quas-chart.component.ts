@@ -93,13 +93,21 @@ export class QuasChartComponent implements OnInit, OnDestroy{
         nameLocation: 'middle',
         nameGap: 35,
         type: 'category',
+        nameTextStyle:{
+          fontSize: 15,
+          fontWeight:600
+        },
         data: this.dBLevels
       },
       yAxis: {
         name: this.translations.instant('soundscape.quas.obsNumber'),
         nameLocation: 'middle',
         nameGap: 35,
-        type: 'value'
+        type: 'value',
+        nameTextStyle:{
+          fontSize: 15,
+          fontWeight:600
+        }
       },
       tooltip: {
         color: true,
