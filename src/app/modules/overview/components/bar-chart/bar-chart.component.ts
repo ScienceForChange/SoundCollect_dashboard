@@ -11,7 +11,6 @@ import { BarChart, BarSeriesOption } from 'echarts/charts';
 import { CanvasRenderer } from 'echarts/renderers';
 import { ObservationsService } from '../../../../services/observations/observations.service';
 import {
-  Observations,
   ObservationsDataChart,
 } from '../../../../models/observations';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -68,7 +67,6 @@ export class BarChartComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     echarts.use([GridComponent, BarChart, CanvasRenderer]);
-    // console.log('this.daysOfWeek', this.daysOfWeek)
     this.filtersForm.valueChanges.subscribe(
       (values: { daysFilter: [Date, Date | null] }) => {
         const haveTwoDaysSelected = values.daysFilter[1] !== null;
@@ -106,12 +104,8 @@ export class BarChartComponent implements OnInit, AfterViewInit {
   }
 
   private currentWeek(date: Date) {
-    // let yearStart = new Date(date.getFullYear(), 0, 1);
-    // let today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-    // let dayOfYear = (today.valueOf() - yearStart.valueOf() + 1) / 86400000;
     const day = new Intl.DateTimeFormat('ca', { weekday: 'long' }).format(date);
     return day;
-    // return Math.ceil(dayOfYear / 7);
   }
 
   public timeFilter(filter: string) {
@@ -133,13 +127,14 @@ export class BarChartComponent implements OnInit, AfterViewInit {
           return [...acc, this.currentWeek(curr.completeDay)];
         }, []);
         const series = daysOfWeekSelected.map((day) => {
-          return obsFiltered.filter(
+          const groupOfDaySelected = obsFiltered.filter(
             (obs) => this.currentWeek(obs.completeDay) === day
-          ).length;
+          );
+          return groupOfDaySelected.reduce((acc, curr) => acc + curr.count, 0);
         });
         dataXaxis = this.daysOfWeek;
         dataSerie = this.daysOfWeek.map((count) => {
-          const index = dataXaxis.indexOf(count);
+          const index = daysOfWeekSelected.indexOf(count);
           return series[index];
         });
       }
@@ -155,10 +150,11 @@ export class BarChartComponent implements OnInit, AfterViewInit {
           )
         );
         dataSerie = months.map((month) => {
-          return obsFiltered.filter((obs) => {
+          const groupOfMonthsSelected = obsFiltered.filter((obs) => {
             const obsMonth = obs.completeDay.getMonth();
             return obsMonth === month;
-          }).length;
+          })
+          return groupOfMonthsSelected.reduce((acc, curr) => acc + curr.count, 0);
         });
       }
       if (filter === this.timesFilter.YEAR) {
@@ -168,17 +164,17 @@ export class BarChartComponent implements OnInit, AfterViewInit {
           return [...acc, year];
         }, []);
         dataSerie = dataXaxis.map((year) => {
-          return obsFiltered.filter((obs) => {
+          const groupOfYearsSelected = obsFiltered.filter((obs) => {
             const obsMonth = obs.completeDay.getFullYear();
             return obsMonth === +year;
-          }).length;
+          })
+          return groupOfYearsSelected.reduce((acc, curr) => acc + curr.count, 0);
         });
       }
     } else {
       dataXaxis = filteredObsByTime.map((obs) => obs.date);
       dataSerie = filteredObsByTime.map((obs) => obs.count);
     }
-
     this.obsFiltered = filteredObsByTime;
     this.updateChart(dataXaxis, dataSerie);
     this.timeFilterSelected = filter;
@@ -197,21 +193,6 @@ export class BarChartComponent implements OnInit, AfterViewInit {
         return false;
       });
       this.obsFiltered = arr30DaysBefore;
-      // Generate labels for months
-      // let lastMonth: number | null = null;
-      // const months: string[] = arr30DaysBefore
-      //   .map((obs) => {
-      //     const month = obs.completeDay.toLocaleDateString(
-      //     this.translate.currentLang,
-      //     { month: 'long' }
-      //   )
-      //   const year = obs.completeDay.getFullYear()
-      //   const monthLabel = `${month.charAt(0).toUpperCase()+month.slice(1)} / ${year}`;
-      //   return monthLabel
-      // })
-        
-
-      // console.log(months);
       this.options = {
         tooltip: {
           trigger: 'axis',
@@ -232,18 +213,6 @@ export class BarChartComponent implements OnInit, AfterViewInit {
             },
             position: 'bottom',
           },
-          // {
-          //   type: 'category',
-          //   data: months,
-          //   position: 'bottom',
-          //   offset: 30,
-          //   axisLine: {
-          //     show: false, // This will not show the xAxis line
-          //   },
-          //   axisTick: {
-          //     show: false, // This will not show the tick marks
-          //   },
-          // },
         ],
         yAxis: {
           name: this.translate.instant('overview.barChart.yAxis'),
