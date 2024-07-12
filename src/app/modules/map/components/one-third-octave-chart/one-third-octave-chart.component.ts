@@ -163,8 +163,8 @@ export class OneThirdOctaveChartComponent implements OnInit, AfterViewInit {
     let pond: number[] = [];
     let noPond: number[] = [];
     this.hertzLevels.forEach(() => {
-      pond.push(random(0, 1000));
-      noPond.push(random(0, 1000));
+      pond.push(random(20, 80));
+      noPond.push(random(20, 80));
     });
     dBLevels.push(pond);
     dBLevels.push(noPond);

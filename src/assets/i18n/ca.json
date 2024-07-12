@@ -68,8 +68,12 @@
       "title": "Tipus de mapa",
       "standard": "Estandar",
       "satellite": "Satèl·lit"
+    },
+    "laeqtChart":{
+      "axisX": "Temps (segons)",
+      "axisY": "Nivell de pressió sonora (dBA)"
     }
-  },
+    },
   "overview":{
     "observations": "Resum",
     "titleMenu": "Resum",
@@ -146,6 +150,12 @@
       "clean": "Net",
       "veryClean": "Molt net",
 
+      "veryBad": "Molt dolent",
+      "bad": "Dolent",
+      "medium": "Mitjà",
+      "good": "Bé",
+      "verGood": "Molt bé",
+
       "notAccessible": "Poc accessible",
       "accessible": "Accessible",
       "veryAccessible": "Molt accessible",
@@ -189,7 +199,11 @@
       "morning": "Dia",
       "afternoon": "Vespre",
       "night": "Nit",
-      "pressureLevel": "Nivell de pressió sonora (dBA)"
+      "pressureLevel": "Nivell de pressió sonora (dBA)",
+      "tooltip":{
+        "hour":"Hora",
+        "numObs":"Observacions"
+      }
     }
   },
   "login":{

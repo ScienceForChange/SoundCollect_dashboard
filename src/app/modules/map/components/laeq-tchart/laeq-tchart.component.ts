@@ -1,6 +1,7 @@
 import {
   AfterViewInit,
   Component,
+  inject,
   Input,
   OnInit,
 } from '@angular/core';
@@ -11,6 +12,7 @@ import { LineChart, LineSeriesOption } from 'echarts/charts';
 import { UniversalTransition } from 'echarts/features';
 import { CanvasRenderer } from 'echarts/renderers';
 import { Observations } from '../../../../models/observations';
+import { TranslateService } from '@ngx-translate/core';
 
 type EChartsOption = echarts.ComposeOption<
   GridComponentOption | LineSeriesOption
@@ -22,12 +24,14 @@ type EChartsOption = echarts.ComposeOption<
   styleUrl: './laeq-tchart.component.scss',
 })
 export class LAeqTChartComponent implements OnInit, AfterViewInit {
+  private translations = inject(TranslateService);
+
   @Input() observationSelected!: Observations;
 
   private myLineChart!: echarts.ECharts;
   private options: EChartsOption;
   private loadingOptions = {
-    text: 'Carregant...',
+    text: this.translations.instant('app.loading'),
     color: '#FF7A1F',
   };
 
@@ -57,10 +61,16 @@ export class LAeqTChartComponent implements OnInit, AfterViewInit {
         this.options = {
           xAxis: {
             type: 'category',
+            name: this.translations.instant('map.laeqtChart.axisX'),
+            nameGap: 35,
+            nameLocation: 'middle',
             data: seconds,
           },
           yAxis: {
             type: 'value',
+            name: this.translations.instant('map.laeqtChart.axisY'),
+            nameGap: 35,
+            nameLocation: 'middle',
           },
           series: [
             {
