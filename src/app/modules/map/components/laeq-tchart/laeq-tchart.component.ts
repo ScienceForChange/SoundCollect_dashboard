@@ -65,12 +65,20 @@ export class LAeqTChartComponent implements OnInit, AfterViewInit {
             nameGap: 35,
             nameLocation: 'middle',
             data: seconds,
+            nameTextStyle:{
+              fontSize: 15,
+              fontWeight:600
+            }
           },
           yAxis: {
             type: 'value',
             name: this.translations.instant('map.laeqtChart.axisY'),
             nameGap: 35,
             nameLocation: 'middle',
+            nameTextStyle:{
+              fontSize: 15,
+              fontWeight:600
+            }
           },
           series: [
             {
