@@ -76,30 +76,30 @@
         />
         }
       </div>
-      <!-- Filtro pression sonora -->
-      <div class="flex flex-column">
-        <p-checkbox
-          formControlName="soundPressure"
-          label="{{ 'map.filters.pressure' | translate }}"
-          [binary]="true"
-          [class]="'flex justify-content-between'"
+    </div>
+    <!-- Filtro pression sonora -->
+    <div class="flex flex-column">
+      <p-checkbox
+        formControlName="soundPressure"
+        label="{{ 'map.filters.pressure' | translate }}"
+        [binary]="true"
+        [class]="'flex justify-content-between'"
+      />
+      <div
+        class="card mt-3 mb-4 p-3 gap-2 flex flex-column filter"
+        *ngIf="filtersForm.value.soundPressure"
+      >
+        <small class="text-center mb-2">
+          {{ filtersForm.value.soundPressureFilter | soundPressureDisplay }}
+        </small>
+        <p-slider
+          formControlName="soundPressureFilter"
+          [step]="5"
+          [min]="35"
+          [max]="80"
+          [range]="true"
+          [className]="'ml-2 mb-2 mr-2'"
         />
-        <div
-          class="card mt-3 mb-4 p-3 gap-2 flex flex-column filter"
-          *ngIf="filtersForm.value.soundPressure"
-        >
-          <small class="text-center mb-2">
-            {{ filtersForm.value.soundPressureFilter | soundPressureDisplay }}
-          </small>
-          <p-slider
-            formControlName="soundPressureFilter"
-            [step]="5"
-            [min]="35"
-            [max]="80"
-            [range]="true"
-            [className]="'ml-2 mb-2 mr-2'"
-          />
-        </div>
       </div>
     </div>
     <!-- Filtro tipo de usuario -->
