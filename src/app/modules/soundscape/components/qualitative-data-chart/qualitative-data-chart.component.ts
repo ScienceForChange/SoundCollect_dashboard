@@ -113,6 +113,10 @@ export class QualitativeDataChartComponent implements AfterViewInit {
         name: this.translate.instant('soundscape.quas.activityLevel'),
         nameLocation: 'middle',
         nameGap: 35,
+        nameTextStyle:{
+          fontSize: 15,
+          fontWeight:600
+        }
       },
       yAxis: {
         min: -1,
@@ -120,6 +124,10 @@ export class QualitativeDataChartComponent implements AfterViewInit {
         name: this.translate.instant('soundscape.quas.pleasantnessLevel'),
         nameLocation: 'middle',
         nameGap: 35,
+        nameTextStyle:{
+          fontSize: 15,
+          fontWeight:600
+        }
       },
       tooltip: {
         position: 'top'

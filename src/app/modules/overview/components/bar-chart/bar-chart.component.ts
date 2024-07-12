@@ -250,6 +250,10 @@ export class BarChartComponent implements OnInit, AfterViewInit {
           nameLocation: 'middle',
           nameGap: 35,
           type: 'value',
+          nameTextStyle:{
+            fontSize: 15,
+            fontWeight:600
+          }
         },
         series: [
           {
