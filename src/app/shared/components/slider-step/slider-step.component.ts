@@ -14,7 +14,7 @@ export class SliderStepComponent {
     const slider = this.el.nativeElement.querySelector('.p-slider');
     
     for (let i = 0; i <= numberOfSteps; i++) {
-      const marker = document.createElement('span');
+      const marker = document.createElement('div');
       marker.classList.add('step-marker');
       marker.style.position = 'absolute';
       const position = (i * step / (max - min)) * 100;
