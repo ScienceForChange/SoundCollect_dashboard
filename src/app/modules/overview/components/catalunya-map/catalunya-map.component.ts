@@ -5,6 +5,10 @@ import {
   OnInit,
   inject,
 } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+
+import { TranslateService } from '@ngx-translate/core';
+
 import * as echarts from 'echarts/core';
 import {
   TitleComponent,
@@ -21,9 +25,8 @@ import {
 } from 'echarts/components';
 import { MapChart, MapSeriesOption } from 'echarts/charts';
 import { CanvasRenderer } from 'echarts/renderers';
-import { HttpClient } from '@angular/common/http';
+
 import { ObservationsService } from '../../../../services/observations/observations.service';
-import { TranslateService } from '@ngx-translate/core';
 
 type EChartsOption = echarts.ComposeOption<
   | TitleComponentOption

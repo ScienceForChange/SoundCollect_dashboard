@@ -7,7 +7,6 @@ import { SharedComponentsModule } from './shared/shared.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { authInterceptorProviders } from './interceptor/auth.interceptor';
-import { ProfileModule } from './modules/profile/profile.module';
 import { MapModule } from './modules/map/map.module';
 import { LoginModule } from './modules/login/login.module';
 import { MessageService } from 'primeng/api';
@@ -32,7 +31,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     BrowserAnimationsModule,
     HttpClientModule,
     LoginModule,
-    ProfileModule,
     MapModule,
     SoundscapeModule,
     OverviewModule,
