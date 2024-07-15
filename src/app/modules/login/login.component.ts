@@ -1,12 +1,15 @@
-import { Component, Inject, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NavigationEnd, Router, Event } from '@angular/router';
+
 import { filter } from 'rxjs/operators';
+
+import { TranslateService } from '@ngx-translate/core';
+
+import { MessageService } from 'primeng/api';
 
 import { AuthService } from '../../services/auth/auth.service';
 
-import { MessageService } from 'primeng/api';
-import { TranslateService } from '@ngx-translate/core';
 
 export interface UserLogin {
   email: string;
