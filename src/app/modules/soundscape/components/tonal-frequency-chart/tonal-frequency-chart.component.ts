@@ -54,7 +54,8 @@ export class TonalFrequencyChartComponent {
           name: name,
           nameLocation: 'middle',
           nameGap: 35,
-          type: 'value'
+          type: 'value',
+          //cambiamos el tamaño de la letra
         },
   }
   // Apply the updated options to the chart
@@ -99,14 +100,23 @@ export class TonalFrequencyChartComponent {
       xAxis: {
         name: this.translate.instant('soundscape.tonalFrequency.frequency'),
         nameLocation: 'middle',
+        nameTextStyle:{
+          fontSize: 15,
+          fontWeight:600
+        },
         nameGap: 55,
         type: 'category',
         data: this.hertzLevels,
         axisLabel: { interval: 0, rotate: 45, fontSize: 10 , margin: 10 }
+
       },
       yAxis: {
         name: this.translate.instant('soundscape.tonalFrequency.presure'),
         nameLocation: 'middle',
+        nameTextStyle:{
+          fontSize: 15,
+          fontWeight:600
+        },
         nameGap: 35,
         type: 'value'
       },

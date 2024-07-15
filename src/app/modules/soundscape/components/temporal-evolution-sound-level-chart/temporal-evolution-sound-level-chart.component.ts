@@ -512,6 +512,10 @@ export class TemporalEvolutionSoundLevelChartComponent
         name: this.translations.instant('soundscape.temporalEvolution.hours'),
         nameGap: 35,
         nameLocation: 'middle',
+        nameTextStyle:{
+          fontSize: 15,
+          fontWeight:600
+        }
       },
       yAxis: {
         name: this.translations.instant(
@@ -519,6 +523,10 @@ export class TemporalEvolutionSoundLevelChartComponent
         ),
         nameLocation: 'middle',
         nameGap: 35,
+        nameTextStyle:{
+          fontSize: 15,
+          fontWeight:600
+        }
       },
       series: [
         {

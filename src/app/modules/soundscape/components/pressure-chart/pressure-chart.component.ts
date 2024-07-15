@@ -93,13 +93,21 @@ export class PressureChartComponent implements OnInit, OnDestroy{
         nameLocation: 'middle',
         nameGap: 35,
         type: 'category',
-        data: this.dBLevels
+        data: this.dBLevels,
+        nameTextStyle:{
+          fontSize: 15,
+          fontWeight:600
+        }
       },
       yAxis: {
         name: this.translate.instant('soundscape.pressure.obsNumber'),
         nameLocation: 'middle',
         nameGap: 35,
-        type: 'value'
+        type: 'value',
+        nameTextStyle:{
+          fontSize: 15,
+          fontWeight:600
+        }
       },
       tooltip: {
         color: true,
