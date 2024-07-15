@@ -1,4 +1,13 @@
 <section class="card">
+  <div class="flex justify-content-between align-items-center mb-5">
+    <h2></h2>
+    <app-info-modal [headerTitle]="'overview.barChart.title' | translate">
+      <div>
+        <p>{{'translateContent1' | translate}}</p>
+        <p>{{'translateContent1' | translate}}</p>
+      </div>
+    </app-info-modal>
+  </div>
   <div class="flex gap-3 align-items-center p-1 pt-4">
     <form [formGroup]="filtersForm" class="flex flex-column gap-2">
       <p-calendar

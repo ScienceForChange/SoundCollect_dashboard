@@ -7,14 +7,21 @@ import { DialogModule } from 'primeng/dialog';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { SliderStepComponent } from './components/slider-step/slider-step.component';
+import { InfoModalComponent } from './components/info-modal/info-modal.component';
 
 @NgModule({
-  declarations: [ SpinnerComponent, SliderStepComponent],
+  declarations: [
+    SpinnerComponent,
+    SliderStepComponent,
+    InfoModalComponent
+  ],
   exports: [
     IconModule,
     SpinnerComponent,
     TranslateModule,
-    SliderStepComponent
+    SliderStepComponent,
+    InfoModalComponent,
+    DialogModule,
   ],
   imports: [
     DialogModule,

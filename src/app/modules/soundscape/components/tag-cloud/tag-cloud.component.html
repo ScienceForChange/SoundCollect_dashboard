@@ -1,2 +1,14 @@
-<canvas id="tagCloud" width="500" height="500"></canvas>
+
+<div class="flex justify-content-between align-items-center mb-5">
+  <h2 class="mb-0">{{'soundscape.tagCloud.title' | translate}}</h2>
+  <app-info-modal [headerTitle]="'soundscape.tagCloud.title' | translate">
+    <div>
+      <p>{{'translateContent1' | translate}}</p>
+      <p>{{'translateContent1' | translate}}</p>
+    </div>
+  </app-info-modal>
+</div>
+<div>
+  <canvas id="tagCloud" width="500" height="500"></canvas>
+</div>
 
