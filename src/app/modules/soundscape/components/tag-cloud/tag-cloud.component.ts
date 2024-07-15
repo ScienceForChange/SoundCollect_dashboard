@@ -1,11 +1,15 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { Observations } from '../../../../models/observations';
-import { ObservationsService } from '../../../../services/observations/observations.service';
+
 import { Subscription } from 'rxjs';
+
 import * as _ from 'lodash';
+
 import 'chartjs-chart-wordcloud';
 import { Chart } from 'chart.js';
 import { WordCloudController, WordElement } from 'chartjs-chart-wordcloud';
+
+import { Observations } from '../../../../models/observations';
+import { ObservationsService } from '../../../../services/observations/observations.service';
 
 Chart.register(WordCloudController, WordElement);
 

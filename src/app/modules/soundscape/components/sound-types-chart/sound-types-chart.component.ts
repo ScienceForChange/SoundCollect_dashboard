@@ -1,13 +1,18 @@
 import { Component, HostListener, OnDestroy, OnInit, inject } from '@angular/core';
-import { Observations } from '../../../../models/observations';
+
+import { Subscription } from 'rxjs';
+
+import { TranslateService } from '@ngx-translate/core';
+
 import * as echarts from 'echarts/core';
 import { CanvasRenderer } from 'echarts/renderers';
 import { BarChart, PieChart } from 'echarts/charts';
 import { GridComponent, LegendComponent } from 'echarts/components';
+
 import { __values } from 'tslib';
+
+import { Observations } from '../../../../models/observations';
 import { ObservationsService } from '../../../../services/observations/observations.service';
-import { Subscription } from 'rxjs';
-import { TranslateService } from '@ngx-translate/core';
 
 echarts.use([GridComponent, LegendComponent, BarChart, CanvasRenderer,PieChart]);
 

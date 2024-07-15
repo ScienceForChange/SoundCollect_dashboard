@@ -5,7 +5,10 @@ import {
   OnInit,
   inject,
 } from '@angular/core';
-import { Observations } from '../../../../models/observations';
+
+import { Subscription } from 'rxjs';
+
+import * as echarts from 'echarts/core';
 import {
   PolarComponent,
   TitleComponent,
@@ -13,8 +16,8 @@ import {
 } from 'echarts/components';
 import { BarChart } from 'echarts/charts';
 import { CanvasRenderer } from 'echarts/renderers';
-import * as echarts from 'echarts/core';
-import { Subscription } from 'rxjs';
+
+import { Observations } from '../../../../models/observations';
 import { ObservationsService } from '../../../../services/observations/observations.service';
 import energeticAvg from '../../../../../utils/energeticAvg';
 

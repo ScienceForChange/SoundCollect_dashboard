@@ -1,11 +1,15 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild, WritableSignal, effect, inject, signal } from '@angular/core';
-import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
+import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild, effect, inject, signal } from '@angular/core';
+
 import mapboxgl, { LngLat, LngLatBounds, Map } from 'mapbox-gl';
+import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import MapboxDraw from '@mapbox/mapbox-gl-draw';
+
+import { Subscription } from 'rxjs';
+
+import { GeoJSONObject} from '@turf/turf';
+
 import { Observations } from '../../../models/observations';
 import { ObservationsService } from '../../../services/observations/observations.service';
-import { Subscription, min } from 'rxjs';
-import { GeoJSONObject} from '@turf/turf';
 
 export interface Feature<G extends GeoJSON.Geometry | null = GeoJSON.Geometry, P = { [name: string]: any } | null> extends GeoJSONObject {
   type: "Feature";
