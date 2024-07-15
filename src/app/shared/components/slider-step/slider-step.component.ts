@@ -1,20 +1,21 @@
-import { Component, ElementRef } from '@angular/core';
+import { AfterViewInit, Component, ElementRef,Input,ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-slider-step',
   templateUrl: './slider-step.component.html',
   styleUrl: './slider-step.component.scss'
 })
-export class SliderStepComponent {
+export class SliderStepComponent implements AfterViewInit {
   
-  constructor(private el: ElementRef) {}
+  @ViewChild('stepRange', {static:false}) el: ElementRef
+  @Input() step:number//This value is not aviable at production.
 
   private createStepMarkers(min: number, max: number, step: number): void {
     const numberOfSteps = (max - min) / step;
     const slider = this.el.nativeElement.querySelector('.p-slider');
     
     for (let i = 0; i <= numberOfSteps; i++) {
-      const marker = document.createElement('span');
+      const marker = document.createElement('div');
       marker.classList.add('step-marker');
       marker.style.position = 'absolute';
       const position = (i * step / (max - min)) * 100;
@@ -27,14 +28,13 @@ export class SliderStepComponent {
   }
   
   ngAfterViewInit(): void {
-    const sliderElement:HTMLElement = this.el.nativeElement.querySelector('[ng-reflect-step]');
-    
+    const sliderElement:HTMLElement = this.el.nativeElement.querySelector('[role="slider"]');
+
     if (sliderElement) {
-      const stepValue = parseInt(sliderElement.getAttribute('ng-reflect-step'), 10);
-      const minValue = parseInt(sliderElement.getAttribute('ng-reflect-min'), 10);
-      const maxValue = parseInt(sliderElement.getAttribute('ng-reflect-max'), 10);
+      const minValue = parseInt(sliderElement.getAttribute('aria-valuemin'), 10);
+      const maxValue = parseInt(sliderElement.getAttribute('aria-valuemax'), 10);
       
-      this.createStepMarkers(minValue, maxValue, stepValue);
+      this.createStepMarkers(minValue, maxValue, this.step);
     }
   }
 
