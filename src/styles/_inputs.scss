@@ -36,3 +36,20 @@ p-dropdownitem {
     padding: 0.5rem 0.5rem !important;
   }
 }
+
+.step-marker {
+  transform: translateX(-50%);
+  top: -3px;
+  background: var(--orange-transparency);
+  z-index: 0;
+  top:0;
+  border-radius: 100%;
+  //Same heihgt as slider applied at theme.css
+  height: 0.286rem;
+  width: 0.286rem;
+}
+.step-range{
+  .p-slider-handle{
+    z-index: 2
+  }
+}
