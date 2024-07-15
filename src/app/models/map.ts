@@ -13,25 +13,3 @@ export interface MapObservation {
   path: Segment[];
   user_level: number;
 }
-
-// export interface Geometry {
-//   type: string;
-//   coordinates: number[];
-// }
-
-// export interface Feature {
-//   id: number;
-//   type: "Feature";
-//   properties: Properties;
-//   geometry: Geometry;
-// }
-
-// export interface ObservationGeoJSON {
-//   type: 'FeatureCollection';
-//   features: Feature[];
-// }
-
-// export interface FeatureCollection {
-//   type: "FeatureCollection";
-//   features: readonly Feature[];
-// }

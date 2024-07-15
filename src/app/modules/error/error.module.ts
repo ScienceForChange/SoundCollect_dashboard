@@ -1,17 +1,19 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
+import { ButtonModule } from 'primeng/button';
+
 import { ErrorComponent } from './page/error.component';
 import { SharedComponentsModule } from '../../shared/shared.module';
-import { ButtonModule } from 'primeng/button';
 
 
 
 @NgModule({
   declarations: [ErrorComponent],
   imports: [
+    ButtonModule,
     CommonModule,
     SharedComponentsModule,
-    ButtonModule
   ]
 })
 export class ErrorModule { }

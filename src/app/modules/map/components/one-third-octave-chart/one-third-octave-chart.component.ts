@@ -1,13 +1,16 @@
 import { AfterViewInit, Component, inject, Input, OnInit } from '@angular/core';
+
+import { TranslateService } from '@ngx-translate/core';
+
+import { random } from 'lodash';
+
 import * as echarts from 'echarts/core';
 import { BarChart, PieChart } from 'echarts/charts';
 import { CanvasRenderer } from 'echarts/renderers';
 import { GridComponent, LegendComponent } from 'echarts/components';
-import { EChartsOption } from 'echarts';
+
 import { Observations } from '../../../../models/observations';
 
-import { random } from 'lodash';
-import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-one-third-octave-chart',

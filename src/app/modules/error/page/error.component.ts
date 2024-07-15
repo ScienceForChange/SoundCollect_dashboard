@@ -1,6 +1,5 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-error',
@@ -9,7 +8,6 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class ErrorComponent {
 private router = inject(Router)
-private translations = inject(TranslateService);
 
 public navigateToHome() {
   this.router.navigate(['/']);

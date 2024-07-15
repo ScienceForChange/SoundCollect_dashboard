@@ -6,13 +6,15 @@ import {
   OnInit,
 } from '@angular/core';
 
+import { TranslateService } from '@ngx-translate/core';
+
 import * as echarts from 'echarts/core';
 import { GridComponent, GridComponentOption } from 'echarts/components';
 import { LineChart, LineSeriesOption } from 'echarts/charts';
 import { UniversalTransition } from 'echarts/features';
 import { CanvasRenderer } from 'echarts/renderers';
+
 import { Observations } from '../../../../models/observations';
-import { TranslateService } from '@ngx-translate/core';
 
 type EChartsOption = echarts.ComposeOption<
   GridComponentOption | LineSeriesOption

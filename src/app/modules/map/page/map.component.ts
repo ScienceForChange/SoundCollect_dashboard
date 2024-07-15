@@ -8,11 +8,14 @@ import {
   inject,
   signal,
 } from '@angular/core';
+
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 
 import mapboxgl, { Map } from 'mapbox-gl';
-import { MapService } from '../service/map.service';
+
 import { Subscription } from 'rxjs';
+
+import { MapService } from '../service/map.service';
 import { Observations } from '../../../models/observations';
 
 @Component({

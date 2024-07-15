@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
@@ -7,10 +8,10 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { CalendarModule } from 'primeng/calendar';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { SplitButtonModule } from 'primeng/splitbutton';
+import { SidebarModule } from 'primeng/sidebar';
 
 import { SoundscapeComponent } from './page/soundscape.component';
 import { SharedComponentsModule } from '../../shared/shared.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SoundLevelsChartComponent } from './components/sound-levels-chart/sound-levels-chart.component';
 import { TemporalEvolutionSoundLevelChartComponent } from './components/temporal-evolution-sound-level-chart/temporal-evolution-sound-level-chart.component';
 import { SoundTypesChartComponent } from './components/sound-types-chart/sound-types-chart.component';
@@ -20,35 +21,34 @@ import { PressureChartComponent } from './components/pressure-chart/pressure-cha
 import { QualitativeDataChartComponent } from './components/qualitative-data-chart/qualitative-data-chart.component';
 import { TagCloudComponent } from './components/tag-cloud/tag-cloud.component';
 import { TonalFrequencyChartComponent } from './components/tonal-frequency-chart/tonal-frequency-chart.component';
-import { SidebarModule } from 'primeng/sidebar';
 
 
 
 @NgModule({
   declarations: [
-    SoundscapeComponent,
-    SoundLevelsChartComponent,
-    TemporalEvolutionSoundLevelChartComponent,
-    SoundTypesChartComponent,
-    QuasChartComponent,
     PerceptionChartComponent,
     PressureChartComponent,
     QualitativeDataChartComponent,
+    QuasChartComponent,
+    SoundLevelsChartComponent,
+    SoundscapeComponent,
+    SoundTypesChartComponent,
     TagCloudComponent,
+    TemporalEvolutionSoundLevelChartComponent,
     TonalFrequencyChartComponent,
   ],
   imports: [
-    CommonModule,
     ButtonModule,
-    SplitButtonModule,
-    CheckboxModule,
-    RadioButtonModule,
-    SharedComponentsModule,
-    FormsModule,
-    ReactiveFormsModule,
     CalendarModule,
+    CheckboxModule,
+    CommonModule,
+    FormsModule,
+    RadioButtonModule,
+    ReactiveFormsModule,
     SelectButtonModule,
-    SidebarModule
+    SharedComponentsModule,
+    SidebarModule,
+    SplitButtonModule,
   ]
 })
 export class SoundscapeModule { }

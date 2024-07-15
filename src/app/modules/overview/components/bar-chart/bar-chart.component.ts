@@ -5,16 +5,19 @@ import {
   OnInit,
   inject,
 } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+
+import { TranslateService } from '@ngx-translate/core';
+
 import * as echarts from 'echarts/core';
 import { GridComponent, GridComponentOption } from 'echarts/components';
 import { BarChart, BarSeriesOption } from 'echarts/charts';
 import { CanvasRenderer } from 'echarts/renderers';
+
 import { ObservationsService } from '../../../../services/observations/observations.service';
 import {
   ObservationsDataChart,
 } from '../../../../models/observations';
-import { FormControl, FormGroup } from '@angular/forms';
-import { TranslateService } from '@ngx-translate/core';
 
 type EChartsOption = echarts.ComposeOption<
   GridComponentOption | BarSeriesOption
