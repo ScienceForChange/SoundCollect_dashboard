@@ -1,9 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { NavigationEnd, Router, Event } from '@angular/router';
+
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
-import { NavigationEnd, Router, Event } from '@angular/router';
 import { environment } from '../../../environments/environments';
 import { UserLoginResponse } from '../../models/auth';
 
