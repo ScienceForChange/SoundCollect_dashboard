@@ -7,7 +7,7 @@
   [closeOnEscape]="true"
 >
   <form [formGroup]="filtersForm" class="flex flex-column p-1 pt-4 gap-2">
-  <!-- Filtro dias -->
+    <!-- Filtro dias -->
     <div class="flex flex-column">
       <p-checkbox
         formControlName="days"
@@ -44,14 +44,16 @@
           {{ filtersForm.value.hoursFilter[0] }}:00h -
           {{ filtersForm.value.hoursFilter[1] }}:00h }
         </small>
-        <p-slider
-          formControlName="hoursFilter"
-          [step]="1"
-          [min]="0"
-          [max]="23"
-          [range]="true"
-          [className]="'ml-2 mb-2 mr-2'"
-        />
+        <app-slider-step>
+          <p-slider
+            formControlName="hoursFilter"
+            [step]="1"
+            [min]="0"
+            [max]="23"
+            [range]="true"
+            [className]="'ml-2 mb-2 mr-2'"
+          />
+        </app-slider-step>
       </div>
     </div>
     <!-- Filtro tipos de sonido -->
@@ -92,14 +94,17 @@
         <small class="text-center mb-2">
           {{ filtersForm.value.soundPressureFilter | soundPressureDisplay }}
         </small>
-        <p-slider
-          formControlName="soundPressureFilter"
-          [step]="5"
-          [min]="35"
-          [max]="80"
-          [range]="true"
-          [className]="'ml-2 mb-2 mr-2'"
-        />
+        <app-slider-step>
+          <p-slider
+            formControlName="soundPressureFilter"
+            [styleClass]="'step-range'"
+            [step]="5"
+            [min]="35"
+            [max]="80"
+            [range]="true"
+            [className]="'ml-2 mb-2 mr-2'"
+          />
+        </app-slider-step>
       </div>
     </div>
     <!-- Filtro tipo de usuario -->

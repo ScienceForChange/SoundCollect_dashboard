@@ -135,12 +135,20 @@ export class OneThirdOctaveChartComponent implements OnInit, AfterViewInit {
           type: 'category',
           data: this.hertzLevels,
           axisLabel: { interval: 0, rotate: 45, fontSize: 10, margin: 10 },
+          nameTextStyle:{
+            fontSize: 15,
+            fontWeight:600
+          }
         },
         yAxis: {
           name: this.translate.instant('soundscape.tonalFrequency.presure'),
           nameLocation: 'middle',
           nameGap: 35,
           type: 'value',
+          nameTextStyle:{
+            fontSize: 15,
+            fontWeight:600
+          }
         },
         tooltip: {
           trigger: 'axis',
