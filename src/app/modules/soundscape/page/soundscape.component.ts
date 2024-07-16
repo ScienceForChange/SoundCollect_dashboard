@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild, effect, inject, signal } from '@angular/core';
 
-import mapboxgl, { IControl, LngLat, LngLatBounds, Map, } from 'mapbox-gl';
+import mapboxgl, { IControl, LngLat, LngLatBounds, Map, MapEvent, } from 'mapbox-gl';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import MapboxDraw from '@mapbox/mapbox-gl-draw';
 
@@ -427,13 +427,13 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
     this.map.addControl(this.draw as IControl);
 
     //Llamada a la función onPolygonSelect cuando se selecciona un polígono
-    // this.map.on('draw.selectionchange', this.onDrawSelect.bind(this));
+    this.map.on('draw.selectionchange' as MapEvent, this.onDrawSelect.bind(this));
 
     //Llamada a la función polygonCreated cuando se termina de dibujar un polígono
-    // this.map.on('draw.create', this.onDrawCreated.bind(this));
+    this.map.on('draw.create' as MapEvent, this.onDrawCreated.bind(this));
 
     //La función updatedSubareaPolygon se llama cuando se actualiza un polígono
-    // this.map.on('draw.update', this.onDrawUpdated.bind(this));
+    this.map.on('draw.update' as MapEvent, this.onDrawUpdated.bind(this));
 
     // this.addObservationsToMap();
 
