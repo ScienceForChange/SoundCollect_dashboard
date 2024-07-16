@@ -59,7 +59,7 @@ export class TagCloudComponent implements OnInit, OnDestroy{
         datasets: [
           {
             label: "",
-            data: this.tags.map((d) => d.value * 8)
+            data: this.tags.map((d) => d.value * 10)
           }
         ]
       },
@@ -67,7 +67,14 @@ export class TagCloudComponent implements OnInit, OnDestroy{
         plugins: {
           legend: {
             display: false
+          },
+          tooltip:{
+            callbacks: {
+              label: function(context) {
+                  return (Number(context.raw) / 10).toString();
+              }
           }
+        }
         }
       }
     });
