@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { LAeqTChartComponent } from './laeq-tchart.component';
+import { expect, describe, beforeEach, it } from '@jest/globals';
 
 describe('LAeqTChartComponent', () => {
   let component: LAeqTChartComponent;
