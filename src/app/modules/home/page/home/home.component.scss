@@ -1,0 +1,24 @@
+:host {
+  display: flex;
+  position: relative;
+}
+.container{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  flex: 1 1;
+}
+.bg-color-green {
+  background: linear-gradient(to left bottom, #206A7199, #206A7133 80%);
+}
+.bg-color-orange {
+  background: linear-gradient(to left bottom, #FF7A1F99, #FF7A1F33 80%);
+}
+#logo{
+  width: 100%;
+  height: 100%;
+  max-width: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
