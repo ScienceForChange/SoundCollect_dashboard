@@ -59,7 +59,8 @@ export class TagCloudComponent implements OnInit, OnDestroy{
         datasets: [
           {
             label: "",
-            data: this.tags.map((d) => d.value * 8)
+            //multicamos por 10 para aumentar el tamaño de la fuente
+            data: this.tags.map((d) => d.value * 10)
           }
         ]
       },
@@ -67,6 +68,14 @@ export class TagCloudComponent implements OnInit, OnDestroy{
         plugins: {
           legend: {
             display: false
+          },
+          tooltip:{
+            callbacks: {
+              label: function(context) {
+                //devolvemos el valor real al tooltip
+                return (Number(context.raw) / 10).toString();
+              }
+            }
           }
         }
       }
