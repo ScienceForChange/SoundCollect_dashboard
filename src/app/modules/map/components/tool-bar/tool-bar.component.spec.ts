@@ -1,18 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { expect, describe, beforeEach, it } from '@jest/globals';
 
-import { ToolBarComponent } from './tool-bar.component';
+import { MapToolBarComponent } from './tool-bar.component';
 
 describe('ToolBarComponent', () => {
-  let component: ToolBarComponent;
-  let fixture: ComponentFixture<ToolBarComponent>;
+  let component: MapToolBarComponent;
+  let fixture: ComponentFixture<MapToolBarComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ToolBarComponent]
+      declarations: [MapToolBarComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(ToolBarComponent);
+    fixture = TestBed.createComponent(MapToolBarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

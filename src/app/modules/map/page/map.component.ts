@@ -67,7 +67,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
       accessToken: mapboxgl.accessToken,
       language: 'ca',
       limit: 5,
-      mapboxgl: mapboxgl,
+      // mapboxgl: mapboxgl,
       marker: false,
       zoom: 17,
     });

@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { expect, describe, beforeEach, it } from '@jest/globals';
 
 import { ObservationInfoModalComponent } from './observation-info-modal.component';
 
