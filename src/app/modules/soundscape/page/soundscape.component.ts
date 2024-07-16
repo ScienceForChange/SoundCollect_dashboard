@@ -49,6 +49,7 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
   public showMapLayers?: boolean;
   public selectedPolygon: any | undefined = undefined;
   public polygonFilter = signal<any | undefined>(undefined);
+  public filterActive: boolean = false;
   public timeFilter = signal<TimeFilter>(TimeFilter.WHOLEDAY);
   public layerId: string = 'light-v10';
   public mapSettings: {
@@ -102,6 +103,9 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
 
     effect(() => {
       if (this.polygonFilter()){
+
+        this.filterActive = true;
+
         let initalHour = this.hourRage[this.timeFilter()][0] ? String(this.hourRage[this.timeFilter()][0]) : "00:00:00";
         let finalHour = this.hourRage[this.timeFilter()][1] ? String(this.hourRage[this.timeFilter()][1]) : "23:59:59";
         this.observationsService.getObservationsByPolygonAndHours(
@@ -133,6 +137,7 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
     this.selectedPolygon = undefined;
     this.polygonFilter.update(() => undefined);
     this.observationsService.getAllObservations();
+    this.filterActive = false;
   }
 
   public toggleShowMapLayers(): void {
@@ -635,7 +640,9 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.observations$.unsubscribe();
-    this.observationsService.getAllObservations();
+    if (this.filterActive) {
+      this.observationsService.getAllObservations();
+    }
   }
 }
 
