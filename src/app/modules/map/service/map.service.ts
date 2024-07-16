@@ -100,6 +100,7 @@ export class MapService {
   }
 
   public updateSourceObservations(features: Feature[]): void {
+    if (!this.isMapReady) return;
     let isSource = !!this.map.getSource('observations');
     let geoJson = {
       type: 'FeatureCollection' as const,
