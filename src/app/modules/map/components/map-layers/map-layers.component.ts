@@ -1,4 +1,5 @@
 import { Component, Input, WritableSignal, inject } from '@angular/core';
+
 import { MapService } from '../../service/map.service';
 
 @Component({

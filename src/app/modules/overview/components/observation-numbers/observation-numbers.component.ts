@@ -1,4 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
+
 import { ObservationsService } from '../../../../services/observations/observations.service';
 
 @Component({

@@ -1,11 +1,15 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { Observations } from '../../../../models/observations';
-import { ObservationsService } from '../../../../services/observations/observations.service';
+
 import { Subscription } from 'rxjs';
+
 import * as _ from 'lodash';
+
 import 'chartjs-chart-wordcloud';
 import { Chart } from 'chart.js';
 import { WordCloudController, WordElement } from 'chartjs-chart-wordcloud';
+
+import { Observations } from '../../../../models/observations';
+import { ObservationsService } from '../../../../services/observations/observations.service';
 
 Chart.register(WordCloudController, WordElement);
 
@@ -55,7 +59,8 @@ export class TagCloudComponent implements OnInit, OnDestroy{
         datasets: [
           {
             label: "",
-            data: this.tags.map((d) => d.value * 8)
+            //multicamos por 10 para aumentar el tamaño de la fuente
+            data: this.tags.map((d) => d.value * 10)
           }
         ]
       },
@@ -63,6 +68,14 @@ export class TagCloudComponent implements OnInit, OnDestroy{
         plugins: {
           legend: {
             display: false
+          },
+          tooltip:{
+            callbacks: {
+              label: function(context) {
+                //devolvemos el valor real al tooltip
+                return (Number(context.raw) / 10).toString();
+              }
+            }
           }
         }
       }

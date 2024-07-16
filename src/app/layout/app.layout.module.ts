@@ -4,7 +4,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
 import { AppMenuComponent } from './components/menu/app.menu.component';
-import { AppFooterComponent } from './components/footer/app.footer.component';
 import { AppLayoutComponent } from './components/layout/app.layout.component';
 import { SharedComponentsModule } from '../shared/shared.module';
 
@@ -18,7 +17,6 @@ import { DividerModule } from 'primeng/divider';
 
 @NgModule({
   declarations: [
-    AppFooterComponent,
     AppLayoutComponent,
     AppMenuComponent,
   ],

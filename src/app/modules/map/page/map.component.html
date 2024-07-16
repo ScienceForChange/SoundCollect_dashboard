@@ -1,16 +1,18 @@
-<app-map-tool-bar
-  [showFilters]="showFilters"
-  [showMapLayers]="showMapLayers"
-  [isFilterActive]="activeFilters"
-  (toggleActiveFilters)="toogleActiveFilters()"
-/>
-<app-map-filters [showFilters]="showFilters" [isFilterActive]="activeFilters" />
-<app-map-layers [showMapLayers]="showMapLayers" />
-@if(isOpenObservationInfoModal){
-  <app-observation-info-modal
-    [isOpen]="isOpenObservationInfoModal"
-    [observationSelected]="observationSelected"
-    (hideModal)="hideModal()"
+<div class="flex flex-1">
+  <app-map-tool-bar
+    [showFilters]="showFilters"
+    [showMapLayers]="showMapLayers"
+    [isFilterActive]="activeFilters"
+    (toggleActiveFilters)="toogleActiveFilters()"
   />
-}
-<div #mapDiv class="map-container"></div>
+  <app-map-filters [showFilters]="showFilters" [isFilterActive]="activeFilters" />
+  <app-map-layers [showMapLayers]="showMapLayers" />
+  @if(isOpenObservationInfoModal){
+    <app-observation-info-modal
+      [isOpen]="isOpenObservationInfoModal"
+      [observationSelected]="observationSelected"
+      (hideModal)="hideModal()"
+    />
+  }
+  <div #mapDiv class="map-container"></div>
+</div>

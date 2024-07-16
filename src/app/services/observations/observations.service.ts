@@ -1,10 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from '../../../environments/environments';
+
 import { BehaviorSubject, Observable, map, filter, switchMap } from 'rxjs';
-import { Observations, ObservationsDataChart } from '../../models/observations';
-import { MapObservation } from '../../models/map';
+
 import * as turf from '@turf/turf';
+
+import { environment } from '../../../environments/environments';
+import { Observations, ObservationsDataChart } from '../../models/observations';
 
 export interface Feature<
   G extends GeoJSON.Geometry | null = GeoJSON.Geometry,

@@ -1,13 +1,25 @@
-<ul class="layout-menu">
-  <li>
-    <icon-soundcollect [iconClass]="'w-full mr-2 w-2rem h-2rem'" />
-    <span class="menu-item"> SoundCollect</span>
+<ul class="layout-menu pt-2 pb-2">
+  <li class="p-0">
+    <a
+      pRipple
+      routerLink="/"
+      [routerLinkActiveOptions]="{
+        paths: 'exact',
+        queryParams: 'ignored',
+        matrixParams: 'ignored',
+        fragment: 'ignored'
+      }"
+      routerLinkActive="active-route"
+    >
+      <icon-soundcollect [iconClass]="'w-full mr-2 w-2rem h-2rem'" />
+      <span class="menu-item"> SoundCollect</span>
+    </a>
   </li>
   <p-divider />
   <li>
     <a
       pRipple
-      routerLink="/"
+      routerLink="/map"
       [routerLinkActiveOptions]="{
         paths: 'exact',
         queryParams: 'ignored',
@@ -32,37 +44,8 @@
       <span class="menu-item"> {{'soundscape.titleMenu' | translate}} </span>
     </a>
   </li>
-  <!-- <li>
-    <a routerLink="/registers" routerLinkActive="active-route">
-      <icon-odour-registers [iconClass]="'mr-2'" />
-      <span class="menu-item"> Registros de olor </span>
-    </a>
-  </li> -->
-  <!-- <p-divider />
-  <li>
-    <button
-      pButton
-      type="button"
-      class="p-button-rounded p-button-outlined w-full"
-    >
-      <icon-date-range />
-      <span class="menu-item"> Filtro tiempo </span>
-    </button>
-  </li> -->
   <p-divider />
   <div class="h-full flex flex-column justify-content-end gap-3">
-    <!-- <li>
-      <a
-        routerLink="/profile"
-        routerLinkActive="active-route"
-        pButton
-        type="button"
-        class="p-button-rounded p-button-outlined w-full"
-      >
-        <icon-user />
-        <span class="menu-item"> Mi perfil </span>
-      </a>
-    </li> -->
     <li>
       <button
         (click)="logout()"

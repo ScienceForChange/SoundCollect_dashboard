@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
+import { expect, describe, beforeEach, it } from '@jest/globals';
 
-import { MapService } from '../../../services/map/map.service';
+import { MapService } from './map.service';
 
 describe('MapService', () => {
   let service: MapService;

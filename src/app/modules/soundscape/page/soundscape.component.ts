@@ -1,11 +1,15 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild, WritableSignal, effect, inject, signal } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild, effect, inject, signal } from '@angular/core';
+
+import mapboxgl, { IControl, LngLat, LngLatBounds, Map, MapEvent, } from 'mapbox-gl';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
-import mapboxgl, { LngLat, LngLatBounds, Map } from 'mapbox-gl';
 import MapboxDraw from '@mapbox/mapbox-gl-draw';
+
+import { Subscription } from 'rxjs';
+
+import { GeoJSONObject} from '@turf/turf';
+
 import { Observations } from '../../../models/observations';
 import { ObservationsService } from '../../../services/observations/observations.service';
-import { Subscription, min } from 'rxjs';
-import { GeoJSONObject} from '@turf/turf';
 
 export interface Feature<G extends GeoJSON.Geometry | null = GeoJSON.Geometry, P = { [name: string]: any } | null> extends GeoJSONObject {
   type: "Feature";
@@ -154,7 +158,7 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
       accessToken: mapboxgl.accessToken,
       language: 'ca',
       limit: 5,
-      mapboxgl: mapboxgl,
+      // mapboxgl: mapboxgl,
       marker: false,
       zoom: 17,
     });
@@ -420,16 +424,16 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
       ]
 
     });
-    this.map.addControl(this.draw);
+    this.map.addControl(this.draw as IControl);
 
     //Llamada a la función onPolygonSelect cuando se selecciona un polígono
-    this.map.on('draw.selectionchange', this.onDrawSelect.bind(this));
+    this.map.on('draw.selectionchange' as MapEvent, this.onDrawSelect.bind(this));
 
     //Llamada a la función polygonCreated cuando se termina de dibujar un polígono
-    this.map.on('draw.create', this.onDrawCreated.bind(this));
+    this.map.on('draw.create' as MapEvent, this.onDrawCreated.bind(this));
 
     //La función updatedSubareaPolygon se llama cuando se actualiza un polígono
-    this.map.on('draw.update', this.onDrawUpdated.bind(this));
+    this.map.on('draw.update' as MapEvent, this.onDrawUpdated.bind(this));
 
     // this.addObservationsToMap();
 
