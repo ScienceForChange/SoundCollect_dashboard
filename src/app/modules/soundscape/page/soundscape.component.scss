@@ -6,22 +6,22 @@
 }
 .container{
   display: flex;
-  flex: 1 1 auto;
   flex-direction: column;
+  flex: 1 1 auto;
   position: relative;
   #toolsBar{
+    display: flex;
+    flex-basis: 1;
+    gap:0.5rem;
+    justify-content: end;
+    margin-bottom: -70px;
+    padding: 1.2rem;
+    pointer-events: none;
     position: sticky;
     top: -204px; //-55px
-    margin-bottom: -70px;
-    display: flex;
-    width: 100%;
-    justify-content: end;
-    gap:0.5rem;
-    flex-basis: 1;
-    z-index: 2;
-    pointer-events: none;
-    padding: 1.2rem;
     transition: top 0.3s ease-in-out;
+    width: 100%;
+    z-index: 2;
     &:hover{
       top: -55px;
     }
@@ -29,13 +29,13 @@
       pointer-events: auto;
     }
     .tools{
+      align-items: end;
       display: flex;
       flex-direction: column;
-      width: max-content;
       height: max-content;
-      pointer-events: none;
       justify-content: end;
-      align-items: end;
+      pointer-events: none;
+      width: max-content;
       *{
         pointer-events: auto;
       }
@@ -44,12 +44,12 @@
       }
     }
     #timeFilters{
+      align-self: flex-end;
+      margin-bottom: -124px;
       position: absolute;
       top: 63px;
-      z-index: 10;
       width: max-content;
-      margin-bottom: -124px;
-      align-self: flex-end;
+      z-index: 10;
       .download{
         margin-top: 1rem !important;
         border-top: 1px solid #CCC;
@@ -62,26 +62,26 @@
     position: relative;
   }
   .map-container {
+    border-radius: 12px;
+    border: 1px solid var(--surface-border);
+    height: calc(100vh - 1rem);
+    margin: 0.5rem;
     position: relative;
     top: 0;
-    height: calc(100vh - 1rem);
     width: 100%;
-    border-radius: 12px;
-    margin: 0.5rem;
-    border: 1px solid var(--surface-border);
     z-index: 1;
   }
 }
 
 :host ::ng-deep {
   .floatSidebar {
-    z-index: 50 !important;
-    height: fit-content;
-    max-height: calc(100vh - 6rem);
-    margin: 4.5rem 0.5rem auto;
-    min-width: 390px;
-    border-radius: 12px;
     background-color: var(--surface-overlay);
+    border-radius: 12px;
+    height: fit-content;
+    margin: 4.5rem 0.5rem auto;
+    max-height: calc(100vh - 6rem);
+    min-width: 390px;
+    z-index: 50 !important;
     .p-sidebar-header {
       padding: 0 0.15rem 0.5rem;
     }

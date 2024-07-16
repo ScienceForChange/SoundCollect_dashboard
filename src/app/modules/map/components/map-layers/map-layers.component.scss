@@ -1,12 +1,12 @@
 :host ::ng-deep {
     .floatSidebar {
-      z-index: 50 !important;
-      height: fit-content;
-      max-height: calc(100vh - 6rem);
-      margin: 4.5rem 0.5rem auto;
-      min-width: 390px;
-      border-radius: 12px;
       background-color: var(--surface-overlay);
+      border-radius: 12px;
+      height: fit-content;
+      margin: 4.5rem 0.5rem auto;
+      max-height: calc(100vh - 6rem);
+      min-width: 390px;
+      z-index: 50 !important;
       .p-sidebar-header {
         padding: 0 0.15rem 0.5rem;
       }

@@ -1,9 +1,9 @@
 import { AfterViewInit, Component, HostListener, Input, inject } from '@angular/core';
-import { Observations } from '../../../../models/observations';
-import * as echarts from 'echarts';
 import { TranslateService } from '@ngx-translate/core';
-import { random } from 'lodash';
 import { Subscription } from 'rxjs';
+
+import * as echarts from 'echarts';
+import { Observations } from '../../../../models/observations';
 import { ObservationsService } from '../../../../services/observations/observations.service';
 
 @Component({

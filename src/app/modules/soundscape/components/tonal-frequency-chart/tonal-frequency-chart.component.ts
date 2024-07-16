@@ -1,13 +1,18 @@
-import { Component, HostListener, OnDestroy, OnInit, inject } from '@angular/core';
-import { Observations } from '../../../../models/observations';
+import { Component, HostListener, inject } from '@angular/core';
+
+import { Subscription } from 'rxjs';
+
+import { random } from 'lodash';
+
+import { TranslateService } from '@ngx-translate/core';
+
 import * as echarts from 'echarts/core';
 import { BarChart } from 'echarts/charts';
 import { CanvasRenderer } from 'echarts/renderers';
 import { LegendComponent } from 'echarts/components';
+
+import { Observations } from '../../../../models/observations';
 import { ObservationsService } from '../../../../services/observations/observations.service';
-import { Subscription } from 'rxjs';
-import { random } from 'lodash';
-import { TranslateService } from '@ngx-translate/core';
 
 echarts.use([LegendComponent, BarChart, CanvasRenderer,]);
 

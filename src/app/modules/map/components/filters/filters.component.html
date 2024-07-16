@@ -44,7 +44,7 @@
           {{ filtersForm.value.hoursFilter[0] }}:00h -
           {{ filtersForm.value.hoursFilter[1] }}:00h }
         </small>
-        <app-slider-step>
+        <app-slider-step [step]="1">
           <p-slider
             formControlName="hoursFilter"
             [step]="1"
@@ -94,7 +94,7 @@
         <small class="text-center mb-2">
           {{ filtersForm.value.soundPressureFilter | soundPressureDisplay }}
         </small>
-        <app-slider-step>
+        <app-slider-step [step]="5">
           <p-slider
             formControlName="soundPressureFilter"
             [styleClass]="'step-range'"

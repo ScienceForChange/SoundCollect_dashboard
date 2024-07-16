@@ -1,16 +1,16 @@
 import {
   Component,
-  EventEmitter,
   Input,
   OnInit,
-  Output,
   WritableSignal,
   inject,
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+
+import { TranslateService } from '@ngx-translate/core';
+
 import { FormFilterValues } from '../../../../models/forms';
 import { MapService } from '../../service/map.service';
-import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-map-filters',

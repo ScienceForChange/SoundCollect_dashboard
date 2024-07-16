@@ -1,11 +1,16 @@
 import { Injectable } from '@angular/core';
+
+import mapboxgl, { LngLat, LngLatBounds, Map } from 'mapbox-gl';
+
+import { FeatureCollection, Geometry } from 'geojson';
+
+import { BehaviorSubject } from 'rxjs';
+
+import { Feature } from '@turf/turf';
+
 import { ObservationsService } from '../../../services/observations/observations.service';
 import { MapObservation } from '../../../models/map';
-import mapboxgl, { LngLat, LngLatBounds, Map } from 'mapbox-gl';
-import { FeatureCollection, Geometry } from 'geojson';
-import { BehaviorSubject } from 'rxjs';
 import { FormFilterValues } from '../../../models/forms';
-import { Feature } from '@turf/turf';
 import { Observations } from '../../../models/observations';
 
 @Injectable({
