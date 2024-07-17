@@ -210,13 +210,23 @@ export class ObservationsService {
             return valueDate === currentDate.getTime();
           });
           if (!!dayValue) {
+            const date = new Date(dayValue.date);
+            const day = new Intl.DateTimeFormat('es-ES', {
+              day: '2-digit',
+              month: '2-digit',
+              year: 'numeric'
+            }).format(date);
             allDays.push({
               ...dayValue,
               completeDay: new Date(dayValue.date),
-              date: dayValue.date.split(' ')[0],
+              date: day,
             });
           } else {
-            const day = currentDate.toISOString().split('T')[0];
+            const day = new Intl.DateTimeFormat('es-ES', {
+              day: '2-digit',
+              month: '2-digit',
+              year: 'numeric'
+            }).format(currentDate);
             allDays.push({
               count: 0,
               obs: [],

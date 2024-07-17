@@ -16,6 +16,7 @@ import { CanvasRenderer } from 'echarts/renderers';
 
 import { ObservationsService } from '../../../../services/observations/observations.service';
 import { ObservationsDataChart } from '../../../../models/observations';
+import { CallbackDataParams } from 'echarts/types/dist/shared';
 
 type EChartsOption = echarts.ComposeOption<
   GridComponentOption | BarSeriesOption
@@ -55,6 +56,7 @@ export class BarChartComponent implements OnInit, AfterViewInit {
   private obsFiltered: ObservationsDataChart[] = [];
   public today: Date = new Date();
   public timeFilterSelected: string = this.timesFilter.DELETE;
+  public minDate!: Date;
   private lastDay30: Date = new Date(
     new Date().setDate(new Date().getDate() - 30)
   );
@@ -196,7 +198,7 @@ export class BarChartComponent implements OnInit, AfterViewInit {
   }
 
   private getFirstDayOfEachMonth(arr: ObservationsDataChart[]){
-    return  arr.reduce((acc, curr) => {
+    const arrOfFirstDays = arr.reduce((acc, curr) => {
       const month = curr.completeDay.getMonth();
       const isNextMonth = acc.some(
         (obs) => new Date(obs.completeDay).getMonth() === month
@@ -208,6 +210,7 @@ export class BarChartComponent implements OnInit, AfterViewInit {
       if (obs === '') return '';
       return obs.date;
     });
+    return arrOfFirstDays;
   }
 
   async ngAfterViewInit(): Promise<void> {
@@ -217,12 +220,13 @@ export class BarChartComponent implements OnInit, AfterViewInit {
 
     this.observationService.getAllObservationsFormated().subscribe((data) => {
       this.observations = data;
-
+      console.log('data[0]', data[0])
+      this.minDate = data[0].completeDay;
       const arr30DaysBefore = data.filter((obs) => {
         //I would like to have the dates with hour. Both 00:00:00 to be able to compare them correctly
         obs.completeDay.setHours(0, 0, 0, 0);
-        const isBeforeToday = new Date(obs.date) <= this.today;
-        const isAfterLastDay30 = new Date(obs.date) >= this.lastDay30;
+        const isBeforeToday = obs.completeDay <= this.today;
+        const isAfterLastDay30 = obs.completeDay >= this.lastDay30;
         if (isBeforeToday && isAfterLastDay30) return true;
         return false;
       });
@@ -237,7 +241,13 @@ export class BarChartComponent implements OnInit, AfterViewInit {
           axisPointer: {
             type: 'none',
           },
-          formatter: function (params: any) {
+          formatter:  (params: CallbackDataParams[]) => {
+            if(this.timeFilterSelected === this.timesFilter.DELETE){
+              return `
+              <b>Data:</b>${this.obsFiltered[params[0].dataIndex].date} <br>
+              <b>Observacions:</b> ${params[0].data}
+              `
+            }
             return params[0].data + ' ';
           },
         },
@@ -246,6 +256,7 @@ export class BarChartComponent implements OnInit, AfterViewInit {
             type: 'category',
             data: getFirstDayOfEachMonth,
             axisLabel: {
+              interval: 0, // This forces displaying all labels
               rotate: 45, // Optional: you can rotate labels to prevent overlapping
             },
             position: 'bottom',
