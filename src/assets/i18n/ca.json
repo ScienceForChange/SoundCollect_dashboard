@@ -94,7 +94,7 @@
   },
   "soundscape":{
     "observations": "Observacions",
-    "titleMenu": "Paissatge sonor",
+    "titleMenu": "Anàlisi",
     "map":{
       "createFilter": "Crear zona d'estudi",
       "editFilter": "Editar filtre",
@@ -183,7 +183,7 @@
       "frequency": "Freqüència (Hertz)",
       "presure": "Pressió sonora dB",
       "pressurePonderation": "Pressió sonora dBA",
-      "ponderation": "Amb ponderació",
+      "ponderation": "Ponderació A",
       "noPonderation": "Sense ponderació"
     },
     "temporalEvolution": {
