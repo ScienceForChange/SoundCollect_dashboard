@@ -75,7 +75,7 @@ export class MapFiltersComponent implements OnInit {
     });
     this.filtersForm.valueChanges.subscribe((values: FormFilterValues) => {
       //Check if any value of form is setted to toggle the showFilters button
-      if (values.type || values.soundPressure || values.days || values.hours) {
+      if (values.type || values.soundPressure || values.days || values.hours || values.typeUser) {
         this.mapService.isFilterActive.next(true);
       } else {
         this.mapService.isFilterActive.next(false);

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit, inject } from '@angular/core';
 
 import { Subscription } from 'rxjs';
 
@@ -20,6 +20,10 @@ Chart.register(WordCloudController, WordElement);
 })
 export class TagCloudComponent implements OnInit, OnDestroy{
 
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.chart.resize();
+  }
   private observations!: Observations[];
   private observationsService = inject(ObservationsService);
   private observations$!: Subscription;
@@ -71,7 +75,7 @@ export class TagCloudComponent implements OnInit, OnDestroy{
           },
           tooltip:{
             callbacks: {
-              label: function(context) {
+              label: (context) => {
                 //devolvemos el valor real al tooltip
                 return (Number(context.raw) / 10).toString();
               }

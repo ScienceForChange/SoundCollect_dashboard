@@ -9,6 +9,7 @@
         [panelStyleClass]="'card p-0'"
         [selectionMode]="'range'"
         [maxDate]="today"
+        [minDate]="minDate"
       />
     </form>
     <p-button label="{{'app.weeks' | translate }}" [disabled]="timeFilterSelected === timesFilter.WEEK" (onClick)="timeFilter(timesFilter.WEEK)" />

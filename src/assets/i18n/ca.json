@@ -42,6 +42,18 @@
     "observations": "Observacions",
     "logout": "Tancar sessió"
   },
+  "home":{
+    "footer":{
+      "legal":{
+        "legalNotice": "Avís legal",
+        "terms": "Termes i condicions",
+        "privacy": "Política de privacitat",
+        "cookies": "Política de cookies"
+      },
+      "allRightsReserved": "Tots els drets reservats",
+      "smallText": "SoundCollect és un projecte coordinat per <a href='https://scienceforchange.eu' target='_blank'>Science For Change</a> dins de la convocatòria del programa operatiu del FEDER de Catalunya 2021-2027 amb número de referència del Contracte EC-2023-89."
+    }
+  },
   "map":{
     "observations": "Mapa",
     "titleMenu": "Mapa",
@@ -84,7 +96,11 @@
       "obsNumber": "Nombre d'observacions"
     },
     "barChart":{
-      "yAxis": "Nombre de registres"
+      "yAxis": "Nombre de registres",
+      "tooltip":{
+        "date":"Data",
+        "numObs":"Observacions"
+      }
     },
     "observationsNumber": {
       "total": "Nombre de registres total",
@@ -94,7 +110,7 @@
   },
   "soundscape":{
     "observations": "Observacions",
-    "titleMenu": "Paissatge sonor",
+    "titleMenu": "Anàlisi",
     "map":{
       "createFilter": "Crear zona d'estudi",
       "editFilter": "Editar filtre",
@@ -183,7 +199,7 @@
       "frequency": "Freqüència (Hertz)",
       "presure": "Pressió sonora dB",
       "pressurePonderation": "Pressió sonora dBA",
-      "ponderation": "Amb ponderació",
+      "ponderation": "Ponderació A",
       "noPonderation": "Sense ponderació"
     },
     "temporalEvolution": {

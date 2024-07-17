@@ -18,9 +18,12 @@ export class MapToolBarComponent {
 
   toggleShowMapLayers(): void {
     this.showMapLayers.set(!this.showMapLayers());
+    this.showFilters.set(false);
   }
 
   toggleShowFilters(): void {
     this.showFilters.set(!this.showFilters());
+    this.showMapLayers.set(false);
+
   }
 }
