@@ -16,4 +16,4 @@ import { SharedComponentsModule } from '../../shared/shared.module';
     SharedComponentsModule,
   ]
 })
-export class ErrorModule { }
+export class HomeModule { }

@@ -44,6 +44,13 @@
   },
   "home":{
     "footer":{
+      "legal":{
+        "legalNotice": "Avís legal",
+        "terms": "Termes i condicions",
+        "privacy": "Política de privacitat",
+        "cookies": "Política de cookies"
+      },
+      "allRightsReserved": "Tots els drets reservats",
       "smallText": "SoundCollect és un projecte coordinat per <a href='https://scienceforchange.eu' target='_blank'>Science For Change</a> dins de la convocatòria del programa operatiu del FEDER de Catalunya 2021-2027 amb número de referència del Contracte EC-2023-89."
     }
   },
