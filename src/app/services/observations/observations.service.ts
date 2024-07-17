@@ -37,13 +37,12 @@ export class ObservationsService {
         `${environment.BACKEND_BASE_URL}/observations?with-levels=true`
       )
       .pipe(
-        map((res) =>{
+        map((res) => {
           const observationsBetween20and80 = res.data.filter(
             (obs) => +obs.attributes.Leq >= 20 && +obs.attributes.Leq <= 80
-          )
-        return observationsBetween20and80
-        }
-        )
+          );
+          return observationsBetween20and80;
+        })
       )
       .subscribe({
         next: (data) => {
@@ -214,23 +213,30 @@ export class ObservationsService {
             const day = new Intl.DateTimeFormat('es-ES', {
               day: '2-digit',
               month: '2-digit',
-              year: 'numeric'
+              year: 'numeric',
             }).format(date);
+            //set to 00:00:00 to be able to compare them correctly
+            const currentDateHours0 = new Date(dayValue.date);
+            currentDateHours0.setHours(0, 0, 0, 0);
             allDays.push({
               ...dayValue,
-              completeDay: new Date(dayValue.date),
+              completeDay: currentDateHours0,
               date: day,
             });
           } else {
             const day = new Intl.DateTimeFormat('es-ES', {
               day: '2-digit',
               month: '2-digit',
-              year: 'numeric'
+              year: 'numeric',
             }).format(currentDate);
+            //set to 00:00:00 to be able to compare them correctly
+
+            const currentDateHours0 = new Date(currentDate);
+            currentDateHours0.setHours(0, 0, 0, 0);
             allDays.push({
               count: 0,
               obs: [],
-              completeDay: new Date(currentDate),
+              completeDay: currentDateHours0,
               date: day,
             });
           }
@@ -431,8 +437,8 @@ export class ObservationsService {
       )
       .pipe(
         map(({ data }) => {
-        this.observations$.next(data);
-        this.loading$.next(false);
+          this.observations$.next(data);
+          this.loading$.next(false);
           return data;
         })
       );

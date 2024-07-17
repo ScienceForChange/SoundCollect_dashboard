@@ -82,11 +82,12 @@ export class BarChartComponent implements OnInit, AfterViewInit {
         const haveTwoDaysSelected = values.daysFilter[1] !== null;
         if (haveTwoDaysSelected) {
           this.obsFiltered = this.observations.filter((obs) => {
-            const isBeforeToday = new Date(obs.date) <= values.daysFilter[1];
-            const isAfterLastDay30 = new Date(obs.date) >= values.daysFilter[0];
+            const isBeforeToday = obs.completeDay <= values.daysFilter[1];
+            const isAfterLastDay30 = obs.completeDay >= values.daysFilter[0];
             if (isBeforeToday && isAfterLastDay30) return true;
             return false;
           });
+          console.log('this.obsFiltered', this.obsFiltered)
           const dataXaxis = this.getFirstDayOfEachMonth(this.obsFiltered);
           const dataSerie = this.obsFiltered.map((obs) => obs.count);
 
@@ -122,8 +123,8 @@ export class BarChartComponent implements OnInit, AfterViewInit {
     //Get obs filtered by the days selected
     const values = this.filtersForm.value;
     const obsFiltered = this.observations.filter((obs) => {
-      const isBeforeToday = new Date(obs.date) <= values.daysFilter[1];
-      const isAfterLastDay30 = new Date(obs.date) >= values.daysFilter[0];
+      const isBeforeToday = obs.completeDay <= values.daysFilter[1];
+      const isAfterLastDay30 = obs.completeDay >= values.daysFilter[0];
       if (isBeforeToday && isAfterLastDay30) return true;
       return false;
     });
@@ -189,7 +190,6 @@ export class BarChartComponent implements OnInit, AfterViewInit {
       }
     } else {
       dataXaxis = this.getFirstDayOfEachMonth(filteredObsByTime)
-      console.log('dataXaxis', dataXaxis)
       dataSerie = filteredObsByTime.map((obs) => obs.count);
     }
     this.obsFiltered = filteredObsByTime;
@@ -203,6 +203,7 @@ export class BarChartComponent implements OnInit, AfterViewInit {
       const isNextMonth = acc.some(
         (obs) => new Date(obs.completeDay).getMonth() === month
       );
+      // console.log('isNextMonth', isNextMonth,month,acc)
       if (isNextMonth) return [...acc, ''];
       return [...acc, curr];
     }, [])
@@ -210,6 +211,7 @@ export class BarChartComponent implements OnInit, AfterViewInit {
       if (obs === '') return '';
       return obs.date;
     });
+    // console.log('arrOfFirstDays', arrOfFirstDays)
     return arrOfFirstDays;
   }
 
@@ -220,11 +222,9 @@ export class BarChartComponent implements OnInit, AfterViewInit {
 
     this.observationService.getAllObservationsFormated().subscribe((data) => {
       this.observations = data;
-      console.log('data[0]', data[0])
+      console.log('data[0]', data)
       this.minDate = data[0].completeDay;
       const arr30DaysBefore = data.filter((obs) => {
-        //I would like to have the dates with hour. Both 00:00:00 to be able to compare them correctly
-        obs.completeDay.setHours(0, 0, 0, 0);
         const isBeforeToday = obs.completeDay <= this.today;
         const isAfterLastDay30 = obs.completeDay >= this.lastDay30;
         if (isBeforeToday && isAfterLastDay30) return true;
@@ -248,7 +248,9 @@ export class BarChartComponent implements OnInit, AfterViewInit {
               <b>Observacions:</b> ${params[0].data}
               `
             }
-            return params[0].data + ' ';
+            return `
+              <b>Observacions:</b> ${params[0].data}
+              `
           },
         },
         xAxis: [
