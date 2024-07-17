@@ -8,6 +8,9 @@
   flex-direction: row;
   flex-wrap: wrap;
   min-height: calc(100vh - 1rem);
+  #body{
+    flex: 2;
+  }
 }
 .bg-color-green {
   background: linear-gradient(to left bottom, #206A7199, #206A7133 80%);
