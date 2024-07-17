@@ -13,10 +13,10 @@ import * as echarts from 'echarts/core';
 import { GridComponent, GridComponentOption } from 'echarts/components';
 import { BarChart, BarSeriesOption } from 'echarts/charts';
 import { CanvasRenderer } from 'echarts/renderers';
+import { CallbackDataParams } from 'echarts/types/dist/shared';
 
 import { ObservationsService } from '../../../../services/observations/observations.service';
 import { ObservationsDataChart } from '../../../../models/observations';
-import { CallbackDataParams } from 'echarts/types/dist/shared';
 
 type EChartsOption = echarts.ComposeOption<
   GridComponentOption | BarSeriesOption
@@ -87,7 +87,6 @@ export class BarChartComponent implements OnInit, AfterViewInit {
             if (isBeforeToday && isAfterLastDay30) return true;
             return false;
           });
-          console.log('this.obsFiltered', this.obsFiltered)
           const dataXaxis = this.getFirstDayOfEachMonth(this.obsFiltered);
           const dataSerie = this.obsFiltered.map((obs) => obs.count);
 
@@ -203,7 +202,6 @@ export class BarChartComponent implements OnInit, AfterViewInit {
       const isNextMonth = acc.some(
         (obs) => new Date(obs.completeDay).getMonth() === month
       );
-      // console.log('isNextMonth', isNextMonth,month,acc)
       if (isNextMonth) return [...acc, ''];
       return [...acc, curr];
     }, [])
@@ -211,7 +209,6 @@ export class BarChartComponent implements OnInit, AfterViewInit {
       if (obs === '') return '';
       return obs.date;
     });
-    // console.log('arrOfFirstDays', arrOfFirstDays)
     return arrOfFirstDays;
   }
 
@@ -222,7 +219,6 @@ export class BarChartComponent implements OnInit, AfterViewInit {
 
     this.observationService.getAllObservationsFormated().subscribe((data) => {
       this.observations = data;
-      console.log('data[0]', data)
       this.minDate = data[0].completeDay;
       const arr30DaysBefore = data.filter((obs) => {
         const isBeforeToday = obs.completeDay <= this.today;
@@ -244,12 +240,12 @@ export class BarChartComponent implements OnInit, AfterViewInit {
           formatter:  (params: CallbackDataParams[]) => {
             if(this.timeFilterSelected === this.timesFilter.DELETE){
               return `
-              <b>Data:</b>${this.obsFiltered[params[0].dataIndex].date} <br>
-              <b>Observacions:</b> ${params[0].data}
+              <b>${this.translate.instant('overview.barChart.tooltip.date')}:</b>${this.obsFiltered[params[0].dataIndex].date} <br>
+              <b>${this.translate.instant('overview.barChart.tooltip.numObs')}:</b> ${params[0].data}
               `
             }
             return `
-              <b>Observacions:</b> ${params[0].data}
+              <b>${this.translate.instant('overview.barChart.tooltip.numObs')}:</b> ${params[0].data}
               `
           },
         },
