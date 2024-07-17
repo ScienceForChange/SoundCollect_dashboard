@@ -1,6 +1,6 @@
-<div class="container">
+<div class="container flex flex-column">
 
-  <header class="flex col-12">
+  <div id="header" class="flex col-12">
     <div class="card w-full bg-color-green">
       <div class="col-12 flex justify-content-end">
         <img id="logo" src="https://home.soundcollectapp.com/wp-content/uploads/2024/02/SC_Logo_CAT.png" title="SC_Logo_CAT" alt="SoundCollect" loading="lazy">
@@ -9,47 +9,49 @@
         <h1>Welcome to SoundCollect Dashboard</h1>
       </div>
     </div>
-  </header>
+  </div>
 
-  <div class="flex col-12 lg:col-7">
-    <div class="card w-full">
-      <div class="card-body flex flex-wrap">
+  <div id="body" class="flex flex-2">
+    <div class="flex col-12 lg:col-7">
+      <div class="card w-full">
+        <div class="card-body flex flex-wrap">
+          <div class="col-12">
+            <h2>Sigues part del canvi</h2>
+          </div>
+          <div class="col-12 md:col-6 lg:col-7">
+            <p>
+              SoundCollect segueix un model basat en la <b>participació i escolta activa de la ciutadania,</b>
+              incloent el codisseny de solucions innovadores que permetin preservar les àrees tranquil·les
+              de les nostres ciutats i afavorir una planificació urbana integrada. Consulta tots els
+              nostres tallers a la pestanya de notícies i esdeveniments. Ets només a un clic d’unir-te a
+              la comunitat SoundCollect i començar plegats el camí cap al canvi!d
+            </p>
+          </div>
+          <div class="col-12 md:col-6 lg:col-5 flex justify-content-center md:justify-content-end align-items-end">
+            <img loading="lazy" height="200" width="200" decoding="async" src="https://home.soundcollectapp.com/wp-content/uploads/2024/02/App.png" alt="Comunidad" >
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="flex col-12 lg:col-5">
+      <div class="card w-full h-full bg-color-orange">
         <div class="col-12">
           <h2>Sigues part del canvi</h2>
         </div>
-        <div class="col-12 md:col-6 lg:col-7">
+        <div class="col-12">
           <p>
             SoundCollect segueix un model basat en la <b>participació i escolta activa de la ciutadania,</b>
             incloent el codisseny de solucions innovadores que permetin preservar les àrees tranquil·les
             de les nostres ciutats i afavorir una planificació urbana integrada. Consulta tots els
             nostres tallers a la pestanya de notícies i esdeveniments. Ets només a un clic d’unir-te a
-            la comunitat SoundCollect i començar plegats el camí cap al canvi!d
+            la comunitat SoundCollect i començar plegats el camí cap al canvi!
           </p>
         </div>
-        <div class="col-12 md:col-6 lg:col-5 flex justify-content-center md:justify-content-end align-items-end">
-          <img loading="lazy" height="200" width="200" decoding="async" src="https://home.soundcollectapp.com/wp-content/uploads/2024/02/App.png" alt="Comunidad" >
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="flex col-12 lg:col-5">
-    <div class="card w-full h-full bg-color-orange">
-      <div class="col-12">
-        <h2>Sigues part del canvi</h2>
-      </div>
-      <div class="col-12">
-        <p>
-          SoundCollect segueix un model basat en la <b>participació i escolta activa de la ciutadania,</b>
-          incloent el codisseny de solucions innovadores que permetin preservar les àrees tranquil·les
-          de les nostres ciutats i afavorir una planificació urbana integrada. Consulta tots els
-          nostres tallers a la pestanya de notícies i esdeveniments. Ets només a un clic d’unir-te a
-          la comunitat SoundCollect i començar plegats el camí cap al canvi!
-        </p>
       </div>
     </div>
   </div>
 
-  <footer class="flex col-12">
+  <div id="footer" class="flex col-12">
     <div class="card w-full flex flex-column justify-content-between">
 
       <div class="col-12 flex flex-column lg:flex-row justify-content-between gap-3">
@@ -67,7 +69,7 @@
           </div>
         </div>
 
-        <div id="legalLinks" class="flex flex-column justify-content-end lg:text-right lg:pb-2 lg:mb-5">
+        <div id="legalLinks" class="flex flex-column justify-content-end lg:text-right lg:pb-3">
           <a [href]="'https://home.soundcollectapp.com/aviso-legal/'" [target]="'_blank'">{{'home.footer.legal.legalNotice' | translate}}</a>
           <a [href]="'https://home.soundcollectapp.com/termes-i-condicion/'" [target]="'_blank'">{{'home.footer.legal.terms' | translate}}</a>
           <a [href]="'https://home.soundcollectapp.com/politica-de-cookies/'" [target]="'_blank'">{{'home.footer.legal.cookies' | translate}}</a>
@@ -76,11 +78,8 @@
         </div>
 
       </div>
-
-      <small class="col-12" [innerHTML]="'home.footer.smallText' | translate">
-      </small>
-
+      <small class="col-12" [innerHTML]="'home.footer.smallText' | translate"></small>
     </div>
-  </footer>
+  </div>
 
 </div>
