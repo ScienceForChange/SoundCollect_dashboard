@@ -118,7 +118,7 @@ export class PressureChartComponent implements OnInit, OnDestroy{
         axisPointer: {
           type: 'shadow',
         },
-        formatter: function(params:any) {
+        formatter: (params:any) => {
           var content = `<b>${params.seriesName}</b><br/>`;
           content += params.name + ' dBA<br/>';
           content += params.value + ' observacions';

@@ -75,7 +75,7 @@ export class TagCloudComponent implements OnInit, OnDestroy{
           },
           tooltip:{
             callbacks: {
-              label: function(context) {
+              label: (context) => {
                 //devolvemos el valor real al tooltip
                 return (Number(context.raw) / 10).toString();
               }

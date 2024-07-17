@@ -278,7 +278,7 @@ export class TemporalEvolutionSoundLevelChartComponent
       daysFilterS2: [],
     };
 
-    
+
     //Update the form values
     this.filtersForm.setValue(initialValues);
     this.filterState = undefined;
