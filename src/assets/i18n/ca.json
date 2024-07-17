@@ -84,7 +84,11 @@
       "obsNumber": "Nombre d'observacions"
     },
     "barChart":{
-      "yAxis": "Nombre de registres"
+      "yAxis": "Nombre de registres",
+      "tooltip":{
+        "date":"Data",
+        "numObs":"Observacions"
+      }
     },
     "observationsNumber": {
       "total": "Nombre de registres total",
