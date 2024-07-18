@@ -63,11 +63,11 @@ export function HttpLoaderFactory(http: HttpClient) {
       deps: [TranslateService],
       multi: true
     },
-    // {
-    //   // processes all errors
-    //   provide: ErrorHandler,
-    //   useClass: GlobalErrorHandler,
-    // },
+    {
+      // processes all errors
+      provide: ErrorHandler,
+      useClass: GlobalErrorHandler,
+    },
     { provide: LocationStrategy, useClass: PathLocationStrategy },
     authInterceptorProviders,
     errorInterceptorProviders
