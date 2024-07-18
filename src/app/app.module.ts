@@ -1,4 +1,4 @@
-import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { APP_INITIALIZER, ErrorHandler, NgModule } from '@angular/core';
 import { PathLocationStrategy, LocationStrategy } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
@@ -15,6 +15,8 @@ import { SharedComponentsModule } from './shared/shared.module';
 
 import { authInterceptorProviders } from './interceptor/auth.interceptor';
 import { errorInterceptorProviders } from './interceptor/error.interceptor';
+
+import { GlobalErrorHandler } from './handler/global-error-handler';
 
 import { environment } from '../environments/environments';
 
@@ -60,6 +62,11 @@ export function HttpLoaderFactory(http: HttpClient) {
       },
       deps: [TranslateService],
       multi: true
+    },
+    {
+      // processes all errors
+      provide: ErrorHandler,
+      useClass: GlobalErrorHandler,
     },
     { provide: LocationStrategy, useClass: PathLocationStrategy },
     authInterceptorProviders,

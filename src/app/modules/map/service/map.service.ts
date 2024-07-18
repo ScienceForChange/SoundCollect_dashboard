@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import mapboxgl, { LngLat, LngLatBounds, Map } from 'mapbox-gl';
+import { LngLat, LngLatBounds, Map } from 'mapbox-gl';
 
 import { FeatureCollection, Geometry } from 'geojson';
 
@@ -78,24 +78,28 @@ export class MapService {
       return;
     }
     this.observationsService.observations$.subscribe((data) => {
-      const features =
-        this.observationsService.getLineStringFromObservations(data);
-      if (features.length === 0) return;
-      this.mapObservations = data.map((obs) => ({
-        id: obs.id,
-        user_id: obs.relationships.user.id,
-        user_level: obs.relationships.user.attributes.level,
-        latitude: obs.attributes.latitude,
-        longitude: obs.attributes.longitude,
-        created_at: new Date(obs.attributes.created_at),
-        types: obs.relationships.types.map((type) => type.id),
-        Leq: obs.attributes.Leq,
-        userType: obs.relationships.user.type,
-        quiet: obs.attributes.quiet,
-        path: obs.relationships.segments,
-      }));
-      this.features$.next(features as Feature[]);
-      this.updateSourceObservations(features as Feature[]);
+      try {
+        const features =
+          this.observationsService.getLineStringFromObservations(data);
+        if (features.length === 0) return;
+        this.mapObservations = data.map((obs) => ({
+          id: obs.id,
+          user_id: obs.relationships.user.id,
+          user_level: obs.relationships.user.attributes.level,
+          latitude: obs.attributes.latitude,
+          longitude: obs.attributes.longitude,
+          created_at: new Date(obs.attributes.created_at),
+          types: obs.relationships.types.map((type) => type.id),
+          Leq: obs.attributes.Leq,
+          userType: obs.relationships.user.type,
+          quiet: obs.attributes.quiet,
+          path: obs.relationships.segments,
+        }));
+        this.features$.next(features as Feature[]);
+        this.updateSourceObservations(features as Feature[]);
+      } catch (error) {
+        throw Error(`Error getting all observations ${error}`);
+      }
     });
   }
 
@@ -140,86 +144,91 @@ export class MapService {
   public filterMapObservations(values: FormFilterValues) {
     //He de valorar los que son booleanos primero
     //El valor de si se aplican los filtros estará aquí.
-    let mapObs = this.mapObservations;
-    const { type, days, soundPressure, hours, typeUser } = values;
-    const {
-      typeFilter,
-      daysFilter,
-      soundPressureFilter,
-      hoursFilter,
-      typeUsers,
-    } = values;
-    if (type) {
-      const typesToFilter = Object.keys(typeFilter).filter(
-        (key) => typeFilter[Number(key) as keyof typeof typeFilter]
-      );
-      mapObs = mapObs.filter((obs) =>
-        obs.types.some((obsType) =>
-          typesToFilter.some((type) => Number(type) === Number(obsType))
-        )
-      );
-    }
-    if (typeUser) {
-      const usersMaxAndMin = typeUsers.map((user) => {
-        return { min: user.min, max: user.max };
-      });
-
-      mapObs = mapObs.filter((obs) => {
-        const userLevel = obs.user_level;
-        return usersMaxAndMin.some((user) => user.min <= userLevel && user.max >= userLevel);
-      });
-
-    }
-    if (days) {
-      const isOneDate =
-        !daysFilter[1] || daysFilter[0].getDate() === daysFilter[1]?.getDate();
-
-      if (!isOneDate) {
+    try {
+      let mapObs = this.mapObservations;
+      const { type, days, soundPressure, hours, typeUser } = values;
+      const {
+        typeFilter,
+        daysFilter,
+        soundPressureFilter,
+        hoursFilter,
+        typeUsers,
+      } = values;
+      if (type) {
+        const typesToFilter = Object.keys(typeFilter).filter(
+          (key) => typeFilter[Number(key) as keyof typeof typeFilter]
+        );
+        mapObs = mapObs.filter((obs) =>
+          obs.types.some((obsType) =>
+            typesToFilter.some((type) => Number(type) === Number(obsType))
+          )
+        );
+      }
+      if (typeUser) {
+        const usersMaxAndMin = typeUsers.map((user) => {
+          return { min: user.min, max: user.max };
+        });
+  
+        mapObs = mapObs.filter((obs) => {
+          const userLevel = obs.user_level;
+          return usersMaxAndMin.some((user) => user.min <= userLevel && user.max >= userLevel);
+        });
+  
+      }
+      if (days) {
+        const isOneDate =
+          !daysFilter[1] || daysFilter[0].getDate() === daysFilter[1]?.getDate();
+  
+        if (!isOneDate) {
+          mapObs = mapObs.filter((obs) => {
+            const obsDate = new Date(obs.created_at);
+            return (
+              obsDate.getDate() >= daysFilter[0].getDate() &&
+              obsDate.getDate() <= daysFilter[1].getDate()
+            );
+          });
+        } else {
+          mapObs = mapObs.filter((obs) => {
+            const obsDate = new Date(obs.created_at);
+            return obsDate.getDate() === daysFilter[0].getDate();
+          });
+        }
+      }
+      if (soundPressure) {
+        mapObs = mapObs.filter(
+          (obs) =>
+            Number(obs.Leq) <= soundPressureFilter[1] &&
+            Number(obs.Leq) >= soundPressureFilter[0]
+        );
+      }
+      if (hours) {
         mapObs = mapObs.filter((obs) => {
           const obsDate = new Date(obs.created_at);
           return (
-            obsDate.getDate() >= daysFilter[0].getDate() &&
-            obsDate.getDate() <= daysFilter[1].getDate()
+            obsDate.getHours() >= hoursFilter[0] &&
+            obsDate.getHours() <= hoursFilter[1]
           );
         });
-      } else {
-        mapObs = mapObs.filter((obs) => {
-          const obsDate = new Date(obs.created_at);
-          return obsDate.getDate() === daysFilter[0].getDate();
-        });
       }
+  
+      const observations = this.observationsService.observations$
+        .getValue()
+        .filter((obs) => {
+          return mapObs.some((mapObs) => mapObs.id === obs.id);
+        });
+  
+      //Get all features
+      const features =
+        this.observationsService.getLineStringFromObservations(observations);
+  
+      this.filteredFeatures = features as Feature[];
+  
+      //update the geojson
+      this.updateSourceObservations(features as Feature[]);
+      
+    } catch (error) {
+      throw Error(`Error filtering map observations ${error}`);
     }
-    if (soundPressure) {
-      mapObs = mapObs.filter(
-        (obs) =>
-          Number(obs.Leq) <= soundPressureFilter[1] &&
-          Number(obs.Leq) >= soundPressureFilter[0]
-      );
-    }
-    if (hours) {
-      mapObs = mapObs.filter((obs) => {
-        const obsDate = new Date(obs.created_at);
-        return (
-          obsDate.getHours() >= hoursFilter[0] &&
-          obsDate.getHours() <= hoursFilter[1]
-        );
-      });
-    }
-
-    const observations = this.observationsService.observations$
-      .getValue()
-      .filter((obs) => {
-        return mapObs.some((mapObs) => mapObs.id === obs.id);
-      });
-
-    //Get all features
-    const features =
-      this.observationsService.getLineStringFromObservations(observations);
-
-    this.filteredFeatures = features as Feature[];
-
-    //update the geojson
-    this.updateSourceObservations(features as Feature[]);
   }
 
   private buildClustersAndLayers(features: Feature[]): void {
