@@ -44,6 +44,7 @@ export class ObservationsService {
             );
             return observationsBetween20and80;            
           } catch (error) {
+            console.error(error)
             throw Error('Error filtering observations',error);
           }
         })
@@ -161,6 +162,7 @@ export class ObservationsService {
             ),
           };        
         } catch (error) {
+          console.error(error)
           throw Error('Error getting observations numbers',error);
         }
       })
@@ -254,6 +256,7 @@ export class ObservationsService {
           return allDays;
           
         } catch (error) {
+          console.error(error)
           throw Error('Error formatting observations',error);
         }
       })
@@ -295,6 +298,7 @@ export class ObservationsService {
         })
       );
     } catch (error) {
+      console.error(error)
       throw Error('Error getting observations by region',error);
     }
   }
@@ -407,6 +411,7 @@ export class ObservationsService {
       return linestrings;
       
     } catch (error) {
+      console.error(error)
       throw Error('Error getting line string from observations',error); 
     }
   }
@@ -440,6 +445,7 @@ export class ObservationsService {
   
       return points;
     } catch (error) {
+      console.error(error)
       throw Error('Error getting start points from observations',error);
     }
   }
