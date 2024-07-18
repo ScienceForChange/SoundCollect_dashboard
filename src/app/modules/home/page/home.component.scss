@@ -8,9 +8,36 @@
   flex-direction: row;
   flex-wrap: wrap;
   min-height: calc(100vh - 1rem);
+
+  #header{
+    h1{
+      font-weight: 900;
+      line-height: 35px;
+      margin-bottom: 0;
+    }
+    h3{
+      font-weight: 100;
+      margin-top: 15px;
+      line-height: 25px;
+      margin-bottom: 0;
+    }
+  }
+
   #body{
     flex: 2;
+    p{
+      font-size: 1.3rem;
+      line-height: 25px;
+    }
+    b{
+      font-size: 1.3rem;
+      font-weight: 900;
+    }
+    h4{
+      font-weight: 900;
+    }
   }
+
 }
 .bg-color-green {
   background: linear-gradient(to left bottom, #206A7199, #206A7133 80%);
