@@ -42,7 +42,7 @@ export class ObservationsService {
             const observationsBetween20and80 = res.data.filter(
               (obs) => +obs.attributes.Leq >= 20 && +obs.attributes.Leq <= 80
             );
-            return observationsBetween20and80;            
+            return observationsBetween20and80;
           } catch (error) {
             console.error(error)
             throw Error('Error filtering observations',error);
@@ -79,13 +79,13 @@ export class ObservationsService {
               acc[userId][month]++;
               return acc;
             }, {} as { [key: string]: { [key: number]: number } });
-  
+
           const numberOfDifferentUsers = Object.keys(observationsByUser).length;
           const totalObservations = observations.length;
-  
+
           const averageObservationsPerUserPerMonth =
             totalObservations / 12 / numberOfDifferentUsers;
-  
+
           const observationsByAge = {
             '<18': 0,
             '18-30': 0,
@@ -101,7 +101,7 @@ export class ObservationsService {
             'prefer-not-to-say': 0,
             // null: 0,
           };
-  
+
           const uniqueUserProfiles = Object.keys(observationsByUser).map(
             (userId) => {
               const userProfile = observations.find(
@@ -113,7 +113,7 @@ export class ObservationsService {
               return { ...userProfile, yearsOld };
             }
           );
-  
+
           uniqueUserProfiles.forEach((user) => {
             if (user.yearsOld < 18) {
               observationsByAge['<18']++;
@@ -149,7 +149,7 @@ export class ObservationsService {
                 break;
             }
           });
-  
+
           return {
             numberOfDifferentUsers,
             totalObservations,
@@ -160,7 +160,7 @@ export class ObservationsService {
             observationsByAge: Object.entries(observationsByAge).map(
               ([age, value]) => ({ age, value })
             ),
-          };        
+          };
         } catch (error) {
           console.error(error)
           throw Error('Error getting observations numbers',error);
@@ -205,15 +205,15 @@ export class ObservationsService {
               },
               {}
             );
-  
+
           const arrOfDays = Object.values(arrOfDaysObservationsCout);
           let firstDay = new Date(arrOfDays[0].date);
           let lastDay = new Date(arrOfDays[arrOfDays.length - 1].date);
-  
+
           let currentDate = new Date(firstDay.setHours(0, 0, 0, 0));
           let endDay = new Date(lastDay.setHours(0, 0, 0, 0));
           let allDays = [];
-  
+
           while (currentDate <= endDay) {
             const dayValue = arrOfDays.find((value) => {
               const valueDate = new Date(value.date).setHours(0, 0, 0, 0);
@@ -241,7 +241,7 @@ export class ObservationsService {
                 year: 'numeric',
               }).format(currentDate);
               //set to 00:00:00 to be able to compare them correctly
-  
+
               const currentDateHours0 = new Date(currentDate);
               currentDateHours0.setHours(0, 0, 0, 0);
               allDays.push({
@@ -254,7 +254,7 @@ export class ObservationsService {
             currentDate.setDate(currentDate.getDate() + 1);
           }
           return allDays;
-          
+
         } catch (error) {
           console.error(error)
           throw Error('Error formatting observations',error);
@@ -311,7 +311,7 @@ export class ObservationsService {
   ): Feature[] | null {
     try {
       if (observations.length == 0) return [];
-  
+
       function getColor(value: number): string {
         switch (true) {
           case value <= 35:
@@ -333,14 +333,12 @@ export class ObservationsService {
           case value > 70 && value <= 75:
             return '#88497B';
           case value > 75 && value <= 80:
-            return '#18558C';
-          case value > 80:
             return '#134367';
           default:
             return '#333';
         }
       }
-  
+
       //Crear polilineas para las observaciones, esto añade el borde negro a las observaciones para mejorar la visibilidad
       let linestrings: Feature[] = observations.map((obs) => ({
         type: 'Feature',
@@ -370,7 +368,7 @@ export class ObservationsService {
           width: 6,
         },
       }));
-  
+
       //Obtener los segmentos de las polilineas
       linestrings = linestrings.concat(
         observations
@@ -407,9 +405,9 @@ export class ObservationsService {
           })
           .flat()
       );
-  
+
       return linestrings;
-      
+
     } catch (error) {
       console.error(error)
       throw Error('Error getting line string from observations',error); 
@@ -423,9 +421,9 @@ export class ObservationsService {
       observations = observations.filter(
         (obs) => obs.relationships.segments.length > 0
       );
-  
+
       if (observations.length == 0) return [];
-  
+
       let points: Feature[] = observations.map((obs) => ({
         type: 'Feature',
         geometry: {
@@ -442,7 +440,7 @@ export class ObservationsService {
           width: 6,
         },
       }));
-  
+
       return points;
     } catch (error) {
       console.error(error)
