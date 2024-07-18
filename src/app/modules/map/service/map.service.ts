@@ -4,7 +4,7 @@ import mapboxgl, { LngLat, LngLatBounds, Map } from 'mapbox-gl';
 
 import { FeatureCollection, Geometry } from 'geojson';
 
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, catchError } from 'rxjs';
 
 import { Feature } from '@turf/turf';
 
@@ -77,25 +77,31 @@ export class MapService {
       this.updateSourceObservations(this.features$.getValue());
       return;
     }
-    this.observationsService.observations$.subscribe((data) => {
-      const features =
-        this.observationsService.getLineStringFromObservations(data);
-      if (features.length === 0) return;
-      this.mapObservations = data.map((obs) => ({
-        id: obs.id,
-        user_id: obs.relationships.user.id,
-        user_level: obs.relationships.user.attributes.level,
-        latitude: obs.attributes.latitude,
-        longitude: obs.attributes.longitude,
-        created_at: new Date(obs.attributes.created_at),
-        types: obs.relationships.types.map((type) => type.id),
-        Leq: obs.attributes.Leq,
-        userType: obs.relationships.user.type,
-        quiet: obs.attributes.quiet,
-        path: obs.relationships.segments,
-      }));
-      this.features$.next(features as Feature[]);
-      this.updateSourceObservations(features as Feature[]);
+    this.observationsService.observations$.pipe(catchError(error => {
+      throw Error(`Error getting all observations ${error}`,);
+    })).subscribe((data) => {
+      try {
+        const features =
+          this.observationsService.getLineStringFromObservations(data);
+        if (features.length === 0) return;
+        this.mapObservations = data.map((obs) => ({
+          id: obs.id,
+          user_id: obs.relationships.user.id,
+          user_level: obs.relationships.user.attributes.level,
+          latitude: obs.attributes.latitude,
+          longitude: obs.attributes.longitude,
+          created_at: new Date(obs.attributes.created_at),
+          types: obs.relationships.types.map((type) => type.id),
+          Leq: obs.attributes.Leq,
+          userType: obs.relationships.user.type,
+          quiet: obs.attributes.quiet,
+          path: obs.relationships.segments,
+        }));
+        this.features$.next(features as Feature[]);
+        this.updateSourceObservations(features as Feature[]);
+      } catch (error) {
+        throw Error(`Error getting all observations ${error}`);
+      }
     });
   }
 
