@@ -12,7 +12,7 @@
     </div>
   </div>
 
-  <div id="body" class="flex flex-column md:flex-row flex-2">
+  <div id="body" class="flex flex-column lg:flex-row flex-2">
     <div class="flex col-12 lg:col-7">
       <div class="card w-full">
         <div class="card-body flex flex-wrap">
@@ -21,7 +21,7 @@
           </div>
           <div class="col-12 md:col-6 lg:col-7">
             <h5>{{'home.whatToDo.listTitle' | translate}}</h5>
-            <ul>
+            <ul class="mb-5">
               <li class="mb-3">
                 <b>{{'home.whatToDo.listItem1.title' | translate}}</b>
                 <p>{{'home.whatToDo.listItem1.text' | translate}}</p>
@@ -36,10 +36,10 @@
                 <p>
                   <a [href]="'home.whatToDo.listItem3.link'| translate" [target]="'_blank'">{{'home.whatToDo.listItem3.text2' | translate}}</a>
                 </p>
-                <p><b>{{'home.whatToDo.listItem3.text3' | translate}}</b></p>
-                <p><b>{{'home.whatToDo.listItem3.text4' | translate}}</b></p>
               </li>
             </ul>
+            <p><b>{{'home.whatToDo.listItem3.text3' | translate}}</b></p>
+            <p><b>{{'home.whatToDo.listItem3.text4' | translate}}</b></p>
           </div>
           <div class="col-12 md:col-6 lg:col-5 flex justify-content-center lg:justify-content-end align-items-end">
             <img loading="lazy" height="200" width="200" decoding="async" src="https://home.soundcollectapp.com/wp-content/uploads/2024/02/App.png" alt="Comunidad" >
