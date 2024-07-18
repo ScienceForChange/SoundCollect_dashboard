@@ -12,6 +12,7 @@
     "close": "Tancar",
     "loading": "Carregant...",
     "error": "Error",
+    "errorHandler": "Ha succeït un error inesperat.Posi's en contacte amb el servei tècnic",
     "knowMore": "Saber més",
     "seeMore": "Veure més",
     "login": "Iniciar sessió",
