@@ -37,7 +37,7 @@ export class PressureChartComponent implements OnInit, OnDestroy{
     this.translate.instant('soundscape.pressure.afternoon'),
     this.translate.instant('soundscape.pressure.night')
   ];
-  private dBLevels = ['< = 35', '35-40', '40-45', '45-50', '50-55', '55-60', '60-65', '65-70', '70-75', '75-80', '> 80'];
+  private dBLevels = ['< = 35', '35-40', '40-45', '45-50', '50-55', '55-60', '60-65', '65-70', '70-75', '75-80'];
 
   ngOnInit(): void {
     let chartDom = document.getElementById('pressureChart')!;
@@ -164,8 +164,7 @@ export class PressureChartComponent implements OnInit, OnDestroy{
     if(dBLevel > 60 && dBLevel <= 65) return 6;
     if(dBLevel > 65 && dBLevel <= 70) return 7;
     if(dBLevel > 70 && dBLevel <= 75) return 8;
-    if(dBLevel > 75 && dBLevel <= 80) return 9;
-    return 10;
+    return 9;
 
   }
   ngOnDestroy(): void {
