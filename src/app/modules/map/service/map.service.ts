@@ -98,6 +98,7 @@ export class MapService {
         this.features$.next(features as Feature[]);
         this.updateSourceObservations(features as Feature[]);
       } catch (error) {
+        console.error(error)
         throw Error(`Error getting all observations ${error}`);
       }
     });
@@ -227,6 +228,7 @@ export class MapService {
       this.updateSourceObservations(features as Feature[]);
       
     } catch (error) {
+      console.error(error)
       throw Error(`Error filtering map observations ${error}`);
     }
   }

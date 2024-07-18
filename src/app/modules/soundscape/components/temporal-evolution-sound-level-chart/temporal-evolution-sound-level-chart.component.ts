@@ -178,6 +178,7 @@ export class TemporalEvolutionSoundLevelChartComponent
 
           this.updateChart(obsS1, []);
         } catch (error) {
+          console.error(error);
           throw Error(
             'Error at temporal-evolution-sound-level-chart.component.ts: ' +
               error
@@ -409,6 +410,7 @@ export class TemporalEvolutionSoundLevelChartComponent
         });
       return soundLevelsByTime;
     } catch (error) {
+      console.error(error);
       throw Error(
         'Error at temporal-evolution-sound-level-chart.component.ts: ' + error
       );
@@ -434,6 +436,7 @@ export class TemporalEvolutionSoundLevelChartComponent
       };
       return serie as SeriesOption;
     } catch (error) {
+      console.error(error);
       throw Error(
         'Error at temporal-evolution-sound-level-chart.component.ts: ' + error
       );
@@ -580,6 +583,7 @@ export class TemporalEvolutionSoundLevelChartComponent
       this.myChart.hideLoading();
       this.options && this.myChart.setOption(this.options);
     } catch (error) {
+      console.error(error);
       throw Error(
         'Error at temporal-evolution-sound-level-chart.component.ts: ' + error
       );

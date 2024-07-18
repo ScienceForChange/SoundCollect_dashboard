@@ -11,6 +11,7 @@ export class GlobalErrorHandler implements ErrorHandler {
   private translations = inject(TranslateService);
 
   handleError(error: any) {
+    //Error from throw error alway returns undefined
     // Check if it's an error from an HTTP response
     if (!(error instanceof HttpErrorResponse)) {
       error = error.rejection; // get the error object
@@ -24,7 +25,5 @@ export class GlobalErrorHandler implements ErrorHandler {
           this.translations.instant('app.errorHandler'),
       });
     });
-
-    console.error('Error from global error handler', error);
   }
 }

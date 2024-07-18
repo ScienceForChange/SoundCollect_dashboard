@@ -67,7 +67,7 @@ export class BarChartComponent implements OnInit, AfterViewInit, OnDestroy {
     text: this.translate.instant('app.loading'),
     color: '#FF7A1F',
   };
-  public filtersForm!: FormGroup;
+  public filtersForm!: FormGroup
 
   ngOnInit(): void {
     echarts.use([GridComponent, BarChart, CanvasRenderer]);
@@ -79,7 +79,6 @@ export class BarChartComponent implements OnInit, AfterViewInit, OnDestroy {
     this.today.setHours(0, 0, 0, 0);
     this.lastDay30.setHours(0, 0, 0, 0);
 
-    this.subscriptions.add(
       this.filtersForm.valueChanges.subscribe(
         (values: { daysFilter: [Date, Date | null] }) => {
           const haveTwoDaysSelected = values.daysFilter[1] !== null;
@@ -98,7 +97,10 @@ export class BarChartComponent implements OnInit, AfterViewInit, OnDestroy {
           }
         }
       )
-    );
+
+      this.observationService.getAllObservationsFormated().subscribe((data) => {
+        this.minDate = data[0].completeDay;
+      })
   }
 
   private updateChart(xAxis: string[], serieData: number[]) {
@@ -203,6 +205,7 @@ export class BarChartComponent implements OnInit, AfterViewInit, OnDestroy {
       this.updateChart(dataXaxis, dataSerie);
       this.timeFilterSelected = filter;
     } catch (error) {
+      console.error('timeFilter',error)
       throw Error('Error time Filtering', error);
     }
   }
@@ -224,6 +227,7 @@ export class BarChartComponent implements OnInit, AfterViewInit, OnDestroy {
         });
       return arrOfFirstDays;
     } catch (error) {
+      console.error('getFirst',error)
       throw Error('Error getting first day of each month', error);
     }
   }
@@ -306,6 +310,7 @@ export class BarChartComponent implements OnInit, AfterViewInit, OnDestroy {
 
           this.myChart.setOption(this.options);
         } catch (error) {
+          console.error('after',error)
           throw Error('Error getting all observations', error);
         }
       })
