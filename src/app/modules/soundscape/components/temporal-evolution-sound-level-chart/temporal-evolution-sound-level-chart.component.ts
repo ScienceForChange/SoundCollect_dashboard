@@ -94,11 +94,6 @@ const colors: Colors = {
   },
 };
 
-//I create this global variables to be able to pass the translation to
-//Tooltip of the chart
-let hourWord = '';
-let numOfObsWord = '';
-
 @Component({
   selector: 'app-temporal-evolution-sound-level-chart',
   templateUrl: './temporal-evolution-sound-level-chart.component.html',
@@ -107,17 +102,16 @@ let numOfObsWord = '';
 export class TemporalEvolutionSoundLevelChartComponent
   implements OnInit, AfterViewInit, OnDestroy
 {
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.myChart.resize();
+  }
   @Input() observations: Observations[];
   private observationsService = inject(ObservationsService);
   private translations = inject(TranslateService);
   private subscriptions = new Subscription();
   private myChart!: echarts.ECharts;
-  @HostListener('window:resize', ['$event'])
-  onResize(event: any) {
-    this.myChart.resize();
-  }
   private options: EChartsOption;
-  private initialOptions: EChartsOption;
   private loadingOptions = {
     text: this.translations.instant('app.loading'),
     color: '#FF7A1F',
@@ -132,13 +126,6 @@ export class TemporalEvolutionSoundLevelChartComponent
   public filterState!: string;
 
   ngOnInit(): void {
-    hourWord = this.translations.instant(
-      'soundscape.temporalEvolution.tooltip.hour'
-    );
-    numOfObsWord = this.translations.instant(
-      'soundscape.temporalEvolution.tooltip.numObs'
-    );
-
     echarts.use([
       GridComponent,
       CandlestickChart,
@@ -504,7 +491,7 @@ export class TemporalEvolutionSoundLevelChartComponent
         },
         tooltip: {
           trigger: 'item',
-          formatter: function (params) {
+          formatter: (params) => {
             let p = params as CallbackDataParams;
             let values: string[] = [];
             const data = p.data as number[];
@@ -517,8 +504,12 @@ export class TemporalEvolutionSoundLevelChartComponent
             const numOfObs = data[6];
             const html = `
               <b>${p.seriesName}</b> <br>
-              ${hourWord}: ${date} <br>
-              ${numOfObsWord}: ${numOfObs} <br>
+              ${this.translations.instant(
+                'soundscape.temporalEvolution.tooltip.hour'
+              )}: ${date} <br>
+              ${this.translations.instant(
+                'soundscape.temporalEvolution.tooltip.numObs'
+              )}: ${numOfObs} <br>
               LAeq: ${Leq} <br>
               L10: ${L10} <br>
               L90: ${L90} <br>
@@ -587,7 +578,6 @@ export class TemporalEvolutionSoundLevelChartComponent
         ],
       };
       this.myChart.hideLoading();
-      this.initialOptions = this.options;
       this.options && this.myChart.setOption(this.options);
     } catch (error) {
       throw Error(
