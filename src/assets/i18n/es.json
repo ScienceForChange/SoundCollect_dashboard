@@ -26,6 +26,12 @@
   },
   "soundscape": {
     "titleMenu": "Paisaje sonoro"
+  },
+  "home": {
+    "whatToDo": {
+      "listItem3": {
+        "text4": ""
+      }
+    }
   }
-
 }

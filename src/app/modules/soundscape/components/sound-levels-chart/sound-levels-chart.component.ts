@@ -57,7 +57,6 @@ export class SoundLevelsChartComponent implements OnInit, OnDestroy {
     '65 - 70 dBA',
     '70 - 75 dBA',
     '75 - 80 dBA',
-    '> 80 dBA',
   ];
 
   ngOnInit(): void {
@@ -235,8 +234,6 @@ export class SoundLevelsChartComponent implements OnInit, OnDestroy {
         return '#88497B';
       case value > 75 && value <= 80:
         return '#18558C';
-      case value > 80:
-        return '#134367';
       default:
         return '#333';
     }
@@ -264,8 +261,6 @@ export class SoundLevelsChartComponent implements OnInit, OnDestroy {
         return '70 - 75 dBA';
       case value > 75 && value <= 80:
         return '75 - 80 dBA';
-      case value > 80:
-        return '> 80 dBA';
       default:
         return 'Unknown';
     }

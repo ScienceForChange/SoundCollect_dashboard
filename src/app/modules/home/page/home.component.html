@@ -6,7 +6,8 @@
         <img id="logo" src="https://home.soundcollectapp.com/wp-content/uploads/2024/02/SC_Logo_CAT.png" title="SC_Logo_CAT" alt="SoundCollect" loading="lazy">
       </div>
       <div class="col-12">
-        <h1>Welcome to SoundCollect Dashboard</h1>
+        <h1>{{'home.header.wellcome' | translate}}</h1>
+        <h4>{{'home.header.text' | translate}}</h4>
       </div>
     </div>
   </div>
@@ -16,18 +17,32 @@
       <div class="card w-full">
         <div class="card-body flex flex-wrap">
           <div class="col-12">
-            <h2>Sigues part del canvi</h2>
+            <p>{{'home.whatToDo.text1' | translate}}</p>
           </div>
           <div class="col-12 md:col-6 lg:col-7">
-            <p>
-              SoundCollect segueix un model basat en la <b>participació i escolta activa de la ciutadania,</b>
-              incloent el codisseny de solucions innovadores que permetin preservar les àrees tranquil·les
-              de les nostres ciutats i afavorir una planificació urbana integrada. Consulta tots els
-              nostres tallers a la pestanya de notícies i esdeveniments. Ets només a un clic d’unir-te a
-              la comunitat SoundCollect i començar plegats el camí cap al canvi!d
-            </p>
+            <h5>{{'home.whatToDo.listTitle' | translate}}</h5>
+            <ul>
+              <li class="mb-3">
+                <b>{{'home.whatToDo.listItem1.title' | translate}}</b>
+                <p>{{'home.whatToDo.listItem1.text' | translate}}</p>
+              </li>
+              <li class="mb-3">
+                <b>{{'home.whatToDo.listItem2.title' | translate}}</b>
+                <p>{{'home.whatToDo.listItem2.text' | translate}}</p>
+              </li>
+              <li class="mb-3">
+                <b>{{'home.whatToDo.listItem3.title' | translate}}</b>
+                <p>{{'home.whatToDo.listItem3.text1' | translate}}</p>
+                <p>
+                  {{'home.whatToDo.listItem3.text2' | translate}}
+                  <a [href]="'home.whatToDo.listItem3.link'| translate" [target]="'_blank'">{{'home.whatToDo.listItem3.textLink' | translate}}</a>
+                </p>
+                <p><b>{{'home.whatToDo.listItem3.text3' | translate}}</b></p>
+                <p><b>{{'home.whatToDo.listItem3.text4' | translate}}</b></p>
+              </li>
+            </ul>
           </div>
-          <div class="col-12 md:col-6 lg:col-5 flex justify-content-center md:justify-content-end align-items-end">
+          <div class="col-12 md:col-6 lg:col-5 flex justify-content-center lg:justify-content-end align-items-end">
             <img loading="lazy" height="200" width="200" decoding="async" src="https://home.soundcollectapp.com/wp-content/uploads/2024/02/App.png" alt="Comunidad" >
           </div>
         </div>
@@ -36,16 +51,21 @@
     <div class="flex col-12 lg:col-5">
       <div class="card w-full h-full bg-color-orange">
         <div class="col-12">
-          <h2>Sigues part del canvi</h2>
+          <h2>{{'home.dataValidate.title' | translate}}</h2>
         </div>
         <div class="col-12">
           <p>
-            SoundCollect segueix un model basat en la <b>participació i escolta activa de la ciutadania,</b>
-            incloent el codisseny de solucions innovadores que permetin preservar les àrees tranquil·les
-            de les nostres ciutats i afavorir una planificació urbana integrada. Consulta tots els
-            nostres tallers a la pestanya de notícies i esdeveniments. Ets només a un clic d’unir-te a
-            la comunitat SoundCollect i començar plegats el camí cap al canvi!
+            {{'home.dataValidate.text1' | translate}}
           </p>
+          <ul>
+            <li class="mb-3">
+              <b>{{'home.dataValidate.listItem1.title' | translate}}</b>
+              <p>{{'home.dataValidate.listItem1.text' | translate}}</p>
+            </li>
+            <li class="mb-3">
+              <b>{{'home.dataValidate.listItem2.title' | translate}}</b>
+              <p>{{'home.dataValidate.listItem2.text' | translate}}</p>
+          </ul>
         </div>
       </div>
     </div>
