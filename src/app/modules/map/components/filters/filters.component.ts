@@ -33,11 +33,11 @@ export class MapFiltersComponent implements OnInit {
     { id: 4, value: this.translate.instant('map.filters.others') },
   ];
   public typesPositivePlaces: { id: number; value: string }[] = [
-    { id: 1, value: "Molt d'acord" },
-    { id: 2, value: "D'acord" },
-    { id: 3, value: "Indecís"},
-    { id: 4, value: "En desacord" },
-    { id: 5, value: "Molt en desacord" },
+    { id: 1, value: this.translate.instant('map.filters.stronglyAgree') },
+    { id: 2, value: this.translate.instant('map.filters.agree')},
+    { id: 3, value: this.translate.instant('map.filters.undecided')},
+    { id: 4, value: this.translate.instant('map.filters.disagree') },
+    { id: 5, value: this.translate.instant('map.filters.stronglyDisagree') },
   ];
   public typesUsers: {
     id: number;
