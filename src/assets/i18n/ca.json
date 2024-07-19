@@ -111,7 +111,13 @@
       "explorer": "Explorador/a acústic/a",
       "traveler": "Viatger/a sonor/a",
       "informer": "Informador/a expert/a",
-      "pressure": "Pressió sonora"
+      "pressure": "Pressió sonora",
+      "positivePlaces": "Llocs amb influencia positiva",
+      "stronglyAgree": "Molt d'acord",
+      "agree": "D'acord",
+      "undecided": "Indecís",
+      "disagree": "En desacord",
+      "stronglyDisagree": "Molt en desacord"
     },
     "layers": {
       "title": "Tipus de mapa",
