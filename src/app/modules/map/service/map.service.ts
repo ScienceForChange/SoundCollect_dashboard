@@ -93,12 +93,13 @@ export class MapService {
           Leq: obs.attributes.Leq,
           userType: obs.relationships.user.type,
           quiet: obs.attributes.quiet,
+          influence: +obs.attributes.influence,
           path: obs.relationships.segments,
         }));
         this.features$.next(features as Feature[]);
         this.updateSourceObservations(features as Feature[]);
       } catch (error) {
-        console.error(error)
+        console.error(error);
         throw Error(`Error getting all observations ${error}`);
       }
     });
@@ -147,13 +148,15 @@ export class MapService {
     //El valor de si se aplican los filtros estará aquí.
     try {
       let mapObs = this.mapObservations;
-      const { type, days, soundPressure, hours, typeUser } = values;
+      const { type, days, soundPressure, hours, typeUser, positivePlace } =
+        values;
       const {
         typeFilter,
         daysFilter,
         soundPressureFilter,
         hoursFilter,
         typeUsers,
+        positivePlaces,
       } = values;
       if (type) {
         const typesToFilter = Object.keys(typeFilter).filter(
@@ -165,21 +168,31 @@ export class MapService {
           )
         );
       }
+      if (positivePlace) {
+        const typesToFilter = Object.keys(positivePlaces).filter(
+          (key) => positivePlaces[Number(key) as keyof typeof positivePlaces]
+        );
+        mapObs = mapObs.filter((obs) =>
+          typesToFilter.some((type) => obs.influence === Number(type))
+        );
+      }
       if (typeUser) {
         const usersMaxAndMin = typeUsers.map((user) => {
           return { min: user.min, max: user.max };
         });
-  
+
         mapObs = mapObs.filter((obs) => {
           const userLevel = obs.user_level;
-          return usersMaxAndMin.some((user) => user.min <= userLevel && user.max >= userLevel);
+          return usersMaxAndMin.some(
+            (user) => user.min <= userLevel && user.max >= userLevel
+          );
         });
-  
       }
       if (days) {
         const isOneDate =
-          !daysFilter[1] || daysFilter[0].getDate() === daysFilter[1]?.getDate();
-  
+          !daysFilter[1] ||
+          daysFilter[0].getDate() === daysFilter[1]?.getDate();
+
         if (!isOneDate) {
           mapObs = mapObs.filter((obs) => {
             const obsDate = new Date(obs.created_at);
@@ -211,24 +224,23 @@ export class MapService {
           );
         });
       }
-  
+
       const observations = this.observationsService.observations$
         .getValue()
         .filter((obs) => {
           return mapObs.some((mapObs) => mapObs.id === obs.id);
         });
-  
+
       //Get all features
       const features =
         this.observationsService.getLineStringFromObservations(observations);
-  
+
       this.filteredFeatures = features as Feature[];
-  
+
       //update the geojson
       this.updateSourceObservations(features as Feature[]);
-      
     } catch (error) {
-      console.error(error)
+      console.error(error);
       throw Error(`Error filtering map observations ${error}`);
     }
   }
