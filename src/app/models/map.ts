@@ -10,6 +10,7 @@ export interface MapObservation {
   Leq?: string;
   userType?: string;
   quiet?: string;
+  influence?:number;
   path: Segment[];
   user_level: number;
 }

@@ -107,6 +107,29 @@
         </app-slider-step>
       </div>
     </div>
+    <!-- Filtro influencia positiva -->
+    <div class="flex flex-column">
+      <p-checkbox
+        formControlName="positivePlace"
+        label="Llocs amb influencia positiva"
+        [binary]="true"
+        [class]="'flex justify-content-between'"
+      />
+      <div
+        formGroupName="positivePlaces"
+        class="card mt-3 mb-4 p-3 gap-2 flex flex-column filter"
+        *ngIf="filtersForm.value.positivePlace"
+      >
+        @for (type of typesPositivePlaces; track $index) {
+        <p-checkbox
+          formControlName="{{ type.id }}"
+          [label]="type.value"
+          [binary]="true"
+          [class]="'flex justify-content-start'"
+        />
+        }
+      </div>
+    </div>
     <!-- Filtro tipo de usuario -->
     <div class="flex flex-column">
       <p-checkbox
