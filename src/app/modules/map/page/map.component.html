@@ -1,4 +1,12 @@
-<div class="flex flex-1">
+<div class="flex flex-column flex-1">
+
+  <div class="col-12 flex flex-column gap-2 align-items-start">
+    <h2 class="font-bold mt-0 mb-0">{{'map.title' | translate}}</h2>
+    <p>
+      {{'map.description' | translate}}
+    </p>
+  </div>
+
   <app-map-tool-bar
     [showFilters]="showFilters"
     [showMapLayers]="showMapLayers"
