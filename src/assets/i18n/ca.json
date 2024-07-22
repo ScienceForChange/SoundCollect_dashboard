@@ -6,7 +6,7 @@
     "no": "No",
     "send": "Enviar",
     "accept": "Acceptar",
-    "cancel":  "Cancel·lar",
+    "cancel": "Cancel·lar",
     "areYouSure": "Estàs segur/a?",
     "save": "Guardar",
     "close": "Tancar",
@@ -43,7 +43,55 @@
     "observations": "Observacions",
     "logout": "Tancar sessió"
   },
-  "map":{
+  "home": {
+    "footer": {
+      "legal": {
+        "legalNotice": "Avís legal",
+        "terms": "Termes i condicions",
+        "privacy": "Política de privacitat",
+        "cookies": "Política de cookies"
+      },
+      "allRightsReserved": "Tots els drets reservats",
+      "smallText": "SoundCollect és un projecte coordinat per <a href='https://scienceforchange.eu' target='_blank'>Science For Change</a> dins de la convocatòria del programa operatiu del FEDER de Catalunya 2021-2027 amb número de referència del Contracte EC-2023-89."
+    },
+    "header": {
+      "wellcome": "Et donem la benvinguda a la plataforma de visualització de dades de SoundCollect!",
+      "text": "Aquesta eina ha estat creada per portar la informació sobre les àrees tranquil·les directament al teu abast."
+    },
+    "whatToDo": {
+      "text1": "La nostra plataforma web és un visor de dades interactiu que transforma la informació recopilada per l'aplicació SoundCollect en estadístiques i anàlisis detallades. Tant si ets un ciutadà/a interessat/a en la qualitat sonora del teu entorn, com si ets un expert en acústica, aquesta plataforma t'ofereix tot el que necessites per explorar i entendre els paisatges sonors urbans. Recorda que està demostrat que el paisatge sonor urbà,  és un element que afecta i condiciona de forma rellevant la qualitat de vida de les persones. ",
+      "listTitle": "Què pots fer a la plataforma?",
+      "listItem1": {
+        "text": "Visualitza totes les observacions realitzades per la comunitat. Utilitza els filtres per interactuar amb les dades i descobrir zones d'interès.",
+        "title": "Explora el mapa sonor col·laboratiu:"
+      },
+      "listItem2": {
+        "title": "Accedeix a un resum estadístic general:",
+        "text": "Consulta estadístiques detallades sobre l'abast de l'aplicació en tot el territori de Catalunya, el nombre total de registres i el nombre de persones usuàries actives."
+      },
+      "listItem3": {
+        "title": "Realitza una anàlisi detallada:",
+        "text1": "Selecciona una zona d'estudi d'interès i delimita-la espacialment i temporalment per conèixer la tranquil·litat, tant a nivell qualitatiu, a partir de les dades dels nivells de pressió sonora; com quantitatiu, amb dades sobre la percepció de l'entorn acústic.",
+        "text2": "Descarrega't el manual d'usuari de la plataforma per tenir més informació.",
+        "text3": "Explora, analitza i comparteix dades sobre les àrees tranquil·les de Catalunya.",
+        "text4": "Descobrirem junts el so de la comunitat!",
+        "link": "http://home.soundcollectapp.com/wp-content/uploads/2024/07/20240717_Manual-de-lusuari_aria-Dashboard-SoundCollect_CAT.pdf"
+      }
+    },
+    "dataValidate": {
+      "title": "Procés de validació de les dades",
+      "text1": "Per assegurar la precisió i rellevància de la informació a la plataforma de visualització de dades, els registres han de passar per un procés de validació. Només les dades que compleixin amb els següents requisits seran visibles a la plataforma:",
+      "listItem1": {
+        "text": "Només es consideraran les dades de persones usuàries que hagin calibrat els seus dispositius mòbils correctament.",
+        "title": "Calibratge de dispositius mòbils:"
+      },
+      "listItem2": {
+        "title": "Rang de LAeq acceptable:",
+        "text": "S'acceptaran els registres que continguin valors de LAeq entre 20dB LAeq  80dB. Els valors fora d'aquest rang no es consideren erronis, però no s'inclouran a la plataforma perquè no caracteritzen adequadament una àrea tranquil·la."
+      }
+    }
+  },
+  "map": {
     "observations": "Mapa",
     "titleMenu": "Mapa",
     "filters": {
@@ -90,8 +138,12 @@
       "lessObs": "Menys observacions",
       "obsNumber": "Nombre d'observacions"
     },
-    "barChart":{
-      "yAxis": "Nombre de registres"
+    "barChart": {
+      "yAxis": "Nombre de registres",
+      "tooltip": {
+        "date": "Data",
+        "numObs": "Observacions"
+      }
     },
     "observationsNumber": {
       "total": "Nombre de registres total",
@@ -101,8 +153,8 @@
   },
   "soundscape": {
     "observations": "Observacions",
-    "titleMenu": "Paissatge sonor",
-    "map":{
+    "titleMenu": "Anàlisi",
+    "map": {
       "createFilter": "Crear zona d'estudi",
       "editFilter": "Editar filtre",
       "deleteFilter": "Eliminar filtre"
@@ -181,7 +233,6 @@
       "noPonderation": "dBa"
     },
     "temporalEvolution": {
-      "title": "Evolució temporal sobre els nivells de so dB(A) en un període de temps",
       "serie1": "Sèrie 1",
       "serie2": "Sèrie 2",
       "morningSerie1": "Dia Sèrie 1",
@@ -199,9 +250,6 @@
         "hour": "Hora",
         "numObs": "Observacions"
       }
-    },
-    "tagCloud": {
-      "title": "Anàlisi de la pregunta oberta"
     }
   },
   "login": {
