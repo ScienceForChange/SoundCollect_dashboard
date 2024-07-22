@@ -1,18 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FiltersComponent } from './filters.component';
+import { MapFiltersComponent } from './filters.component';
+import { expect, describe, beforeEach, it } from '@jest/globals';
 
 describe('FiltersComponent', () => {
-  let component: FiltersComponent;
-  let fixture: ComponentFixture<FiltersComponent>;
+  let component: MapFiltersComponent;
+  let fixture: ComponentFixture<MapFiltersComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [FiltersComponent]
+      declarations: [MapFiltersComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(FiltersComponent);
+    fixture = TestBed.createComponent(MapFiltersComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

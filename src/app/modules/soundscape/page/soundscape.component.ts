@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild, effect, inject, signal } from '@angular/core';
 
-import mapboxgl, { LngLat, LngLatBounds, Map } from 'mapbox-gl';
+import mapboxgl, { IControl, LngLat, LngLatBounds, Map, MapEvent, } from 'mapbox-gl';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import MapboxDraw from '@mapbox/mapbox-gl-draw';
 
@@ -49,6 +49,7 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
   public showMapLayers?: boolean;
   public selectedPolygon: any | undefined = undefined;
   public polygonFilter = signal<any | undefined>(undefined);
+  public filterActive: boolean = false;
   public timeFilter = signal<TimeFilter>(TimeFilter.WHOLEDAY);
   public layerId: string = 'light-v10';
   public mapSettings: {
@@ -102,6 +103,9 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
 
     effect(() => {
       if (this.polygonFilter()){
+
+        this.filterActive = true;
+
         let initalHour = this.hourRage[this.timeFilter()][0] ? String(this.hourRage[this.timeFilter()][0]) : "00:00:00";
         let finalHour = this.hourRage[this.timeFilter()][1] ? String(this.hourRage[this.timeFilter()][1]) : "23:59:59";
         this.observationsService.getObservationsByPolygonAndHours(
@@ -133,6 +137,7 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
     this.selectedPolygon = undefined;
     this.polygonFilter.update(() => undefined);
     this.observationsService.getAllObservations();
+    this.filterActive = false;
   }
 
   public toggleShowMapLayers(): void {
@@ -158,7 +163,7 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
       accessToken: mapboxgl.accessToken,
       language: 'ca',
       limit: 5,
-      mapboxgl: mapboxgl,
+      // mapboxgl: mapboxgl,
       marker: false,
       zoom: 17,
     });
@@ -424,16 +429,16 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
       ]
 
     });
-    this.map.addControl(this.draw);
+    this.map.addControl(this.draw as IControl);
 
     //Llamada a la función onPolygonSelect cuando se selecciona un polígono
-    this.map.on('draw.selectionchange', this.onDrawSelect.bind(this));
+    this.map.on('draw.selectionchange' as MapEvent, this.onDrawSelect.bind(this));
 
     //Llamada a la función polygonCreated cuando se termina de dibujar un polígono
-    this.map.on('draw.create', this.onDrawCreated.bind(this));
+    this.map.on('draw.create' as MapEvent, this.onDrawCreated.bind(this));
 
     //La función updatedSubareaPolygon se llama cuando se actualiza un polígono
-    this.map.on('draw.update', this.onDrawUpdated.bind(this));
+    this.map.on('draw.update' as MapEvent, this.onDrawUpdated.bind(this));
 
     // this.addObservationsToMap();
 
@@ -635,7 +640,9 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.observations$.unsubscribe();
-    this.observationsService.getAllObservations();
+    if (this.filterActive) {
+      this.observationsService.getAllObservations();
+    }
   }
 }
 

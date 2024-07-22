@@ -1,4 +1,4 @@
-import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { APP_INITIALIZER, ErrorHandler, NgModule } from '@angular/core';
 import { PathLocationStrategy, LocationStrategy } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
@@ -16,6 +16,8 @@ import { SharedComponentsModule } from './shared/shared.module';
 import { authInterceptorProviders } from './interceptor/auth.interceptor';
 import { errorInterceptorProviders } from './interceptor/error.interceptor';
 
+import { GlobalErrorHandler } from './handler/global-error-handler';
+
 import { environment } from '../environments/environments';
 
 import { LoginModule } from './modules/login/login.module';
@@ -23,6 +25,7 @@ import { OverviewModule } from './modules/overview/overview.module';
 import { SoundscapeModule } from './modules/soundscape/soundscape.module';
 import { MapModule } from './modules/map/map.module';
 import { ErrorModule } from './modules/error/error.module';
+import { HomeModule } from './modules/home/home.module';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -40,6 +43,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     OverviewModule,
     SharedComponentsModule,
     SoundscapeModule,
+    HomeModule,
     TranslateModule.forRoot({
       defaultLanguage: environment.DEFAULT_LANGUAGE,
       loader: {
@@ -58,6 +62,11 @@ export function HttpLoaderFactory(http: HttpClient) {
       },
       deps: [TranslateService],
       multi: true
+    },
+    {
+      // processes all errors
+      provide: ErrorHandler,
+      useClass: GlobalErrorHandler,
     },
     { provide: LocationStrategy, useClass: PathLocationStrategy },
     authInterceptorProviders,

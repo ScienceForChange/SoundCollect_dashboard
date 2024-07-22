@@ -32,6 +32,13 @@ export class MapFiltersComponent implements OnInit {
     { id: 3, value: this.translate.instant('map.filters.traffic') },
     { id: 4, value: this.translate.instant('map.filters.others') },
   ];
+  public typesPositivePlaces: { id: number; value: string }[] = [
+    { id: 1, value: this.translate.instant('map.filters.stronglyAgree') },
+    { id: 2, value: this.translate.instant('map.filters.agree')},
+    { id: 3, value: this.translate.instant('map.filters.undecided')},
+    { id: 4, value: this.translate.instant('map.filters.disagree') },
+    { id: 5, value: this.translate.instant('map.filters.stronglyDisagree') },
+  ];
   public typesUsers: {
     id: number;
     value: string;
@@ -50,6 +57,8 @@ export class MapFiltersComponent implements OnInit {
     typeFilter: new FormGroup({}),
     typeUser: new FormControl(false, []),
     typeUsers: new FormGroup([]),
+    positivePlace: new FormControl(false, []),
+    positivePlaces: new FormGroup([]),
     soundPressure: new FormControl(false, []),
     soundPressureFilter: new FormControl([35, 80], []),
     days: new FormControl(false, []),
@@ -73,9 +82,16 @@ export class MapFiltersComponent implements OnInit {
         new FormControl(true, [])
       );
     });
+    //Create an object {1: true,... } for each type of place of filter
+    this.typesPositivePlaces.forEach((type) => {
+      (this.filtersForm.get('positivePlaces') as FormGroup).addControl(
+        String(type.id),
+        new FormControl(true, [])
+      );
+    });
     this.filtersForm.valueChanges.subscribe((values: FormFilterValues) => {
       //Check if any value of form is setted to toggle the showFilters button
-      if (values.type || values.soundPressure || values.days || values.hours) {
+      if (values.type || values.soundPressure || values.days || values.hours || values.typeUser) {
         this.mapService.isFilterActive.next(true);
       } else {
         this.mapService.isFilterActive.next(false);

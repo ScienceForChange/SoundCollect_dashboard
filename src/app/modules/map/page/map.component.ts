@@ -47,14 +47,16 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   }
 
   public hideModal(): void {
-    this.mapService.isOpenObservationInfoModal.next(false)
+    this.mapService.isOpenObservationInfoModal.next(false);
   }
 
   ngAfterViewInit(): void {
-    this.mapService.isOpenObservationInfoModal.subscribe((isOpen) => {
-      this.isOpenObservationInfoModal = isOpen;
-      this.observationSelected = this.mapService.observationSelected;
-    });
+    this.subscriptions.add(
+      this.mapService.isOpenObservationInfoModal.subscribe((isOpen) => {
+        this.isOpenObservationInfoModal = isOpen;
+        this.observationSelected = this.mapService.observationSelected;
+      })
+    );
 
     const map = new Map({
       container: this.mapDivElement.nativeElement, // container ID
@@ -67,7 +69,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
       accessToken: mapboxgl.accessToken,
       language: 'ca',
       limit: 5,
-      mapboxgl: mapboxgl,
+      // mapboxgl: mapboxgl,
       marker: false,
       zoom: 17,
     });

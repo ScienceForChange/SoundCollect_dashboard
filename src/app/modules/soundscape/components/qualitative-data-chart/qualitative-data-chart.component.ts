@@ -34,72 +34,6 @@ export class QualitativeDataChartComponent implements AfterViewInit {
       this.updateChart();
     });
 
-    /*
-    const { closePoints, otherPoints } = this.classifyData(data);
-
-    const option = {
-      xAxis: {
-        min: -1,
-        max: 1,
-        name: this.translate.instant('soundscape.quas.activityLevel'),
-        nameLocation: 'middle',
-        nameGap: 35,
-      },
-      yAxis: {
-        min: -1,
-        max: 1,
-        name: this.translate.instant('soundscape.quas.pleasantnessLevel'),
-        nameLocation: 'middle',
-        nameGap: 35,
-      },
-      tooltip: {
-        position: 'top'
-      },
-      series: [
-        {
-          name: this.translate.instant('soundscape.quas.activity&pleasantness'),
-          type: 'scatter',
-          data: [...closePoints, ...otherPoints],
-          encode: { tooltip: [0, 1] },
-          symbolSize: 20,
-          itemStyle: {
-         //   color: 'blue'
-          },
-          markArea: {
-            silent: true,
-            itemStyle: {
-              color: 'rgba(128, 128, 128, 0)'
-            },
-            data: [
-              [{
-                coord: [
-                  Math.min(...closePoints.map(p => p[0])),
-                  Math.min(...closePoints.map(p => p[1]))
-                ]
-              },
-              {
-                coord: [
-                  Math.max(...closePoints.map(p => p[0])),
-                  Math.max(...closePoints.map(p => p[1]))
-                ]
-              }]
-            ]
-          }
-        },
-        //{
-        //  name: 'Other Points',
-        //  type: 'scatter',
-        //  data: otherPoints,
-        //  encode: { tooltip: [0, 1] },
-        //  symbolSize: 20,
-        //  itemStyle: {
-        //  //  color: 'red'
-        //  }
-        //}
-      ]
-    };
-
-    this.chart.setOption(option);*/
   }
   public updateChart(): void {
 
@@ -136,43 +70,43 @@ export class QualitativeDataChartComponent implements AfterViewInit {
         {
           name: this.translate.instant('soundscape.quas.activity&pleasantness'),
           type: 'scatter',
-          data: [...closePoints, ...otherPoints],
+          data: [...closePoints],
           encode: { tooltip: [0, 1] },
           symbolSize: 20,
           itemStyle: {
-         //   color: 'blue'
+            color: 'blue'
           },
-          markArea: {
-            silent: true,
-            itemStyle: {
-              color: 'rgba(128, 128, 128, 0)'
-            },
-            data: [
-              [{
-                coord: [
-                  Math.min(...closePoints.map(p => p[0])),
-                  Math.min(...closePoints.map(p => p[1]))
-                ]
-              },
-              {
-                coord: [
-                  Math.max(...closePoints.map(p => p[0])),
-                  Math.max(...closePoints.map(p => p[1]))
-                ]
-              }]
-            ]
-          }
+          // markArea: {
+          //   silent: true,
+          //   itemStyle: {
+          //     color: 'rgba(128, 128, 128, .3)'
+          //   },
+          //   data: [
+          //     [{
+          //       coord: [
+          //         Math.min(...closePoints.map(p => p[0])),
+          //         Math.min(...closePoints.map(p => p[1]))
+          //       ]
+          //     },
+          //     {
+          //       coord: [
+          //         Math.max(...closePoints.map(p => p[0])),
+          //         Math.max(...closePoints.map(p => p[1]))
+          //       ]
+          //     }]
+          //   ]
+          // }
         },
-        //{
-        //  name: 'Other Points',
-        //  type: 'scatter',
-        //  data: otherPoints,
-        //  encode: { tooltip: [0, 1] },
-        //  symbolSize: 20,
-        //  itemStyle: {
-        //  //  color: 'red'
-        //  }
-        //}
+        {
+         name: 'Other Points',
+         type: 'scatter',
+         data: otherPoints,
+         encode: { tooltip: [0, 1] },
+         symbolSize: 20,
+         itemStyle: {
+           color: 'blue' //'red'
+         }
+        }
       ]
     };
 
@@ -203,8 +137,12 @@ export class QualitativeDataChartComponent implements AfterViewInit {
         return [Math.round((activityLevel / 9.657) * 100) / 100, Math.round((pleasantnessLevel / 9.657) * 100) / 100];
 
       }
+      else{
+        return [];
+        //mockup de datos entre -1 y 1
+        return [Math.random() * (1 - (-1)) + (-1), Math.random() * (1 - (-1)) + (-1)];
+      }
 
-      return [];
 
     });
 

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit, inject } from '@angular/core';
 
 import { Subscription } from 'rxjs';
 
@@ -20,6 +20,10 @@ Chart.register(WordCloudController, WordElement);
 })
 export class TagCloudComponent implements OnInit, OnDestroy{
 
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.chart.resize();
+  }
   private observations!: Observations[];
   private observationsService = inject(ObservationsService);
   private observations$!: Subscription;
@@ -59,7 +63,8 @@ export class TagCloudComponent implements OnInit, OnDestroy{
         datasets: [
           {
             label: "",
-            data: this.tags.map((d) => d.value * 8)
+            //multicamos por 10 para aumentar el tamaño de la fuente
+            data: this.tags.map((d) => d.value * 10)
           }
         ]
       },
@@ -67,6 +72,14 @@ export class TagCloudComponent implements OnInit, OnDestroy{
         plugins: {
           legend: {
             display: false
+          },
+          tooltip:{
+            callbacks: {
+              label: (context) => {
+                //devolvemos el valor real al tooltip
+                return (Number(context.raw) / 10).toString();
+              }
+            }
           }
         }
       }

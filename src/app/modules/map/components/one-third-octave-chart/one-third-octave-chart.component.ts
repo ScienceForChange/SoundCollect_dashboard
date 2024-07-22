@@ -11,7 +11,6 @@ import { GridComponent, LegendComponent } from 'echarts/components';
 
 import { Observations } from '../../../../models/observations';
 
-
 @Component({
   selector: 'app-one-third-octave-chart',
   templateUrl: './one-third-octave-chart.component.html',
@@ -30,7 +29,10 @@ export class OneThirdOctaveChartComponent implements OnInit, AfterViewInit {
   };
 
   public totalObservationTypes: number = 0;
-  private quietTypesLabel = [this.translate.instant('soundscape.tonalFrequency.ponderation'), this.translate.instant('soundscape.tonalFrequency.noPonderation')];
+  private quietTypesLabel = [
+    this.translate.instant('soundscape.tonalFrequency.noPonderation'),
+    this.translate.instant('soundscape.tonalFrequency.ponderation'),
+  ];
   private hertzLevels = [
     '50',
     '63',
@@ -72,13 +74,13 @@ export class OneThirdOctaveChartComponent implements OnInit, AfterViewInit {
   }
 
   private updateYAxis(event: any) {
-    let name = this.translate.instant('soundscape.tonalFrequency.presure');
+    let name = this.translate.instant(
+      'soundscape.tonalFrequency.presure'
+    );
     let isWithPonderationSelected =
       !Object.values(event.selected)[1] && Object.values(event.selected)[0];
     if (isWithPonderationSelected)
-      name = this.translate.instant(
-        'soundscape.tonalFrequency.pressurePonderation'
-      );
+      name = this.translate.instant('soundscape.tonalFrequency.pressurePonderation');
     this.options = {
       ...this.options,
       yAxis: {
@@ -138,20 +140,20 @@ export class OneThirdOctaveChartComponent implements OnInit, AfterViewInit {
           type: 'category',
           data: this.hertzLevels,
           axisLabel: { interval: 0, rotate: 45, fontSize: 10, margin: 10 },
-          nameTextStyle:{
+          nameTextStyle: {
             fontSize: 15,
-            fontWeight:600
-          }
+            fontWeight: 600,
+          },
         },
         yAxis: {
           name: this.translate.instant('soundscape.tonalFrequency.presure'),
           nameLocation: 'middle',
           nameGap: 35,
           type: 'value',
-          nameTextStyle:{
+          nameTextStyle: {
             fontSize: 15,
-            fontWeight:600
-          }
+            fontWeight: 600,
+          },
         },
         tooltip: {
           trigger: 'axis',

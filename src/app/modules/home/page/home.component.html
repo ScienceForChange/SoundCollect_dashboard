@@ -1,0 +1,101 @@
+<div class="container flex flex-column">
+
+  <div id="header" class="flex col-12">
+    <div class="card w-full bg-color-green">
+      <div class="col-12 flex justify-content-end">
+        <img id="logo" src="../../../../assets/images/home/header/SC_Logo.png" title="SC_Logo_CAT" alt="SoundCollect" loading="lazy">
+      </div>
+      <div class="col-12">
+        <h1>{{'home.header.wellcome' | translate}}</h1>
+        <h3>{{'home.header.text' | translate}}</h3>
+      </div>
+    </div>
+  </div>
+
+  <div id="body" class="flex flex-column lg:flex-row flex-2">
+    <div class="flex col-12 lg:col-7">
+      <div class="card w-full">
+        <div class="card-body flex flex-wrap">
+          <div class="col-12">
+            <p>{{'home.whatToDo.text1' | translate}}</p>
+          </div>
+          <div class="col-12 lg:col-7">
+            <h4 class="mt-5 mb-5">{{'home.whatToDo.listTitle' | translate}}</h4>
+            <ul class="mb-8">
+              <li class="mb-5">
+                <b>{{'home.whatToDo.listItem1.title' | translate}}</b>
+                <p>{{'home.whatToDo.listItem1.text' | translate}}</p>
+              </li>
+              <li class="mb-5">
+                <b>{{'home.whatToDo.listItem2.title' | translate}}</b>
+                <p>{{'home.whatToDo.listItem2.text' | translate}}</p>
+              </li>
+              <li class="mb-5">
+                <b>{{'home.whatToDo.listItem3.title' | translate}}</b>
+                <p>{{'home.whatToDo.listItem3.text1' | translate}}</p>
+                <p>
+                  <a [href]="'home.whatToDo.listItem3.link'| translate" [target]="'_blank'">{{'home.whatToDo.listItem3.text2' | translate}}</a>
+                </p>
+              </li>
+            </ul>
+            <p><b>{{'home.whatToDo.listItem3.text3' | translate}}</b></p>
+            <p><b>{{'home.whatToDo.listItem3.text4' | translate}}</b></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="flex col-12 lg:col-5">
+      <div class="card w-full h-full bg-color-orange">
+        <div class="col-12">
+          <h2>{{'home.dataValidate.title' | translate}}</h2>
+        </div>
+        <div class="col-12">
+          <p class="mb-5">
+            {{'home.dataValidate.text1' | translate}}
+          </p>
+          <ul>
+            <li class="mb-5">
+              <b>{{'home.dataValidate.listItem1.title' | translate}}</b>
+              <p>{{'home.dataValidate.listItem1.text' | translate}}</p>
+            </li>
+            <li class="mb-5">
+              <b>{{'home.dataValidate.listItem2.title' | translate}}</b>
+              <p>{{'home.dataValidate.listItem2.text' | translate}}</p>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="footer" class="flex col-12">
+    <div class="card w-full flex flex-column justify-content-between">
+
+      <div class="col-12 flex flex-column lg:flex-row justify-content-between gap-3">
+
+        <div id="partners" class="flex flex-column align-items-start justify-content-end">
+          <div class="flex align-items-center gap-5">
+            <span><img [width]="200" src="../../../../assets/images/home/footer/UE_COFI_FEDER_21-27_color.png" alt="UE" loading="lazy" /></span>
+            <a [href]="'https://web.gencat.cat'" [target]="'_blank'"><img [width]="200" src="../../../../assets/images/home/footer/gene_BN.png" alt="Generalitat de Catalunya" loading="lazy" /></a>
+          </div>
+          <div class="flex align-items-center gap-3">
+            <a [href]="'https://www.scienceforchange.eu'" [target]="'_blank'"><img [width]="100" src="../../../../assets/images/home/footer/SFC_logo.png" alt="Science For Change" loading="lazy" /></a>
+            <a [href]="'https://www.qualud.com'" [target]="'_blank'"><img [width]="150" src="../../../../assets/images/home/footer/qualud433x216.png" alt="Qualud" loading="lazy" /></a>
+            <a [href]="'https://icrsl.com'" [target]="'_blank'"><img [width]="130" src="../../../../assets/images/home/footer/ICR.png" alt="ICR" loading="lazy" /></a>
+            <a [href]="'https://opensourcesoundscapes.org/hush-city'" [target]="'_blank'">Dra. Antonella Radicchi</a>
+          </div>
+        </div>
+
+        <div id="legalLinks" class="flex flex-column justify-content-end lg:text-right lg:pb-3">
+          <a [href]="'https://home.soundcollectapp.com/aviso-legal/'" [target]="'_blank'">{{'home.footer.legal.legalNotice' | translate}}</a>
+          <a [href]="'https://home.soundcollectapp.com/termes-i-condicion/'" [target]="'_blank'">{{'home.footer.legal.terms' | translate}}</a>
+          <a [href]="'https://home.soundcollectapp.com/politica-de-cookies/'" [target]="'_blank'">{{'home.footer.legal.cookies' | translate}}</a>
+          <a [href]="'https://home.soundcollectapp.com/politica-de-privacidad/'" [target]="'_blank'">{{'home.footer.legal.privacy' | translate}}</a>
+          <small class="mt-3">© {{ currentDate | date: 'yyyy' }} SoundCollect - {{'home.footer.allRightsReserved' | translate}}.</small>
+        </div>
+
+      </div>
+      <small class="col-12" [innerHTML]="'home.footer.smallText' | translate"></small>
+    </div>
+  </div>
+
+</div>

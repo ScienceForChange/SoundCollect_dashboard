@@ -31,7 +31,6 @@ import type { Observations } from '../../../../models/observations';
 import energeticAvg from '../../../../../utils/energeticAvg';
 import { ObservationsService } from '../../../../services/observations/observations.service';
 
-
 type EChartsOption = echarts.ComposeOption<
   | GridComponentOption
   | CandlestickSeriesOption
@@ -95,11 +94,6 @@ const colors: Colors = {
   },
 };
 
-//I create this global variables to be able to pass the translation to
-//Tooltip of the chart
-let hourWord = ''
-let numOfObsWord = ''
-
 @Component({
   selector: 'app-temporal-evolution-sound-level-chart',
   templateUrl: './temporal-evolution-sound-level-chart.component.html',
@@ -108,17 +102,16 @@ let numOfObsWord = ''
 export class TemporalEvolutionSoundLevelChartComponent
   implements OnInit, AfterViewInit, OnDestroy
 {
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.myChart.resize();
+  }
   @Input() observations: Observations[];
   private observationsService = inject(ObservationsService);
   private translations = inject(TranslateService);
   private subscriptions = new Subscription();
   private myChart!: echarts.ECharts;
-  @HostListener('window:resize', ['$event'])
-  onResize(event: any) {
-    this.myChart.resize();
-  }
   private options: EChartsOption;
-  private initialOptions: EChartsOption;
   private loadingOptions = {
     text: this.translations.instant('app.loading'),
     color: '#FF7A1F',
@@ -133,9 +126,6 @@ export class TemporalEvolutionSoundLevelChartComponent
   public filterState!: string;
 
   ngOnInit(): void {
-    hourWord = this.translations.instant('soundscape.temporalEvolution.tooltip.hour')
-    numOfObsWord = this.translations.instant('soundscape.temporalEvolution.tooltip.numObs')
-
     echarts.use([
       GridComponent,
       CandlestickChart,
@@ -153,30 +143,47 @@ export class TemporalEvolutionSoundLevelChartComponent
     };
     const obsSubscription = this.observationsService.observations$.subscribe(
       (observations: Observations[]) => {
-        this.observations = observations;
-        this.firstDay =  this.observations.length ? new Date(this.observations[0].attributes.created_at) : null
-        this.lastDay = this.observations.length ?  new Date(
-          this.observations[this.observations.length - 1].attributes.created_at
-        ) : null
-        // Define initial values or reset to default
-        const initialValues: { daysFilterS1: [Date, Date]; daysFilterS2: [] } =
-          {
+        try {
+          this.observations = observations;
+          this.firstDay = this.observations.length
+            ? new Date(this.observations[0].attributes.created_at)
+            : null;
+          this.lastDay = this.observations.length
+            ? new Date(
+                this.observations[
+                  this.observations.length - 1
+                ].attributes.created_at
+              )
+            : null;
+          // Define initial values or reset to default
+          const initialValues: {
+            daysFilterS1: [Date, Date];
+            daysFilterS2: [];
+          } = {
             daysFilterS1: [this.firstDay, this.lastDay],
             daysFilterS2: [],
           };
 
-        if (!this.filtersForm) return;
-        //Update min day and max day at form
-        this.filtersForm.setValue(initialValues);
-        const obsS1: Observations[] = this.observations.filter((obs) => {
-          const isBefore = new Date(obs.attributes.created_at) <= this.lastDay;
-          const isAfter = new Date(obs.attributes.created_at) >= this.firstDay;
-          if (isBefore && isAfter) return true;
-          return false;
-        });
+          if (!this.filtersForm) return;
+          //Update min day and max day at form
+          this.filtersForm.setValue(initialValues);
+          const obsS1: Observations[] = this.observations.filter((obs) => {
+            const isBefore =
+              new Date(obs.attributes.created_at) <= this.lastDay;
+            const isAfter =
+              new Date(obs.attributes.created_at) >= this.firstDay;
+            if (isBefore && isAfter) return true;
+            return false;
+          });
 
-        this.updateChart(obsS1, []);
-
+          this.updateChart(obsS1, []);
+        } catch (error) {
+          console.error(error);
+          throw Error(
+            'Error at temporal-evolution-sound-level-chart.component.ts: ' +
+              error
+          );
+        }
       }
     );
     this.subscriptions.add(obsSubscription);
@@ -265,10 +272,8 @@ export class TemporalEvolutionSoundLevelChartComponent
       series: series as CandlestickSeriesOption[],
     };
 
-
-      this.myChart.clear();
-      this.myChart.setOption(this.options,true);
-
+    this.myChart.clear();
+    this.myChart.setOption(this.options, true);
   }
 
   public resetFormToInitialValues(): void {
@@ -278,7 +283,6 @@ export class TemporalEvolutionSoundLevelChartComponent
       daysFilterS2: [],
     };
 
-    
     //Update the form values
     this.filtersForm.setValue(initialValues);
     this.filterState = undefined;
@@ -359,51 +363,58 @@ export class TemporalEvolutionSoundLevelChartComponent
       afternoon: [],
       night: [],
     };
-    //Order and group by hour of a day.
-    observations
-      .sort(
-        (a, b) =>
-          new Date(a.attributes.created_at).getHours() -
-          new Date(b.attributes.created_at).getHours()
-      )
-      .forEach((observation) => {
-        const hour = new Date(observation.attributes.created_at).getHours();
-        //The order of the first 4 numbers are important
-        if (hour >= 7 && hour <= 19) {
-          soundLevelsByTime.day.push([
-            +observation.attributes.L90,
-            +observation.attributes.L10,
-            +observation.attributes.LAmin,
-            +observation.attributes.LAmax,
-            +observation.attributes.Leq,
-            observation.attributes.created_at,
-          ]);
-          return;
-        }
-        if (hour >= 20 && hour <= 23) {
-          soundLevelsByTime.afternoon.push([
-            +observation.attributes.L90,
-            +observation.attributes.L10,
-            +observation.attributes.LAmin,
-            +observation.attributes.LAmax,
-            +observation.attributes.Leq,
-            observation.attributes.created_at,
-          ]);
-          return;
-        }
-        if (hour >= 0 && hour <= 6) {
-          soundLevelsByTime.night.push([
-            +observation.attributes.L90,
-            +observation.attributes.L10,
-            +observation.attributes.LAmin,
-            +observation.attributes.LAmax,
-            +observation.attributes.Leq,
-            observation.attributes.created_at,
-          ]);
-          return;
-        }
-      });
-    return soundLevelsByTime;
+    try {
+      //Order and group by hour of a day.
+      observations
+        .sort(
+          (a, b) =>
+            new Date(a.attributes.created_at).getHours() -
+            new Date(b.attributes.created_at).getHours()
+        )
+        .forEach((observation) => {
+          const hour = new Date(observation.attributes.created_at).getHours();
+          //The order of the first 4 numbers are important
+          if (hour >= 7 && hour <= 19) {
+            soundLevelsByTime.day.push([
+              +observation.attributes.L90,
+              +observation.attributes.L10,
+              +observation.attributes.LAmin,
+              +observation.attributes.LAmax,
+              +observation.attributes.Leq,
+              observation.attributes.created_at,
+            ]);
+            return;
+          }
+          if (hour >= 20 && hour <= 23) {
+            soundLevelsByTime.afternoon.push([
+              +observation.attributes.L90,
+              +observation.attributes.L10,
+              +observation.attributes.LAmin,
+              +observation.attributes.LAmax,
+              +observation.attributes.Leq,
+              observation.attributes.created_at,
+            ]);
+            return;
+          }
+          if (hour >= 0 && hour <= 6) {
+            soundLevelsByTime.night.push([
+              +observation.attributes.L90,
+              +observation.attributes.L10,
+              +observation.attributes.LAmin,
+              +observation.attributes.LAmax,
+              +observation.attributes.Leq,
+              observation.attributes.created_at,
+            ]);
+            return;
+          }
+        });
+      return soundLevelsByTime;
+    } catch (error) {
+      console.error(error);
+      throw Error(
+        'Error at temporal-evolution-sound-level-chart.component.ts: ' + error
+      );
+    }
   }
 
   private createSeries(
@@ -411,18 +422,25 @@ export class TemporalEvolutionSoundLevelChartComponent
     type: string,
     isS2?: boolean
   ): SeriesOption {
-    const color = isS2 ? colors.s2[type] : colors.s1[type];
-    const name = DAYTIME[type];
-    const serieName = isS2
-      ? this.translations.instant('soundscape.temporalEvolution.serie2')
-      : this.translations.instant('soundscape.temporalEvolution.serie1');
-    const serie = {
-      name: name + ' ' + serieName,
-      itemStyle: color,
-      type: 'candlestick',
-      data: obs,
-    };
-    return serie as SeriesOption;
+    try {
+      const color = isS2 ? colors.s2[type] : colors.s1[type];
+      const name = DAYTIME[type];
+      const serieName = isS2
+        ? this.translations.instant('soundscape.temporalEvolution.serie2')
+        : this.translations.instant('soundscape.temporalEvolution.serie1');
+      const serie = {
+        name: name + ' ' + serieName,
+        itemStyle: color,
+        type: 'candlestick',
+        data: obs,
+      };
+      return serie as SeriesOption;
+    } catch (error) {
+      console.error(error);
+      throw Error(
+        'Error at temporal-evolution-sound-level-chart.component.ts: ' + error
+      );
+    }
   }
 
   ngAfterViewInit(): void {
@@ -432,132 +450,144 @@ export class TemporalEvolutionSoundLevelChartComponent
 
     //Podría probar aquí el actualizar y suscribir a las observaciones. Lo que estoy haciendo en el ngOnInit.
     //Filter falsy values
-    const filteredObs = this.observations.filter((observation) => {
-      return (
-        +observation.attributes.Leq &&
-        +observation.attributes.LAmax &&
-        +observation.attributes.L10 &&
-        +observation.attributes.L90 &&
-        +observation.attributes.LAmin
+    try {
+      const filteredObs = this.observations.filter((observation) => {
+        return (
+          +observation.attributes.Leq &&
+          +observation.attributes.LAmax &&
+          +observation.attributes.L10 &&
+          +observation.attributes.L90 &&
+          +observation.attributes.LAmin
+        );
+      });
+      this.observations = filteredObs;
+
+      const hours = Array.from({ length: 24 }, (_, i) =>
+        i.toString().padStart(2, '0')
       );
-    });
-    this.observations = filteredObs;
 
-    const hours = Array.from({ length: 24 }, (_, i) =>
-      i.toString().padStart(2, '0')
-    );
+      //Order and group by hour of a day.
+      const soundLevelsByTime = this.groupObsByTime(filteredObs);
+      const dayObs = this.groupObsByHours(soundLevelsByTime.day);
+      const afternoonObs = this.groupObsByHours(soundLevelsByTime.afternoon);
+      const nightObs = this.groupObsByHours(soundLevelsByTime.night);
 
-    //Order and group by hour of a day.
-    const soundLevelsByTime = this.groupObsByTime(filteredObs);
-    const dayObs = this.groupObsByHours(soundLevelsByTime.day);
-    const afternoonObs = this.groupObsByHours(soundLevelsByTime.afternoon);
-    const nightObs = this.groupObsByHours(soundLevelsByTime.night);
-
-    this.options = {
-      legend: {
-        data: [
-          this.translations.instant(
-            'soundscape.temporalEvolution.morningSerie1'
-          ),
-          this.translations.instant(
-            'soundscape.temporalEvolution.afternoonSerie1'
-          ),
-          this.translations.instant('soundscape.temporalEvolution.nightSerie1'),
-        ],
-        inactiveColor: '#777',
-        orient: 'horizontal', // Lay out the legend items horizontally
-        left: 'center', // Center align the legend
-        top: '0', // Position the legend at the bottom of the chart
-        width: '350px', // Adjust the width to control when items wrap to the next line
-        itemGap: 20, // Adjust the gap between legend items
-      },
-      tooltip: {
-        trigger: 'item',
-        formatter: function (params) {
-          let p = params as CallbackDataParams;
-          let values: string[] = [];
-          const data = p.data as number[];
-          const date = p.name+':00';
-          const L90 = data[1];
-          const L10 = data[2];
-          const LAmin = data[3];
-          const LAmax = data[4];
-          const Leq = data[5];
-          const numOfObs = data[6]
-          const html = `
-            <b>${p.seriesName}</b> <br>
-            ${hourWord}: ${date} <br>
-            ${numOfObsWord}: ${numOfObs} <br>
-            LAeq: ${Leq} <br>
-            L10: ${L10} <br>
-            L90: ${L90} <br>
-            LAmin: ${LAmin} <br>
-            LAmax: ${LAmax} <br>
-            `;
-          values.push(html);
-          return values.join('<br>');
+      this.options = {
+        legend: {
+          data: [
+            this.translations.instant(
+              'soundscape.temporalEvolution.morningSerie1'
+            ),
+            this.translations.instant(
+              'soundscape.temporalEvolution.afternoonSerie1'
+            ),
+            this.translations.instant(
+              'soundscape.temporalEvolution.nightSerie1'
+            ),
+          ],
+          inactiveColor: '#777',
+          orient: 'horizontal', // Lay out the legend items horizontally
+          left: 'center', // Center align the legend
+          top: '0', // Position the legend at the bottom of the chart
+          width: '350px', // Adjust the width to control when items wrap to the next line
+          itemGap: 20, // Adjust the gap between legend items
         },
-        axisPointer: {
-          animation: false,
-          type: 'cross',
-          lineStyle: {
-            color: '#376df4',
-            width: 2,
-            opacity: 1,
+        tooltip: {
+          trigger: 'item',
+          formatter: (params) => {
+            let p = params as CallbackDataParams;
+            let values: string[] = [];
+            const data = p.data as number[];
+            const date = p.name + ':00';
+            const L90 = data[1];
+            const L10 = data[2];
+            const LAmin = data[3];
+            const LAmax = data[4];
+            const Leq = data[5];
+            const numOfObs = data[6];
+            const html = `
+              <b>${p.seriesName}</b> <br>
+              ${this.translations.instant(
+                'soundscape.temporalEvolution.tooltip.hour'
+              )}: ${date} <br>
+              ${this.translations.instant(
+                'soundscape.temporalEvolution.tooltip.numObs'
+              )}: ${numOfObs} <br>
+              LAeq: ${Leq} <br>
+              L10: ${L10} <br>
+              L90: ${L90} <br>
+              LAmin: ${LAmin} <br>
+              LAmax: ${LAmax} <br>
+              `;
+            values.push(html);
+            return values.join('<br>');
+          },
+          axisPointer: {
+            animation: false,
+            type: 'cross',
+            lineStyle: {
+              color: '#376df4',
+              width: 2,
+              opacity: 1,
+            },
           },
         },
-      },
-      xAxis: {
-        data: hours,
-        name: this.translations.instant('soundscape.temporalEvolution.hours'),
-        nameGap: 35,
-        nameLocation: 'middle',
-        nameTextStyle:{
-          fontSize: 15,
-          fontWeight:600
-        }
-      },
-      yAxis: {
-        name: this.translations.instant(
-          'soundscape.temporalEvolution.pressureLevel'
-        ),
-        nameLocation: 'middle',
-        nameGap: 35,
-        nameTextStyle:{
-          fontSize: 15,
-          fontWeight:600
-        }
-      },
-      series: [
-        {
-          name: this.translations.instant(
-            'soundscape.temporalEvolution.morningSerie1'
-          ),
-          itemStyle: colors.s1['day'],
-          type: 'candlestick',
-          data: dayObs,
+        xAxis: {
+          data: hours,
+          name: this.translations.instant('soundscape.temporalEvolution.hours'),
+          nameGap: 35,
+          nameLocation: 'middle',
+          nameTextStyle: {
+            fontSize: 15,
+            fontWeight: 600,
+          },
         },
-        {
+        yAxis: {
           name: this.translations.instant(
-            'soundscape.temporalEvolution.afternoonSerie1'
+            'soundscape.temporalEvolution.pressureLevel'
           ),
-          itemStyle: colors.s1['afternoon'],
-          type: 'candlestick',
-          data: afternoonObs,
+          nameLocation: 'middle',
+          nameGap: 35,
+          nameTextStyle: {
+            fontSize: 15,
+            fontWeight: 600,
+          },
         },
-        {
-          name: this.translations.instant(
-            'soundscape.temporalEvolution.nightSerie1'
-          ),
-          itemStyle: colors.s1['night'],
-          type: 'candlestick',
-          data: nightObs,
-        },
-      ],
-    };
-    this.myChart.hideLoading();
-    this.initialOptions = this.options;
-    this.options && this.myChart.setOption(this.options);
+        series: [
+          {
+            name: this.translations.instant(
+              'soundscape.temporalEvolution.morningSerie1'
+            ),
+            itemStyle: colors.s1['day'],
+            type: 'candlestick',
+            data: dayObs,
+          },
+          {
+            name: this.translations.instant(
+              'soundscape.temporalEvolution.afternoonSerie1'
+            ),
+            itemStyle: colors.s1['afternoon'],
+            type: 'candlestick',
+            data: afternoonObs,
+          },
+          {
+            name: this.translations.instant(
+              'soundscape.temporalEvolution.nightSerie1'
+            ),
+            itemStyle: colors.s1['night'],
+            type: 'candlestick',
+            data: nightObs,
+          },
+        ],
+      };
+      this.myChart.hideLoading();
+      this.options && this.myChart.setOption(this.options);
+    } catch (error) {
+      console.error(error);
+      throw Error(
+        'Error at temporal-evolution-sound-level-chart.component.ts: ' + error
+      );
+    }
   }
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();

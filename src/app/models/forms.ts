@@ -9,4 +9,6 @@ export interface FormFilterValues {
   hoursFilter: [number, number];
   typeUser: boolean;
   typeUsers: { id: number; value: string; min: number; max?: number }[];
+  positivePlace: boolean;
+  positivePlaces: { id: number; value: string }[];
 }
