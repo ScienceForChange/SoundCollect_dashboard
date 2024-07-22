@@ -59,7 +59,7 @@
       "text": "Aquesta eina ha estat creada per portar la informació sobre les àrees tranquil·les directament al teu abast."
     },
     "whatToDo": {
-      "text1": "La nostra plataforma web és un visor de dades interactiu que transforma la informació recopilada per l'aplicació SoundCollect en estadístiques i anàlisis detallades. Tant si ets un ciutadà/a interessat/a en la qualitat sonora del teu entorn, com si ets un expert en acústica, aquesta plataforma t'ofereix tot el que necessites per explorar i entendre els paisatges sonors urbans. Recorda que està demostrat que el paisatge sonor urbà,  és un element que afecta i condiciona de forma rellevant la qualitat de vida de les persones. ",
+      "text1": "La nostra plataforma web és un visor de dades interactiu que transforma la informació recopilada per l'aplicació SoundCollect en estadístiques i anàlisis detallades. Tant si ets un/a ciutadà/na interessat/ada en la qualitat sonora del teu entorn, com si ets una persona experta en acústica, aquesta plataforma t'ofereix tot el que necessites per explorar i entendre els paisatges sonors urbans. Recorda que està demostrat que el paisatge sonor urbà,  és un element que afecta i condiciona de forma rellevant la qualitat de vida de les persones.",
       "listTitle": "Què pots fer a la plataforma?",
       "listItem1": {
         "text": "Visualitza totes les observacions realitzades per la comunitat. Utilitza els filtres per interactuar amb les dades i descobrir zones d'interès.",
@@ -71,10 +71,10 @@
       },
       "listItem3": {
         "title": "Realitza una anàlisi detallada:",
-        "text1": "Selecciona una zona d'estudi d'interès i delimita-la espacialment i temporalment per conèixer la tranquil·litat, tant a nivell qualitatiu, a partir de les dades dels nivells de pressió sonora; com quantitatiu, amb dades sobre la percepció de l'entorn acústic.",
+        "text1": "Selecciona una zona d'estudi d'interès i delimita-la espacialment i temporalment per conèixer la tranquil·litat, tant a escala quantitativa, a partir de les dades dels nivells de pressió sonora; com a escala qualitativa, amb dades sobre la percepció de l'entorn acústic.",
         "text2": "Descarrega't el manual d'usuari de la plataforma per tenir més informació.",
         "text3": "Explora, analitza i comparteix dades sobre les àrees tranquil·les de Catalunya.",
-        "text4": "Descobrirem junts el so de la comunitat!",
+        "text4": "Descobrirem junts/es el so de la comunitat!",
         "link": "http://home.soundcollectapp.com/wp-content/uploads/2024/07/20240717_Manual-de-lusuari_aria-Dashboard-SoundCollect_CAT.pdf"
       }
     },
@@ -82,12 +82,14 @@
       "title": "Procés de validació de les dades",
       "text1": "Per assegurar la precisió i rellevància de la informació a la plataforma de visualització de dades, els registres han de passar per un procés de validació. Només les dades que compleixin amb els següents requisits seran visibles a la plataforma:",
       "listItem1": {
-        "text": "Només es consideraran les dades de persones usuàries que hagin calibrat els seus dispositius mòbils correctament.",
-        "title": "Calibratge de dispositius mòbils:"
+        "title": "Calibratge de dispositius mòbils:",
+        "text": "Només es consideraran les dades de persones usuàries que hagin calibrat els seus dispositius mòbils correctament. T'expliquem per què per a nosaltres el calibratge és clau:",
+        "text1": "El calibratge adequat assegura que les dades siguin precises i de confiança. Amb el temps, factors com el desgast o canvis en l'entorn poden desviar els resultats.",
+        "text2": "El calibratge garanteix que els mesuraments realitzats en diferents moments o condicions siguin comparables. Això permet obtenir resultats consistents i repetir mesuraments amb confiança al llarg del temps."
       },
       "listItem2": {
         "title": "Rang de LAeq acceptable:",
-        "text": "S'acceptaran els registres que continguin valors de LAeq entre 20dB LAeq  80dB. Els valors fora d'aquest rang no es consideren erronis, però no s'inclouran a la plataforma perquè no caracteritzen adequadament una àrea tranquil·la."
+        "text": "S'acceptaran els registres que continguin valors de  LAeq d'entre 20dBA i 80dBA.  Els valors fora d'aquest rang no es consideren erronis, però no s'inclouran a la plataforma perquè no caracteritzen adequadament una àrea tranquil·la. "
       }
     }
   },
