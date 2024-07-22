@@ -1,5 +1,12 @@
 <ul class="layout-menu pt-2 pb-2">
   <li class="p-0">
+    <a routerLink="/">
+      <icon-soundcollect [iconClass]="'w-full mr-2 w-2rem h-2rem'" />
+      <span class="menu-item"> SoundCollect</span>
+    </a>
+  </li>
+  <p-divider />
+  <li>
     <a
       pRipple
       routerLink="/"
@@ -11,37 +18,20 @@
       }"
       routerLinkActive="active-route"
     >
-      <icon-soundcollect [iconClass]="'w-full mr-2 w-2rem h-2rem'" />
-      <span class="menu-item"> SoundCollect</span>
-    </a>
-  </li>
-  <p-divider />
-  <li>
-    <a
-      pRipple
-      routerLink="/map"
-      [routerLinkActiveOptions]="{
-        paths: 'exact',
-        queryParams: 'ignored',
-        matrixParams: 'ignored',
-        fragment: 'ignored'
-      }"
-      routerLinkActive="active-route"
-    >
       <i class="pi pi-fw pi-map mr-2" style="font-size: 1.7rem"></i>
-      <span class="menu-item"> {{'map.titleMenu' | translate}} </span>
+      <span class="menu-item"> {{ "map.titleMenu" | translate }} </span>
     </a>
   </li>
   <li>
     <a routerLink="/resum" routerLinkActive="active-route">
       <i class="pi pi-fw pi-file-edit mr-2" style="font-size: 1.7rem"></i>
-      <span class="menu-item"> {{'overview.titleMenu' | translate}}  </span>
+      <span class="menu-item"> {{ "overview.titleMenu" | translate }} </span>
     </a>
   </li>
   <li>
     <a routerLink="/soundscape" routerLinkActive="active-route">
       <i class="pi pi-fw pi-chart-pie mr-2" style="font-size: 1.7rem"></i>
-      <span class="menu-item"> {{'soundscape.titleMenu' | translate}} </span>
+      <span class="menu-item"> {{ "soundscape.titleMenu" | translate }} </span>
     </a>
   </li>
   <p-divider />
@@ -54,7 +44,7 @@
         class="p-button-rounded p-button-outlined w-full"
       >
         <i class="pi pi-fw pi-sign-out mr-2" style="font-size: 1.7rem"></i>
-        <span class="menu-item"> {{'app.logout' | translate}} </span>
+        <span class="menu-item"> {{ "app.logout" | translate }} </span>
       </button>
     </li>
   </div>
