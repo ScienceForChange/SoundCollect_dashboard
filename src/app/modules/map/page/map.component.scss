@@ -5,11 +5,10 @@
 .map-container {
   border-radius: 12px;
   border: 1px solid var(--surface-border);
-  height: calc(100vh - 2rem);
+  height: calc(100vh - 8rem);
   margin: 0.5rem;
   position: relative;
   top: 0;
-  width: 100%;
   z-index: 1;
 }
 

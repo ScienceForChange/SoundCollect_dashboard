@@ -1,2 +1,20 @@
-<h2>{{'soundscape.qualitativeData.title' | translate}}</h2>
+<div class="flex justify-content-between align-items-top mb-5">
+  <h2>{{'soundscape.qualitativeData.title' | translate}}</h2>
+  <app-info-modal [headerTitle]="'soundscape.qualitativeData.title' | translate">
+    <div>
+
+      <p>{{'soundscape.qualitativeData.content1' | translate}}</p>
+
+      <ul>
+        <li>{{'soundscape.qualitativeData.content.list1' | translate}}</li>
+        <li>{{'soundscape.qualitativeData.content.list2' | translate}}</li>
+        <li>{{'soundscape.qualitativeData.content.list3' | translate}}</li>
+        <li>{{'soundscape.qualitativeData.content.list4' | translate}}</li>
+      </ul>
+
+      <p>{{'soundscape.qualitativeData.content2' | translate}}</p>
+
+    </div>
+  </app-info-modal>
+</div>
 <div class="mt-5" id="qualitativeDataChart"></div>

@@ -9,16 +9,23 @@ import { DialogModule } from 'primeng/dialog';
 
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { SliderStepComponent } from './components/slider-step/slider-step.component';
+import { InfoModalComponent } from './components/info-modal/info-modal.component';
 
 import { IconModule } from './icons/icons.module';
 
 @NgModule({
-  declarations: [ SpinnerComponent, SliderStepComponent],
+  declarations: [
+    SpinnerComponent,
+    SliderStepComponent,
+    InfoModalComponent
+  ],
   exports: [
     IconModule,
     SpinnerComponent,
     TranslateModule,
-    SliderStepComponent
+    SliderStepComponent,
+    InfoModalComponent,
+    DialogModule,
   ],
   imports: [
     DialogModule,

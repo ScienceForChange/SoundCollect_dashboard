@@ -59,7 +59,7 @@
       "text": "Aquesta eina ha estat creada per portar la informació sobre les àrees tranquil·les directament al teu abast."
     },
     "whatToDo": {
-      "text1": "La nostra plataforma web és un visor de dades interactiu que transforma la informació recopilada per l'aplicació SoundCollect en estadístiques i anàlisis detallades. Tant si ets un ciutadà/a interessat/a en la qualitat sonora del teu entorn, com si ets un expert en acústica, aquesta plataforma t'ofereix tot el que necessites per explorar i entendre els paisatges sonors urbans. Recorda que està demostrat que el paisatge sonor urbà,  és un element que afecta i condiciona de forma rellevant la qualitat de vida de les persones. ",
+      "text1": "La nostra plataforma web és un visor de dades interactiu que transforma la informació recopilada per l'aplicació SoundCollect en estadístiques i anàlisis detallades. Tant si ets un/a ciutadà/na interessat/ada en la qualitat sonora del teu entorn, com si ets una persona experta en acústica, aquesta plataforma t'ofereix tot el que necessites per explorar i entendre els paisatges sonors urbans. Recorda que està demostrat que el paisatge sonor urbà,  és un element que afecta i condiciona de forma rellevant la qualitat de vida de les persones.",
       "listTitle": "Què pots fer a la plataforma?",
       "listItem1": {
         "text": "Visualitza totes les observacions realitzades per la comunitat. Utilitza els filtres per interactuar amb les dades i descobrir zones d'interès.",
@@ -71,23 +71,25 @@
       },
       "listItem3": {
         "title": "Realitza una anàlisi detallada:",
-        "text1": "Selecciona una zona d'estudi d'interès i delimita-la espacialment i temporalment per conèixer la tranquil·litat, tant a nivell qualitatiu, a partir de les dades dels nivells de pressió sonora; com quantitatiu, amb dades sobre la percepció de l'entorn acústic.",
+        "text1": "Selecciona una zona d'estudi d'interès i delimita-la espacialment i temporalment per conèixer la tranquil·litat, tant a escala quantitativa, a partir de les dades dels nivells de pressió sonora; com a escala qualitativa, amb dades sobre la percepció de l'entorn acústic.",
         "text2": "Descarrega't el manual d'usuari de la plataforma per tenir més informació.",
         "text3": "Explora, analitza i comparteix dades sobre les àrees tranquil·les de Catalunya.",
-        "text4": "Descobrirem junts el so de la comunitat!",
-        "link": "https://home.soundcollect.eu"
+        "text4": "Descobrirem junts/es el so de la comunitat!",
+        "link": "http://home.soundcollectapp.com/wp-content/uploads/2024/07/20240717_Manual-de-lusuari_aria-Dashboard-SoundCollect_CAT.pdf"
       }
     },
     "dataValidate": {
       "title": "Procés de validació de les dades",
       "text1": "Per assegurar la precisió i rellevància de la informació a la plataforma de visualització de dades, els registres han de passar per un procés de validació. Només les dades que compleixin amb els següents requisits seran visibles a la plataforma:",
       "listItem1": {
-        "text": "Només es consideraran les dades de persones usuàries que hagin calibrat els seus dispositius mòbils correctament.",
-        "title": "Calibratge de dispositius mòbils:"
+        "title": "Calibratge de dispositius mòbils:",
+        "text": "Només es consideraran les dades de persones usuàries que hagin calibrat els seus dispositius mòbils correctament. T'expliquem per què per a nosaltres el calibratge és clau:",
+        "text1": "El calibratge adequat assegura que les dades siguin precises i de confiança. Amb el temps, factors com el desgast o canvis en l'entorn poden desviar els resultats.",
+        "text2": "El calibratge garanteix que els mesuraments realitzats en diferents moments o condicions siguin comparables. Això permet obtenir resultats consistents i repetir mesuraments amb confiança al llarg del temps."
       },
       "listItem2": {
         "title": "Rang de LAeq acceptable:",
-        "text": "S'acceptaran els registres que continguin valors de LAeq entre 20dB LAeq  80dB. Els valors fora d'aquest rang no es consideren erronis, però no s'inclouran a la plataforma perquè no caracteritzen adequadament una àrea tranquil·la."
+        "text": "S'acceptaran els registres que continguin valors de  LAeq d'entre 20dBA i 80dBA.  Els valors fora d'aquest rang no es consideren erronis, però no s'inclouran a la plataforma perquè no caracteritzen adequadament una àrea tranquil·la. "
       }
     }
   },
@@ -127,7 +129,9 @@
     "laeqtChart": {
       "axisX": "Temps (segons)",
       "axisY": "Nivell de pressió sonora (dBA)"
-    }
+    },
+    "description": "Consulta estadístiques detallades sobre l'ús de SoundCollect a Catalunya i accedeix a diferents indicadors.",
+    "title": "Mapa sonor col·laboratiu"
   },
   "overview": {
     "observations": "Resum",
@@ -143,13 +147,17 @@
       "tooltip": {
         "date": "Data",
         "numObs": "Observacions"
-      }
+      },
+      "title": "Evolució temporal dels registres en SoundCollect",
+      "content": "Aquesta gràfica mostra com varia l'activitat de les persones usuàries al llarg del temps. Et permet identificar patrons d'ús i dates clau, ajudant a avaluar la participació i planificar activitats participatives."
     },
     "observationsNumber": {
       "total": "Nombre de registres total",
       "average": "Mitjana de registres per mes per usuari/a",
       "users": "Nombre total d'usuaris/es"
-    }
+    },
+    "description": "Consulta estadístiques detallades sobre l'ús de SoundCollect a Catalunya i accedeix a diferents indicadors.",
+    "title": "Resum"
   },
   "soundscape": {
     "observations": "Observacions",
@@ -166,7 +174,8 @@
       "wholeDay": "Tot el dia"
     },
     "soundLevels": {
-      "title": "Visualització gradual dels nivells de so per hores"
+      "title": "Visualització gradual dels nivells de so per hores",
+      "content": "Aquesta gràfica et permetrà observar com varia la tranquil·litat de la zona al llarg del dia, ajudant-te a entendre millor els patrons de so i els períodes de major o menor tranquil·litat. Utilitza un gràfic d'àrea polar per a revelar els patrons de so i els períodes de major o menor tranquil·litat en la zona, amb cada segment representant una hora específica i el seu radi indicant el nivell de pressió sonora en aquest moment."
     },
     "soundTypes": {
       "title": "Tipus de so",
@@ -174,7 +183,8 @@
       "people": "Éssers humans",
       "nature": "Sons naturals",
       "others": "Altres sorolls",
-      "axisY": "Nombre de registres"
+      "axisY": "Nombre de registres",
+      "content": "Aquest gràfic de barres mostra la distribució acumulada de cada tipus de so registrat, expressada en percentatges. Proporciona una visió general de les principals fonts de so en la zona d'estudi. Per exemple, una alta proporció de sons naturals pot indicar un entorn més tranquil i relaxant, mentre que una alta proporció de sons de trànsit pot assenyalar una àrea més concorreguda o sorollosa."
     },
     "quas": {
       "title": "Anàlisi de variables qualitatives - quantitatives",
@@ -185,7 +195,8 @@
       "obsNumber": "Nombre d'observacions",
       "activityLevel": "Nivell d'activitat",
       "pleasantnessLevel": "Nivell d'agradabilitat",
-      "activity&pleasantness": "Activitat / Agradabilitat"
+      "activity&pleasantness": "Activitat / Agradabilitat",
+      "content": "La gràfica facilita la identificació de patrons i tendències en la relació entre so i percepció. Per exemple, pot revelar si alts nivells de pressió sonora sempre corresponen a una baixa percepció de tranquil·litat o si existeixen excepcions en entorns específics. És una eina clau per a avaluar com l'entorn acústic afecta la percepció del confort, permetent una comprensió més profunda de la relació entre el so mesurat i l'experiència subjectiva de tranquil·litat."
     },
     "perception": {
       "title": "Descripció de la percepció del espai",
@@ -211,7 +222,8 @@
       "veryAccessible": "Molt accessible",
       "notSafe": "Poc segur",
       "safe": "Segur",
-      "verySafe": "Molt segur"
+      "verySafe": "Molt segur",
+      "content": "Aquest gràfic mostra en percentatges els aspectes de percepció de l'espai, la qual cosa permet identificar característiques que necessiten millora o que generen alta satisfacció en la zona d'estudi."
     },
     "pressure": {
       "title": "Distribució de nivells de pressió sonora a l'àrea tranquil·la",
@@ -219,20 +231,31 @@
       "afternoon": "Vespre (19:00 - 23:00)",
       "night": "Nit (23:00 - 7:00)",
       "hourRange": "Franja horària",
-      "obsNumber": "Nombre d'observacions"
+      "obsNumber": "Nombre d'observacions",
+      "content": "Aquesta visualització et permet identificar patrons i tendències en els nivells de so de la zona d'interès. Per exemple, podries descobrir que els nivells de pressió sonora són més alts durant les tardes en una zona verda pròxima a un parc on juguen els nens i nenes. Aquesta informació és útil per a avaluar com les activitats i l'entorn afecten la tranquil·litat de l'àrea en diferents moments del dia."
     },
     "qualitativeData": {
-      "title": "Dades qualitatives"
+      "title": "Diagrama de dispersió del paisatge sonor",
+      "content2": "Diagrama de dispersió adaptat de: Mitchell A, Aletta F, Kang J. How to analyse and represent quantitative soundscape data. JASA Express Lett. 2022 Mar;2(3):037201. doi: 10.1121/10.0009794.",
+      "content1": "El diagrama de dispersió del paisatge sonor ofereix una visió detallada de com les persones usuàries perceben l'entorn acústic en dues dimensions clau: l'agradabilitat i l'activitat del paisatge sonor, seguint la norma ISO 12913:2004 sobre paisatge sonor. La gràfica agrupa la informació en quatre quadrants del pla cartesià:",
+      "content": {
+        "list1": "Quadrant superior esquerre (caòtics): Paisatges sonors amb predomini de sons desagradables que generen incomoditat o angoixa.",
+        "list2": "Quadrant inferior esquerre (monòtons): Paisatges sonors que no són ni agradables ni actius, mancant d'elements interessants o atractius.",
+        "list3": "Quadrant superior dret (vibrants): Paisatges sonors estimulants i agradables, amb sons positius que contribueixen a una experiència enriquidora i segura.",
+        "list4": "Quadrant inferior dret (calmats): Paisatges sonors ideals per a la relaxació, amb sons de fons suaus i agradables que ajuden a la recuperació després de períodes d'estrès"
+      }
     },
     "tonalFrequency": {
       "title": "Gràfica d'1/3 d'octava",
       "frequency": "Freqüència (Hertz)",
-      "presure": "Pressió sonora dB",
+      "presure": "Pressió sonora",
       "pressurePonderation": "Pressió sonora dBA",
-      "ponderation": "Ponderació A",
-      "noPonderation": "Sense ponderació"
+      "ponderation": "dB",
+      "noPonderation": "dBa",
+      "content": "Aquest gràfic mostra com es distribueix l'energia dels sons en l'àrea seleccionada al llarg d'un espectre de freqüències. La seva utilitat radica a identificar si predominen les freqüències baixes o altes en l'àrea d'estudi. Les freqüències baixes representen sons greus, com el retrunyir d'un motor, mentre que les freqüències altes inclouen sons aguts, com el cant d'un ocell. El gràfic permet alternar entre el nivell de pressió sonora sense ponderació (Leq) i amb ponderació A (LAeq)."
     },
     "temporalEvolution": {
+      "title": "Evolució temporal sobre els nivells de so dB(A) en un període de temps",
       "serie1": "Sèrie 1",
       "serie2": "Sèrie 2",
       "morningSerie1": "Dia Sèrie 1",
@@ -249,12 +272,19 @@
       "tooltip": {
         "hour": "Hora",
         "numObs": "Observacions"
-      }
-    }
+      },
+      "content": "Aquesta gràfica t'ajuda a entendre com els nivells de so canvien al llarg del dia i identificar períodes amb alta o baixa variabilitat en els nivells de pressió sonora. Permet analitzar les variacions de so en una zona específica al llarg del temps i comparar dues sèries de dades. Utilitza un format de veles, on cada vela representa els nivells de pressió sonora per a una hora específica."
+    },
+    "tagCloud": {
+      "title": "Mesures per a protegir acústicament la zona d'estudi",
+      "content": "Aquest núvol de paraules es genera a partir de les respostes a la pregunta oberta: “Quines mesures proposaries per a protegir acústicament aquest espai?” La visualització destaca els suggeriments dels usuaris, mostrant en major grandària les paraules o frases més freqüents, la qual cosa facilita identificar les mesures més populars o rellevants per a millorar la protecció acústica en la zona d'estudi."
+    },
+    "description": "Defineix una zona d'estudi i ajusta el període de temps per a avaluar la tranquil·litat de l'àrea. Analitza tant la percepció acústica qualitativa com els nivells de pressió sonora quantitatius.",
+    "title": "Anàlisi"
   },
   "login": {
     "title": "Accedeix al Dashboard",
-    "subtitle": "Inicia sessió per a continuar",
+    "subtitle": "Inicia sessió amb el teu usuari de l'app per a continuar",
     "submitButton": "Iniciar sessió",
     "errorTitle": "Error",
     "errorSubtitle": "Usuari/a o contrasenya incorrectes"

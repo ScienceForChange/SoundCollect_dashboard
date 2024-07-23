@@ -1,0 +1,15 @@
+<div (click)="visible = !visible">
+  <button pbutton="" type="button" class="p-element p-button-rounded p-button-text p-button-plain p-button p-component p-button-icon-only">
+    <span class="p-button-icon pi pi-info-circle" style="font-size: 1.5rem" aria-hidden="true"></span>
+  </button>
+</div>
+<p-dialog
+  [header]="headerTitle"
+  [(visible)]="visible"
+  [modal]="true"
+  [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+  [style]="{ width: '50vw' }"
+  [draggable]="false"
+  [resizable]="false">
+  <ng-content></ng-content>
+</p-dialog>

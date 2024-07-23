@@ -34,7 +34,7 @@ export class TonalFrequencyChartComponent {
   private observationsService = inject(ObservationsService);
   private translate = inject(TranslateService);
   private observations$!: Subscription;
-  private quietTypesLabel = [this.translate.instant('soundscape.tonalFrequency.ponderation'), this.translate.instant('soundscape.tonalFrequency.noPonderation')];
+  private quietTypesLabel = [this.translate.instant('soundscape.tonalFrequency.noPonderation'), this.translate.instant('soundscape.tonalFrequency.ponderation')];
   private hertzLevels = ['50', '63', '80', '100', '125', '160', '200', '250', '315', '400', '500', '630', '800',
                          '1000', '1250', '1600', '2000', '2500', '3150', '4000', '5000', '6300', '8000',
                          '10000', '12500', '16000', '20000'];
