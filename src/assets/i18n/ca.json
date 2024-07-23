@@ -251,7 +251,7 @@
       "presure": "Pressió sonora",
       "pressurePonderation": "Pressió sonora dBA",
       "ponderation": "dB",
-      "noPonderation": "dBa",
+      "noPonderation": "dBA",
       "content": "Aquest gràfic mostra com es distribueix l'energia dels sons en l'àrea seleccionada al llarg d'un espectre de freqüències. La seva utilitat radica a identificar si predominen les freqüències baixes o altes en l'àrea d'estudi. Les freqüències baixes representen sons greus, com el retrunyir d'un motor, mentre que les freqüències altes inclouen sons aguts, com el cant d'un ocell. El gràfic permet alternar entre el nivell de pressió sonora sense ponderació (Leq) i amb ponderació A (LAeq)."
     },
     "temporalEvolution": {
