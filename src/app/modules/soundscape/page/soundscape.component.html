@@ -28,11 +28,11 @@
           <p-radioButton name="dateFilter" [(ngModel)]="timeFilter" value="night" label="{{ 'soundscape.filter.night' | translate}}"/>
           <p-radioButton name="dateFilter" [(ngModel)]="timeFilter" value="wholeDay" label="{{ 'soundscape.filter.wholeDay' | translate}}"/>
           <div class="download flex gap-2">
-            <p-button [disabled]="observations.length === 0">
+            <p-button (onClick)="downloadFile('CSV')" [disabled]="observations.length === 0">
               <i class="pi pi-download mr-2"></i>
               <span>{{ 'CSV' | translate}}</span>
             </p-button>
-            <p-splitButton [buttonDisabled]="true" [menuButtonDisabled]="observations.length === 0" label="Archivo gráfico" icon="pi pi-download" [model]="items" />
+            <!-- <p-splitButton [buttonDisabled]="true" [menuButtonDisabled]="observations.length === 0" label="Archivo gráfico" icon="pi pi-download" [model]="items" /> -->
           </div>
         </div>
       }

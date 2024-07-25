@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { BehaviorSubject, Observable, map, filter, switchMap } from 'rxjs';
+import { BehaviorSubject, Observable, map, filter, switchMap, catchError, throwError } from 'rxjs';
 
 import * as turf from '@turf/turf';
 
@@ -470,6 +470,45 @@ export class ObservationsService {
           this.observations$.next(data);
           this.loading$.next(false);
           return data;
+        })
+      );
+  }
+
+  public downloadObservations(
+    polygon: Number[],
+    hourInterval: [string, string]
+  ): any {
+    this.loading$.next(true);
+    return this.http
+      .post<{ success: string; data: any }>(
+        
+        `${environment.BACKEND_BASE_URL}/download_observations`,
+        {
+          concern: 'inside',
+          polygon: polygon,
+          interval: {
+            start: `${hourInterval[0]}`,
+            end: `${hourInterval[1]}`,
+          },
+        }
+      ).pipe(
+        map(({ data }) => {
+          console.log('data', data, typeof data)
+          this.loading$.next(false);
+          const blob = new Blob([data], { type: 'text/csv' });
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'observations.csv';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          window.URL.revokeObjectURL(url);
+        }),
+        catchError((error) => {
+          console.error('Error:', error);
+          this.loading$.next(false);
+          return throwError(error);
         })
       );
   }

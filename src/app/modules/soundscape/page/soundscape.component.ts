@@ -635,13 +635,21 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
   }
 
   public downloadFile(option: string) {
-    console.log(option);
+    
+    let initalHour = this.hourRage[this.timeFilter()][0] ? String(this.hourRage[this.timeFilter()][0]) : "00:00:00";
+    let finalHour = this.hourRage[this.timeFilter()][1] ? String(this.hourRage[this.timeFilter()][1]) : "23:59:59";
+    let polygon =  this.polygonFilter().geometry.coordinates[0].map((coo:number) => String(coo).replace(',', ' '))
+   
+    if(option === 'CSV'){
+      this.observationsService.downloadObservations(polygon, [initalHour, finalHour]).subscribe((data:any) => {
+      })
+    }
   }
 
   ngOnDestroy(): void {
     this.observations$.unsubscribe();
     if (this.filterActive) {
-      this.observationsService.getAllObservations();
+      this.observationsService.getAllObservations()
     }
   }
 }
