@@ -1,7 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { BehaviorSubject, Observable, map, filter, switchMap, catchError, throwError } from 'rxjs';
+import {
+  BehaviorSubject,
+  Observable,
+  map,
+  filter,
+  switchMap,
+  catchError,
+  throwError,
+} from 'rxjs';
 
 import * as turf from '@turf/turf';
 
@@ -44,8 +52,8 @@ export class ObservationsService {
             );
             return observationsBetween20and80;
           } catch (error) {
-            console.error(error)
-            throw Error('Error filtering observations',error);
+            console.error(error);
+            throw Error('Error filtering observations', error);
           }
         })
       )
@@ -66,19 +74,20 @@ export class ObservationsService {
       filter((value) => value.length > 0),
       map((observations) => {
         try {
-          const observationsByUser: { [key: string]: { [key: number]: number } } =
-            observations.reduce((acc, obs) => {
-              const userId = obs.relationships.user.id;
-              if (!acc[userId]) {
-                acc[userId] = Array.from({ length: 12 }, (_, i) => i + 1).reduce(
-                  (acc, month) => ({ ...acc, [month]: 0 }),
-                  {}
-                );
-              }
-              const month = new Date(obs.attributes.created_at).getMonth() + 1;
-              acc[userId][month]++;
-              return acc;
-            }, {} as { [key: string]: { [key: number]: number } });
+          const observationsByUser: {
+            [key: string]: { [key: number]: number };
+          } = observations.reduce((acc, obs) => {
+            const userId = obs.relationships.user.id;
+            if (!acc[userId]) {
+              acc[userId] = Array.from({ length: 12 }, (_, i) => i + 1).reduce(
+                (acc, month) => ({ ...acc, [month]: 0 }),
+                {}
+              );
+            }
+            const month = new Date(obs.attributes.created_at).getMonth() + 1;
+            acc[userId][month]++;
+            return acc;
+          }, {} as { [key: string]: { [key: number]: number } });
 
           const numberOfDifferentUsers = Object.keys(observationsByUser).length;
           const totalObservations = observations.length;
@@ -162,8 +171,8 @@ export class ObservationsService {
             ),
           };
         } catch (error) {
-          console.error(error)
-          throw Error('Error getting observations numbers',error);
+          console.error(error);
+          throw Error('Error getting observations numbers', error);
         }
       })
     );
@@ -254,10 +263,9 @@ export class ObservationsService {
             currentDate.setDate(currentDate.getDate() + 1);
           }
           return allDays;
-
         } catch (error) {
-          console.error(error)
-          throw Error('Error formatting observations',error);
+          console.error(error);
+          throw Error('Error formatting observations', error);
         }
       })
     );
@@ -298,8 +306,8 @@ export class ObservationsService {
         })
       );
     } catch (error) {
-      console.error(error)
-      throw Error('Error getting observations by region',error);
+      console.error(error);
+      throw Error('Error getting observations by region', error);
     }
   }
 
@@ -407,10 +415,9 @@ export class ObservationsService {
       );
 
       return linestrings;
-
     } catch (error) {
-      console.error(error)
-      throw Error('Error getting line string from observations',error); 
+      console.error(error);
+      throw Error('Error getting line string from observations', error);
     }
   }
 
@@ -443,8 +450,8 @@ export class ObservationsService {
 
       return points;
     } catch (error) {
-      console.error(error)
-      throw Error('Error getting start points from observations',error);
+      console.error(error);
+      throw Error('Error getting start points from observations', error);
     }
   }
 
@@ -474,42 +481,69 @@ export class ObservationsService {
       );
   }
 
-  public downloadObservations(
-    polygon: Number[],
-    hourInterval: [string, string]
-  ): any {
+  public downloadObservations(polygon: string[]): void {
     this.loading$.next(true);
-    return this.http
-      .post<{ success: string; data: any }>(
-        
-        `${environment.BACKEND_BASE_URL}/download_observations`,
-        {
-          concern: 'inside',
-          polygon: polygon,
-          interval: {
-            start: `${hourInterval[0]}`,
-            end: `${hourInterval[1]}`,
-          },
-        }
-      ).pipe(
-        map(({ data }) => {
-          console.log('data', data, typeof data)
-          this.loading$.next(false);
-          const blob = new Blob([data], { type: 'text/csv' });
-          const url = window.URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.href = url;
-          a.download = 'observations.csv';
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-          window.URL.revokeObjectURL(url);
-        }),
-        catchError((error) => {
-          console.error('Error:', error);
-          this.loading$.next(false);
-          return throwError(error);
-        })
-      );
+
+    // console.log('polygon', polygon);
+
+    const jsonData = JSON.stringify(polygon);
+
+    // console.log('jsonData', jsonData);
+
+    const encodedData = encodeURIComponent(jsonData);
+
+    // const polygonFormatted = polygon.map((latLng) => `"${latLng}"`).join(',');
+
+    // console.log('polygonFormated', encodedData);
+
+    const url = `${environment.BACKEND_BASE_URL}/download_observations?polygon=${jsonData}`;
+
+    console.log('url', url);
+
+    const a = document.createElement('a');
+    a.href = url;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+
+    this.loading$.next(false);
   }
+  // public downloadObservations(
+  //   polygon: Number[],
+  //   hourInterval: [string, string]
+  // ): any {
+  //   this.loading$.next(true);
+  //   return this.http
+  //     .post<{ success: string; data: any }>(
+
+  //       `${environment.BACKEND_BASE_URL}/download_observations`,
+  //       {
+  //         concern: 'inside',
+  //         polygon: polygon,
+  //         interval: {
+  //           start: `${hourInterval[0]}`,
+  //           end: `${hourInterval[1]}`,
+  //         },
+  //       }
+  //     ).pipe(
+  //       map(({ data }) => {
+  //         console.log('data', data, typeof data)
+  //         this.loading$.next(false);
+  //         const blob = new Blob([data], { type: 'text/csv' });
+  //         const url = window.URL.createObjectURL(blob);
+  //         const a = document.createElement('a');
+  //         a.href = url;
+  //         a.download = 'observations.csv';
+  //         document.body.appendChild(a);
+  //         a.click();
+  //         document.body.removeChild(a);
+  //         window.URL.revokeObjectURL(url);
+  //       }),
+  //       catchError((error) => {
+  //         console.error('Error:', error);
+  //         this.loading$.next(false);
+  //         return throwError(error);
+  //       })
+  //     );
+  // }
 }
