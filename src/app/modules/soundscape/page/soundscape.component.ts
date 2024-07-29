@@ -634,10 +634,11 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
 
   }
 
-  public downloadFile(option: string) {
+  public downloadFile (option: string) {
     let polygon =  this.polygonFilter().geometry.coordinates[0].map((coo:number) => String(coo).replace(',', ' '))
+    console.log('this.observations', this.observations)
     if(option === 'CSV'){
-      this.observationsService.downloadObservations(polygon)
+      this.observationsService.downloadObservations(this.observations)
     }
   }
 

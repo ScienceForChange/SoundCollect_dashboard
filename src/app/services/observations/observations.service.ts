@@ -13,8 +13,14 @@ import {
 
 import * as turf from '@turf/turf';
 
+import { Parser } from '@json2csv/plainjs';
+import { flatten, Transform, unwind } from '@json2csv/transforms';
+
+import { saveAs } from 'file-saver'; // save the file
+
 import { environment } from '../../../environments/environments';
 import { Observations, ObservationsDataChart } from '../../models/observations';
+import { Json2CSVBaseOptions } from '@json2csv/plainjs/dist/mjs/BaseParser';
 
 export interface Feature<
   G extends GeoJSON.Geometry | null = GeoJSON.Geometry,
@@ -481,22 +487,77 @@ export class ObservationsService {
       );
   }
 
-  public downloadObservations(polygon: string[]): void {
-    this.loading$.next(true);
+  private convertToCSV(objArray: object[]): string | void {
+    try {
+      const opts: Json2CSVBaseOptions<object, object> = {
+        transforms: [
+          unwind({ paths: ['images'] }),
+          flatten({ objects: true, arrays: true }),
+        ],
+        fields : [
+          'attributes.Leq',
+          'attributes.LAeqT',
+          'attributes.LAmax',
+          'attributes.LAmin',
+          'attributes.L90',
+          'attributes.L10',
+          'attributes.sharpness_S',
+          'attributes.loudness_N',
+          'attributes.roughtness',
+          'attributes.fluctuation_strength_F',
+          'attributes.images',
+          'attributes.latitude',
+          'attributes.longitude',
+          'attributes.quiet',
+          'attributes.cleanliness',
+          'attributes.accessibility',
+          'attributes.safety',
+          'attributes.influence',
+          'attributes.protection',
+          'attributes.wind_speed',
+          'attributes.humidity',
+          'attributes.temperature',
+          'attributes.pressure',
+          'attributes.pleasant',
+          'attributes.chaotic',
+          'attributes.vibrant',
+          'attributes.uneventful',
+          'attributes.calm',
+          'attributes.annoying',
+          'attributes.eventful',
+          'attributes.monotonous',
+          'attributes.overall',
+          'attributes.user_id',
+          'attributes.created_at',
+          'attributes.updated_at',
+          'attributes.roughtness_R',
+        ]
+      };
+      const parser = new Parser(opts);
+      const csv = parser.parse(objArray);
+      console.log(csv);
+      return csv;
+    } catch (err) {
+      console.error(err);
+    }
+  }
 
-    const jsonData = JSON.stringify(polygon);
+  public async downloadObservations(observations: Observations[]) {
+    try {
+      this.loading$.next(true);
+      let csvData = this.convertToCSV(observations);
+      if (!csvData) return;
 
-    const url = `${environment.BACKEND_BASE_URL}/download_observations?polygon=${jsonData}`;
+      let file = new Blob([csvData], { type: 'text/csv;charset=utf-8' });
+      saveAs(file, 'data.csv');
+      this.loading$.next(false);
 
-    console.log('url', url);
-
-    const a = document.createElement('a');
-    a.href = url;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-
-    this.loading$.next(false);
+      console.log('csv', csvData);
+    } catch (error) {
+      this.loading$.next(false);
+      console.error(error);
+      throw Error('Error downloading observations', error);
+    }
   }
   // public downloadObservations(
   //   polygon: Number[],
