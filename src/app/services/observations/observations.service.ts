@@ -484,17 +484,7 @@ export class ObservationsService {
   public downloadObservations(polygon: string[]): void {
     this.loading$.next(true);
 
-    // console.log('polygon', polygon);
-
     const jsonData = JSON.stringify(polygon);
-
-    // console.log('jsonData', jsonData);
-
-    const encodedData = encodeURIComponent(jsonData);
-
-    // const polygonFormatted = polygon.map((latLng) => `"${latLng}"`).join(',');
-
-    // console.log('polygonFormated', encodedData);
 
     const url = `${environment.BACKEND_BASE_URL}/download_observations?polygon=${jsonData}`;
 
