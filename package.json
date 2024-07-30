@@ -30,7 +30,6 @@
     "echarts": "^5.5.0",
     "echarts-stat": "^1.2.0",
     "file-saver": "^2.0.5",
-    "fs": "^0.0.1-security",
     "lodash": "^4.17.21",
     "mapbox-gl": "^3.5.1",
     "moment": "2.30.1",
