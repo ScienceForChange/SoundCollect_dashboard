@@ -261,7 +261,7 @@
       "content": "",
       "types": {
         "sharpness": "Nitidesa",
-        "roughness": "Rugositat",
+        "roughtness": "Rugositat",
         "loudness": "Sonoritat",
         "fluctuationStrenght": "Intensitat de fluctuació"
       }

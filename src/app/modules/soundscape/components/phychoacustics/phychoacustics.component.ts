@@ -43,12 +43,6 @@ interface ObsData {
   numOfObs: number;
 }
 
-type TypeOfDataKeys =
-  | 'SHARPNESS'
-  | 'ROUGHNESS'
-  | 'LOUDNESS'
-  | 'FLUCTUATION_STRENGTH';
-
 const typeOfData: { [key: string]: string } = {
   SHARPNESS: 'sharpness_S',
   ROUGHNESS: 'roughtness_R',
@@ -96,6 +90,32 @@ export class PhychoacusticsComponent
   private subscriptions = new Subscription();
 
   public selectedType: string = 'SHARPNESS';
+  public buttonOptions: { value: string; label: string }[] = [
+    {
+      value: 'SHARPNESS',
+      label: this.translations.instant(
+        'soundscape.physcoAcustic.types.sharpness'
+      ),
+    },
+    {
+      value: 'ROUGHNESS',
+      label: this.translations.instant(
+        'soundscape.physcoAcustic.types.roughtness'
+      ),
+    },
+    {
+      value: 'LOUDNESS',
+      label: this.translations.instant(
+        'soundscape.physcoAcustic.types.loudness'
+      ),
+    },
+    {
+      value: 'FLUCTUATION_STRENGTH',
+      label: this.translations.instant(
+        'soundscape.physcoAcustic.types.fluctuationStrenght'
+      ),
+    },
+  ];
   // public typeOfDataSelected: string = typeOfData[this.selectedType];
 
   ngOnInit() {
@@ -129,7 +149,12 @@ export class PhychoacusticsComponent
   //The data grouped by hours and the average of the data
   //The data to make float the bars
 
+  public updateType() {
+    this.updateChart(this.observations);
+  }
+
   private updateChart(observations: Observations[]) {
+    this.myChart.showLoading('default', this.loadingOptions);
     const dataFiltered = observations.filter((observation) => {
       //Have to filter because some data is null or "null"
       const isObsAttribute = (observation.attributes as { [key: string]: any })[
@@ -139,10 +164,18 @@ export class PhychoacusticsComponent
       if (isObsAttribute && isObsAttributeNotStringNull) return true;
       return false;
     });
+    console.log('dataFiltered', dataFiltered)
     const data = this.groupObsByHours(dataFiltered);
 
     this.options = {
       ...this.options,
+      yAxis: {
+        name:
+          this.translations.instant(typeOfDataTranslated[this.selectedType]) +
+          ' (' +
+          typeOfUnits[this.selectedType] +
+          ')',
+      },
       series: [
         {
           name: 'Placeholder',
@@ -171,6 +204,7 @@ export class PhychoacusticsComponent
         },
       ],
     };
+    this.myChart.hideLoading();
     this.myChart.setOption(this.options);
   }
 
@@ -299,7 +333,7 @@ export class PhychoacusticsComponent
           typeOfUnits[this.selectedType] +
           ')',
         nameLocation: 'middle',
-        nameGap: 35,
+        nameGap: 45,
         nameTextStyle: {
           fontSize: 15,
           fontWeight: 600,

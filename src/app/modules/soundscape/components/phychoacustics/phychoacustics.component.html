@@ -6,5 +6,16 @@
       </div>
     </app-info-modal>
   </div>
+  <div class="mt-5 flex justify-content-center">
+    <p-selectButton
+      [options]="buttonOptions"
+      [(ngModel)]="selectedType"
+      optionLabel="label"
+      optionValue="value"
+      allowEmpty="false"
+      (onChange)="updateType()"
+      >
+    </p-selectButton>
+  </div>
 <div id="phychoacustic-chart-container"></div>
 
