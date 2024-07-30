@@ -1,16 +1,16 @@
-function twoDecimalsRounded(number: number): number {
-  const stdDevStr = number.toString();
-
+function round(value: number) {
+  const stdDevStr = value.toString();
   const valueTillDot = stdDevStr.split('').findIndex((char) => char === '.');
-
   const lastNonZeroIndex = stdDevStr
+    .slice(valueTillDot + 1)
     .split('')
-    .findIndex((char) => char !== '0' && char !== '.');
-
-  const significantDigitsIndex =
-    stdDevStr.length - lastNonZeroIndex -1 ;
-
-  const formattedStdDevStr = stdDevStr.slice(0, significantDigitsIndex + 2);
-
-  return parseFloat(formattedStdDevStr);
+    .findIndex((char) => char !== '0');
+  const minimumFractionDigits = 0;
+  const maximumFractionDigits = lastNonZeroIndex + 2;
+  const formattedValue = value.toLocaleString('en', {
+    useGrouping: false,
+    minimumFractionDigits,
+    maximumFractionDigits,
+  });
+  return Number(formattedValue);
 }
