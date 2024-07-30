@@ -340,7 +340,7 @@ export class TemporalEvolutionSoundLevelChartComponent
     }
 
     //Adding rest of the hours with empty values
-    for (let hour = 0; hour <= 24; hour++) {
+    for (let hour = 1; hour <= 24; hour++) {
       if (!avgByHour.hasOwnProperty(hour)) {
         avgByHour[hour] = [];
       }
