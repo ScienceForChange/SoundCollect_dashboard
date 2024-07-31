@@ -1,4 +1,4 @@
-function round(value: number) {
+export default function roundTwoLastDecimals(value: number) {
   const stdDevStr = value.toString();
   const valueTillDot = stdDevStr.split('').findIndex((char) => char === '.');
   const lastNonZeroIndex = stdDevStr

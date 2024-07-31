@@ -3,12 +3,13 @@ import {
   Component,
   HostListener,
   inject,
-  Input,
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { Observations } from '../../../../models/observations';
+import { Subscription } from 'rxjs';
+
 import { TranslateService } from '@ngx-translate/core';
+
 import * as echarts from 'echarts/core';
 import {
   TitleComponent,
@@ -22,10 +23,13 @@ import {
 } from 'echarts/components';
 import { BarChart, BarSeriesOption } from 'echarts/charts';
 import { CanvasRenderer } from 'echarts/renderers';
-import { Subscription } from 'rxjs';
-import { ObservationsService } from '../../../../services/observations/observations.service';
 import { CallbackDataParams } from 'echarts/types/dist/shared';
+
+import { Observations } from '../../../../models/observations';
+import { ObservationsService } from '../../../../services/observations/observations.service';
+
 import calculateStandardDeviation from '../../../../../utils/standardDeviation';
+import roundTwoLastDecimals from '../../../../../utils/twoDecimalsRounded';
 
 type EChartsOption = echarts.ComposeOption<
   | TitleComponentOption
@@ -259,10 +263,10 @@ export class PhychoacusticsComponent
         groupByHours[numericHour]
       );
       return {
-        min: minimum,
-        max: maximum,
-        average: average,
-        standardDeviation: standardDeviation,
+        min: roundTwoLastDecimals(minimum),
+        max: roundTwoLastDecimals(maximum),
+        average: roundTwoLastDecimals(average),
+        standardDeviation: roundTwoLastDecimals(standardDeviation),
         numOfObs: groupByHours[numericHour].length,
       };
     });
