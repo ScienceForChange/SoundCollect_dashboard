@@ -55,9 +55,9 @@ const typeOfData: { [key: string]: string } = {
 };
 
 const typeOfUnits: { [key: string]: string } = {
-  SHARPNESS: 'Sone',
-  ROUGHNESS: 'acum',
-  LOUDNESS: 'asper',
+  SHARPNESS: 'acum',
+  ROUGHNESS: 'asper',
+  LOUDNESS: 'Sone',
   FLUCTUATION_STRENGTH: 'Vacil',
 };
 
