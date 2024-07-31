@@ -256,6 +256,16 @@
       "noPonderation": "dBA",
       "content": "Aquest gràfic mostra com es distribueix l'energia dels sons en l'àrea seleccionada al llarg d'un espectre de freqüències. La seva utilitat radica a identificar si predominen les freqüències baixes o altes en l'àrea d'estudi. Les freqüències baixes representen sons greus, com el retrunyir d'un motor, mentre que les freqüències altes inclouen sons aguts, com el cant d'un ocell. El gràfic permet alternar entre el nivell de pressió sonora sense ponderació (Leq) i amb ponderació A (LAeq)."
     },
+    "physcoAcustic": {
+      "title": "Anàlisi psicoacústic",
+      "content": "",
+      "types": {
+        "sharpness": "Nitidesa",
+        "roughtness": "Rugositat",
+        "loudness": "Sonoritat",
+        "fluctuationStrenght": "Intensitat de fluctuació"
+      }
+    },
     "temporalEvolution": {
       "title": "Evolució temporal sobre els nivells de so dB(A) en un període de temps",
       "serie1": "Sèrie 1",
