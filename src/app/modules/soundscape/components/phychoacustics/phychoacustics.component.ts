@@ -120,7 +120,6 @@ export class PhychoacusticsComponent
       ),
     },
   ];
-  // public typeOfDataSelected: string = typeOfData[this.selectedType];
 
   ngOnInit() {
     echarts.use([
@@ -149,9 +148,6 @@ export class PhychoacusticsComponent
     );
     this.subscriptions.add(obsSubscription);
   }
-  //Have to create an update function to update the chart and calculate
-  //The data grouped by hours and the average of the data
-  //The data to make float the bars
 
   public updateType() {
     this.updateChart(this.observations);
@@ -168,7 +164,6 @@ export class PhychoacusticsComponent
       if (isObsAttribute && isObsAttributeNotStringNull) return true;
       return false;
     });
-    console.log('dataFiltered', dataFiltered)
     const data = this.groupObsByHours(dataFiltered);
 
     this.options = {
@@ -213,9 +208,6 @@ export class PhychoacusticsComponent
   }
 
   private groupObsByHours(observations: Observations[]): ObsData[] {
-    //Have to group the data by hours, so from the array create an object with the hours as keys
-    //Then add as empty strings to the hours that don't have data
-    //then want to select the smallest and the biggest value of the array
 
     const groupByHours = observations.reduce(
       (acc: { [key: number]: number[] }, observation) => {
@@ -298,7 +290,6 @@ export class PhychoacusticsComponent
       tooltip: {
         trigger: 'item',
         formatter: (params) => {
-          console.log('params', params);
           let values: string[] = [];
           let p = params as CallbackDataParams;
           const obsData = this.data[p.dataIndex];
