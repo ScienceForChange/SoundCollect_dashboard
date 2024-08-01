@@ -13,5 +13,5 @@ export default function calculateStandardDeviation(numbers: number[]): number {
   // Step 4: Take the square root of the mean of the squared deviations
   const standardDeviation = Math.sqrt(meanOfSquaredDeviations);
 
-  return parseFloat(standardDeviation.toFixed(2));
+  return standardDeviation;
 }
