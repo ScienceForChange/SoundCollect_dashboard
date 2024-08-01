@@ -297,15 +297,17 @@ export class PhychoacusticsComponent
           const html = `
             <b>${p.seriesName}</b> <br>
             ${this.translations.instant(
-              'soundscape.temporalEvolution.tooltip.hour'
+              'soundscape.physcoAcustic.tooltip.hour'
             )}: ${hour} <br>
             ${this.translations.instant(
-              'soundscape.temporalEvolution.tooltip.numObs'
+              'soundscape.physcoAcustic.tooltip.numObs'
             )}: ${obsData.numOfObs} <br>
             Min: ${obsData.min} <br>
             Max: ${obsData.max} <br>
             Av: ${obsData.average} <br>
-            Standard Deviation: ${obsData.standardDeviation} <br>
+             ${this.translations.instant(
+              'soundscape.physcoAcustic.tooltip.standardDeviation'
+            )}: ${obsData.standardDeviation} <br>
             `;
           values.push(html);
           return values.join('<br>');

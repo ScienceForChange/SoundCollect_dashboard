@@ -264,6 +264,11 @@
         "roughtness": "Rugositat",
         "loudness": "Sonoritat",
         "fluctuationStrenght": "Intensitat de fluctuació"
+      },
+      "tooltip":{
+        "hour": "Hora",
+        "numObs": "Observacions",
+        "standardDeviation": "Desviació estàndard"
       }
     },
     "temporalEvolution": {
