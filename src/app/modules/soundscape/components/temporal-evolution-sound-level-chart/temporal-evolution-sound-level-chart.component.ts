@@ -30,6 +30,7 @@ import { SeriesOption } from 'echarts';
 import type { Observations } from '../../../../models/observations';
 import energeticAvg from '../../../../../utils/energeticAvg';
 import { ObservationsService } from '../../../../services/observations/observations.service';
+import roundTwoLastDecimals from '../../../../../utils/twoDecimalsRounded';
 
 type EChartsOption = echarts.ComposeOption<
   | GridComponentOption
@@ -328,11 +329,11 @@ export class TemporalEvolutionSoundLevelChartComponent
       const LAmax = data.map((chartObs) => chartObs[3]);
       const Leq = data.map((chartObs) => chartObs[4]);
       //Calculate energetic average
-      const avgL90 = energeticAvg(L90);
-      const avgL10 = energeticAvg(L10);
-      const avgLAmin = energeticAvg(LAmin);
-      const avgLAmax = energeticAvg(LAmax);
-      const avgLeq = energeticAvg(Leq);
+      const avgL90 = roundTwoLastDecimals(energeticAvg(L90))
+      const avgL10 = roundTwoLastDecimals(energeticAvg(L10))
+      const avgLAmin = roundTwoLastDecimals(energeticAvg(LAmin))
+      const avgLAmax = roundTwoLastDecimals(energeticAvg(LAmax))
+      const avgLeq = roundTwoLastDecimals(energeticAvg(Leq))
 
       const avg = [avgL90, avgL10, avgLAmin, avgLAmax, avgLeq, data.length];
 

@@ -66,6 +66,9 @@ export interface Segment {
     LAeq: number,
     LAmax: number,
     LAmin: number,
+    freq_3: number[],
+    spec_3: number[],
+    spec_3_dB: number[],
 }
 
 export interface SegmentParameters {
