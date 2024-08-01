@@ -2,14 +2,13 @@ import { AfterViewInit, Component, inject, Input, OnInit } from '@angular/core';
 
 import { TranslateService } from '@ngx-translate/core';
 
-import { random } from 'lodash';
-
 import * as echarts from 'echarts/core';
 import { BarChart, PieChart } from 'echarts/charts';
 import { CanvasRenderer } from 'echarts/renderers';
 import { GridComponent, LegendComponent } from 'echarts/components';
 
 import { Observations } from '../../../../models/observations';
+import energeticAvg from '../../../../../utils/energeticAvg';
 
 @Component({
   selector: 'app-one-third-octave-chart',
@@ -24,44 +23,12 @@ export class OneThirdOctaveChartComponent implements OnInit, AfterViewInit {
   private myBarChart!: echarts.ECharts;
   private options!: echarts.EChartsCoreOption;
   private loadingOptions = {
-    text: 'Carregant...',
+    text: this.translate.instant('app.loading'),
     color: '#FF7A1F',
   };
 
   public totalObservationTypes: number = 0;
-  private quietTypesLabel = [
-    this.translate.instant('soundscape.tonalFrequency.noPonderation'),
-    this.translate.instant('soundscape.tonalFrequency.ponderation'),
-  ];
-  private hertzLevels = [
-    '50',
-    '63',
-    '80',
-    '100',
-    '125',
-    '160',
-    '200',
-    '250',
-    '315',
-    '400',
-    '500',
-    '630',
-    '800',
-    '1000',
-    '1250',
-    '1600',
-    '2000',
-    '2500',
-    '3150',
-    '4000',
-    '5000',
-    '6300',
-    '8000',
-    '10000',
-    '12500',
-    '16000',
-    '20000',
-  ];
+  private hertzLevels: number[] = [];
 
   ngOnInit(): void {
     echarts.use([
@@ -71,16 +38,19 @@ export class OneThirdOctaveChartComponent implements OnInit, AfterViewInit {
       CanvasRenderer,
       PieChart,
     ]);
+    this.hertzLevels =
+      this.observationSelected.relationships.segments[0].freq_3;
   }
 
   private updateYAxis(event: any) {
-    let name = this.translate.instant(
-      'soundscape.tonalFrequency.presure'
-    );
+    let name = this.translate.instant('soundscape.tonalFrequency.presure');
     let isWithPonderationSelected =
       !Object.values(event.selected)[1] && Object.values(event.selected)[0];
-    if (isWithPonderationSelected)
-      name = this.translate.instant('soundscape.tonalFrequency.pressurePonderation');
+    if (isWithPonderationSelected) {
+      name = this.translate.instant(
+        'soundscape.tonalFrequency.pressurePonderation'
+      );
+    }
     this.options = {
       ...this.options,
       yAxis: {
@@ -96,30 +66,36 @@ export class OneThirdOctaveChartComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     setTimeout(() => {
-      // Access the CSS variable --blue-light
-      const rootStyle = getComputedStyle(document.documentElement);
-      const blueLightColor = rootStyle.getPropertyValue('--blue-light').trim();
       const chartDom = document.getElementById('bar-chart-container');
       this.myBarChart = echarts.init(chartDom);
       this.myBarChart.showLoading('default', this.loadingOptions);
       this.myBarChart.on('legendselectchanged', this.updateYAxis.bind(this));
 
-      const rawData: number[][] = this.getDataFromObservations();
-      for (let i = 0; i < rawData[0].length; ++i) {
-        for (let j: number = 0; j < rawData.length; ++j) {
-          this.totalObservationTypes += rawData[j][i];
-        }
-      }
-      const series = this.quietTypesLabel.map((name, sid) => {
-        return {
-          name,
+      const seriesData: {
+        ponderation: number[];
+        noPonderation: number[];
+      } = this.calculateDataFromObservations();
+
+      const series = [
+        {
+          name: this.translate.instant(
+            'soundscape.tonalFrequency.noPonderation'
+          ),
           type: 'bar',
           label: {
             show: false,
           },
-          data: rawData[sid],
-        };
-      });
+          data: seriesData.ponderation,
+        },
+        {
+          name: this.translate.instant('soundscape.tonalFrequency.ponderation'),
+          type: 'bar',
+          label: {
+            show: false,
+          },
+          data: seriesData.noPonderation,
+        },
+      ];
 
       const grid = {
         left: 50,
@@ -150,6 +126,10 @@ export class OneThirdOctaveChartComponent implements OnInit, AfterViewInit {
           nameLocation: 'middle',
           nameGap: 35,
           type: 'value',
+          axisLabel: {
+            rotate: 45,
+            fontSize: 10,
+          },
           nameTextStyle: {
             fontSize: 15,
             fontWeight: 600,
@@ -167,20 +147,40 @@ export class OneThirdOctaveChartComponent implements OnInit, AfterViewInit {
         series,
       };
       this.myBarChart.hideLoading();
-      this.options && this.myBarChart.setOption(this.options);
+      this.myBarChart.setOption(this.options);
     }, 100);
   }
 
-  private getDataFromObservations(): number[][] {
-    let dBLevels: number[][] = [];
-    let pond: number[] = [];
-    let noPond: number[] = [];
-    this.hertzLevels.forEach(() => {
-      pond.push(random(20, 80));
-      noPond.push(random(20, 80));
-    });
-    dBLevels.push(pond);
-    dBLevels.push(noPond);
-    return dBLevels;
+  private calculateDataFromObservations(): {
+    ponderation: number[];
+    noPonderation: number[];
+  } {
+    let ponderation: number[] = [];
+    let noPonderation: number[] = [];
+    const segmentsSpec_3 = this.observationSelected.relationships.segments.map(
+      (segment) => segment.spec_3
+    );
+    const segmentsSpec_3_dB =
+      this.observationSelected.relationships.segments.map(
+        (segment) => segment.spec_3_dB
+      );
+
+    console.log('segmentsSpec_3_dB', segmentsSpec_3[0], segmentsSpec_3_dB[0]);
+    if (!segmentsSpec_3[0] || !segmentsSpec_3_dB[0]) {
+      return { ponderation, noPonderation };
+    } else {
+      for (let i = 0; i < this.hertzLevels.length; i++) {
+        const spec_3_at_idx = segmentsSpec_3.map((segment) => segment[i]);
+        const spec_3_dB_at_idx = segmentsSpec_3_dB.map((segment) => segment[i]);
+
+        const energeticAvgNoPond = energeticAvg(spec_3_dB_at_idx);
+        const energeticAvgPond = energeticAvg(spec_3_at_idx);
+
+        noPonderation.push(energeticAvgNoPond);
+        ponderation.push(energeticAvgPond);
+      }
+
+      return { ponderation, noPonderation };
+    }
   }
 }

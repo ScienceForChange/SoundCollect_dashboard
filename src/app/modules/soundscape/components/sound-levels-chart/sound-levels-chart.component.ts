@@ -20,6 +20,7 @@ import { CanvasRenderer } from 'echarts/renderers';
 import { Observations } from '../../../../models/observations';
 import { ObservationsService } from '../../../../services/observations/observations.service';
 import energeticAvg from '../../../../../utils/energeticAvg';
+import roundTwoLastDecimals from '../../../../../utils/twoDecimalsRounded';
 
 type EChartsOption = echarts.EChartsCoreOption;
 echarts.use([
@@ -204,7 +205,7 @@ export class SoundLevelsChartComponent implements OnInit, OnDestroy {
 
     const result = data.map((hourData) => {
       if (hourData.length === 0) return 0;
-      let avg = energeticAvg(hourData);
+      let avg = roundTwoLastDecimals(energeticAvg(hourData)) ;
       this.max = Math.max(Number(this.max), Number(avg));
       return Number(avg.toFixed(2));
     });
