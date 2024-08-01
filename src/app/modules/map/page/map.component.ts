@@ -55,6 +55,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
       this.mapService.isOpenObservationInfoModal.subscribe((isOpen) => {
         this.isOpenObservationInfoModal = isOpen;
         this.observationSelected = this.mapService.observationSelected;
+        console.log('this.observationsSelected', this.observationSelected)
       })
     );
 

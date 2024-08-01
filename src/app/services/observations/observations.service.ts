@@ -368,6 +368,8 @@ export class ObservationsService {
           width: 6,
         },
       }));
+      console.log('linestrings 1', linestrings.filter((l) => l.properties['id'] === "9c98f4f1-17fd-491a-a3c4-39c16b9f7fa9"))
+      
 
       //Obtener los segmentos de las polilineas
       linestrings = linestrings.concat(
@@ -405,6 +407,8 @@ export class ObservationsService {
           })
           .flat()
       );
+      console.log('linestrings 2', linestrings.filter((l) => l.properties['id'] === "9c98f4f1-17fd-491a-a3c4-39c16b9f7fa9"))
+
 
       return linestrings;
 
