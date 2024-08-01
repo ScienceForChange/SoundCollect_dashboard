@@ -346,12 +346,12 @@ export class ObservationsService {
           type: 'LineString',
           //hacemos un reduce de sengments para combertirlos en un Linestring
           coordinates: obs.relationships.segments.reduce(
-            (acc: turf.Position[], segment: any): turf.Position[] => {
+            (acc: turf.Position[], segment: any,index:number): turf.Position[] => {
               acc.push([
                 Number(segment.start_longitude),
                 Number(segment.start_latitude),
               ]);
-              if (segment.position == obs.relationships.segments.length)
+              if (index +1 === obs.relationships.segments.length)
                 acc.push([
                   Number(segment.end_longitude),
                   Number(segment.end_latitude),
@@ -368,7 +368,6 @@ export class ObservationsService {
           width: 6,
         },
       }));
-      console.log('linestrings 1', linestrings.filter((l) => l.properties['id'] === "9c98f4f1-17fd-491a-a3c4-39c16b9f7fa9"))
       
 
       //Obtener los segmentos de las polilineas
@@ -407,7 +406,6 @@ export class ObservationsService {
           })
           .flat()
       );
-      console.log('linestrings 2', linestrings.filter((l) => l.properties['id'] === "9c98f4f1-17fd-491a-a3c4-39c16b9f7fa9"))
 
 
       return linestrings;
