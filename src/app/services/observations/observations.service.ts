@@ -1,12 +1,26 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { BehaviorSubject, Observable, map, filter, switchMap } from 'rxjs';
+import {
+  BehaviorSubject,
+  Observable,
+  map,
+  filter,
+  switchMap,
+  catchError,
+  throwError,
+} from 'rxjs';
 
 import * as turf from '@turf/turf';
 
+import { Parser } from '@json2csv/plainjs';
+import { flatten, Transform, unwind } from '@json2csv/transforms';
+
+import { saveAs } from 'file-saver'; // save the file
+
 import { environment } from '../../../environments/environments';
 import { Observations, ObservationsDataChart } from '../../models/observations';
+import { Json2CSVBaseOptions } from '@json2csv/plainjs/dist/mjs/BaseParser';
 
 export interface Feature<
   G extends GeoJSON.Geometry | null = GeoJSON.Geometry,
@@ -44,8 +58,8 @@ export class ObservationsService {
             );
             return observationsBetween20and80;
           } catch (error) {
-            console.error(error)
-            throw Error('Error filtering observations',error);
+            console.error(error);
+            throw Error('Error filtering observations', error);
           }
         })
       )
@@ -66,19 +80,20 @@ export class ObservationsService {
       filter((value) => value.length > 0),
       map((observations) => {
         try {
-          const observationsByUser: { [key: string]: { [key: number]: number } } =
-            observations.reduce((acc, obs) => {
-              const userId = obs.relationships.user.id;
-              if (!acc[userId]) {
-                acc[userId] = Array.from({ length: 12 }, (_, i) => i + 1).reduce(
-                  (acc, month) => ({ ...acc, [month]: 0 }),
-                  {}
-                );
-              }
-              const month = new Date(obs.attributes.created_at).getMonth() + 1;
-              acc[userId][month]++;
-              return acc;
-            }, {} as { [key: string]: { [key: number]: number } });
+          const observationsByUser: {
+            [key: string]: { [key: number]: number };
+          } = observations.reduce((acc, obs) => {
+            const userId = obs.relationships.user.id;
+            if (!acc[userId]) {
+              acc[userId] = Array.from({ length: 12 }, (_, i) => i + 1).reduce(
+                (acc, month) => ({ ...acc, [month]: 0 }),
+                {}
+              );
+            }
+            const month = new Date(obs.attributes.created_at).getMonth() + 1;
+            acc[userId][month]++;
+            return acc;
+          }, {} as { [key: string]: { [key: number]: number } });
 
           const numberOfDifferentUsers = Object.keys(observationsByUser).length;
           const totalObservations = observations.length;
@@ -162,8 +177,8 @@ export class ObservationsService {
             ),
           };
         } catch (error) {
-          console.error(error)
-          throw Error('Error getting observations numbers',error);
+          console.error(error);
+          throw Error('Error getting observations numbers', error);
         }
       })
     );
@@ -254,10 +269,9 @@ export class ObservationsService {
             currentDate.setDate(currentDate.getDate() + 1);
           }
           return allDays;
-
         } catch (error) {
-          console.error(error)
-          throw Error('Error formatting observations',error);
+          console.error(error);
+          throw Error('Error formatting observations', error);
         }
       })
     );
@@ -298,8 +312,8 @@ export class ObservationsService {
         })
       );
     } catch (error) {
-      console.error(error)
-      throw Error('Error getting observations by region',error);
+      console.error(error);
+      throw Error('Error getting observations by region', error);
     }
   }
 
@@ -409,10 +423,9 @@ export class ObservationsService {
 
 
       return linestrings;
-
     } catch (error) {
-      console.error(error)
-      throw Error('Error getting line string from observations',error); 
+      console.error(error);
+      throw Error('Error getting line string from observations', error);
     }
   }
 
@@ -445,8 +458,8 @@ export class ObservationsService {
 
       return points;
     } catch (error) {
-      console.error(error)
-      throw Error('Error getting start points from observations',error);
+      console.error(error);
+      throw Error('Error getting start points from observations', error);
     }
   }
 
@@ -475,4 +488,115 @@ export class ObservationsService {
         })
       );
   }
+
+  private convertToCSV(objArray: object[]): string | void {
+    try {
+      const opts: Json2CSVBaseOptions<object, object> = {
+        transforms: [
+          unwind({ paths: ['images'] }),
+          flatten({ objects: true, arrays: true }),
+        ],
+        fields : [
+          'attributes.Leq',
+          'attributes.LAeqT',
+          'attributes.LAmax',
+          'attributes.LAmin',
+          'attributes.L90',
+          'attributes.L10',
+          'attributes.sharpness_S',
+          'attributes.loudness_N',
+          'attributes.roughtness',
+          'attributes.fluctuation_strength_F',
+          'attributes.images',
+          'attributes.latitude',
+          'attributes.longitude',
+          'attributes.quiet',
+          'attributes.cleanliness',
+          'attributes.accessibility',
+          'attributes.safety',
+          'attributes.influence',
+          'attributes.protection',
+          'attributes.wind_speed',
+          'attributes.humidity',
+          'attributes.temperature',
+          'attributes.pressure',
+          'attributes.pleasant',
+          'attributes.chaotic',
+          'attributes.vibrant',
+          'attributes.uneventful',
+          'attributes.calm',
+          'attributes.annoying',
+          'attributes.eventful',
+          'attributes.monotonous',
+          'attributes.overall',
+          'attributes.user_id',
+          'attributes.created_at',
+          'attributes.updated_at',
+          'attributes.roughtness_R',
+        ]
+      };
+      const parser = new Parser(opts);
+      const csv = parser.parse(objArray);
+      console.log(csv);
+      return csv;
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  public async downloadObservations(observations: Observations[]) {
+    try {
+      this.loading$.next(true);
+      let csvData = this.convertToCSV(observations);
+      if (!csvData) return;
+
+      let file = new Blob([csvData], { type: 'text/csv;charset=utf-8' });
+      saveAs(file, 'data.csv');
+      this.loading$.next(false);
+
+      console.log('csv', csvData);
+    } catch (error) {
+      this.loading$.next(false);
+      console.error(error);
+      throw Error('Error downloading observations', error);
+    }
+  }
+  // public downloadObservations(
+  //   polygon: Number[],
+  //   hourInterval: [string, string]
+  // ): any {
+  //   this.loading$.next(true);
+  //   return this.http
+  //     .post<{ success: string; data: any }>(
+
+  //       `${environment.BACKEND_BASE_URL}/download_observations`,
+  //       {
+  //         concern: 'inside',
+  //         polygon: polygon,
+  //         interval: {
+  //           start: `${hourInterval[0]}`,
+  //           end: `${hourInterval[1]}`,
+  //         },
+  //       }
+  //     ).pipe(
+  //       map(({ data }) => {
+  //         console.log('data', data, typeof data)
+  //         this.loading$.next(false);
+  //         const blob = new Blob([data], { type: 'text/csv' });
+  //         const url = window.URL.createObjectURL(blob);
+  //         const a = document.createElement('a');
+  //         a.href = url;
+  //         a.download = 'observations.csv';
+  //         document.body.appendChild(a);
+  //         a.click();
+  //         document.body.removeChild(a);
+  //         window.URL.revokeObjectURL(url);
+  //       }),
+  //       catchError((error) => {
+  //         console.error('Error:', error);
+  //         this.loading$.next(false);
+  //         return throwError(error);
+  //       })
+  //     );
+  // }
 }
