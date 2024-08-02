@@ -41,13 +41,15 @@ export class TagCloudComponent implements OnInit, OnDestroy{
         this.observations = observations;
         this.getTagsFromObservations();
         this.getWordFrequency();
+        //All the tags
+        this.observationsService.tags = this.tags
+        
         this.tags = this.tags.sort((a, b) => b.value - a.value).slice(0, 40);
         if(this.tags.length > 0) this.updateCloud();
         else {
           const canvas = document.getElementById('tagCloud') as HTMLCanvasElement;
           canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
         }
-        console.log('this.tags', this.tags)
       });
     });
 
