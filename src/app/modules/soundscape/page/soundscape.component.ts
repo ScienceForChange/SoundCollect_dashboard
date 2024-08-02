@@ -40,7 +40,6 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
   private draw!: MapboxDraw;
   private observationsService = inject(ObservationsService);
   private observations$!: Subscription;
-  private observationSelectedId: string = '';
 
   public observations!: Observations[];
   public points: [number, number][] = [];
@@ -460,32 +459,6 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
     this.polygonFilter.update(() => event.features[0]);
   }
 
-  private getBboxFromPoints(): [[number, number], [number, number]] {
-    let points = this.points;
-
-    let minX: number = 0,
-      maxX: number = 0,
-      minY: number = 0,
-      maxY: number = 0;
-
-    points.forEach((p, i) => {
-      if (i === 0) {
-        minX = maxX = p[0];
-        minY = maxY = p[1];
-      } else {
-        minX = Math.min(p[0], minX);
-        minY = Math.min(p[1], minY);
-        maxX = Math.max(p[0], maxX);
-        maxY = Math.max(p[1], maxY);
-      }
-    });
-
-    return [
-      [minX, minY],
-      [maxX, maxY],
-    ];
-  }
-
   private addObservationsToMap(observations: Observations[] = this.observations) {
 
     //Añadir la fuente de datos para las lineas de atributo path
@@ -599,7 +572,6 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
       this.map.getCanvas().style.cursor = 'inherit';
       for( let feature of e.features) {
         if (feature.properties.type === 'LineString' && feature.properties.id !== undefined) {
-          this.observationSelectedId = feature.properties.id;
           this.map.setFilter('lineLayer-select', ['==', 'id', feature.properties.id]);
           return;
         }
@@ -635,8 +607,6 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
   }
 
   public downloadFile (option: string) {
-    let polygon =  this.polygonFilter().geometry.coordinates[0].map((coo:number) => String(coo).replace(',', ' '))
-    console.log('this.observations', this.observations)
     if(option === 'CSV'){
       this.observationsService.downloadObservations(this.observations)
     }
