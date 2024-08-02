@@ -47,7 +47,7 @@ export class TonalFrequencyChartComponent implements OnInit, OnDestroy {
         if(obs.relationships.segments.length === 0) return false;
         return obs.relationships.segments[0].spec_3 || obs.relationships.segments[0].spec_3_dB;
       });
-      if(observations.length !== 0){
+      if(this.observations.length !== 0){
         this.hertzLevels = this.observations[0].relationships.segments[0].freq_3;
       }
       this.updateChart();

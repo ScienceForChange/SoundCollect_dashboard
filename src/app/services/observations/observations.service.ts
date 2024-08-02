@@ -31,7 +31,10 @@ export interface Feature<
   id?: string | number | undefined;
   properties: P;
 }
-
+export interface Tag {
+  key: string;
+  value: number;
+}
 @Injectable({
   providedIn: 'root',
 })
@@ -39,6 +42,7 @@ export class ObservationsService {
   observations$: BehaviorSubject<Observations[]> = new BehaviorSubject<
     Observations[]
   >([]);
+  tags: Tag[] = [];
 
   loading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
@@ -360,12 +364,16 @@ export class ObservationsService {
           type: 'LineString',
           //hacemos un reduce de sengments para combertirlos en un Linestring
           coordinates: obs.relationships.segments.reduce(
-            (acc: turf.Position[], segment: any,index:number): turf.Position[] => {
+            (
+              acc: turf.Position[],
+              segment: any,
+              index: number
+            ): turf.Position[] => {
               acc.push([
                 Number(segment.start_longitude),
                 Number(segment.start_latitude),
               ]);
-              if (index +1 === obs.relationships.segments.length)
+              if (index + 1 === obs.relationships.segments.length)
                 acc.push([
                   Number(segment.end_longitude),
                   Number(segment.end_latitude),
@@ -382,7 +390,6 @@ export class ObservationsService {
           width: 6,
         },
       }));
-      
 
       //Obtener los segmentos de las polilineas
       linestrings = linestrings.concat(
@@ -420,7 +427,6 @@ export class ObservationsService {
           })
           .flat()
       );
-
 
       return linestrings;
     } catch (error) {
@@ -489,114 +495,100 @@ export class ObservationsService {
       );
   }
 
-  private convertToCSV(objArray: object[]): string | void {
-    try {
-      const opts: Json2CSVBaseOptions<object, object> = {
-        transforms: [
-          unwind({ paths: ['images'] }),
-          flatten({ objects: true, arrays: true }),
-        ],
-        fields : [
-          'attributes.Leq',
-          'attributes.LAeqT',
-          'attributes.LAmax',
-          'attributes.LAmin',
-          'attributes.L90',
-          'attributes.L10',
-          'attributes.sharpness_S',
-          'attributes.loudness_N',
-          'attributes.roughtness',
-          'attributes.fluctuation_strength_F',
-          'attributes.images',
-          'attributes.latitude',
-          'attributes.longitude',
-          'attributes.quiet',
-          'attributes.cleanliness',
-          'attributes.accessibility',
-          'attributes.safety',
-          'attributes.influence',
-          'attributes.protection',
-          'attributes.wind_speed',
-          'attributes.humidity',
-          'attributes.temperature',
-          'attributes.pressure',
-          'attributes.pleasant',
-          'attributes.chaotic',
-          'attributes.vibrant',
-          'attributes.uneventful',
-          'attributes.calm',
-          'attributes.annoying',
-          'attributes.eventful',
-          'attributes.monotonous',
-          'attributes.overall',
-          'attributes.user_id',
-          'attributes.created_at',
-          'attributes.updated_at',
-          'attributes.roughtness_R',
-        ]
-      };
-      const parser = new Parser(opts);
-      const csv = parser.parse(objArray);
-      console.log(csv);
-      return csv;
-    } catch (err) {
-      console.error(err);
-    }
+  private convertToCSV(objArray: object[]): Promise<string> {
+    return new Promise<string>((resolve, reject) => {
+      try {
+        const opts: Json2CSVBaseOptions<object, object> = {
+          transforms: [
+            unwind({ paths: ['images'] }),
+            flatten({ objects: true, arrays: true }),
+          ],
+          fields: [
+            'attributes.Leq',
+            'attributes.LAeqT',
+            'attributes.LAmax',
+            'attributes.LAmin',
+            'attributes.L90',
+            'attributes.L10',
+            'attributes.sharpness_S',
+            'attributes.loudness_N',
+            'attributes.roughtness',
+            'attributes.fluctuation_strength_F',
+            'attributes.images',
+            'attributes.latitude',
+            'attributes.longitude',
+            'attributes.quiet',
+            'attributes.cleanliness',
+            'attributes.accessibility',
+            'attributes.safety',
+            'attributes.influence',
+            'attributes.protection',
+            'attributes.wind_speed',
+            'attributes.humidity',
+            'attributes.temperature',
+            'attributes.pressure',
+            'attributes.pleasant',
+            'attributes.chaotic',
+            'attributes.vibrant',
+            'attributes.uneventful',
+            'attributes.calm',
+            'attributes.annoying',
+            'attributes.eventful',
+            'attributes.monotonous',
+            'attributes.overall',
+            'attributes.user_id',
+            'attributes.created_at',
+            'attributes.updated_at',
+            'attributes.roughtness_R',
+          ],
+        };
+        const parser = new Parser(opts);
+        const csv = parser.parse(objArray);
+        resolve(csv);
+      } catch (err) {
+        console.error(err);
+      }
+    });
+  }
+  private convertTagsToCSV(objArray: object[]): Promise<string> {
+    return new Promise<string>((resolve, reject) => {
+      try {
+        const opts: Json2CSVBaseOptions<object, object> = {
+          transforms: [],
+          fields: ['key', 'value'],
+        };
+        const parser = new Parser(opts);
+        const csv = parser.parse(objArray);
+        resolve(csv);
+      } catch (err) {
+        console.error(err);
+      }
+    });
   }
 
   public async downloadObservations(observations: Observations[]) {
     try {
       this.loading$.next(true);
-      let csvData = this.convertToCSV(observations);
-      if (!csvData) return;
+
+      let csvTags = await this.convertTagsToCSV(this.tags);
+      let csvData = await this.convertToCSV(observations);
+
+      if (!csvData || !csvTags) {
+        this.loading$.next(false);
+        throw Error('Error converting data to CSV');
+      };
 
       let file = new Blob([csvData], { type: 'text/csv;charset=utf-8' });
-      saveAs(file, 'data.csv');
-      this.loading$.next(false);
+      let fileTags = new Blob([csvTags], { type: 'text/csv;charset=utf-8' });
+      
+      await new Promise((res,rej) => res(saveAs(file, 'observacions.csv'))) 
+      await new Promise((res,rej) => res(saveAs(fileTags, 'paraules.csv')))
 
-      console.log('csv', csvData);
+      this.loading$.next(false);
     } catch (error) {
       this.loading$.next(false);
       console.error(error);
       throw Error('Error downloading observations', error);
     }
   }
-  // public downloadObservations(
-  //   polygon: Number[],
-  //   hourInterval: [string, string]
-  // ): any {
-  //   this.loading$.next(true);
-  //   return this.http
-  //     .post<{ success: string; data: any }>(
-
-  //       `${environment.BACKEND_BASE_URL}/download_observations`,
-  //       {
-  //         concern: 'inside',
-  //         polygon: polygon,
-  //         interval: {
-  //           start: `${hourInterval[0]}`,
-  //           end: `${hourInterval[1]}`,
-  //         },
-  //       }
-  //     ).pipe(
-  //       map(({ data }) => {
-  //         console.log('data', data, typeof data)
-  //         this.loading$.next(false);
-  //         const blob = new Blob([data], { type: 'text/csv' });
-  //         const url = window.URL.createObjectURL(blob);
-  //         const a = document.createElement('a');
-  //         a.href = url;
-  //         a.download = 'observations.csv';
-  //         document.body.appendChild(a);
-  //         a.click();
-  //         document.body.removeChild(a);
-  //         window.URL.revokeObjectURL(url);
-  //       }),
-  //       catchError((error) => {
-  //         console.error('Error:', error);
-  //         this.loading$.next(false);
-  //         return throwError(error);
-  //       })
-  //     );
-  // }
 }
