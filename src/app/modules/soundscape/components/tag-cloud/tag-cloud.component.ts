@@ -47,6 +47,7 @@ export class TagCloudComponent implements OnInit, OnDestroy{
           const canvas = document.getElementById('tagCloud') as HTMLCanvasElement;
           canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
         }
+        console.log('this.tags', this.tags)
       });
     });
 
