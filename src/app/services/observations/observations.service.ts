@@ -18,6 +18,8 @@ import { flatten, Transform, unwind } from '@json2csv/transforms';
 
 import { saveAs } from 'file-saver'; // save the file
 
+import tokml from "@maphubs/tokml"
+
 import { environment } from '../../../environments/environments';
 import { Observations, ObservationsDataChart } from '../../models/observations';
 import { Json2CSVBaseOptions } from '@json2csv/plainjs/dist/mjs/BaseParser';
@@ -589,6 +591,65 @@ export class ObservationsService {
       this.loading$.next(false);
       console.error(error);
       throw Error('Error downloading observations', error);
+    }
+  }
+
+  public async downloadKMZ() {
+    try {
+      this.loading$.next(true);
+
+      const observations = this.observations$.getValue();
+      const features: Feature[] = observations.map((obs) => ({
+        type: 'Feature',
+        geometry: {
+          type: 'LineString',
+          coordinates: obs.relationships.segments.reduce(
+            (
+              acc: turf.Position[],
+              segment: any,
+              index: number
+            ): turf.Position[] => {
+              acc.push([
+                Number(segment.start_longitude),
+                Number(segment.start_latitude),
+              ]);
+              if (index + 1 === obs.relationships.segments.length)
+                acc.push([
+                  Number(segment.end_longitude),
+                  Number(segment.end_latitude),
+                ]);
+              return acc;
+            },
+            []
+          ),
+        },
+        properties: {
+          id: obs.id,
+          LAmax: obs.attributes.LAmax,
+          LAmin: obs.attributes.LAmin,
+          L90: obs.attributes.L90,
+          L10: obs.attributes.L10,
+          Leq: obs.attributes.Leq,
+        },
+      }));
+      let geoJson = {
+        type: 'FeatureCollection' as const,
+        features: features,
+      };
+
+      const kml = tokml(geoJson);
+
+      let file = new Blob([kml], { type: 'application/vnd.google-earth.kml+xml' });
+
+      await new Promise((res,rej) => res(saveAs(file, 'observacions.kml'))) 
+
+      this.loading$.next(false);
+
+    } catch (error) {
+      this.loading$.next(false);
+      console.error(error);
+      throw Error('Error downloading KMZ', error);
+      
     }
   }
 }
