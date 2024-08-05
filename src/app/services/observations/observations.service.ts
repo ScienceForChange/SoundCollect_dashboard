@@ -1,12 +1,26 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { BehaviorSubject, Observable, map, filter, switchMap } from 'rxjs';
+import {
+  BehaviorSubject,
+  Observable,
+  map,
+  filter,
+  switchMap,
+  catchError,
+  throwError,
+} from 'rxjs';
 
 import * as turf from '@turf/turf';
 
+import { Parser } from '@json2csv/plainjs';
+import { flatten, Transform, unwind } from '@json2csv/transforms';
+
+import { saveAs } from 'file-saver'; // save the file
+
 import { environment } from '../../../environments/environments';
 import { Observations, ObservationsDataChart } from '../../models/observations';
+import { Json2CSVBaseOptions } from '@json2csv/plainjs/dist/mjs/BaseParser';
 
 export interface Feature<
   G extends GeoJSON.Geometry | null = GeoJSON.Geometry,
@@ -17,7 +31,10 @@ export interface Feature<
   id?: string | number | undefined;
   properties: P;
 }
-
+export interface Tag {
+  key: string;
+  value: number;
+}
 @Injectable({
   providedIn: 'root',
 })
@@ -25,6 +42,7 @@ export class ObservationsService {
   observations$: BehaviorSubject<Observations[]> = new BehaviorSubject<
     Observations[]
   >([]);
+  tags: Tag[] = [];
 
   loading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
@@ -44,8 +62,8 @@ export class ObservationsService {
             );
             return observationsBetween20and80;
           } catch (error) {
-            console.error(error)
-            throw Error('Error filtering observations',error);
+            console.error(error);
+            throw Error('Error filtering observations', error);
           }
         })
       )
@@ -66,19 +84,20 @@ export class ObservationsService {
       filter((value) => value.length > 0),
       map((observations) => {
         try {
-          const observationsByUser: { [key: string]: { [key: number]: number } } =
-            observations.reduce((acc, obs) => {
-              const userId = obs.relationships.user.id;
-              if (!acc[userId]) {
-                acc[userId] = Array.from({ length: 12 }, (_, i) => i + 1).reduce(
-                  (acc, month) => ({ ...acc, [month]: 0 }),
-                  {}
-                );
-              }
-              const month = new Date(obs.attributes.created_at).getMonth() + 1;
-              acc[userId][month]++;
-              return acc;
-            }, {} as { [key: string]: { [key: number]: number } });
+          const observationsByUser: {
+            [key: string]: { [key: number]: number };
+          } = observations.reduce((acc, obs) => {
+            const userId = obs.relationships.user.id;
+            if (!acc[userId]) {
+              acc[userId] = Array.from({ length: 12 }, (_, i) => i + 1).reduce(
+                (acc, month) => ({ ...acc, [month]: 0 }),
+                {}
+              );
+            }
+            const month = new Date(obs.attributes.created_at).getMonth() + 1;
+            acc[userId][month]++;
+            return acc;
+          }, {} as { [key: string]: { [key: number]: number } });
 
           const numberOfDifferentUsers = Object.keys(observationsByUser).length;
           const totalObservations = observations.length;
@@ -162,8 +181,8 @@ export class ObservationsService {
             ),
           };
         } catch (error) {
-          console.error(error)
-          throw Error('Error getting observations numbers',error);
+          console.error(error);
+          throw Error('Error getting observations numbers', error);
         }
       })
     );
@@ -254,10 +273,9 @@ export class ObservationsService {
             currentDate.setDate(currentDate.getDate() + 1);
           }
           return allDays;
-
         } catch (error) {
-          console.error(error)
-          throw Error('Error formatting observations',error);
+          console.error(error);
+          throw Error('Error formatting observations', error);
         }
       })
     );
@@ -298,8 +316,8 @@ export class ObservationsService {
         })
       );
     } catch (error) {
-      console.error(error)
-      throw Error('Error getting observations by region',error);
+      console.error(error);
+      throw Error('Error getting observations by region', error);
     }
   }
 
@@ -346,12 +364,16 @@ export class ObservationsService {
           type: 'LineString',
           //hacemos un reduce de sengments para combertirlos en un Linestring
           coordinates: obs.relationships.segments.reduce(
-            (acc: turf.Position[], segment: any): turf.Position[] => {
+            (
+              acc: turf.Position[],
+              segment: any,
+              index: number
+            ): turf.Position[] => {
               acc.push([
                 Number(segment.start_longitude),
                 Number(segment.start_latitude),
               ]);
-              if (segment.position == obs.relationships.segments.length)
+              if (index + 1 === obs.relationships.segments.length)
                 acc.push([
                   Number(segment.end_longitude),
                   Number(segment.end_latitude),
@@ -407,10 +429,9 @@ export class ObservationsService {
       );
 
       return linestrings;
-
     } catch (error) {
-      console.error(error)
-      throw Error('Error getting line string from observations',error); 
+      console.error(error);
+      throw Error('Error getting line string from observations', error);
     }
   }
 
@@ -443,8 +464,8 @@ export class ObservationsService {
 
       return points;
     } catch (error) {
-      console.error(error)
-      throw Error('Error getting start points from observations',error);
+      console.error(error);
+      throw Error('Error getting start points from observations', error);
     }
   }
 
@@ -472,5 +493,102 @@ export class ObservationsService {
           return data;
         })
       );
+  }
+
+  private convertToCSV(objArray: object[]): Promise<string> {
+    return new Promise<string>((resolve, reject) => {
+      try {
+        const opts: Json2CSVBaseOptions<object, object> = {
+          transforms: [
+            unwind({ paths: ['images'] }),
+            flatten({ objects: true, arrays: true }),
+          ],
+          fields: [
+            'attributes.Leq',
+            'attributes.LAeqT',
+            'attributes.LAmax',
+            'attributes.LAmin',
+            'attributes.L90',
+            'attributes.L10',
+            'attributes.sharpness_S',
+            'attributes.loudness_N',
+            'attributes.roughtness',
+            'attributes.fluctuation_strength_F',
+            'attributes.images',
+            'attributes.latitude',
+            'attributes.longitude',
+            'attributes.quiet',
+            'attributes.cleanliness',
+            'attributes.accessibility',
+            'attributes.safety',
+            'attributes.influence',
+            'attributes.protection',
+            'attributes.wind_speed',
+            'attributes.humidity',
+            'attributes.temperature',
+            'attributes.pressure',
+            'attributes.pleasant',
+            'attributes.chaotic',
+            'attributes.vibrant',
+            'attributes.uneventful',
+            'attributes.calm',
+            'attributes.annoying',
+            'attributes.eventful',
+            'attributes.monotonous',
+            'attributes.overall',
+            'attributes.user_id',
+            'attributes.created_at',
+            'attributes.updated_at',
+            'attributes.roughtness_R',
+          ],
+        };
+        const parser = new Parser(opts);
+        const csv = parser.parse(objArray);
+        resolve(csv);
+      } catch (err) {
+        console.error(err);
+      }
+    });
+  }
+  private convertTagsToCSV(objArray: object[]): Promise<string> {
+    return new Promise<string>((resolve, reject) => {
+      try {
+        const opts: Json2CSVBaseOptions<object, object> = {
+          transforms: [],
+          fields: ['key', 'value'],
+        };
+        const parser = new Parser(opts);
+        const csv = parser.parse(objArray);
+        resolve(csv);
+      } catch (err) {
+        console.error(err);
+      }
+    });
+  }
+
+  public async downloadObservations(observations: Observations[]) {
+    try {
+      this.loading$.next(true);
+
+      let csvTags = await this.convertTagsToCSV(this.tags);
+      let csvData = await this.convertToCSV(observations);
+
+      if (!csvData || !csvTags) {
+        this.loading$.next(false);
+        throw Error('Error converting data to CSV');
+      };
+
+      let file = new Blob([csvData], { type: 'text/csv;charset=utf-8' });
+      let fileTags = new Blob([csvTags], { type: 'text/csv;charset=utf-8' });
+      
+      await new Promise((res,rej) => res(saveAs(file, 'observacions.csv'))) 
+      await new Promise((res,rej) => res(saveAs(fileTags, 'paraules.csv')))
+
+      this.loading$.next(false);
+    } catch (error) {
+      this.loading$.next(false);
+      console.error(error);
+      throw Error('Error downloading observations', error);
+    }
   }
 }

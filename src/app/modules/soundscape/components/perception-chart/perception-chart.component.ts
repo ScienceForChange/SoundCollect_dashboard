@@ -144,10 +144,6 @@ export class PerceptionChartComponent implements OnInit, OnDestroy{
 
     });
 
-    //console.log("Total de observaciones" ,this.observations.length);
-    //console.log("Observacion con valor númerico", numeric);
-    //console.log("Observacion con valor NO númerico", noNumeric);
-
     data.push(quiet);
     data.push(cleanliness);
     data.push(accessibility);

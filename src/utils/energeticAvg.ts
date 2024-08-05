@@ -1,3 +1,4 @@
+
 export default function energeticAvg(values: number[]): number {
   //Calculate the Number of average lenght
   const N_avg = values.length;
@@ -8,6 +9,6 @@ export default function energeticAvg(values: number[]): number {
   // Calculate the energetic average using the formula
   const energeticAvg = 10 * Math.log10(sum / N_avg);
 
-  // Return the energetic average rounded to two decimal places
-  return Math.round(energeticAvg * 100) / 100;
+  // Return the energetic average
+  return energeticAvg;
 }

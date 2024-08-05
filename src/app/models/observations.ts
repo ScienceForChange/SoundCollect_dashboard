@@ -16,7 +16,7 @@ export interface ObservationsDataChart {
 
 export interface ObservationsAttributes {
     Leq:                    string;
-    LAeqT:                  string;
+    LAeqT:                  string | number[];
     LAmax:                  string;
     LAmin:                  string;
     L90:                    string;
@@ -45,7 +45,7 @@ export interface ObservationsAttributes {
     uneventful:             number | string;
     calm:                   number | string;
     annoying:               number | string;
-    eventful:               number | string;
+    eventfull:               number | string;
     monotonous:             number | string;
     overall:                number | string;
     user_id:                string;
@@ -66,6 +66,9 @@ export interface Segment {
     LAeq: number,
     LAmax: number,
     LAmin: number,
+    freq_3: number[],
+    spec_3: number[],
+    spec_3_dB: number[],
 }
 
 export interface SegmentParameters {

@@ -41,7 +41,9 @@
     "terms": "Termes i condicions",
     "privacy": "Política de privacitat",
     "observations": "Observacions",
-    "logout": "Tancar sessió"
+    "logout": "Tancar sessió",
+    "linkManual": "http://home.soundcollectapp.com/wp-content/uploads/2024/07/20240717_Manual-de-lusuari_aria-Dashboard-SoundCollect_CAT.pdf",
+    "manual": "Manual d'ús"
   },
   "home": {
     "footer": {
@@ -253,6 +255,21 @@
       "ponderation": "dB",
       "noPonderation": "dBA",
       "content": "Aquest gràfic mostra com es distribueix l'energia dels sons en l'àrea seleccionada al llarg d'un espectre de freqüències. La seva utilitat radica a identificar si predominen les freqüències baixes o altes en l'àrea d'estudi. Les freqüències baixes representen sons greus, com el retrunyir d'un motor, mentre que les freqüències altes inclouen sons aguts, com el cant d'un ocell. El gràfic permet alternar entre el nivell de pressió sonora sense ponderació (Leq) i amb ponderació A (LAeq)."
+    },
+    "physcoAcustic": {
+      "title": "Anàlisi psicoacústic",
+      "content": "",
+      "types": {
+        "sharpness": "Nitidesa",
+        "roughtness": "Rugositat",
+        "loudness": "Sonoritat",
+        "fluctuationStrenght": "Intensitat de fluctuació"
+      },
+      "tooltip":{
+        "hour": "Hora",
+        "numObs": "Observacions",
+        "standardDeviation": "Desviació estàndard"
+      }
     },
     "temporalEvolution": {
       "title": "Evolució temporal sobre els nivells de so dB(A) en un període de temps",

@@ -22,7 +22,9 @@ export class TagCloudComponent implements OnInit, OnDestroy{
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
-    this.chart.resize();
+    if(this.chart){
+      this.chart.resize();
+    }
   }
   private observations!: Observations[];
   private observationsService = inject(ObservationsService);
@@ -41,6 +43,9 @@ export class TagCloudComponent implements OnInit, OnDestroy{
         this.observations = observations;
         this.getTagsFromObservations();
         this.getWordFrequency();
+        //All the tags
+        this.observationsService.tags = this.tags
+        
         this.tags = this.tags.sort((a, b) => b.value - a.value).slice(0, 40);
         if(this.tags.length > 0) this.updateCloud();
         else {
