@@ -55,9 +55,12 @@ export class LAeqTChartComponent implements OnInit, AfterViewInit {
         const chartDom = document.getElementById('line-chart-container');
         this.myLineChart = echarts.init(chartDom);
         this.myLineChart.showLoading('default', this.loadingOptions);
-        const LAeqT = this.observationSelected.attributes.LAeqT.split(',').map(
+        let LAeqT:number[] = this.observationSelected.attributes.LAeqT as number[];
+        if(typeof LAeqT === 'string'){
+         LAeqT = (this.observationSelected.attributes.LAeqT as string).split(',').map(
           (value) => Number(value)
-        );
+        )
+      }
         const seconds = [...Array(LAeqT.length)].map((_, i) => i + 1);
 
         this.options = {
