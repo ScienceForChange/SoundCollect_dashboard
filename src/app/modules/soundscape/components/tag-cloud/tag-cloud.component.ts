@@ -22,7 +22,9 @@ export class TagCloudComponent implements OnInit, OnDestroy{
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
-    this.chart.resize();
+    if(this.chart){
+      this.chart.resize();
+    }
   }
   private observations!: Observations[];
   private observationsService = inject(ObservationsService);

@@ -165,7 +165,6 @@ export class OneThirdOctaveChartComponent implements OnInit, AfterViewInit {
         (segment) => segment.spec_3_dB
       );
 
-    console.log('segmentsSpec_3_dB', segmentsSpec_3[0], segmentsSpec_3_dB[0]);
     if (!segmentsSpec_3[0] || !segmentsSpec_3_dB[0]) {
       return { ponderation, noPonderation };
     } else {
