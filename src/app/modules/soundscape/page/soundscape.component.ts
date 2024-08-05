@@ -76,12 +76,12 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
     [TimeFilter.WHOLEDAY]:  ["00:00:00", "23:59:59"],
   };
   public items = [
-    {
-        label: 'Formato GPKG',
-        command: () => {
-            this.downloadFile('gpkg');
-        }
-    },
+    // {
+    //     label: 'Formato GPKG',
+    //     command: () => {
+    //         this.downloadFile('gpkg');
+    //     }
+    // },
     {
         label: 'Formato KMZ',
         command: () => {
@@ -609,6 +609,9 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
   public downloadFile (option: string) {
     if(option === 'CSV'){
       this.observationsService.downloadObservations(this.observations)
+    }
+    if(option === 'KMZ'){
+      this.observationsService.downloadKMZ()
     }
   }
 
