@@ -4,7 +4,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
+import {
+  TranslateLoader,
+  TranslateModule,
+  TranslateService,
+} from '@ngx-translate/core';
 
 import { MessageService } from 'primeng/api';
 
@@ -18,7 +22,7 @@ import { errorInterceptorProviders } from './interceptor/error.interceptor';
 
 import { GlobalErrorHandler } from './handler/global-error-handler';
 
-import { environment } from '../environments/environments';
+import { environment } from '../environments/environment';
 
 import { LoginModule } from './modules/login/login.module';
 import { OverviewModule } from './modules/overview/overview.module';
@@ -49,8 +53,8 @@ export function HttpLoaderFactory(http: HttpClient) {
       loader: {
         provide: TranslateLoader,
         useFactory: HttpLoaderFactory,
-        deps: [HttpClient]
-      }
+        deps: [HttpClient],
+      },
     }),
   ],
   providers: [
@@ -61,7 +65,7 @@ export function HttpLoaderFactory(http: HttpClient) {
         return () => translate.use(environment.DEFAULT_LANGUAGE).toPromise();
       },
       deps: [TranslateService],
-      multi: true
+      multi: true,
     },
     {
       // processes all errors
@@ -70,7 +74,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     },
     { provide: LocationStrategy, useClass: PathLocationStrategy },
     authInterceptorProviders,
-    errorInterceptorProviders
+    errorInterceptorProviders,
   ],
   bootstrap: [AppComponent],
 })

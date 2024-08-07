@@ -20,7 +20,7 @@ import { saveAs } from 'file-saver'; // save the file
 
 import tokml from "@maphubs/tokml"
 
-import { environment } from '../../../environments/environments';
+import { environment } from '../../../environments/environment';
 import { Observations, ObservationsDataChart } from '../../models/observations';
 import { Json2CSVBaseOptions } from '@json2csv/plainjs/dist/mjs/BaseParser';
 
@@ -578,13 +578,13 @@ export class ObservationsService {
       if (!csvData || !csvTags) {
         this.loading$.next(false);
         throw Error('Error converting data to CSV');
-      };
+      }
 
       let file = new Blob([csvData], { type: 'text/csv;charset=utf-8' });
       let fileTags = new Blob([csvTags], { type: 'text/csv;charset=utf-8' });
-      
-      await new Promise((res,rej) => res(saveAs(file, 'observacions.csv'))) 
-      await new Promise((res,rej) => res(saveAs(fileTags, 'paraules.csv')))
+
+      await new Promise((res, rej) => res(saveAs(file, 'observacions.csv')));
+      await new Promise((res, rej) => res(saveAs(fileTags, 'paraules.csv')));
 
       this.loading$.next(false);
     } catch (error) {
@@ -639,17 +639,17 @@ export class ObservationsService {
 
       const kml = tokml(geoJson);
 
-      let file = new Blob([kml], { type: 'application/vnd.google-earth.kml+xml' });
+      let file = new Blob([kml], {
+        type: 'application/vnd.google-earth.kml+xml',
+      });
 
-      await new Promise((res,rej) => res(saveAs(file, 'observacions.kml'))) 
+      await new Promise((res, rej) => res(saveAs(file, 'observacions.kml')));
 
       this.loading$.next(false);
-
     } catch (error) {
       this.loading$.next(false);
       console.error(error);
       throw Error('Error downloading KMZ', error);
-      
     }
   }
 }
