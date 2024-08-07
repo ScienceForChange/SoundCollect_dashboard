@@ -5,7 +5,7 @@ import { NavigationEnd, Router, Event } from '@angular/router';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
-import { environment } from '../../../environments/environments';
+import { environment } from '../../../environments/environment';
 import { UserLoginResponse } from '../../models/auth';
 
 export interface RecoverPasswords {
@@ -14,8 +14,6 @@ export interface RecoverPasswords {
   token?: String | null;
   email?: String | null;
 }
-
-
 
 @Injectable({
   providedIn: 'root',
@@ -41,15 +39,17 @@ export class AuthService {
       .subscribe((event: NavigationEnd) => {
         this.lastUrl = event.urlAfterRedirects;
       });
-      localStorage.getItem('access_token') && this._isLoggedIn.next(true);
+    localStorage.getItem('access_token') && this._isLoggedIn.next(true);
   }
 
-  login(user: {email:string,password:string}): Observable<UserLoginResponse> {
+  login(user: {
+    email: string;
+    password: string;
+  }): Observable<UserLoginResponse> {
     return this.http
-      .post<UserLoginResponse>(
-        `${environment.BACKEND_BASE_URL}/login`,
-        { ...user }
-      )
+      .post<UserLoginResponse>(`${environment.BACKEND_BASE_URL}/login`, {
+        ...user,
+      })
       .pipe(
         tap((res) => {
           if (this.lastUrl && this.lastUrl !== '/login') {
@@ -64,7 +64,6 @@ export class AuthService {
         })
       );
   }
-
 
   logout() {
     this.http
@@ -86,5 +85,4 @@ export class AuthService {
         this.router.navigate(['/login']);
       });
   }
-
 }
