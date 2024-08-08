@@ -10,6 +10,7 @@ import { GeoJSONObject} from '@turf/turf';
 
 import { Observations } from '../../../models/observations';
 import { ObservationsService } from '../../../services/observations/observations.service';
+import { TranslateService } from '@ngx-translate/core';
 
 export interface Feature<G extends GeoJSON.Geometry | null = GeoJSON.Geometry, P = { [name: string]: any } | null> extends GeoJSONObject {
   type: "Feature";
@@ -35,6 +36,8 @@ enum TimeFilter {
 export class SoundscapeComponent implements AfterViewInit, OnDestroy {
 
   @ViewChild('map') mapContainer!: ElementRef;
+
+  private translations = inject(TranslateService);
 
   private map!: Map;
   private draw!: MapboxDraw;
@@ -83,7 +86,7 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
     //     }
     // },
     {
-        label: 'Formato KMZ',
+        label: this.translations.instant('soundscape.map.kmlDownload'),
         command: () => {
           this.downloadFile('KMZ');
         }

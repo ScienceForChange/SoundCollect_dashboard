@@ -167,7 +167,8 @@
     "map": {
       "createFilter": "Crear zona d'estudi",
       "editFilter": "Editar filtre",
-      "deleteFilter": "Eliminar filtre"
+      "deleteFilter": "Eliminar filtre",
+      "kmlDownload": "Format KML"
     },
     "filter": {
       "morning": "Matí (7:00 - 19:00)",

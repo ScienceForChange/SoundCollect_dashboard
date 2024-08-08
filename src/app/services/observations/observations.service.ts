@@ -497,51 +497,151 @@ export class ObservationsService {
       );
   }
 
-  private convertToCSV(objArray: object[]): Promise<string> {
+  private convertToCSV(objArray: Observations[]): Promise<string> {
     return new Promise<string>((resolve, reject) => {
       try {
         const opts: Json2CSVBaseOptions<object, object> = {
-          transforms: [
-            unwind({ paths: ['images'] }),
-            flatten({ objects: true, arrays: true }),
-          ],
           fields: [
-            'attributes.Leq',
-            'attributes.LAeqT',
-            'attributes.LAmax',
-            'attributes.LAmin',
-            'attributes.L90',
-            'attributes.L10',
-            'attributes.sharpness_S',
-            'attributes.loudness_N',
-            'attributes.roughtness',
-            'attributes.fluctuation_strength_F',
-            'attributes.images',
-            'attributes.latitude',
-            'attributes.longitude',
-            'attributes.quiet',
-            'attributes.cleanliness',
-            'attributes.accessibility',
-            'attributes.safety',
-            'attributes.influence',
-            'attributes.protection',
-            'attributes.wind_speed',
-            'attributes.humidity',
-            'attributes.temperature',
-            'attributes.pressure',
-            'attributes.pleasant',
-            'attributes.chaotic',
-            'attributes.vibrant',
-            'attributes.uneventful',
-            'attributes.calm',
-            'attributes.annoying',
-            'attributes.eventful',
-            'attributes.monotonous',
-            'attributes.overall',
-            'attributes.user_id',
-            'attributes.created_at',
-            'attributes.updated_at',
-            'attributes.roughtness_R',
+            {
+              label: 'ID_Observation',
+              value: 'id',
+            },
+            {
+              label: 'ID_User',
+              value: 'relationships.user.id',
+            },
+            {
+              label: 'Date_Time',
+              value: 'attributes.created_at',
+            },
+            {
+              label: 'Latitude',
+              value: 'attributes.latitude',
+            },
+            {
+              label: 'Longitude',
+              value: 'attributes.longitude',
+            },
+            {
+              label: 'LAeq',
+              value: 'attributes.Leq',
+            },
+            {
+              label: 'LAeq,t',
+              value: 'attributes.LAeqT',
+            },
+            {
+              label: 'LAmax',
+              value: 'attributes.LAmax',
+            },
+            {
+              label: 'LAmin',
+              value: 'attributes.LAmin',
+            },
+            {
+              label: 'L90',
+              value: 'attributes.L90',
+            },
+            {
+              label: 'L10',
+              value: 'attributes.L10',
+            },
+            {
+              label: 'Sharpness',
+              value: 'attributes.sharpness_S',
+            },
+            {
+              label: 'Loudness',
+              value: 'attributes.loudness_N',
+            },
+            {
+              label: 'Roughtness',
+              value: 'attributes.roughtness_R',
+            },
+            {
+              label: 'Fluctuation strength',
+              value: 'attributes.fluctuation_strength_F',
+            },
+            {
+              label: 'Type of sound',
+              value: (row:any) => row.relationships.types.map((type:any) => type.name).join(','),
+            },
+            {
+              label: 'Quiet',
+              value: 'attributes.quiet',
+            },
+            {
+              label: 'Cleanliness',
+              value: 'attributes.cleanliness',
+            },
+            {
+              label: 'Accessibility',
+              value: 'attributes.accessibility',
+            },
+            {
+              label: 'Safety',
+              value: 'attributes.safety',
+            },
+            {
+              label: 'Influence',
+              value: 'attributes.influence',
+            },
+            {
+              label: 'Action_protections',
+              value: 'attributes.protection',
+            },
+            {
+              label: 'Pleasant',
+              value: 'attributes.pleasant',
+            },
+            {
+              label: 'Chaotic',
+              value: 'attributes.chaotic',
+            },
+            {
+              label: 'Vibrant',
+              value: 'attributes.vibrant',
+            },
+            {
+              label: 'Uneventful',
+              value: 'attributes.uneventful',
+            },
+            {
+              label: 'Calm',
+              value: 'attributes.calm',
+            },
+            {
+              label: 'Annoying',
+              value: 'attributes.annoying',
+            },
+            {
+              label: 'Eventful',
+              value: 'attributes.eventful',
+            },
+            {
+              label: 'Monotonous',
+              value: 'attributes.monotonous',
+            },
+            {
+              label: 'Appropriateness',
+              value: 'attributes.overall',
+            },
+            {
+              label: 'wind_speed_m/s',
+              value: 'attributes.wind_speed',
+            },
+            {
+              label: 'humidity_%',
+              value: 'attributes.humidity',
+            },
+            {
+              label: 'temperature_Cº',
+              value: 'attributes.temperature',
+            },
+            {
+              label: 'pressure_hPa',
+              value: 'attributes.pressure',
+            },
           ],
         };
         const parser = new Parser(opts);
