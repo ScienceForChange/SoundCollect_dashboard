@@ -624,12 +624,12 @@ export class ObservationsService {
           ),
         },
         properties: {
-          id: obs.id,
-          LAmax: obs.attributes.LAmax,
-          LAmin: obs.attributes.LAmin,
-          L90: obs.attributes.L90,
-          L10: obs.attributes.L10,
-          Leq: obs.attributes.Leq,
+          ID_Observation: obs.id,
+          LAeq: Number(obs.attributes.Leq).toFixed(1),
+          LAmax: Number(obs.attributes.LAmax).toFixed(1),
+          LAmin: Number(obs.attributes.LAmin).toFixed(1),
+          L90: Number(obs.attributes.L90).toFixed(1),
+          L10: Number(obs.attributes.L10).toFixed(1),
         },
       }));
       let geoJson = {
