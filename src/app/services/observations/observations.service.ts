@@ -635,7 +635,7 @@ export class ObservationsService {
               value: 'attributes.humidity',
             },
             {
-              label: 'temperature_C',
+              label: 'temperature_Cº',
               value: 'attributes.temperature',
             },
             {
