@@ -501,9 +501,6 @@ export class ObservationsService {
     return new Promise<string>((resolve, reject) => {
       try {
         const opts: Json2CSVBaseOptions<object, object> = {
-          transforms: [
-            // flatten({ objects: true, arrays: true }),
-          ],
           fields: [
             {
               label: 'ID_Observation',
