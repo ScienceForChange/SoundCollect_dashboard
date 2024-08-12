@@ -165,7 +165,6 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
       accessToken: mapboxgl.accessToken,
       language: 'ca',
       limit: 5,
-      // mapboxgl: mapboxgl,
       marker: false,
       zoom: 17,
     });
@@ -443,7 +442,6 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
     this.map.on('draw.update' as MapEvent, this.onDrawUpdated.bind(this));
 
     // this.addObservationsToMap();
-
   }
 
   private onDrawSelect(event: any) {

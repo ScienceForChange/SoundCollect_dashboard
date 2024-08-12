@@ -30,6 +30,7 @@ import { SoundscapeModule } from './modules/soundscape/soundscape.module';
 import { MapModule } from './modules/map/map.module';
 import { ErrorModule } from './modules/error/error.module';
 import { HomeModule } from './modules/home/home.module';
+import { StudyZoneModule } from './modules/admin/study-zone/study-zone.module';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -48,6 +49,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     SharedComponentsModule,
     SoundscapeModule,
     HomeModule,
+    StudyZoneModule,
     TranslateModule.forRoot({
       defaultLanguage: environment.DEFAULT_LANGUAGE,
       loader: {

@@ -1,0 +1,45 @@
+<div class="container">
+  <div id="toolsBar">
+    <div class="tools gap-3">
+
+      @if (!polygonFilter()) {
+        <p-button (click)="drawPolygonFilter()">
+          <i class="pi pi-pencil mr-2"></i>
+          <span>{{ 'soundscape.map.createFilter' | translate}}</span>
+        </p-button>
+      }
+      @else {
+        <p-button (click)="deletePolygonFilter()">
+          <i class="pi pi-trash mr-2"></i>
+          <span>{{ 'soundscape.map.deleteFilter' | translate}}</span>
+        </p-button>
+      }
+      </div>
+      <p-button
+      (onClick)="toggleShowMapLayers()"
+      pTooltip="{{'map.layers.title' | translate}}"
+      tooltipPosition="bottom"
+    >
+      <i class="pi pi-clone"></i>
+    </p-button>
+  </div>
+  <div class="flex flex-wrap w-full">
+    <div #map class="map-container"></div>
+</div>
+<p-sidebar
+  [(visible)]="showMapLayers"
+  [position]="'right'"
+  [modal]="false"
+  [styleClass]="'floatSidebar col-10 lg:col-3 md:col-4'"
+  [blockScroll]="false"
+  [closeOnEscape]="true"
+>
+  <div class="flex align-items-center">
+    <p-radioButton value="light-v10" [(ngModel)]="layerId" (onClick)="toggleLayerVisibility('light-v10')"/>
+    <label for="light-v10" class="ml-2"> {{"map.layers.standard" | translate}} </label>
+  </div>
+  <div class="flex align-items-center mt-3">
+    <p-radioButton value="satellite-streets-v12" [(ngModel)]="layerId" (onClick)="toggleLayerVisibility('satellite-streets-v12')"/>
+    <label for="satellite-streets-v12" class="ml-2"> {{"map.layers.satellite" | translate}} </label>
+  </div>
+</p-sidebar>
