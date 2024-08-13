@@ -1,4 +1,4 @@
-import { Component, effect, ElementRef, inject, signal, ViewChild } from '@angular/core';
+import { Component, effect, ElementRef, EventEmitter, inject, Output, signal, ViewChild } from '@angular/core';
 import MapboxDraw from '@mapbox/mapbox-gl-draw';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import mapboxgl, { IControl, LngLat, LngLatBounds, Map, MapEvent } from 'mapbox-gl';
@@ -22,6 +22,8 @@ interface Feature<G extends GeoJSON.Geometry | null = GeoJSON.Geometry, P = { [n
 })
 export class StudyZoneMapComponent {
   @ViewChild('map') mapContainer!: ElementRef;
+
+  @Output() toggleStudyZoneForm: EventEmitter<void> = new EventEmitter<void>();
 
   private observationsService = inject(ObservationsService);
   private observations$!: Subscription;
@@ -67,9 +69,8 @@ export class StudyZoneMapComponent {
     })
 
     effect(() => {
-      if (this.polygonFilter()) {
-        this.filterActive = true;
-      }
+      this.toggleStudyZoneForm.emit();
+      console.log('this.polygonFilter', this.polygonFilter())
     });
   }
 

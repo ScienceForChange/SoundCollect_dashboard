@@ -6,13 +6,15 @@ import { ButtonModule } from 'primeng/button';
 import { SidebarModule } from 'primeng/sidebar';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { TooltipModule } from 'primeng/tooltip';
+import { DialogModule } from 'primeng/dialog';
 
 
 import { StudyZoneComponent } from './study-zone/study-zone.component';
 import { StudyZoneMapComponent } from './components/map/study-zone-map.component';
 import { SharedComponentsModule } from '../../../shared/shared.module';
+import { StudyZoneFormComponent } from './components/study-zone-form/study-zone-form.component';
 @NgModule({
-  declarations: [StudyZoneComponent, StudyZoneMapComponent],
+  declarations: [StudyZoneComponent, StudyZoneMapComponent, StudyZoneFormComponent],
   imports: [
     CommonModule,
     ButtonModule,
@@ -21,7 +23,8 @@ import { SharedComponentsModule } from '../../../shared/shared.module';
     ReactiveFormsModule,
     FormsModule,
     SharedComponentsModule,
-    TooltipModule
+    TooltipModule,
+    DialogModule
   ],
 })
 export class StudyZoneModule {}

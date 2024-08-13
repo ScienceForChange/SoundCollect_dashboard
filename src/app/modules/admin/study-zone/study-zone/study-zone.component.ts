@@ -6,5 +6,11 @@ import { Component } from '@angular/core';
   styleUrl: './study-zone.component.scss'
 })
 export class StudyZoneComponent {
+  studyZoneFormVisible: boolean = false;
+
+  toggleStudyZoneForm() {
+    console.log('this.studyZoneFormVisible', this.studyZoneFormVisible)
+    this.studyZoneFormVisible = !this.studyZoneFormVisible;
+  }
 
 }
