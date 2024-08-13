@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 
 @Component({
   selector: 'app-study-zone',
@@ -6,11 +6,11 @@ import { Component } from '@angular/core';
   styleUrl: './study-zone.component.scss'
 })
 export class StudyZoneComponent {
-  studyZoneFormVisible: boolean = false;
+  studyZoneFormVisible = signal<boolean>(false);
 
   toggleStudyZoneForm() {
-    console.log('this.studyZoneFormVisible', this.studyZoneFormVisible)
-    this.studyZoneFormVisible = !this.studyZoneFormVisible;
+    console.log('toggleStudyZoneForm',this.studyZoneFormVisible())
+    this.studyZoneFormVisible.update(() => !this.studyZoneFormVisible());
   }
 
 }

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-study-zone-form',
@@ -7,8 +7,10 @@ import { Component, Input } from '@angular/core';
 })
 export class StudyZoneFormComponent {
   @Input() visible: boolean = false;
+  @Output() toggleStudyZoneForm: EventEmitter<void> = new EventEmitter<void>();
 
-  showDialog() {
-      this.visible = true;
+  toggleDialog() {
+    console.log('toggleDialof')
+    this.toggleStudyZoneForm.emit();
   }
 }

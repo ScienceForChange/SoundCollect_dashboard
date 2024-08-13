@@ -68,10 +68,9 @@ export class StudyZoneMapComponent {
 
     })
 
-    effect(() => {
-      this.toggleStudyZoneForm.emit();
-      console.log('this.polygonFilter', this.polygonFilter())
-    });
+    // effect(() => {
+    //   this.toggleStudyZoneForm.emit();
+    // });
   }
 
   public drawPolygonFilter() {

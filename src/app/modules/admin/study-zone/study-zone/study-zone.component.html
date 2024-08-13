@@ -1,2 +1,5 @@
-<app-study-zone-map (toggleStudyZoneForm)="toggleStudyZoneForm()"/>
-<app-study-zone-form [visible]="studyZoneFormVisible" />
+<app-study-zone-map (toggleStudyZoneForm)="toggleStudyZoneForm()" />
+<app-study-zone-form
+  [visible]="studyZoneFormVisible()"
+  (toggleStudyZoneForm)="toggleStudyZoneForm()"
+/>
