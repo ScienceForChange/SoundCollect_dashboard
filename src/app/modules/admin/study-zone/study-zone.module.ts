@@ -8,13 +8,22 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { TooltipModule } from 'primeng/tooltip';
 import { DialogModule } from 'primeng/dialog';
 
-
 import { StudyZoneComponent } from './study-zone/study-zone.component';
 import { StudyZoneMapComponent } from './components/map/study-zone-map.component';
 import { SharedComponentsModule } from '../../../shared/shared.module';
 import { StudyZoneFormComponent } from './components/study-zone-form/study-zone-form.component';
+import { CalendarModule } from 'primeng/calendar';
+import { InputTextModule } from 'primeng/inputtext';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { FileUploadModule } from 'primeng/fileupload';
+import { DividerModule } from 'primeng/divider';
+
 @NgModule({
-  declarations: [StudyZoneComponent, StudyZoneMapComponent, StudyZoneFormComponent],
+  declarations: [
+    StudyZoneComponent,
+    StudyZoneMapComponent,
+    StudyZoneFormComponent,
+  ],
   imports: [
     CommonModule,
     ButtonModule,
@@ -24,7 +33,12 @@ import { StudyZoneFormComponent } from './components/study-zone-form/study-zone-
     FormsModule,
     SharedComponentsModule,
     TooltipModule,
-    DialogModule
+    DialogModule,
+    CalendarModule,
+    InputTextModule,
+    InputTextareaModule,
+    FileUploadModule,
+    DividerModule
   ],
 })
 export class StudyZoneModule {}

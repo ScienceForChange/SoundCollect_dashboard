@@ -2,18 +2,92 @@
   header="Edit Profile"
   [modal]="true"
   [(visible)]="visible"
-  [style]="{ width: '25rem' }"
+  [style]="{ height: '80dvh' }"
   [closable]="false"
 >
-  <span class="p-text-secondary block mb-5">Update your information.</span>
-  <div class="flex align-items-center gap-3 mb-3">
-    <label for="username" class="font-semibold w-6rem">Username</label>
-    <input pInputText id="username" class="flex-auto" autocomplete="off" />
-  </div>
-  <div class="flex align-items-center gap-3 mb-5">
-    <label for="email" class="font-semibold w-6rem">Email</label>
-    <input pInputText id="email" class="flex-auto" autocomplete="off" />
-  </div>
+  <form [formGroup]="studyZoneForm" class="flex flex-column gap-5 mt-5">
+    <span class="p-float-label">
+      <input
+        formControlName="name"
+        class="w-full md:w-30rem"
+        style="padding: 1rem"
+        name="name"
+        type="text"
+        required
+        pInputText
+      />
+      <label for="name">Nom</label>
+    </span>
+    <span class="p-float-label">
+      <textarea
+        formControlName="description"
+        class="w-full md:w-30rem"
+        style="padding: 1rem"
+        name="description"
+        required
+        pInputTextarea
+      ></textarea>
+      <label for="description">Descripció</label>
+    </span>
+    <span class="p-float-label">
+      <textarea
+        formControlName="conclusion"
+        class="w-full md:w-30rem"
+        style="padding: 1rem"
+        name="conclusion"
+        required
+        pInputTextarea
+      ></textarea>
+      <label for="conclusion">Conclusió</label>
+    </span>
+    <span class="p-float-label">
+      <p-calendar
+        formControlName="start_end_dates"
+        dateFormat="yy-mm-dd"
+        [selectionMode]="'range'"
+        [touchUI]="true"
+        required
+      />
+      <label for="conclusion">Data d'inici i fi</label>
+    </span>
+    <p-divider />
+    <span>Afegir fitxers</span>
+    @if(documents.controls[0]){
+    <div formArrayName="documents" class="flex flex-column gap-5">
+      <div
+        *ngFor="let document of documents.controls; let i = index"
+        [formGroupName]="i"
+        class="flex flex-column gap-3"
+      >
+        <span class="p-float-label">
+          <input
+            formControlName="name"
+            class="w-full md:w-30rem"
+            style="padding: 1rem"
+            name="name"
+            type="text"
+            required
+            pInputText
+          />
+          <label for="file_name">Nom del document</label>
+        </span>
+        <p-fileUpload
+          mode="basic"
+          chooseLabel="Afegir fitxer"
+          chooseIcon="pi pi-upload"
+          name="demo[]"
+          accept="image/*"
+          maxFileSize="1000000"
+          required
+          (onSelect)="onUploadFileDocument($event, i)"
+        />
+        <p-button type="button" label="Esborrar" (click)="removeDocument(i)" />
+      </div>
+    </div>
+    }
+    <p-button type="button" label="Afegir" (click)="addDocument()" />
+  </form>
+
   <div class="flex justify-content-end gap-2">
     <p-button label="Cancel" severity="secondary" (onClick)="toggleDialog()" />
     <p-button label="Save" (onClick)="toggleDialog()" />

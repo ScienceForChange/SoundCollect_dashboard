@@ -6,10 +6,9 @@ import { Component, signal } from '@angular/core';
   styleUrl: './study-zone.component.scss'
 })
 export class StudyZoneComponent {
-  studyZoneFormVisible = signal<boolean>(false);
+  studyZoneFormVisible = signal<boolean>(true);
 
   toggleStudyZoneForm() {
-    console.log('toggleStudyZoneForm',this.studyZoneFormVisible())
     this.studyZoneFormVisible.update(() => !this.studyZoneFormVisible());
   }
 

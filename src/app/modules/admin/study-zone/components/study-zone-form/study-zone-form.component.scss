@@ -1,0 +1,12 @@
+:host ::ng-deep {
+  .p-calendar {
+    width: 100%;
+    input {
+      padding: 1rem;
+    }
+  }
+  .p-fileupload{
+    display: flex;
+    justify-content: center;
+  }
+}
