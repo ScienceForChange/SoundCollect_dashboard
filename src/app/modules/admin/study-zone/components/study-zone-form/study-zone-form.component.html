@@ -54,7 +54,7 @@
     <div class="flex flex-column gap-3">
       <span>Afegir fitxers</span>
       @if(documents.controls[0]){
-      <div formArrayName="documents">
+      <div formArrayName="documents" class="flex flex-column gap-5 mt-5">
         <div
           *ngFor="let document of documents.controls; let i = index"
           [formGroupName]="i"
@@ -76,31 +76,38 @@
             mode="basic"
             chooseLabel="Afegir fitxer"
             chooseIcon="pi pi-upload"
-            name="demo[]"
-            accept="image/*"
-            maxFileSize="1000000"
+            accept="image/*, application/pdf"
+            maxFileSize="10000000"
             required
             (onSelect)="onUploadFile($event, i, true)"
           />
           <p-button
+            icon="pi pi-trash"
             type="button"
-            label="Esborrar"
+            label="Esborrar document"
+            severity="secondary"
             (click)="removeDocument(i)"
           />
         </div>
       </div>
+      <p-divider class="mt-3 mb-3" />
       }
-      <p-button type="button" label="Afegir document" (click)="addDocument()" />
+      <p-button
+        type="button"
+        icon="pi pi-plus"
+        label="Afegir document"
+        (click)="addDocument()"
+      />
     </div>
     <p-divider class="mt-3 mb-3" />
     <div class="flex flex-column gap-3">
       <span>Afegir col·laborador</span>
       @if(collaborators.controls[0]){
-      <div formArrayName="collaborators">
+      <div formArrayName="collaborators" class="flex flex-column gap-5">
         <div
           *ngFor="let collaborator of collaborators.controls; let i = index"
           [formGroupName]="i"
-          class="flex flex-column gap-3"
+          class="flex flex-column gap-5 mt-5"
         >
           <span class="p-float-label">
             <input
@@ -154,21 +161,28 @@
             mode="basic"
             chooseLabel="Afegir logo"
             chooseIcon="pi pi-upload"
-            name="demo[]"
             accept="image/*"
-            maxFileSize="1000000"
+            maxFileSize="500000"
             required
             (onSelect)="onUploadFile($event, i, false)"
           />
           <p-button
             type="button"
+            icon="pi pi-trash"
             label="Esborrar"
+            severity="secondary"
             (click)="removeCollaborator(i)"
           />
         </div>
       </div>
+      <p-divider class="mt-3 mb-3" />
       }
-      <p-button type="button" label="Afegir col·laborador" (click)="addCollaborator()" />
+      <p-button
+        type="button"
+        icon="pi pi-plus"
+        label="Afegir col·laborador"
+        (click)="addCollaborator()"
+      />
     </div>
     <div class="flex justify-content-center gap-2 w-full mt-5">
       <p-button
@@ -176,7 +190,7 @@
         severity="secondary"
         (onClick)="toggleDialog()"
       />
-      <p-button label="Guardar zona d'estudi" (onClick)="toggleDialog()" />
+      <p-button label="Guardar zona d'estudi" (onClick)="submit()" />
     </div>
   </form>
 </p-dialog>

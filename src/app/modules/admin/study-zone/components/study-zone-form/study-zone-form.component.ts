@@ -1,5 +1,7 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
+import { MessageService } from 'primeng/api';
 
 
 @Component({
@@ -8,8 +10,13 @@ import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
   styleUrl: './study-zone-form.component.scss',
 })
 export class StudyZoneFormComponent {
+  private messageService = inject(MessageService);
+  private translations = inject(TranslateService);
+
   @Input() visible: boolean = false;
   @Output() toggleStudyZoneForm: EventEmitter<void> = new EventEmitter<void>();
+
+  loading: boolean =  false
 
   studyZoneForm: FormGroup = new FormGroup({
     user_id: new FormControl('', [Validators.required]),
@@ -75,7 +82,30 @@ export class StudyZoneFormComponent {
     this.collaborators.removeAt(index);
   }
 
-  toggleDialog() {
+  toggleDialog():void {
     this.toggleStudyZoneForm.emit();
+  }
+
+  showWarn():void {
+    this.messageService.add({
+      severity: 'warn',
+      summary:this.translations.instant('login.errorTitle'),
+      detail: this.translations.instant('login.errorSubtitle'),
+    });
+  }
+
+  showSuccess():void {
+    this.messageService.add({
+      severity: 'success',
+      summary: this.translations.instant('login.successTitle'),
+      detail: this.translations.instant('login.successSubtitle'),
+    });
+  }
+
+  submit() {
+    this.loading = true;
+    const userId = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).id : null;
+    const result = {...this.studyZoneForm.value,user_id:userId};
+    console.log('result', result)
   }
 }

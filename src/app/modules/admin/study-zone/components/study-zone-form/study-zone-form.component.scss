@@ -9,4 +9,14 @@
     display: flex;
     justify-content: center;
   }
+  p-button{
+    width: fit-content;
+  }
+  .p-dialog-header{
+    justify-content: center;
+  }
+  form,.p-dialog-content{
+    scrollbar-width: none;
+  }
 }
+
