@@ -21,10 +21,26 @@ export class StudyZoneFormComponent {
       [Validators.required]
     ),
     documents: new FormArray([]),
+    collaborators: new FormArray([]),
   });
 
   get documents(): FormArray {
     return this.studyZoneForm.get('documents') as FormArray;
+  }
+  get collaborators(): FormArray {
+    return this.studyZoneForm.get('collaborators') as FormArray;
+  }
+
+  addCollaborator(): void {
+    this.collaborators.push(
+      new FormGroup({
+        collaborator_name: new FormControl('', [Validators.required]),
+        logo: new FormControl(null, [Validators.required]),
+        contact_name: new FormControl('', []),
+        contact_email: new FormControl('', []),
+        contact_phone: new FormControl('', []),
+      })
+    );
   }
 
   addDocument(): void {
@@ -36,17 +52,27 @@ export class StudyZoneFormComponent {
     );
   }
 
-  onUploadFileDocument(event: any, index: number): void {
+  onUploadFile(event: any, index: number,isDocument:boolean): void {
     const file = event.files[0];
     const reader = new FileReader();
     reader.readAsDataURL(file);
-    reader.onload = () => {
-      this.documents.controls[index].get('file').setValue(reader.result);
-    };
+    if(isDocument){
+      reader.onload = () => {
+        this.documents.controls[index].get('file').setValue(reader.result);
+      };
+    } else {
+      reader.onload = () => {
+        this.collaborators.controls[index].get('logo').setValue(reader.result);
+      };
+    }
   }
 
   removeDocument(index: number): void {
     this.documents.removeAt(index);
+  }
+
+  removeCollaborator(index: number): void {
+    this.collaborators.removeAt(index);
   }
 
   toggleDialog() {
