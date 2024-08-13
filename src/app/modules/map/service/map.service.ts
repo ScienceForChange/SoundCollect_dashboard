@@ -189,22 +189,28 @@ export class MapService {
         });
       }
       if (days) {
+        daysFilter[0].setHours(0,0,0,0) 
+
         const isOneDate =
           !daysFilter[1] ||
-          daysFilter[0].getDate() === daysFilter[1]?.getDate();
+          daysFilter[0].getTime() === daysFilter[1]?.getTime();
 
         if (!isOneDate) {
           mapObs = mapObs.filter((obs) => {
             const obsDate = new Date(obs.created_at);
+            obsDate.setHours(0,0,0,0)
+            daysFilter[1].setHours(0,0,0,0) 
             return (
-              obsDate.getDate() >= daysFilter[0].getDate() &&
-              obsDate.getDate() <= daysFilter[1].getDate()
+              obsDate.getTime() >= daysFilter[0].getTime() &&
+              obsDate.getTime() <= daysFilter[1].getTime()
             );
           });
         } else {
           mapObs = mapObs.filter((obs) => {
+            
             const obsDate = new Date(obs.created_at);
-            return obsDate.getDate() === daysFilter[0].getDate();
+            obsDate.setHours(0,0,0,0)
+            return obsDate.getTime() === daysFilter[0].getTime()
           });
         }
       }
