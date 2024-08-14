@@ -1,16 +1,16 @@
 <div class="card">
   <p-table [value]="studyZones" [tableStyle]="{ 'min-width': '60rem' }">
     <ng-template pTemplate="caption">
-      <h2>Llistat de les zones d'estudi</h2>
+      <h2>{{ 'admin.studyZone.list.title' | translate }}</h2>
     </ng-template>
     <ng-template pTemplate="header">
       <tr>
-        <th>Nom</th>
-        <th>Data d'inici</th>
-        <th>Data final</th>
-        <th>Visualitzar</th>
-        <th>Habilitar</th>
-        <th>Modificar</th>
+        <th>{{ 'admin.studyZone.list.name' | translate }}</th>
+        <th>{{ 'admin.studyZone.list.startDate' | translate }}</th>
+        <th>{{ 'admin.studyZone.list.endDate' | translate }}</th>
+        <th>{{ 'admin.studyZone.list.view' | translate }}</th>
+        <th>{{ 'admin.studyZone.list.enable' | translate }}</th>
+        <th>{{ 'admin.studyZone.list.update' | translate }}</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-studyZone>

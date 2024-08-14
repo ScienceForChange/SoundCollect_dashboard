@@ -1,5 +1,5 @@
 <p-dialog
-  header="Informació de la zona d'estudi"
+  header="{{ 'admin.studyZone.form.title' | translate }}"
   [modal]="true"
   [(visible)]="visible"
   [style]="{ minHeight: '80dvh' }"
@@ -16,7 +16,7 @@
         required
         pInputText
       />
-      <label for="name">Nom</label>
+      <label for="name">{{ 'admin.studyZone.form.name' | translate }}</label>
     </span>
     <span class="p-float-label mt-5">
       <textarea
@@ -27,7 +27,7 @@
         required
         pInputTextarea
       ></textarea>
-      <label for="description">Descripció</label>
+      <label for="description">{{ 'admin.studyZone.form.description' | translate }}</label>
     </span>
     <span class="p-float-label mt-5">
       <textarea
@@ -38,7 +38,7 @@
         required
         pInputTextarea
       ></textarea>
-      <label for="conclusion">Conclusió</label>
+      <label for="conclusion">{{ 'admin.studyZone.form.conclusion' | translate }}</label>
     </span>
     <span class="p-float-label mt-5">
       <p-calendar
@@ -48,11 +48,11 @@
         [touchUI]="true"
         required
       />
-      <label for="conclusion">Data d'inici i fi</label>
+      <label for="conclusion">{{ 'admin.studyZone.form.startEndDate' | translate }}</label>
     </span>
     <p-divider class="mt-3 mb-3" />
     <div class="flex flex-column gap-3">
-      <span>Afegir fitxers</span>
+      <span>{{ 'admin.studyZone.form.addFiles' | translate }}</span>
       @if(documents.controls[0]){
       <div formArrayName="documents" class="flex flex-column gap-5 mt-5">
         <div
@@ -70,11 +70,11 @@
               required
               pInputText
             />
-            <label for="name">Nom del document</label>
+            <label for="name">{{ 'admin.studyZone.form.nameFile' | translate }}</label>
           </span>
           <p-fileUpload
             mode="basic"
-            chooseLabel="Afegir fitxer"
+            chooseLabel="{{ 'admin.studyZone.form.addFile' | translate }}"
             chooseIcon="pi pi-upload"
             accept="image/*, application/pdf"
             maxFileSize="10000000"
@@ -84,7 +84,7 @@
           <p-button
             icon="pi pi-trash"
             type="button"
-            label="Esborrar document"
+            label="{{ 'admin.studyZone.form.deleteFile' | translate }}"
             severity="secondary"
             (click)="removeDocument(i)"
           />
@@ -95,13 +95,13 @@
       <p-button
         type="button"
         icon="pi pi-plus"
-        label="Afegir document"
+        label="{{ 'admin.studyZone.form.addDocument' | translate }}"
         (click)="addDocument()"
       />
     </div>
     <p-divider class="mt-3 mb-3" />
     <div class="flex flex-column gap-3">
-      <span>Afegir col·laborador</span>
+      <span>{{ 'admin.studyZone.form.addCollaborator' | translate }}</span>
       @if(collaborators.controls[0]){
       <div formArrayName="collaborators" class="flex flex-column gap-5">
         <div
@@ -119,7 +119,7 @@
               required
               pInputText
             />
-            <label for="collaborator_name">Nom del col·laborador</label>
+            <label for="collaborator_name">{{ 'admin.studyZone.form.collaboratorName' | translate }}</label>
           </span>
           <span class="p-float-label">
             <input
@@ -131,7 +131,7 @@
               required
               pInputText
             />
-            <label for="contact_name">Nom del contacte</label>
+            <label for="contact_name">{{ 'admin.studyZone.form.contactName' | translate }}</label>
           </span>
           <span class="p-float-label">
             <input
@@ -143,7 +143,7 @@
               required
               pInputText
             />
-            <label for="contact_email">Email del contacte</label>
+            <label for="contact_email">{{ 'admin.studyZone.form.contactEmail' | translate }}</label>
           </span>
           <span class="p-float-label">
             <input
@@ -155,11 +155,11 @@
               required
               pInputText
             />
-            <label for="contact_phone">Telèfon del contacte</label>
+            <label for="contact_phone">{{ 'admin.studyZone.form.contactPhone' | translate }}</label>
           </span>
           <p-fileUpload
             mode="basic"
-            chooseLabel="Afegir logo"
+            chooseLabel="{{ 'admin.studyZone.form.addLogo' | translate }}"
             chooseIcon="pi pi-upload"
             accept="image/*"
             maxFileSize="500000"
@@ -169,7 +169,7 @@
           <p-button
             type="button"
             icon="pi pi-trash"
-            label="Esborrar"
+            label="{{ 'admin.studyZone.form.delete' | translate }}"
             severity="secondary"
             (click)="removeCollaborator(i)"
           />
@@ -180,17 +180,17 @@
       <p-button
         type="button"
         icon="pi pi-plus"
-        label="Afegir col·laborador"
+        label="{{ 'admin.studyZone.form.addCollaborator' | translate }}"
         (click)="addCollaborator()"
       />
     </div>
     <div class="flex justify-content-center gap-2 w-full mt-5">
       <p-button
-        label="Cancel·lar"
+        label="{{ 'admin.studyZone.form.cancel' | translate }}"
         severity="secondary"
         (onClick)="toggleDialog()"
       />
-      <p-button label="Guardar zona d'estudi" (onClick)="submit()" />
+      <p-button label="{{ 'admin.studyZone.form.saveStudyZone' | translate }}" (onClick)="submit()" />
     </div>
   </form>
 </p-dialog>

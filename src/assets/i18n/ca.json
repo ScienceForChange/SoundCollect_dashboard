@@ -309,6 +309,45 @@
     "description": "Defineix una zona d'estudi i ajusta el període de temps per a avaluar la tranquil·litat de l'àrea. Analitza tant la percepció acústica qualitativa com els nivells de pressió sonora quantitatius.",
     "title": "Anàlisi"
   },
+  "admin":{
+    "studyZone":{
+      "map":{
+        "createFilter":"Crear zona d'estudi",
+        "deleteFilter":"Esborrar zona d'estudi",
+        "saveStudyZone": "Guardar zona d'estudi"
+      },
+      "form":{
+        "title":"Informació de la zona d'estudi",
+        "name":"Nom",
+        "description":"Descripció",
+        "conclusion":"Conclusió",
+        "startEndDate":"Data d'inici i final",
+        "addFiles":"Afegir fitxers",
+        "nameFile": "Nom del document",
+        "addFile":"Afegir fitxer",
+        "deleteFile":"Esborrar fitxer",
+        "addDocument":"Afegir document",
+        "addCollaborator":"Afegir col·laborador",
+        "collaboratorName":"Nom del col·laborador",
+        "contactName":"Nom del contacte",
+        "contactEmail":"Email del contacte",
+        "contactPhone":"Telèfon del contacte",
+        "addLogo":"Afegir logotip",
+        "delete":"Esborrar",
+        "cancel":"Cancel·lar",
+        "saveStudyZone":"Guardar zona d'estudi"
+      },
+      "list":{
+        "title":"Llistat de zones d'estudi",
+        "name":"Nom",
+        "startDate":"Data d'inici",
+        "endDate":"Data de finalització",
+        "view":"Visualitzar",
+        "enable":"Habilitar",
+        "update": "Modificar"
+      }
+    }
+  },
   "login": {
     "title": "Accedeix al Dashboard",
     "subtitle": "Inicia sessió amb el teu usuari de l'app per a continuar",

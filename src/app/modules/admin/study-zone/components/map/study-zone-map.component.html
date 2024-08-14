@@ -4,12 +4,12 @@
       @if (!polygonFilter()) {
       <p-button (click)="drawPolygonFilter()">
         <i class="pi pi-pencil mr-2"></i>
-        <span>{{ "soundscape.map.createFilter" | translate }}</span>
+        <span>{{ "admin.studyZone.map.createFilter" | translate }}</span>
       </p-button>
       } @else {
       <p-button (click)="deletePolygonFilter()">
         <i class="pi pi-trash mr-2"></i>
-        <span>{{ "soundscape.map.deleteFilter" | translate }}</span>
+        <span>{{ "admin.studyZone.map.deleteFilter" | translate }}</span>
       </p-button>
       }
     </div>
@@ -18,7 +18,7 @@
       [disabled]="!this.polygonFilter()"
     >
       <i class="pi pi-cloud-upload mr-2"></i>
-      <span>Guardar zona d'estudi</span>
+      <span>{{ "admin.studyZone.map.saveStudyZone" | translate }}</span>
     </p-button>
     <p-button
       (onClick)="toggleShowMapLayers()"
