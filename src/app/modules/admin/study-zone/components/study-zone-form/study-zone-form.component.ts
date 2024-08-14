@@ -1,8 +1,8 @@
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { Component, effect, EventEmitter, inject, Input, Output } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'primeng/api';
-import { StudyZoneForm } from '../../../../../models/study-zone';
+import { StudyZone, StudyZoneForm } from '../../../../../models/study-zone';
 import { StudyZoneService } from '../../../../../services/study-zone/study-zone.service';
 import { StudyZoneMapService } from '../../service/study-zone-map.service';
 
@@ -19,7 +19,7 @@ export class StudyZoneFormComponent {
 
   @Input() visible: boolean = false;
   @Output() toggleStudyZoneForm: EventEmitter<void> = new EventEmitter<void>();
-  
+
   private polygon: any = null;
 
   studyZoneForm: FormGroup = new FormGroup({
@@ -34,6 +34,7 @@ export class StudyZoneFormComponent {
     documents: new FormArray([]),
     collaborators: new FormArray([]),
   });
+  studyZoneSelected: StudyZone | null = null
 
   get documents(): FormArray {
     return this.studyZoneForm.get('documents') as FormArray;
@@ -43,7 +44,12 @@ export class StudyZoneFormComponent {
   }
 
   ngOnInit(): void {
-   this.polygon = this.studyZoneMapService.polygonFilter
+    this.polygon = this.studyZoneMapService.polygonFilter;
+    this.studyZoneService.studyZoneSelected$.subscribe((studyZoneSelected) => {
+      this.studyZoneSelected = studyZoneSelected;
+      this.studyZoneForm.patchValue(studyZoneSelected);
+    })
+
   }
 
   addCollaborator(): void {
@@ -111,21 +117,37 @@ export class StudyZoneFormComponent {
   }
 
   submit() {
-    const userId = localStorage.getItem('user')
-      ? JSON.parse(localStorage.getItem('user')).id
-      : null;
-    const result: StudyZoneForm = {
+    //TODO CAPTURAR EL ERROR
+    const isNewZone = !this.studyZoneSelected;
+    if(isNewZone){
+      const userId = localStorage.getItem('user')
+        ? JSON.parse(localStorage.getItem('user')).id
+        : null;
+      const result: StudyZoneForm = {
+        ...this.studyZoneForm.value,
+        user_id: userId,
+      };
+      const polygon = this.polygon().geometry.coordinates[0].map((coo: number) =>
+        String(coo).replace(',', ' ')
+      );
+      this.studyZoneService.createStudyZone(polygon, result).subscribe(() => {
+        this.showSuccess();
+        this.toggleStudyZoneForm.emit();
+        this.studyZoneForm.reset();
+        this.studyZoneMapService.deletePolygonFilter();
+      });
+      return
+    }
+    const studyZoneUpdated = {
+      ...this.studyZoneSelected,
       ...this.studyZoneForm.value,
-      user_id: userId,
-    };
-    const polygon = this.polygon().geometry.coordinates[0].map((coo: number) =>
-      String(coo).replace(',', ' ')
-    );
-    this.studyZoneService.createStudyZone(polygon, result).subscribe(() => {
+      start_date: this.studyZoneForm.value.start_end_dates[0],
+      end_date: this.studyZoneForm.value.start_end_dates[1],
+    }
+    this.studyZoneService.updateStudyZone(this.studyZoneSelected.id, studyZoneUpdated).subscribe(() => {
       this.showSuccess();
       this.toggleStudyZoneForm.emit();
       this.studyZoneForm.reset();
-      this.studyZoneMapService.deletePolygonFilter()
-    });
+    })
   }
 }

@@ -12,11 +12,19 @@ export class StudyZoneService {
   studyZones$: BehaviorSubject<StudyZone[]> = new BehaviorSubject<StudyZone[]>(
     []
   );
+  studyZoneSelected$: BehaviorSubject<StudyZone | null> = new BehaviorSubject<StudyZone | null>(null)
 
   constructor(
     private http: HttpClient,
     private observationService: ObservationsService
   ) {}
+
+
+  public selectStudyZone(id: number): void {
+    this.studyZones$.pipe(
+      map((studyZones) => studyZones.find((studyZone) => studyZone.id === id))
+    ).subscribe((studyZone) => this.studyZoneSelected$.next(studyZone))
+  }
 
   public createStudyZone(
     polygon: Number[],
@@ -60,4 +68,41 @@ export class StudyZoneService {
     //     })
     //   );
   }
+
+  public updateStudyZone(
+    id: number,
+    result: StudyZone
+  ): Observable<void> {
+    this.observationService.loading$.next(true);
+    return of(result).pipe(
+      delay(1500),
+      map((data) => {
+        this.observationService.loading$.next(false);
+        const studyZones = this.studyZones$.getValue().map((studyZone) => {
+          if (studyZone.id === id) {
+            return data;
+          }
+          return studyZone;
+        });
+        this.studyZones$.next(studyZones);
+      })
+    );
+    // return this.http
+    //   .put<{ success: string; data: StudyZone }>(
+    //     `${environment.BACKEND_BASE_URL}/admin-panel/study-zone/${id}`,
+    //     result
+    //   )
+    //   .pipe(
+    //     map(({ data }) => {
+    //       this.observationService.loading$.next(false);
+    //       const studyZones = this.studyZones$.getValue().map((studyZone) => {
+    //         if (studyZone.id === id) {
+    //           return data;
+    //         }
+    //         return studyZone;
+    //       });
+    //       this.studyZones$.next(studyZones);
+    //     })
+    //   );
+  } 
 }

@@ -7,12 +7,8 @@ import { Component, signal } from '@angular/core';
 })
 export class StudyZoneComponent {
   studyZoneFormVisible = signal<boolean>(false);
-  studyZoneIdSelected = signal<number | null>(null);
 
-  toggleStudyZoneForm(id?: number) {
-    if (id) {
-      this.studyZoneIdSelected.update(() => id);
-    }
+  toggleStudyZoneForm() {
     this.studyZoneFormVisible.update(() => !this.studyZoneFormVisible());
   }
 }

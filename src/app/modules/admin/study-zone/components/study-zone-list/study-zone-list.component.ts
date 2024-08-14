@@ -10,7 +10,7 @@ import { StudyZone } from '../../../../../models/study-zone';
 export class StudyZoneListComponent {
   private studyZoneService = inject(StudyZoneService);
 
-  @Output() toggleStudyZoneForm: EventEmitter<void> = new EventEmitter<void>();
+  @Output() toggleStudyZoneForm: EventEmitter<number> = new EventEmitter<number>();
 
   studyZones: StudyZone[] = []
 
@@ -28,9 +28,7 @@ export class StudyZoneListComponent {
   }
 
   editStudyZone(id: number) {
-    //He de seleccionar uno
-    //Puede estar en el componente padre
-    //El formulario al montarse puede buscar con ese id
+    this.studyZoneService.selectStudyZone(id);
     this.toggleStudyZoneForm.emit();
   }
 }
