@@ -1,5 +1,9 @@
-<app-study-zone-map (toggleStudyZoneForm)="toggleStudyZoneForm()" />
+<app-study-zone-map
+  (toggleStudyZoneForm)="toggleStudyZoneForm()"
+  [polygonFilter]="polygonFilter"
+/>
 <app-study-zone-form
   [visible]="studyZoneFormVisible()"
+  [polygon]="polygonFilter"
   (toggleStudyZoneForm)="toggleStudyZoneForm()"
 />

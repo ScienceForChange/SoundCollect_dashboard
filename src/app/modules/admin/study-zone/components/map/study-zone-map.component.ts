@@ -1,4 +1,4 @@
-import { Component, effect, ElementRef, EventEmitter, inject, Output, signal, ViewChild } from '@angular/core';
+import { Component, effect, ElementRef, EventEmitter, inject, Input, Output, signal, ViewChild } from '@angular/core';
 import MapboxDraw from '@mapbox/mapbox-gl-draw';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import mapboxgl, { IControl, LngLat, LngLatBounds, Map, MapEvent } from 'mapbox-gl';
@@ -24,6 +24,7 @@ export class StudyZoneMapComponent {
   @ViewChild('map') mapContainer!: ElementRef;
 
   @Output() toggleStudyZoneForm: EventEmitter<void> = new EventEmitter<void>();
+  @Input() polygonFilter = signal<any | undefined>(undefined);
 
   private observationsService = inject(ObservationsService);
   private observations$!: Subscription;
@@ -54,7 +55,6 @@ export class StudyZoneMapComponent {
   public layerId: string = 'light-v10';
 
   public showMapLayers?: boolean;
-  public polygonFilter = signal<any | undefined>(undefined);
   public selectedPolygon: any | undefined = undefined;
   public filterActive: boolean = false;
 

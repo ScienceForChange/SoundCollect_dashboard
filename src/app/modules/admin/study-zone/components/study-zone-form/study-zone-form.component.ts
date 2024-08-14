@@ -2,7 +2,8 @@ import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'primeng/api';
-
+import { StudyZoneForm } from '../../../../../models/study-zone';
+import { StudyZoneService } from '../../../../../services/study-zone/study-zone.service';
 
 @Component({
   selector: 'app-study-zone-form',
@@ -12,8 +13,10 @@ import { MessageService } from 'primeng/api';
 export class StudyZoneFormComponent {
   private messageService = inject(MessageService);
   private translations = inject(TranslateService);
+  private studyZoneService = inject(StudyZoneService)
 
   @Input() visible: boolean = false;
+  @Input() polygon: any = null;
   @Output() toggleStudyZoneForm: EventEmitter<void> = new EventEmitter<void>();
 
   loading: boolean =  false
@@ -105,7 +108,10 @@ export class StudyZoneFormComponent {
   submit() {
     this.loading = true;
     const userId = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).id : null;
-    const result = {...this.studyZoneForm.value,user_id:userId};
-    console.log('result', result)
+    const result: StudyZoneForm = {...this.studyZoneForm.value,user_id:userId};
+    const polygon = this.polygon().geometry.coordinates[0].map((coo:number) => String(coo).replace(',', ' '))
+    this.studyZoneService.createStudyZone(polygon,result).subscribe(()=>{
+    this.showSuccess()
+    })
   }
 }
