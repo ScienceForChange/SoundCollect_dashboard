@@ -4,6 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'primeng/api';
 import { StudyZoneForm } from '../../../../../models/study-zone';
 import { StudyZoneService } from '../../../../../services/study-zone/study-zone.service';
+import { StudyZoneMapService } from '../../service/study-zone-map.service';
 
 @Component({
   selector: 'app-study-zone-form',
@@ -14,10 +15,12 @@ export class StudyZoneFormComponent {
   private messageService = inject(MessageService);
   private translations = inject(TranslateService);
   private studyZoneService = inject(StudyZoneService);
+  private studyZoneMapService = inject(StudyZoneMapService);
 
   @Input() visible: boolean = false;
-  @Input() polygon: any = null;
   @Output() toggleStudyZoneForm: EventEmitter<void> = new EventEmitter<void>();
+  
+  private polygon: any = null;
 
   studyZoneForm: FormGroup = new FormGroup({
     user_id: new FormControl('', [Validators.required]),
@@ -37,6 +40,10 @@ export class StudyZoneFormComponent {
   }
   get collaborators(): FormArray {
     return this.studyZoneForm.get('collaborators') as FormArray;
+  }
+
+  ngOnInit(): void {
+   this.polygon = this.studyZoneMapService.polygonFilter
   }
 
   addCollaborator(): void {
@@ -118,6 +125,7 @@ export class StudyZoneFormComponent {
       this.showSuccess();
       this.toggleStudyZoneForm.emit();
       this.studyZoneForm.reset();
+      this.studyZoneMapService.deletePolygonFilter()
     });
   }
 }

@@ -7,7 +7,6 @@ import { Component, signal } from '@angular/core';
 })
 export class StudyZoneComponent {
   studyZoneFormVisible = signal<boolean>(false);
-  polygonFilter = signal<any | null>(null);
 
   toggleStudyZoneForm() {
     this.studyZoneFormVisible.update(() => !this.studyZoneFormVisible());
