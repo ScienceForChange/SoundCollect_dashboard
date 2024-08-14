@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, EventEmitter, inject, Output } from '@angular/core';
 import { StudyZoneService } from '../../../../../services/study-zone/study-zone.service';
 import { StudyZone } from '../../../../../models/study-zone';
 
@@ -9,6 +9,8 @@ import { StudyZone } from '../../../../../models/study-zone';
 })
 export class StudyZoneListComponent {
   private studyZoneService = inject(StudyZoneService);
+
+  @Output() toggleStudyZoneForm: EventEmitter<void> = new EventEmitter<void>();
 
   studyZones: StudyZone[] = []
 
@@ -24,7 +26,11 @@ export class StudyZoneListComponent {
   enableStudyZone(id: number) {
     console.log(id);
   }
+
   editStudyZone(id: number) {
-    console.log(id);
+    //He de seleccionar uno
+    //Puede estar en el componente padre
+    //El formulario al montarse puede buscar con ese id
+    this.toggleStudyZoneForm.emit();
   }
 }
