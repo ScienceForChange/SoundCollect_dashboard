@@ -388,6 +388,9 @@ export class StudyZoneMapService {
 
   }
 
+  //TODO
+  //Have to create a function that from id gets the studyZone from studyzone service and then calls the function to draw the polygon and filter the observations
+
   public addObservationsToMap(observations: Observations[] = this.observations) {
 
     //Añadir la fuente de datos para las lineas de atributo path
