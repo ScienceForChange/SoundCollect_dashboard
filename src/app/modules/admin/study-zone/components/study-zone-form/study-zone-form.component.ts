@@ -1,4 +1,11 @@
-import { Component, effect, EventEmitter, inject, Input, Output } from '@angular/core';
+import {
+  Component,
+  effect,
+  EventEmitter,
+  inject,
+  Input,
+  Output,
+} from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'primeng/api';
@@ -34,7 +41,7 @@ export class StudyZoneFormComponent {
     documents: new FormArray([]),
     collaborators: new FormArray([]),
   });
-  studyZoneSelected: StudyZone | null = null
+  studyZoneSelected: StudyZone | null = null;
 
   get documents(): FormArray {
     return this.studyZoneForm.get('documents') as FormArray;
@@ -48,8 +55,7 @@ export class StudyZoneFormComponent {
     this.studyZoneService.studyZoneSelected$.subscribe((studyZoneSelected) => {
       this.studyZoneSelected = studyZoneSelected;
       this.studyZoneForm.patchValue(studyZoneSelected);
-    })
-
+    });
   }
 
   addCollaborator(): void {
@@ -103,23 +109,31 @@ export class StudyZoneFormComponent {
   showWarn(): void {
     this.messageService.add({
       severity: 'warn',
-      summary: this.translations.instant('login.errorTitle'),
-      detail: this.translations.instant('login.errorSubtitle'),
+      summary: 'Ha succeit un error',
+      detail: 'Tenca el formulari i torna a intentar-ho',
     });
   }
 
-  showSuccess(): void {
+  showSuccess(isUpdate?: boolean): void {
+    if (!isUpdate) {
+      this.messageService.add({
+        severity: 'success',
+        summary: "Zona d'estudi creada",
+        detail: 'Ara ja la podrás visualitzar al llistat',
+      });
+      return;
+    }
     this.messageService.add({
       severity: 'success',
-      summary: "Zona d'estudi creada",
-      detail: 'Ara ja la podrás visualitzar al llistat',
+      summary: "Zona d'estudi actualitzada",
+      detail: "Has actualitzat la zona d'estudi amb exit",
     });
   }
 
   submit() {
     //TODO CAPTURAR EL ERROR
     const isNewZone = !this.studyZoneSelected;
-    if(isNewZone){
+    if (isNewZone) {
       const userId = localStorage.getItem('user')
         ? JSON.parse(localStorage.getItem('user')).id
         : null;
@@ -127,27 +141,39 @@ export class StudyZoneFormComponent {
         ...this.studyZoneForm.value,
         user_id: userId,
       };
-      const polygon = this.polygon().geometry.coordinates[0].map((coo: number) =>
-        String(coo).replace(',', ' ')
+      const polygon = this.polygon().geometry.coordinates[0].map(
+        (coo: number) => String(coo).replace(',', ' ')
       );
-      this.studyZoneService.createStudyZone(polygon, result).subscribe(() => {
-        this.showSuccess();
-        this.toggleStudyZoneForm.emit();
-        this.studyZoneForm.reset();
-        this.studyZoneMapService.deletePolygonFilter();
+      this.studyZoneService.createStudyZone(polygon, result).subscribe({
+        next: () => {
+          this.showSuccess();
+          this.toggleStudyZoneForm.emit();
+          this.studyZoneForm.reset();
+          this.studyZoneMapService.deletePolygonFilter();
+        },
+        error: (error) => {
+          this.showWarn();
+        },
       });
-      return
+      return;
     }
     const studyZoneUpdated = {
       ...this.studyZoneSelected,
       ...this.studyZoneForm.value,
       start_date: this.studyZoneForm.value.start_end_dates[0],
       end_date: this.studyZoneForm.value.start_end_dates[1],
-    }
-    this.studyZoneService.updateStudyZone(this.studyZoneSelected.id, studyZoneUpdated).subscribe(() => {
-      this.showSuccess();
-      this.toggleStudyZoneForm.emit();
-      this.studyZoneForm.reset();
-    })
+    };
+    this.studyZoneService
+      .updateStudyZone(this.studyZoneSelected.id, studyZoneUpdated)
+      .subscribe({
+        next: () => {
+          this.showSuccess(true);
+          this.toggleStudyZoneForm.emit();
+          this.studyZoneForm.reset();
+        },
+        error: (error) => {
+          this.showWarn();
+        },
+      });
   }
 }

@@ -12,18 +12,20 @@ export class StudyZoneService {
   studyZones$: BehaviorSubject<StudyZone[]> = new BehaviorSubject<StudyZone[]>(
     []
   );
-  studyZoneSelected$: BehaviorSubject<StudyZone | null> = new BehaviorSubject<StudyZone | null>(null)
+  studyZoneSelected$: BehaviorSubject<StudyZone | null> =
+    new BehaviorSubject<StudyZone | null>(null);
 
   constructor(
     private http: HttpClient,
     private observationService: ObservationsService
   ) {}
 
-
   public selectStudyZone(id: number): void {
-    this.studyZones$.pipe(
-      map((studyZones) => studyZones.find((studyZone) => studyZone.id === id))
-    ).subscribe((studyZone) => this.studyZoneSelected$.next(studyZone))
+    this.studyZones$
+      .pipe(
+        map((studyZones) => studyZones.find((studyZone) => studyZone.id === id))
+      )
+      .subscribe((studyZone) => this.studyZoneSelected$.next(studyZone));
   }
 
   public createStudyZone(
@@ -37,8 +39,8 @@ export class StudyZoneService {
       start_date: result.start_end_dates[0],
       end_date: result.start_end_dates[1],
       id: 1,
-      deleted: 0, 
-      created_at: new Date(), 
+      deleted: 0,
+      created_at: new Date(),
       updated_at: new Date(),
       ...result,
     } as StudyZone).pipe(
@@ -66,13 +68,14 @@ export class StudyZoneService {
     //       const studyZones = [...this.studyZones$.getValue(),data]
     //       this.studyZones$.next(studyZones)
     //     })
+    //     catchError((error) => {
+    //       this.observationService.loading$.next(false);
+    //       return throwError(error);
+    //})
     //   );
   }
 
-  public updateStudyZone(
-    id: number,
-    result: StudyZone
-  ): Observable<void> {
+  public updateStudyZone(id: number, result: StudyZone): Observable<void> {
     this.observationService.loading$.next(true);
     return of(result).pipe(
       delay(1500),
@@ -103,6 +106,10 @@ export class StudyZoneService {
     //       });
     //       this.studyZones$.next(studyZones);
     //     })
+    //     catchError((error) => {
+    //       this.observationService.loading$.next(false);
+    //       return throwError(error);
+    //})
     //   );
-  } 
+  }
 }
