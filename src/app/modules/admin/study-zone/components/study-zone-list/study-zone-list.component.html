@@ -1,0 +1,48 @@
+<div class="card">
+  <p-table [value]="studyZones" [tableStyle]="{ 'min-width': '60rem' }">
+    <ng-template pTemplate="caption">
+      <h2>Llistat de les zones d'estudi</h2>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Nom</th>
+        <th>Data d'inici</th>
+        <th>Data final</th>
+        <th>Visualitzar</th>
+        <th>Habilitar</th>
+        <th>Modificar</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-studyZone>
+      <tr>
+        <td>{{ studyZone.name }}</td>
+        <td>{{ studyZone.start_date | date : "dd/MM/yyyy" }}</td>
+        <td>{{ studyZone.end_date | date : "dd/MM/yyyy" }}</td>
+        <td>
+          <button
+            pButton
+            type="button"
+            icon="pi pi-eye"
+            (click)="viewStudyZone(studyZone.id)"
+          ></button>
+        </td>
+        <td>
+          <button
+            pButton
+            type="button"
+            icon="pi pi-check"
+            (click)="enableStudyZone(studyZone.id)"
+          ></button>
+        </td>
+        <td>
+          <button
+            pButton
+            type="button"
+            icon="pi pi-pencil"
+            (click)="editStudyZone(studyZone.id)"
+          ></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

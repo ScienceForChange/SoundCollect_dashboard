@@ -13,19 +13,17 @@ import { StudyZoneService } from '../../../../../services/study-zone/study-zone.
 export class StudyZoneFormComponent {
   private messageService = inject(MessageService);
   private translations = inject(TranslateService);
-  private studyZoneService = inject(StudyZoneService)
+  private studyZoneService = inject(StudyZoneService);
 
   @Input() visible: boolean = false;
   @Input() polygon: any = null;
   @Output() toggleStudyZoneForm: EventEmitter<void> = new EventEmitter<void>();
 
-  loading: boolean =  false
-
   studyZoneForm: FormGroup = new FormGroup({
     user_id: new FormControl('', [Validators.required]),
     name: new FormControl('', [Validators.required]),
     description: new FormControl('', [Validators.required]),
-    conclusion: new FormControl('', [Validators.required]),
+    conclusion: new FormControl('', []),
     start_end_dates: new FormControl(
       [new Date(), new Date()],
       [Validators.required]
@@ -62,11 +60,11 @@ export class StudyZoneFormComponent {
     );
   }
 
-  onUploadFile(event: any, index: number,isDocument:boolean): void {
+  onUploadFile(event: any, index: number, isDocument: boolean): void {
     const file = event.files[0];
     const reader = new FileReader();
     reader.readAsDataURL(file);
-    if(isDocument){
+    if (isDocument) {
       reader.onload = () => {
         this.documents.controls[index].get('file').setValue(reader.result);
       };
@@ -85,33 +83,41 @@ export class StudyZoneFormComponent {
     this.collaborators.removeAt(index);
   }
 
-  toggleDialog():void {
+  toggleDialog(): void {
     this.toggleStudyZoneForm.emit();
   }
 
-  showWarn():void {
+  showWarn(): void {
     this.messageService.add({
       severity: 'warn',
-      summary:this.translations.instant('login.errorTitle'),
+      summary: this.translations.instant('login.errorTitle'),
       detail: this.translations.instant('login.errorSubtitle'),
     });
   }
 
-  showSuccess():void {
+  showSuccess(): void {
     this.messageService.add({
       severity: 'success',
-      summary: this.translations.instant('login.successTitle'),
-      detail: this.translations.instant('login.successSubtitle'),
+      summary: "Zona d'estudi creada",
+      detail: 'Ara ja la podrás visualitzar al llistat',
     });
   }
 
   submit() {
-    this.loading = true;
-    const userId = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).id : null;
-    const result: StudyZoneForm = {...this.studyZoneForm.value,user_id:userId};
-    const polygon = this.polygon().geometry.coordinates[0].map((coo:number) => String(coo).replace(',', ' '))
-    this.studyZoneService.createStudyZone(polygon,result).subscribe(()=>{
-    this.showSuccess()
-    })
+    const userId = localStorage.getItem('user')
+      ? JSON.parse(localStorage.getItem('user')).id
+      : null;
+    const result: StudyZoneForm = {
+      ...this.studyZoneForm.value,
+      user_id: userId,
+    };
+    const polygon = this.polygon().geometry.coordinates[0].map((coo: number) =>
+      String(coo).replace(',', ' ')
+    );
+    this.studyZoneService.createStudyZone(polygon, result).subscribe(() => {
+      this.showSuccess();
+      this.toggleStudyZoneForm.emit();
+      this.studyZoneForm.reset();
+    });
   }
 }
