@@ -48,7 +48,6 @@ export class StudyZoneListComponent {
   }
 
   confirmDeleteStudyZone(event: Event, id: number) {
-    console.log('confirmDeleteStudyZone', id, event);
     this.confirmationService.confirm({
       target: event.target as EventTarget,
       message: "Estás segur d'eliminar aquesta zona d'estudi?",
