@@ -262,12 +262,12 @@
       "content": {
         "title1": "LOUDNESS (Sonoritat)",
         "content1": "El paràmetre psicoacústic Loudness (o sonoritat) és una mesura subjectiva de la intensitat amb la qual un soroll és percebut per l'oïda humana. Aquest paràmetre depèn de la freqüència i, per tant, dos events sonors amb el mateix nivell sonor, però diferent freqüència no sempre resulta en la mateixa sensació de volum en l'oïda humana. La unitat de mesura és el “sone”, i mitjançant aquest paràmetre es pot representar la sensació humana al volum del soroll de forma lineal. Per tant, un to que es percep que te el doble de sonoritat, en l'escala de sonoritat se li assigna un valor doble de 'sones'",
-        "title2":"SHARPNESS (Agudesa)",
-        "content2":"El sharpness (o agudesa) es un paràmetre psicoacústic que compara la quantitat d'energia d'alta freqüència amb l'energia total en una senyal acústica. L'agudesa és caracteritza per ser causada per un so d'alta freqüència (o agut), que pot causar dolor a l'oïda humana. La unitat de mesura de l'agudesa és l'”acum”, i de manera similar a la sonoritat, l'agudesa també delinea la sensació humana de forma lineal",
-        "title3":"ROUGHNESS (Rugositat)",
-        "content3":"La rugositat és un paràmetre que quantifica la percepció subjectiva de la modulació d'amplitud ràpida (30-300 Hz) d'un so. La sensació auditiva representada per la rugositat, que sovint produeix sensació de molèstia per a l'orella humana, està relacionada amb les modulacions de sonoritat a freqüències massa elevades per a poder discernir-les per separat (freqüències de modulació superiors a 30 Hz). La unitat de mesura és l'”asper”, i es defineix com a la rugositat produïda per un to de 1000 Hz de 60 dB, que és 100% d'amplitud modulada a 70 Hz.",
+        "title2": "SHARPNESS (Agudesa)",
+        "content2": "El sharpness (o agudesa) es un paràmetre psicoacústic que compara la quantitat d'energia d'alta freqüència amb l'energia total en una senyal acústica. L'agudesa és caracteritza per ser causada per un so d'alta freqüència (o agut), que pot causar dolor a l'oïda humana. La unitat de mesura de l'agudesa és l'”acum”, i de manera similar a la sonoritat, l'agudesa també delinea la sensació humana de forma lineal",
+        "title3": "ROUGHNESS (Rugositat)",
+        "content3": "La rugositat és un paràmetre que quantifica la percepció subjectiva de la modulació d'amplitud ràpida (30-300 Hz) d'un so. La sensació auditiva representada per la rugositat, que sovint produeix sensació de molèstia per a l'orella humana, està relacionada amb les modulacions de sonoritat a freqüències massa elevades per a poder discernir-les per separat (freqüències de modulació superiors a 30 Hz). La unitat de mesura és l'”asper”, i es defineix com a la rugositat produïda per un to de 1000 Hz de 60 dB, que és 100% d'amplitud modulada a 70 Hz.",
         "title4": "FLUCTUATION STRENGHT (Força de fluctuació)",
-        "content4":"La força de fluctuació és un paràmetre que quantifica la percepció subjectiva de la modulació d'amplitud més lenta (fins a 20 Hz). Per tant, és un concepte similar a la rugositat però per a freqüències baixes. La força de fluctuació persisteix fins als 20 Hz aproximadament, a partir d'on inicia una zona complexa d'avaluar en termes de força de fluctuació i rugositat. Aquesta zona que s'estén fins a freqüències de 30 Hz aproximadament, on la rugositat domina la percepció subjectiva. La unitat de mesura de la força de fluctuació és el “vacil”, que es defineix com a la força de fluctuació produïda per un to de 1000 Hz de 60 dB que és el 100% d'amplitud modulada a 4 Hz."
+        "content4": "La força de fluctuació és un paràmetre que quantifica la percepció subjectiva de la modulació d'amplitud més lenta (fins a 20 Hz). Per tant, és un concepte similar a la rugositat però per a freqüències baixes. La força de fluctuació persisteix fins als 20 Hz aproximadament, a partir d'on inicia una zona complexa d'avaluar en termes de força de fluctuació i rugositat. Aquesta zona que s'estén fins a freqüències de 30 Hz aproximadament, on la rugositat domina la percepció subjectiva. La unitat de mesura de la força de fluctuació és el “vacil”, que es defineix com a la força de fluctuació produïda per un to de 1000 Hz de 60 dB que és el 100% d'amplitud modulada a 4 Hz."
       },
       "types": {
         "sharpness": "Agudesa",
@@ -309,41 +309,41 @@
     "description": "Defineix una zona d'estudi i ajusta el període de temps per a avaluar la tranquil·litat de l'àrea. Analitza tant la percepció acústica qualitativa com els nivells de pressió sonora quantitatius.",
     "title": "Anàlisi"
   },
-  "admin":{
-    "studyZone":{
-      "map":{
-        "createFilter":"Crear zona d'estudi",
-        "deleteFilter":"Esborrar zona d'estudi",
+  "admin": {
+    "studyZone": {
+      "map": {
+        "createFilter": "Crear zona d'estudi",
+        "deleteFilter": "Esborrar zona d'estudi",
         "saveStudyZone": "Guardar zona d'estudi"
       },
-      "form":{
-        "title":"Informació de la zona d'estudi",
-        "name":"Nom",
-        "description":"Descripció",
-        "conclusion":"Conclusió",
-        "startEndDate":"Data d'inici i final",
-        "addFiles":"Afegir fitxers",
+      "form": {
+        "title": "Informació de la zona d'estudi",
+        "name": "Nom",
+        "description": "Descripció",
+        "conclusion": "Conclusió",
+        "startEndDate": "Data d'inici i final",
+        "addFiles": "Afegir fitxers",
         "nameFile": "Nom del document",
-        "addFile":"Afegir fitxer",
-        "deleteFile":"Esborrar fitxer",
-        "addDocument":"Afegir document",
-        "addCollaborator":"Afegir col·laborador",
-        "collaboratorName":"Nom del col·laborador",
-        "contactName":"Nom del contacte",
-        "contactEmail":"Email del contacte",
-        "contactPhone":"Telèfon del contacte",
-        "addLogo":"Afegir logotip",
-        "delete":"Esborrar",
-        "cancel":"Cancel·lar",
-        "saveStudyZone":"Guardar zona d'estudi"
+        "addFile": "Afegir fitxer",
+        "deleteFile": "Esborrar fitxer",
+        "addDocument": "Afegir document",
+        "addCollaborator": "Afegir col·laborador",
+        "collaboratorName": "Nom del col·laborador",
+        "contactName": "Nom del contacte",
+        "contactEmail": "Email del contacte",
+        "contactPhone": "Telèfon del contacte",
+        "addLogo": "Afegir logotip",
+        "delete": "Esborrar",
+        "cancel": "Cancel·lar",
+        "saveStudyZone": "Guardar zona d'estudi"
       },
-      "list":{
-        "title":"Llistat de zones d'estudi",
-        "name":"Nom",
-        "startDate":"Data d'inici",
-        "endDate":"Data de finalització",
-        "view":"Visualitzar",
-        "enable":"Habilitar",
+      "list": {
+        "title": "Llistat de zones d'estudi",
+        "name": "Nom",
+        "startDate": "Data d'inici",
+        "endDate": "Data de finalització",
+        "view": "Visualitzar",
+        "enable": "Deshabilitar",
         "update": "Modificar"
       }
     }
