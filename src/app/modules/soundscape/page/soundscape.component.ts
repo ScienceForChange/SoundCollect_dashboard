@@ -79,17 +79,17 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
     [TimeFilter.WHOLEDAY]:  ["00:00:00", "23:59:59"],
   };
   public items = [
-    // {
-    //     label: 'Formato GPKG',
-    //     command: () => {
-    //         this.downloadFile('gpkg');
-    //     }
-    // },
     {
-        label: this.translations.instant('soundscape.map.kmlDownload'),
-        command: () => {
-          this.downloadFile('KMZ');
-        }
+      label: this.translations.instant('soundscape.map.gpkgDownload'),
+      command: () => {
+          this.downloadFile('GPKG');
+      }
+    },
+    {
+      label: this.translations.instant('soundscape.map.kmlDownload'),
+      command: () => {
+        this.downloadFile('KML');
+      }
     },
   ];
   constructor() {
@@ -611,8 +611,11 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
     if(option === 'CSV'){
       this.observationsService.downloadObservations(this.observations)
     }
-    if(option === 'KMZ'){
-      this.observationsService.downloadKMZ()
+    if(option === 'KML'){
+      this.observationsService.downloadKML();
+    }
+    if(option === 'GPKG'){
+      this.observationsService.downloadGPKG()
     }
   }
 

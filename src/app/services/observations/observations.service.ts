@@ -695,7 +695,7 @@ export class ObservationsService {
     }
   }
 
-  public async downloadKMZ() {
+  public downloadKML() {
     try {
       this.loading$.next(true);
 
@@ -738,19 +738,127 @@ export class ObservationsService {
         features: features,
       };
 
-      const kml = tokml(geoJson);
-
-      let file = new Blob([kml], {
-        type: 'application/vnd.google-earth.kml+xml',
+      this.loading$.next(false);
+      this.http.post<Blob>(
+        `${environment.BACKEND_BASE_URL}/kml`,
+        {
+          geojson: geoJson
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/binary',
+          },
+          withCredentials: true,
+          responseType: 'blob' as 'json'
+        }
+      )
+      .subscribe({
+        next: (resp:any) => {
+          this.loading$.next(false);
+          const blob = new Blob([resp], { type: "text/csv;charset=utf-8" });
+          const fileURL = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = fileURL;
+          const date = new Date();
+          const dateSlug = `${date.toISOString().slice(0,10)}-${date.getHours()}-${date.getMinutes()}-${date.getSeconds()}`;
+          link.download = `observacions-${ dateSlug }.kml`;
+          link.click();
+          link.remove();
+        },
+        error: (err) => {
+          this.loading$.next(false);
+          console.error(err);
+        }
       });
 
-      await new Promise((res, rej) => res(saveAs(file, 'observacions.kml')));
-
-      this.loading$.next(false);
     } catch (error) {
       this.loading$.next(false);
       console.error(error);
       throw Error('Error downloading KMZ', error);
+    }
+  }
+  public downloadGPKG() {
+    try {
+      this.loading$.next(true);
+
+      const observations = this.observations$.getValue();
+      const features: Feature[] = observations.map((obs) => ({
+        type: 'Feature',
+        geometry: {
+          type: 'LineString',
+          coordinates: obs.relationships.segments.reduce(
+            (
+              acc: turf.Position[],
+              segment: any,
+              index: number
+            ): turf.Position[] => {
+              acc.push([
+                Number(segment.start_longitude),
+                Number(segment.start_latitude),
+              ]);
+              if (index + 1 === obs.relationships.segments.length)
+                acc.push([
+                  Number(segment.end_longitude),
+                  Number(segment.end_latitude),
+                ]);
+              return acc;
+            },
+            []
+          ),
+        },
+        properties: {
+          ID_Observation: obs.id,
+          LAeq: Number(obs.attributes.Leq).toFixed(1),
+          LAmax: Number(obs.attributes.LAmax).toFixed(1),
+          LAmin: Number(obs.attributes.LAmin).toFixed(1),
+          L90: Number(obs.attributes.L90).toFixed(1),
+          L10: Number(obs.attributes.L10).toFixed(1),
+        },
+      }));
+      let geoJson = {
+        type: 'FeatureCollection' as const,
+        features: features,
+      };
+
+      this.loading$.next(false);
+      this.http.post<Blob>(
+        `${environment.BACKEND_BASE_URL}/geopackage`,
+        {
+          geojson: geoJson
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/binary',
+          },
+          withCredentials: true,
+          responseType: 'blob' as 'json'
+        }
+      )
+      .subscribe({
+        next: (resp:any) => {
+          this.loading$.next(false);
+          const blob = new Blob([resp], { type: "text/csv;charset=utf-8" });
+          const fileURL = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = fileURL;
+          const date = new Date();
+          const dateSlug = `${date.toISOString().slice(0,10)}-${date.getHours()}-${date.getMinutes()}-${date.getSeconds()}`;
+          link.download = `observacions-${ dateSlug }.gpkg`;
+          link.click();
+          link.remove();
+        },
+        error: (err) => {
+          this.loading$.next(false);
+          console.error(err);
+        }
+      });
+
+    } catch (error) {
+      this.loading$.next(false);
+      console.error(error);
+      throw Error('Error downloading GPKG', error);
     }
   }
 }
