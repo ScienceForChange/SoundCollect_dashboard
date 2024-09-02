@@ -43,7 +43,8 @@
     "observations": "Observacions",
     "logout": "Tancar sessió",
     "linkManual": "http://home.soundcollectapp.com/wp-content/uploads/2024/07/20240717_Manual-de-lusuari_aria-Dashboard-SoundCollect_CAT.pdf",
-    "manual": "Manual d'ús"
+    "manual": "Manual d'ús",
+    "adminPanel": "Panell d'administració"
   },
   "home": {
     "footer": {

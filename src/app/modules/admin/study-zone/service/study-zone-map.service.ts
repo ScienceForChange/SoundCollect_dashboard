@@ -74,14 +74,12 @@ export class StudyZoneMapService {
       this.deletePolygonFilter();
     }
     this.draw.changeMode('draw_polygon');
-    console.log('drawPolygonFilter', this.polygonFilter());
   }
 
   public deletePolygonFilter() {
     this.draw.delete(this.polygonFilter().id);
     this.selectedPolygon = undefined;
     this.polygonFilter.update(() => undefined);
-    console.log('deletePolygonFilter', this.polygonFilter());
   }
 
   private getFilteredObservations(event: any) {
@@ -90,16 +88,13 @@ export class StudyZoneMapService {
 
   private onDrawSelect(event: any) {
     this.selectedPolygon = event.features[0] ? event.features[0] : undefined;
-    console.log('onDrawSelect', this.selectedPolygon);
   }
 
   private onDrawCreated(event: any) {
-    console.log('onDrawCreated', this.selectedPolygon);
     this.getFilteredObservations(event);
   }
 
   private onDrawUpdated(event: any) {
-    console.log('onDrawUpdated', this.selectedPolygon);
     this.getFilteredObservations(event);
   }
 

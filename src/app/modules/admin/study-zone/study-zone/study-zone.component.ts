@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { AfterViewInit, Component, inject, signal } from '@angular/core';
 import { StudyZoneService } from '../../../../services/study-zone/study-zone.service';
 
 @Component({
@@ -6,13 +6,8 @@ import { StudyZoneService } from '../../../../services/study-zone/study-zone.ser
   templateUrl: './study-zone.component.html',
   styleUrl: './study-zone.component.scss',
 })
-export class StudyZoneComponent implements OnInit {
-  private studyZoneService = inject(StudyZoneService);
+export class StudyZoneComponent {
   studyZoneFormVisible = signal<boolean>(false);
-
-  ngOnInit(): void {
-    this.studyZoneService.fetchStudyZones().subscribe();
-  }
 
   toggleStudyZoneForm() {
     this.studyZoneFormVisible.update(() => !this.studyZoneFormVisible());
