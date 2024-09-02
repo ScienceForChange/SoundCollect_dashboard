@@ -344,6 +344,7 @@
         "endDate": "Data de finalització",
         "view": "Visualitzar",
         "enable": "Deshabilitar",
+        "delete": "Esborrar",
         "update": "Modificar"
       }
     }

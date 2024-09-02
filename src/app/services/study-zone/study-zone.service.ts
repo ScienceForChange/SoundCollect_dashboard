@@ -117,4 +117,24 @@ export class StudyZoneService {
         })
       );
   }
+
+  public deleteStudyZone(id: number): Observable<void> {
+    this.observationService.loading$.next(true);
+    return this.http
+      .delete<{ success: string; data: StudyZone }>(
+        `${environment.BACKEND_BASE_URL}/admin-panel/study-zone/${id}`
+      )
+      .pipe(
+        map(() => {
+          this.observationService.loading$.next(false);
+          const studyZones = this.studyZones$.getValue().filter((studyZone) => studyZone.id !== id);
+          this.studyZones$.next(studyZones);
+        }),
+        catchError((error) => {
+          this.observationService.loading$.next(false);
+          return throwError(() => error);
+        })
+      );
+  }
 }
+

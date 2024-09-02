@@ -23,8 +23,13 @@ export class StudyZoneListComponent {
   viewStudyZone(id: number) {
     console.log(id);
   }
+
   enableStudyZone(id: number) {
     console.log(id);
+  }
+
+  deleteStudyZone(id: number) {
+    this.studyZoneService.deleteStudyZone(id).subscribe();
   }
 
   editStudyZone(id: number) {
