@@ -1,5 +1,4 @@
-import { AfterViewInit, Component, inject, signal } from '@angular/core';
-import { StudyZoneService } from '../../../../services/study-zone/study-zone.service';
+import {Component, signal } from '@angular/core';
 
 @Component({
   selector: 'app-study-zone',

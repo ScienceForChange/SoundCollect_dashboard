@@ -13,6 +13,8 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { FileUploadModule } from 'primeng/fileupload';
 import { DividerModule } from 'primeng/divider';
 import { TableModule } from 'primeng/table';
+import { ConfirmPopupModule } from 'primeng/confirmpopup';
+import { ToastModule } from 'primeng/toast';
 
 
 import { StudyZoneComponent } from './study-zone/study-zone.component';
@@ -30,6 +32,7 @@ import { StudyZoneListComponent } from './components/study-zone-list/study-zone-
   ],
   imports: [
     CommonModule,
+    ConfirmPopupModule,
     ButtonModule,
     SidebarModule,
     RadioButtonModule,
@@ -43,7 +46,8 @@ import { StudyZoneListComponent } from './components/study-zone-list/study-zone-
     InputTextareaModule,
     FileUploadModule,
     DividerModule,
-    TableModule
+    TableModule,
+    ToastModule
   ],
 })
 export class StudyZoneModule {}
