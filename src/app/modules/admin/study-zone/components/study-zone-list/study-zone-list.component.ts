@@ -1,6 +1,7 @@
 import { Component, EventEmitter, inject, Output } from '@angular/core';
 import { StudyZoneService } from '../../../../../services/study-zone/study-zone.service';
 import { StudyZone } from '../../../../../models/study-zone';
+import { StudyZoneMapService } from '../../service/study-zone-map.service';
 
 @Component({
   selector: 'app-study-zone-list',
@@ -8,6 +9,7 @@ import { StudyZone } from '../../../../../models/study-zone';
   styleUrl: './study-zone-list.component.scss'
 })
 export class StudyZoneListComponent {
+  private mapService = inject(StudyZoneMapService);
   private studyZoneService = inject(StudyZoneService);
 
   @Output() toggleStudyZoneForm: EventEmitter<number> = new EventEmitter<number>();
@@ -21,7 +23,7 @@ export class StudyZoneListComponent {
   }
 
   viewStudyZone(id: number) {
-    console.log(id);
+    this.mapService.drawPolygonFromId(id);
   }
 
   enableStudyZone(id: number) {

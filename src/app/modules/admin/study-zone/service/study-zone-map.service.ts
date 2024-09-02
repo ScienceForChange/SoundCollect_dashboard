@@ -2,9 +2,10 @@ import { inject, Injectable, signal } from '@angular/core';
 import { ObservationsService } from '../../../../services/observations/observations.service';
 import { Observations } from '../../../../models/observations';
 import { IControl, LngLat, LngLatBounds, Map, MapEvent } from 'mapbox-gl';
-import { GeoJSONObject } from '@turf/turf';
+import { GeoJSONObject, Position } from '@turf/turf';
 import { Subscription } from 'rxjs';
 import MapboxDraw from '@mapbox/mapbox-gl-draw';
+import { StudyZoneService } from '../../../../services/study-zone/study-zone.service';
 
 interface Feature<
   G extends GeoJSON.Geometry | null = GeoJSON.Geometry,
@@ -21,6 +22,7 @@ interface Feature<
 })
 export class StudyZoneMapService {
   private observationsService = inject(ObservationsService);
+  private studyZoneService = inject(StudyZoneService);
 
   public polygonFilter = signal<any | undefined>(undefined);
   public polylines = signal<Feature[]>([]);
@@ -51,22 +53,20 @@ export class StudyZoneMapService {
   public selectedPolygon: any | undefined = undefined;
 
   constructor() {
-    this.observationsService.observations$.subscribe(
-      (observations) => {
-        this.observations = observations;
-        this.polylines.update(() =>
-          this.observationsService.getLineStringFromObservations(
-            this.observations
-          )
-        );
-        this.startPoints.update(() =>
-          this.observationsService.getStartPointsFromObservations(
-            this.observations
-          )
-        );
-        this.updateMapSource();
-      }
-    );
+    this.observationsService.observations$.subscribe((observations) => {
+      this.observations = observations;
+      this.polylines.update(() =>
+        this.observationsService.getLineStringFromObservations(
+          this.observations
+        )
+      );
+      this.startPoints.update(() =>
+        this.observationsService.getStartPointsFromObservations(
+          this.observations
+        )
+      );
+      this.updateMapSource();
+    });
   }
 
   public drawPolygonFilter() {
@@ -74,12 +74,14 @@ export class StudyZoneMapService {
       this.deletePolygonFilter();
     }
     this.draw.changeMode('draw_polygon');
+    console.log('drawPolygonFilter', this.polygonFilter());
   }
 
   public deletePolygonFilter() {
     this.draw.delete(this.polygonFilter().id);
     this.selectedPolygon = undefined;
     this.polygonFilter.update(() => undefined);
+    console.log('deletePolygonFilter', this.polygonFilter());
   }
 
   private getFilteredObservations(event: any) {
@@ -88,33 +90,41 @@ export class StudyZoneMapService {
 
   private onDrawSelect(event: any) {
     this.selectedPolygon = event.features[0] ? event.features[0] : undefined;
+    console.log('onDrawSelect', this.selectedPolygon);
   }
 
   private onDrawCreated(event: any) {
+    console.log('onDrawCreated', this.selectedPolygon);
     this.getFilteredObservations(event);
   }
 
   private onDrawUpdated(event: any) {
+    console.log('onDrawUpdated', this.selectedPolygon);
     this.getFilteredObservations(event);
   }
 
   private updateMapSource() {
-
-    this.polylines.update(() => this.observationsService.getLineStringFromObservations(this.observations));
-    this.startPoints.update(() => this.observationsService.getStartPointsFromObservations(this.observations));
+    this.polylines.update(() =>
+      this.observationsService.getLineStringFromObservations(this.observations)
+    );
+    this.startPoints.update(() =>
+      this.observationsService.getStartPointsFromObservations(this.observations)
+    );
 
     if (!this.map || !this.map.getSource('polylines')) return;
     let source = this.map.getSource('polylines') as mapboxgl.GeoJSONSource;
     source.setData({
       type: 'FeatureCollection',
-      features: this.polylines()
+      features: this.polylines(),
     });
 
-    let sourceStartPoints = this.map.getSource('startPoints') as mapboxgl.GeoJSONSource;
+    let sourceStartPoints = this.map.getSource(
+      'startPoints'
+    ) as mapboxgl.GeoJSONSource;
 
     sourceStartPoints.setData({
       type: 'FeatureCollection',
-      features: this.startPoints()
+      features: this.startPoints(),
     });
   }
 
@@ -385,29 +395,81 @@ export class StudyZoneMapService {
 
     //La función updatedSubareaPolygon se llama cuando se actualiza un polígono
     this.map.on('draw.update' as MapEvent, this.onDrawUpdated.bind(this));
-
   }
 
-  //TODO
-  //Have to create a function that from id gets the studyZone from studyzone service and then calls the function to draw the polygon and filter the observations
+  public drawPolygonFromId(id: number) {
+    const studyZone = this.studyZoneService.studyZones$
+      .getValue()
+      .find((studyZone) => studyZone.id === id);
+    //Want to check if the source already exists
 
-  public addObservationsToMap(observations: Observations[] = this.observations) {
+    //Add feature to studyZone source
+    let source = this.map.getSource('studyZone') as mapboxgl.GeoJSONSource;
+    const newFeature: GeoJSON.Feature<GeoJSON.Polygon> = {
+      type: 'Feature',
+      properties: {},
+      geometry: {
+        type: 'Polygon',
+        coordinates: [
+          studyZone.boundaries.coordinates[0].map((coordinate) => [
+            coordinate[1],
+            coordinate[0],
+          ]),
+        ],
+      },
+    };
+    const data = source._data as GeoJSON.FeatureCollection<GeoJSON.Geometry>;
+    data.features.push(newFeature);
+
+    source.setData(data);
+  }
+
+  public addObservationsToMap(
+    observations: Observations[] = this.observations
+  ) {
+    this.map.addSource('studyZone', {
+      type: 'geojson',
+      data: {
+        type: 'FeatureCollection',
+        features: [],
+      },
+    });
 
     //Añadir la fuente de datos para las lineas de atributo path
     this.map.addSource('polylines', {
       type: 'geojson',
       data: {
         type: 'FeatureCollection',
-        features: this.polylines()
-      }
+        features: this.polylines(),
+      },
     });
 
     this.map.addSource('startPoints', {
       type: 'geojson',
       data: {
         type: 'FeatureCollection',
-        features: this.startPoints()
-      }
+        features: this.startPoints(),
+      },
+    });
+
+    this.map.addLayer({
+      id: 'studyZone',
+      type: 'fill',
+      source: 'studyZone',
+      paint: {
+        'fill-color': '#088',
+        'fill-opacity': 0.2,
+      },
+    });
+
+    this.map.addLayer({
+      id: 'studyZoneLines',
+      type: 'line',
+      source: 'studyZone',
+      paint: {
+        'line-color': '#FFF',
+        'line-width': 2,
+      },
     });
 
     // resaltar la línea a la que se hace hover de color negro
@@ -416,16 +478,15 @@ export class StudyZoneMapService {
       type: 'line',
       source: 'polylines',
       layout: {
-
         'line-join': 'round',
-        'line-cap': 'round'
+        'line-cap': 'round',
       },
       paint: {
-          'line-color': '#333',
-          'line-width': 3,
-          'line-gap-width': 5,
+        'line-color': '#333',
+        'line-width': 3,
+        'line-gap-width': 5,
       },
-      filter: ['==', 'id', '']  // Filtro vacío para iniciar
+      filter: ['==', 'id', ''], // Filtro vacío para iniciar
     });
 
     // resaltar la línea seleccionada de color naranja
@@ -434,16 +495,15 @@ export class StudyZoneMapService {
       type: 'line',
       source: 'polylines',
       layout: {
-
         'line-join': 'round',
-        'line-cap': 'round'
+        'line-cap': 'round',
       },
       paint: {
-          'line-color': '#FF7A1F',
-          'line-width': 4,
-          'line-gap-width': 5,
+        'line-color': '#FF7A1F',
+        'line-width': 4,
+        'line-gap-width': 5,
       },
-      filter: ['==', 'id', '']  // Filtro vacío para iniciar
+      filter: ['==', 'id', ''], // Filtro vacío para iniciar
     });
 
     // Agregar capa para los paths individuales
@@ -455,25 +515,23 @@ export class StudyZoneMapService {
       source: 'polylines',
       layout: {
         'line-join': 'round',
-        'line-cap': 'round'
+        'line-cap': 'round',
       },
       paint: {
-        'line-color':
-        [
+        'line-color': [
           'case',
           ['==', ['get', 'pause'], true],
           '#FFF', // Dasharray si pause es 1
-          ['get', 'color'] // Sin dasharray si pause no es 1
-        ]
-       ,
+          ['get', 'color'], // Sin dasharray si pause no es 1
+        ],
         'line-width': ['get', 'width'],
-        "line-dasharray":  [
+        'line-dasharray': [
           'case',
           ['==', ['get', 'pause'], true],
           [2, 3], // Dasharray si pause es 1
-          [1, 0] // Sin dasharray si pause no es 1
-        ]
-      }
+          [1, 0], // Sin dasharray si pause no es 1
+        ],
+      },
     });
 
     // Agregar icono de inicio
@@ -487,33 +545,46 @@ export class StudyZoneMapService {
         'circle-pitch-scale': 'viewport',
         'circle-stroke-color': '#333',
         'circle-stroke-width': 2,
+      },
+    });
+
+    this.map.on('mouseenter', 'LineString', (e: any) => {
+      this.map.getCanvas().style.cursor = 'pointer';
+      for (let feature of e.features) {
+        if (
+          feature.properties.type === 'LineString' &&
+          feature.properties.id !== undefined
+        ) {
+          this.map.setFilter('lineLayer-hover', [
+            '==',
+            'id',
+            feature.properties.id,
+          ]);
+          return;
+        }
       }
     });
 
-    this.map.on('mouseenter', 'LineString', (e:any) => {
-      this.map.getCanvas().style.cursor = 'pointer';
-      for( let feature of e.features) {
-        if (feature.properties.type === 'LineString' && feature.properties.id !== undefined) {
-          this.map.setFilter('lineLayer-hover', ['==', 'id', feature.properties.id]);
-          return;
-        }
-      };
-    });
-
-    this.map.on('click', 'LineString', (e:any) => {
+    this.map.on('click', 'LineString', (e: any) => {
       this.map.getCanvas().style.cursor = 'inherit';
-      for( let feature of e.features) {
-        if (feature.properties.type === 'LineString' && feature.properties.id !== undefined) {
-          this.map.setFilter('lineLayer-select', ['==', 'id', feature.properties.id]);
+      for (let feature of e.features) {
+        if (
+          feature.properties.type === 'LineString' &&
+          feature.properties.id !== undefined
+        ) {
+          this.map.setFilter('lineLayer-select', [
+            '==',
+            'id',
+            feature.properties.id,
+          ]);
           return;
         }
-      };
+      }
     });
 
-    this.map.on('mouseleave', 'LineString', (e:any) => {
+    this.map.on('mouseleave', 'LineString', (e: any) => {
       this.map.getCanvas().style.cursor = 'inherit';
       this.map.setFilter('lineLayer-hover', ['==', 'id', '']);
     });
-
-  };
+  }
 }
