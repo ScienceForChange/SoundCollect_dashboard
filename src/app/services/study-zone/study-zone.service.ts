@@ -2,7 +2,16 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ObservationsService } from '../observations/observations.service';
 import { environment } from '../../../environments/environment';
-import { BehaviorSubject, map, Observable, switchMap, of, delay } from 'rxjs';
+import {
+  BehaviorSubject,
+  map,
+  Observable,
+  switchMap,
+  of,
+  delay,
+  catchError,
+  throwError,
+} from 'rxjs';
 import { StudyZone, StudyZoneForm } from '../../models/study-zone';
 
 @Injectable({
@@ -28,88 +37,77 @@ export class StudyZoneService {
       .subscribe((studyZone) => this.studyZoneSelected$.next(studyZone));
   }
 
+  public fetchStudyZones(): Observable<void> {
+    this.observationService.loading$.next(true);
+    return this.http
+      .get<{ success: string; data: StudyZone[] }>(
+        `${environment.BACKEND_BASE_URL}/admin-panel/study-zone`
+      )
+      .pipe(
+        map(({ data }) => {
+          this.observationService.loading$.next(false);
+          console.log('data', data);
+          this.studyZones$.next(data);
+        }),
+        catchError((error) => {
+          this.observationService.loading$.next(false);
+          return throwError(() => error);
+        })
+      );
+  }
+
   public createStudyZone(
     polygon: Number[],
     result: StudyZoneForm
   ): Observable<void> {
-    this.observationService.loading$.next(true);
-    return of({
-      coordinates: polygon,
-      name: result.name,
-      start_date: result.start_end_dates[0],
-      end_date: result.start_end_dates[1],
-      id: 1,
-      deleted: 0,
-      created_at: new Date(),
-      updated_at: new Date(),
-      ...result,
-    } as StudyZone).pipe(
-      delay(1500),
-      map((data) => {
-        this.observationService.loading$.next(false);
-        const studyZones = [...this.studyZones$.getValue(), data];
-        this.studyZones$.next(studyZones);
-      })
-    );
-    // return this.http
-    //   .post<{ success: string; data: StudyZone }>(
-    //     `${environment.BACKEND_BASE_URL}/admin-panel/study-zone`,
-    //     {
-    //       coordinates: polygon,
-    //       name: result.name,
-    //       start_date: result.start_end_dates[0],
-    //       end_date: result.start_end_dates[1],
-    //       ...result
-    //     }
-    //   )
-    //   .pipe(
-    //     map(({ data }) => {
-    //       this.observationService.loading$.next(false);
-    //       const studyZones = [...this.studyZones$.getValue(),data]
-    //       this.studyZones$.next(studyZones)
-    //     })
-    //     catchError((error) => {
-    //       this.observationService.loading$.next(false);
-    //       return throwError(error);
-    //})
-    //   );
+    return this.http
+      .post<{ success: string; data: StudyZone }>(
+        `${environment.BACKEND_BASE_URL}/admin-panel/study-zone`,
+        {
+          coordinates: polygon,
+          name: result.name,
+          start_date: result.start_end_dates[0],
+          end_date: result.start_end_dates[1],
+          ...result,
+        }
+      )
+      .pipe(
+        map(({ data }) => {
+          this.observationService.loading$.next(false);
+          const studyZones = [...this.studyZones$.getValue(), data];
+          this.studyZones$.next(studyZones);
+        }),
+        catchError((error) => {
+          this.observationService.loading$.next(false);
+          return throwError(() => error);
+        })
+      );
   }
 
   public updateStudyZone(id: number, result: StudyZone): Observable<void> {
     this.observationService.loading$.next(true);
-    return of(result).pipe(
-      delay(1500),
-      map((data) => {
-        this.observationService.loading$.next(false);
-        const studyZones = this.studyZones$.getValue().map((studyZone) => {
-          if (studyZone.id === id) {
-            return data;
-          }
-          return studyZone;
-        });
-        this.studyZones$.next(studyZones);
-      })
-    );
-    // return this.http
-    //   .put<{ success: string; data: StudyZone }>(
-    //     `${environment.BACKEND_BASE_URL}/admin-panel/study-zone/${id}`,
-    //     result
-    //   )
-    //   .pipe(
-    //     map(({ data }) => {
-    //       this.observationService.loading$.next(false);
-    //       const studyZones = this.studyZones$.getValue().map((studyZone) => {
-    //         if (studyZone.id === id) {
-    //           return data;
-    //         }
-    //         return studyZone;
-    //       });
-    //       this.studyZones$.next(studyZones);
-    //     })
-    //     catchError((error) => {
-    //       this.observationService.loading$.next(false);
-    //       return throwError(error);
-    //})
-    //   );
+    console.log('id', id)
+    console.log('result', result)
+    return this.http
+      .patch<{ success: string; data: StudyZone }>(
+        `${environment.BACKEND_BASE_URL}/admin-panel/study-zone/${id}`,
+        result
+      )
+      .pipe(
+        map(({ data }) => {
+          this.observationService.loading$.next(false);
+          const studyZones = this.studyZones$.getValue().map((studyZone) => {
+            if (studyZone.id === id) {
+              return data;
+            }
+            return studyZone;
+          });
+          this.studyZones$.next(studyZones);
+        }),
+        catchError((error) => {
+          this.observationService.loading$.next(false);
+          return throwError(() => error);
+        })
+      );
   }
 }
