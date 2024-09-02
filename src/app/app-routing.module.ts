@@ -9,6 +9,7 @@ import { OverviewComponent } from './modules/overview/page/overview/overview.com
 import { SoundscapeComponent } from './modules/soundscape/page/soundscape.component';
 import { ErrorComponent } from './modules/error/page/error.component';
 import { HomeComponent } from './modules/home/page/home.component';
+import { StudyZoneComponent } from './modules/admin/study-zone/study-zone/study-zone.component';
 
 const routes: Routes = [
   {
@@ -32,6 +33,15 @@ const routes: Routes = [
         path: 'resum',
         component: OverviewComponent,
       },
+      {
+        path: 'admin',
+        children: [
+          {
+            path: 'study-zone', 
+            component: StudyZoneComponent,
+          }
+        ]
+      }
     ],
   },
   {

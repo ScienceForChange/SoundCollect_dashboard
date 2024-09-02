@@ -1,0 +1,57 @@
+<div class="card">
+  <p-table [value]="studyZones" [tableStyle]="{ 'min-width': '60rem' }">
+    <ng-template pTemplate="caption">
+      <h2>{{ 'admin.studyZone.list.title' | translate }}</h2>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th>{{ 'admin.studyZone.list.name' | translate }}</th>
+        <th>{{ 'admin.studyZone.list.startDate' | translate }}</th>
+        <th>{{ 'admin.studyZone.list.endDate' | translate }}</th>
+        <th>{{ 'admin.studyZone.list.view' | translate }}</th>
+        <th>{{ 'admin.studyZone.list.enable' | translate }}</th>
+        <th>{{ 'admin.studyZone.list.delete' | translate }}</th>
+        <th>{{ 'admin.studyZone.list.update' | translate }}</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-studyZone>
+      <tr>
+        <td>{{ studyZone.name }}</td>
+        <td>{{ studyZone.start_date | date : "dd/MM/yyyy" }}</td>
+        <td>{{ studyZone.end_date | date : "dd/MM/yyyy" }}</td>
+        <td>
+          <button
+            pButton
+            type="button"
+            icon="pi pi-eye"
+            (click)="viewStudyZone(studyZone.id)"
+          ></button>
+        </td>
+        <td>
+          <button
+            pButton
+            type="button"
+            icon="pi pi-times"
+            (click)="enableStudyZone(studyZone.id)"
+          ></button>
+        </td>
+        <td>
+          <button
+            pButton
+            type="button"
+            icon="pi pi-trash"
+            (click)="deleteStudyZone(studyZone.id)"
+          ></button>
+        </td>
+        <td>
+          <button
+            pButton
+            type="button"
+            icon="pi pi-pencil"
+            (click)="editStudyZone(studyZone.id)"
+          ></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
