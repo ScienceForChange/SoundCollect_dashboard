@@ -1,17 +1,17 @@
 <div class="card">
   <p-table [value]="studyZones" [tableStyle]="{ 'min-width': '60rem' }">
     <ng-template pTemplate="caption">
-      <h2>{{ 'admin.studyZone.list.title' | translate }}</h2>
+      <h2>{{ "admin.studyZone.list.title" | translate }}</h2>
     </ng-template>
     <ng-template pTemplate="header">
       <tr>
-        <th>{{ 'admin.studyZone.list.name' | translate }}</th>
-        <th>{{ 'admin.studyZone.list.startDate' | translate }}</th>
-        <th>{{ 'admin.studyZone.list.endDate' | translate }}</th>
-        <th>{{ 'admin.studyZone.list.view' | translate }}</th>
-        <th>{{ 'admin.studyZone.list.enable' | translate }}</th>
-        <th>{{ 'admin.studyZone.list.delete' | translate }}</th>
-        <th>{{ 'admin.studyZone.list.update' | translate }}</th>
+        <th>{{ "admin.studyZone.list.name" | translate }}</th>
+        <th>{{ "admin.studyZone.list.startDate" | translate }}</th>
+        <th>{{ "admin.studyZone.list.endDate" | translate }}</th>
+        <th>{{ "admin.studyZone.list.view" | translate }}</th>
+        <th>{{ "admin.studyZone.list.enable" | translate }}</th>
+        <th>{{ "admin.studyZone.list.delete" | translate }}</th>
+        <th>{{ "admin.studyZone.list.update" | translate }}</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-studyZone>
@@ -23,7 +23,7 @@
           <button
             pButton
             type="button"
-            icon="pi pi-eye"
+            [icon]="getIcon(studyZone.id)"
             (click)="viewStudyZone(studyZone.id)"
           ></button>
         </td>

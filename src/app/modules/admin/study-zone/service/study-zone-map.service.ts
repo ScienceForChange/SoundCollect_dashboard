@@ -397,17 +397,28 @@ export class StudyZoneMapService {
     this.map.on('draw.update' as MapEvent, this.onDrawUpdated.bind(this));
   }
 
+  public erasePolygonFromId(id: number) {
+    let source = this.map.getSource('studyZone') as mapboxgl.GeoJSONSource;
+    const { features, ...rest } =
+      source._data as GeoJSON.FeatureCollection<GeoJSON.Geometry>;
+    const filterFeatures = features.filter(
+      (feature) => feature.properties['id'] !== id
+    );
+    source.setData({ features: filterFeatures, ...rest });
+  }
+
   public drawPolygonFromId(id: number) {
     const studyZone = this.studyZoneService.studyZones$
       .getValue()
       .find((studyZone) => studyZone.id === id);
-    //Want to check if the source already exists
 
-    //Add feature to studyZone source
     let source = this.map.getSource('studyZone') as mapboxgl.GeoJSONSource;
+
     const newFeature: GeoJSON.Feature<GeoJSON.Polygon> = {
       type: 'Feature',
-      properties: {},
+      properties: {
+        id: studyZone.id,
+      },
       geometry: {
         type: 'Polygon',
         coordinates: [
@@ -418,6 +429,7 @@ export class StudyZoneMapService {
         ],
       },
     };
+    //Add the new feature to the studyZone source
     const data = source._data as GeoJSON.FeatureCollection<GeoJSON.Geometry>;
     data.features.push(newFeature);
 
