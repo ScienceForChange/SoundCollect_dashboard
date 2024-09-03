@@ -55,6 +55,35 @@ export class StudyZoneService {
       });
   }
 
+  public toggleEnableStudyZone(id: number): Observable<boolean> {
+    this.observationService.loading$.next(true);
+    const isVisible = this.studyZones$
+      .getValue()
+      .find((zone) => zone.id === id).is_visible;
+    return this.http
+      .patch<{ success: string; data: StudyZone }>(
+        `${environment.BACKEND_BASE_URL}/admin-panel/study-zone/${id}/toggle`,
+        {}
+      )
+      .pipe(
+        map(() => {
+          this.observationService.loading$.next(false);
+          const studyZones = this.studyZones$.getValue().map((studyZone) => {
+            if (studyZone.id === id) {
+              return { ...studyZone, is_visible: !isVisible };
+            }
+            return studyZone;
+          });
+          this.studyZones$.next(studyZones);
+          return !isVisible;
+        }),
+        catchError((error) => {
+          this.observationService.loading$.next(false);
+          return throwError(() => error);
+        })
+      );
+  }
+
   public createStudyZone(
     polygon: Number[],
     result: StudyZoneForm

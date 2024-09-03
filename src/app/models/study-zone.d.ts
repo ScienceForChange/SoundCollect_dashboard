@@ -28,6 +28,7 @@ export interface StudyZone {
     name:          string;
     description:   string;
     conclusion:    string;
+    is_visible:    boolean;
     boundaries:    Boundaries;
     start_date:    Date;
     end_date:      Date;
