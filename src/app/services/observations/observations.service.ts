@@ -7,16 +7,13 @@ import {
   map,
   filter,
   switchMap,
-  catchError,
-  throwError,
 } from 'rxjs';
 
 import * as turf from '@turf/turf';
 
 import { Parser } from '@json2csv/plainjs';
-import { flatten, Transform, unwind } from '@json2csv/transforms';
 
-import { saveAs } from 'file-saver'; // save the file
+import { saveAs } from 'file-saver';
 
 import tokml from "@maphubs/tokml"
 

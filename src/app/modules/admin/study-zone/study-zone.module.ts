@@ -13,6 +13,8 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { FileUploadModule } from 'primeng/fileupload';
 import { DividerModule } from 'primeng/divider';
 import { TableModule } from 'primeng/table';
+import { ConfirmPopupModule } from 'primeng/confirmpopup';
+import { ToastModule } from 'primeng/toast';
 
 
 import { StudyZoneComponent } from './study-zone/study-zone.component';
@@ -20,6 +22,7 @@ import { StudyZoneMapComponent } from './components/map/study-zone-map.component
 import { SharedComponentsModule } from '../../../shared/shared.module';
 import { StudyZoneFormComponent } from './components/study-zone-form/study-zone-form.component';
 import { StudyZoneListComponent } from './components/study-zone-list/study-zone-list.component';
+import { StudyZoneDialogComponent } from './components/study-zone-dialog/study-zone-dialog.component';
 
 @NgModule({
   declarations: [
@@ -27,9 +30,11 @@ import { StudyZoneListComponent } from './components/study-zone-list/study-zone-
     StudyZoneMapComponent,
     StudyZoneFormComponent,
     StudyZoneListComponent,
+    StudyZoneDialogComponent,
   ],
   imports: [
     CommonModule,
+    ConfirmPopupModule,
     ButtonModule,
     SidebarModule,
     RadioButtonModule,
@@ -43,7 +48,8 @@ import { StudyZoneListComponent } from './components/study-zone-list/study-zone-
     InputTextareaModule,
     FileUploadModule,
     DividerModule,
-    TableModule
+    TableModule,
+    ToastModule
   ],
 })
 export class StudyZoneModule {}

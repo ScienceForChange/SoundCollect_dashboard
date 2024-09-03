@@ -1,0 +1,29 @@
+<p-dialog
+  [header]="studyZone ? studyZone.name : ''"
+  [(visible)]="visible"
+  [style]="{ minHeight: '80dvh', minWidth: '40dvw' }"
+  [dismissableMask]="true"
+  (onHide)="closeDialog()"
+>
+  <div class="flex flex-column gap-4">
+    <!-- Descripción -->
+    <div class="flex flex-column gap-2">
+      <h3 class="text-lg">{{ "admin.studyZone.studyZoneDialog.description" | translate }}:</h3>
+      <p>{{ studyZone?.description }}</p>
+    </div>
+    <!-- Conclusión -->
+    <div class="flex flex-column gap-2">
+      <h3 class="text-lg">{{ "admin.studyZone.studyZoneDialog.conclusion" | translate }}:</h3>
+      <p>{{ studyZone?.conclusion }}</p>
+    </div>
+    <!-- Fechas de inicio y fin -->
+    <div class="flex flex-column gap-2">
+      <h3 class="text-lg">{{ "admin.studyZone.studyZoneDialog.startAndEndDate" | translate }}:</h3>
+      <p>
+        {{ studyZone?.start_date | date: "dd/MM/yyyy" }} - {{ studyZone?.end_date | date: "dd/MM/yyyy" }}
+      </p>
+    </div>
+  </div>
+  <!-- Ficheros -->
+  <!-- Colaboradores -->
+</p-dialog>

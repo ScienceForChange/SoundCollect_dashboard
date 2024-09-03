@@ -1,33 +1,51 @@
 <div class="card">
   <p-table [value]="studyZones" [tableStyle]="{ 'min-width': '60rem' }">
     <ng-template pTemplate="caption">
-      <h2>{{ 'admin.studyZone.list.title' | translate }}</h2>
+      <h2>{{ "admin.studyZone.list.title" | translate }}</h2>
     </ng-template>
     <ng-template pTemplate="header">
       <tr>
-        <th>{{ 'admin.studyZone.list.name' | translate }}</th>
-        <th>{{ 'admin.studyZone.list.startDate' | translate }}</th>
-        <th>{{ 'admin.studyZone.list.endDate' | translate }}</th>
-        <th>{{ 'admin.studyZone.list.view' | translate }}</th>
-        <th>{{ 'admin.studyZone.list.enable' | translate }}</th>
-        <th>{{ 'admin.studyZone.list.delete' | translate }}</th>
-        <th>{{ 'admin.studyZone.list.update' | translate }}</th>
+        <th class="text-center">
+          {{ "admin.studyZone.list.name" | translate }}
+        </th>
+        <th class="text-center">
+          {{ "admin.studyZone.list.startDate" | translate }}
+        </th>
+        <th class="text-center">
+          {{ "admin.studyZone.list.endDate" | translate }}
+        </th>
+        <th class="text-center">
+          {{ "admin.studyZone.list.view" | translate }}
+        </th>
+        <th class="text-center">
+          {{ "admin.studyZone.list.enable" | translate }}
+        </th>
+        <th class="text-center">
+          {{ "admin.studyZone.list.delete" | translate }}
+        </th>
+        <th class="text-center">
+          {{ "admin.studyZone.list.update" | translate }}
+        </th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-studyZone>
       <tr>
-        <td>{{ studyZone.name }}</td>
-        <td>{{ studyZone.start_date | date : "dd/MM/yyyy" }}</td>
-        <td>{{ studyZone.end_date | date : "dd/MM/yyyy" }}</td>
-        <td>
+        <td class="text-center">{{ studyZone.name }}</td>
+        <td class="text-center">
+          {{ studyZone.start_date | date : "dd/MM/yyyy" }}
+        </td>
+        <td class="text-center">
+          {{ studyZone.end_date | date : "dd/MM/yyyy" }}
+        </td>
+        <td class="text-center">
           <button
             pButton
             type="button"
-            icon="pi pi-eye"
+            [icon]="getIcon(studyZone.id)"
             (click)="viewStudyZone(studyZone.id)"
           ></button>
         </td>
-        <td>
+        <td class="text-center">
           <button
             pButton
             type="button"
@@ -35,15 +53,17 @@
             (click)="enableStudyZone(studyZone.id)"
           ></button>
         </td>
-        <td>
+        <td class="text-center">
           <button
             pButton
             type="button"
             icon="pi pi-trash"
-            (click)="deleteStudyZone(studyZone.id)"
+            (click)="confirmDeleteStudyZone($event, studyZone.id)"
           ></button>
+          <p-confirmPopup [styleClass]="'custom-confirm-popup'" />
+          <p-toast />
         </td>
-        <td>
+        <td class="text-center">
           <button
             pButton
             type="button"

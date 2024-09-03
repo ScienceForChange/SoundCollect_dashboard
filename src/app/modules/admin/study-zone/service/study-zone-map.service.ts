@@ -27,6 +27,8 @@ export class StudyZoneMapService {
   public polygonFilter = signal<any | undefined>(undefined);
   public polylines = signal<Feature[]>([]);
   public startPoints = signal<Feature[]>([]);
+  public studyZoneDialogVisible = signal<boolean>(false);
+
 
   public observations!: Observations[];
   public map!: Map;
@@ -74,14 +76,12 @@ export class StudyZoneMapService {
       this.deletePolygonFilter();
     }
     this.draw.changeMode('draw_polygon');
-    console.log('drawPolygonFilter', this.polygonFilter());
   }
 
   public deletePolygonFilter() {
     this.draw.delete(this.polygonFilter().id);
     this.selectedPolygon = undefined;
     this.polygonFilter.update(() => undefined);
-    console.log('deletePolygonFilter', this.polygonFilter());
   }
 
   private getFilteredObservations(event: any) {
@@ -90,16 +90,13 @@ export class StudyZoneMapService {
 
   private onDrawSelect(event: any) {
     this.selectedPolygon = event.features[0] ? event.features[0] : undefined;
-    console.log('onDrawSelect', this.selectedPolygon);
   }
 
   private onDrawCreated(event: any) {
-    console.log('onDrawCreated', this.selectedPolygon);
     this.getFilteredObservations(event);
   }
 
   private onDrawUpdated(event: any) {
-    console.log('onDrawUpdated', this.selectedPolygon);
     this.getFilteredObservations(event);
   }
 
@@ -397,17 +394,28 @@ export class StudyZoneMapService {
     this.map.on('draw.update' as MapEvent, this.onDrawUpdated.bind(this));
   }
 
+  public erasePolygonFromId(id: number) {
+    let source = this.map.getSource('studyZone') as mapboxgl.GeoJSONSource;
+    const { features, ...rest } =
+      source._data as GeoJSON.FeatureCollection<GeoJSON.Geometry>;
+    const filterFeatures = features.filter(
+      (feature) => feature.properties['id'] !== id
+    );
+    source.setData({ features: filterFeatures, ...rest });
+  }
+
   public drawPolygonFromId(id: number) {
     const studyZone = this.studyZoneService.studyZones$
       .getValue()
       .find((studyZone) => studyZone.id === id);
-    //Want to check if the source already exists
 
-    //Add feature to studyZone source
     let source = this.map.getSource('studyZone') as mapboxgl.GeoJSONSource;
+
     const newFeature: GeoJSON.Feature<GeoJSON.Polygon> = {
       type: 'Feature',
-      properties: {},
+      properties: {
+        id: studyZone.id,
+      },
       geometry: {
         type: 'Polygon',
         coordinates: [
@@ -418,6 +426,7 @@ export class StudyZoneMapService {
         ],
       },
     };
+    //Add the new feature to the studyZone source
     const data = source._data as GeoJSON.FeatureCollection<GeoJSON.Geometry>;
     data.features.push(newFeature);
 
@@ -427,6 +436,7 @@ export class StudyZoneMapService {
   public addObservationsToMap(
     observations: Observations[] = this.observations
   ) {
+    //Añadir source para los polygonos de las zonas de estudio
     this.map.addSource('studyZone', {
       type: 'geojson',
       data: {
@@ -452,6 +462,7 @@ export class StudyZoneMapService {
       },
     });
 
+    //Relleno zona de estudio
     this.map.addLayer({
       id: 'studyZone',
       type: 'fill',
@@ -462,6 +473,7 @@ export class StudyZoneMapService {
       },
     });
 
+    //Borde de la zona de estudio
     this.map.addLayer({
       id: 'studyZoneLines',
       type: 'line',
@@ -546,6 +558,22 @@ export class StudyZoneMapService {
         'circle-stroke-color': '#333',
         'circle-stroke-width': 2,
       },
+    });
+
+    this.map.on('mouseenter', 'studyZone', (e: any) => {
+      this.map.getCanvas().style.cursor = 'pointer';
+    });
+
+    this.map.on('mouseleave', 'studyZone', (e: any) => {
+      this.map.getCanvas().style.cursor = 'inherit';
+    });
+
+    this.map.on('click', 'studyZone', (e: any) => {
+      this.map.getCanvas().style.cursor = 'inherit';
+      if(e.features.length > 0) {
+        this.studyZoneService.selectStudyZone(e.features[0].properties.id);
+        this.studyZoneDialogVisible.update(() => true);
+      }
     });
 
     this.map.on('mouseenter', 'LineString', (e: any) => {

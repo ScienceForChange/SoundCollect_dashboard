@@ -37,23 +37,23 @@ export class StudyZoneService {
       .subscribe((studyZone) => this.studyZoneSelected$.next(studyZone));
   }
 
-  public fetchStudyZones(): Observable<void> {
+  public fetchStudyZones(): void {
     this.observationService.loading$.next(true);
-    return this.http
+    this.http
       .get<{ success: string; data: StudyZone[] }>(
         `${environment.BACKEND_BASE_URL}/admin-panel/study-zone`
       )
-      .pipe(
-        map(({ data }) => {
+      .subscribe({
+        next: ({ data }) => {
           this.observationService.loading$.next(false);
-          console.log('data', data);
+          console.log('data', data)
           this.studyZones$.next(data);
-        }),
-        catchError((error) => {
+        },
+        error: (error) => {
           this.observationService.loading$.next(false);
           return throwError(() => error);
-        })
-      );
+        },
+      });
   }
 
   public createStudyZone(
@@ -88,13 +88,15 @@ export class StudyZoneService {
   public updateStudyZone(id: number, result: StudyZone): Observable<void> {
     this.observationService.loading$.next(true);
     const studyZone = {
-      coordinates: result.boundaries.coordinates.flat().map((coord) => coord.join(' ')),
+      coordinates: result.boundaries.coordinates
+        .flat()
+        .map((coord) => coord.join(' ')),
       name: result.name,
       description: result.description,
       start_date: result.start_date,
       end_date: result.end_date,
       //TODO PODER ACTUALIZAR LAS DEMÁS COSAS
-    }
+    };
     return this.http
       .patch<{ success: string; data: StudyZone }>(
         `${environment.BACKEND_BASE_URL}/admin-panel/study-zone/${id}`,
@@ -127,7 +129,9 @@ export class StudyZoneService {
       .pipe(
         map(() => {
           this.observationService.loading$.next(false);
-          const studyZones = this.studyZones$.getValue().filter((studyZone) => studyZone.id !== id);
+          const studyZones = this.studyZones$
+            .getValue()
+            .filter((studyZone) => studyZone.id !== id);
           this.studyZones$.next(studyZones);
         }),
         catchError((error) => {
@@ -137,4 +141,3 @@ export class StudyZoneService {
       );
   }
 }
-

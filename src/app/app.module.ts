@@ -11,6 +11,7 @@ import {
 } from '@ngx-translate/core';
 
 import { MessageService } from 'primeng/api';
+import { ConfirmationService } from 'primeng/api';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -61,6 +62,7 @@ export function HttpLoaderFactory(http: HttpClient) {
   ],
   providers: [
     MessageService,
+    ConfirmationService,
     {
       provide: APP_INITIALIZER,
       useFactory: (translate: TranslateService) => {

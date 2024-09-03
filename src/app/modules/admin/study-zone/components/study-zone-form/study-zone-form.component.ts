@@ -54,6 +54,7 @@ export class StudyZoneFormComponent {
     this.polygon = this.studyZoneMapService.polygonFilter;
     this.studyZoneService.studyZoneSelected$.subscribe((studyZoneSelected) => {
       this.studyZoneSelected = studyZoneSelected;
+      console.log('studyZoneSelected', studyZoneSelected)
       this.studyZoneForm.patchValue(studyZoneSelected);
     });
   }
@@ -104,6 +105,7 @@ export class StudyZoneFormComponent {
 
   toggleDialog(): void {
     this.toggleStudyZoneForm.emit();
+    this.studyZoneForm.reset();
   }
 
   showWarn(): void {
@@ -131,7 +133,6 @@ export class StudyZoneFormComponent {
   }
 
   submit() {
-    //TODO CAPTURAR EL ERROR
     const isNewZone = !this.studyZoneSelected;
     if (isNewZone) {
       const userId = localStorage.getItem('user')
