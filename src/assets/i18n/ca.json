@@ -347,6 +347,11 @@
         "enable": "Deshabilitar",
         "delete": "Esborrar",
         "update": "Modificar"
+      },
+      "studyZoneDialog":{
+        "description": "Descripció",
+        "conclusion": "Conclusió",
+        "startAndEndDate": "Data d'inici i final"
       }
     }
   },
