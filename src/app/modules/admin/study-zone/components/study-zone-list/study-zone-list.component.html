@@ -60,6 +60,8 @@
             icon="pi pi-trash"
             (click)="confirmDeleteStudyZone($event, studyZone.id)"
           ></button>
+          <p-confirmPopup [styleClass]="'custom-confirm-popup'" />
+          <p-toast />
         </td>
         <td class="text-center">
           <button
@@ -70,8 +72,6 @@
           ></button>
         </td>
       </tr>
-      <p-confirmPopup />
-      <p-toast />
     </ng-template>
   </p-table>
 </div>

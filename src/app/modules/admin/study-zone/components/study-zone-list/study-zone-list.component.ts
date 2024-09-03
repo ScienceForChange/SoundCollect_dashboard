@@ -39,12 +39,13 @@ export class StudyZoneListComponent {
     if (!isStudyZoneDisplayed) {
       this.mapService.drawPolygonFromId(id);
       this.studyZonesIdsDisplayed.push(id);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
     this.mapService.erasePolygonFromId(id);
     this.studyZonesIdsDisplayed = this.studyZonesIdsDisplayed.filter(
       (zoneId) => zoneId !== id
-    );
+    )
   }
 
   confirmDeleteStudyZone(event: Event, id: number) {

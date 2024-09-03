@@ -27,6 +27,8 @@ export class StudyZoneMapService {
   public polygonFilter = signal<any | undefined>(undefined);
   public polylines = signal<Feature[]>([]);
   public startPoints = signal<Feature[]>([]);
+  public studyZoneDialogVisible = signal<boolean>(false);
+
 
   public observations!: Observations[];
   public map!: Map;
@@ -434,6 +436,7 @@ export class StudyZoneMapService {
   public addObservationsToMap(
     observations: Observations[] = this.observations
   ) {
+    //Añadir source para los polygonos de las zonas de estudio
     this.map.addSource('studyZone', {
       type: 'geojson',
       data: {
@@ -459,6 +462,7 @@ export class StudyZoneMapService {
       },
     });
 
+    //Relleno zona de estudio
     this.map.addLayer({
       id: 'studyZone',
       type: 'fill',
@@ -469,6 +473,7 @@ export class StudyZoneMapService {
       },
     });
 
+    //Borde de la zona de estudio
     this.map.addLayer({
       id: 'studyZoneLines',
       type: 'line',
@@ -553,6 +558,22 @@ export class StudyZoneMapService {
         'circle-stroke-color': '#333',
         'circle-stroke-width': 2,
       },
+    });
+
+    this.map.on('mouseenter', 'studyZone', (e: any) => {
+      this.map.getCanvas().style.cursor = 'pointer';
+    });
+
+    this.map.on('mouseleave', 'studyZone', (e: any) => {
+      this.map.getCanvas().style.cursor = 'inherit';
+    });
+
+    this.map.on('click', 'studyZone', (e: any) => {
+      this.map.getCanvas().style.cursor = 'inherit';
+      if(e.features.length > 0) {
+        this.studyZoneService.selectStudyZone(e.features[0].properties.id);
+        this.studyZoneDialogVisible.update(() => true);
+      }
     });
 
     this.map.on('mouseenter', 'LineString', (e: any) => {

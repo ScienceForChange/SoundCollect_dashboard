@@ -46,6 +46,7 @@ export class StudyZoneService {
       .subscribe({
         next: ({ data }) => {
           this.observationService.loading$.next(false);
+          console.log('data', data)
           this.studyZones$.next(data);
         },
         error: (error) => {
