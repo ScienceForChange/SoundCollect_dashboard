@@ -59,8 +59,6 @@ export class StudyZoneService {
     polygon: Number[],
     result: StudyZoneForm
   ): Observable<void> {
-    //TODO SI SUBO ALGÚN DOCUMENTO NO FUNCIONA, ME DEVUELVE UN ERROR 422
-    console.log('result', result)
     return this.http
       .post<{ success: string; data: StudyZone }>(
         `${environment.BACKEND_BASE_URL}/admin-panel/study-zone`,
@@ -90,12 +88,11 @@ export class StudyZoneService {
     const studyZone = {
       coordinates: result.boundaries.coordinates
         .flat()
-        .map((coord) => coord.join(' ')),
+        .map((coord) => coord.reverse().join(' ')),
       name: result.name,
       description: result.description,
       start_date: result.start_date,
       end_date: result.end_date,
-      //TODO PODER ACTUALIZAR LAS DEMÁS COSAS
     };
     return this.http
       .patch<{ success: string; data: StudyZone }>(

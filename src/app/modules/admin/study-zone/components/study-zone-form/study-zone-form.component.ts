@@ -1,13 +1,12 @@
-import {
-  Component,
-  EventEmitter,
-  inject,
-  Input,
-  Output,
-} from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
-import { StudyZone, StudyZoneForm } from '../../../../../models/study-zone';
+import {
+  CollaboratorsStudyZone,
+  DocumentsStudyZones,
+  StudyZone,
+  StudyZoneForm,
+} from '../../../../../models/study-zone';
 import { StudyZoneService } from '../../../../../services/study-zone/study-zone.service';
 import { StudyZoneMapService } from '../../service/study-zone-map.service';
 
@@ -51,25 +50,65 @@ export class StudyZoneFormComponent {
     this.polygon = this.studyZoneMapService.polygonFilter;
     this.studyZoneService.studyZoneSelected$.subscribe((studyZoneSelected) => {
       if (studyZoneSelected) {
-        this.studyZoneSelected = studyZoneSelected;
-        this.studyZoneForm.patchValue(studyZoneSelected);
+        const studyZoneForm = {
+          ...studyZoneSelected,
+          collaborators: studyZoneSelected.relationships.collaborators,
+          documents: studyZoneSelected.relationships.documents,
+          start_end_dates: [
+            new Date(studyZoneSelected.start_date),
+            new Date(studyZoneSelected.end_date),
+          ],
+        };
+        delete studyZoneForm.relationships;
+        delete studyZoneForm.start_date;
+        delete studyZoneForm.end_date;
+
+        this.studyZoneSelected = studyZoneForm;
+        this.studyZoneForm.patchValue(studyZoneForm);
+        this.addCollaborator(studyZoneSelected.relationships.collaborators)
+        this.addDocument(studyZoneSelected.relationships.documents)
       }
     });
   }
 
-  addCollaborator(): void {
+  addCollaborator(collaborators?: CollaboratorsStudyZone[]): void {
+    if(!!collaborators) {
+      collaborators.forEach(collaborator => {
+        this.collaborators.push(
+          new FormGroup({
+            collaborator_name: new FormControl(collaborator.collaborator_name, [Validators.required]),
+            logo: new FormControl(collaborator.logo, [Validators.required]),
+            contact_name: new FormControl(collaborator.contact_name, []),
+            contact_email: new FormControl(collaborator.contact_email, [Validators.email]),
+            contact_phone: new FormControl(collaborator.contact_phone, []),
+          })
+        );
+      }); 
+      return      
+    }
     this.collaborators.push(
       new FormGroup({
-        collaborator_name: new FormControl('', [Validators.required]),
-        logo: new FormControl(null, [Validators.required]),
-        contact_name: new FormControl('', []),
-        contact_email: new FormControl('', []),
-        contact_phone: new FormControl('', []),
+      collaborator_name: new FormControl('', [Validators.required]),
+      logo: new FormControl(null, [Validators.required]),
+      contact_name: new FormControl('', []),
+      contact_email: new FormControl('', [Validators.email]),
+      contact_phone: new FormControl('', []),
       })
     );
   }
 
-  addDocument(): void {
+  addDocument(documents?: DocumentsStudyZones[]): void {
+    if(!!documents) {
+      documents.forEach(document => {
+        this.documents.push(
+          new FormGroup({
+            name: new FormControl(document.name, [Validators.required]),
+            file: new FormControl(document.file, [Validators.required]),
+          })
+        );
+      }); 
+      return      
+    }
     this.documents.push(
       new FormGroup({
         name: new FormControl('', [Validators.required]),
@@ -162,6 +201,7 @@ export class StudyZoneFormComponent {
       start_date: this.studyZoneForm.value.start_end_dates[0],
       end_date: this.studyZoneForm.value.start_end_dates[1],
     };
+
     this.studyZoneService
       .updateStudyZone(this.studyZoneSelected.id, studyZoneUpdated)
       .subscribe({
