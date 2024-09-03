@@ -25,5 +25,6 @@ export class StudyZoneDialogComponent {
 
   closeDialog(): void {
     this.studyZoneMapService.studyZoneDialogVisible.update(() => false);
+    this.studyZoneService.studyZoneSelected$.next(null);
   }
 }

@@ -46,7 +46,6 @@ export class StudyZoneService {
       .subscribe({
         next: ({ data }) => {
           this.observationService.loading$.next(false);
-          console.log('data', data)
           this.studyZones$.next(data);
         },
         error: (error) => {
@@ -61,6 +60,7 @@ export class StudyZoneService {
     result: StudyZoneForm
   ): Observable<void> {
     //TODO SI SUBO ALGÚN DOCUMENTO NO FUNCIONA, ME DEVUELVE UN ERROR 422
+    console.log('result', result)
     return this.http
       .post<{ success: string; data: StudyZone }>(
         `${environment.BACKEND_BASE_URL}/admin-panel/study-zone`,

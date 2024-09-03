@@ -1,13 +1,11 @@
 import {
   Component,
-  effect,
   EventEmitter,
   inject,
   Input,
   Output,
 } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
-import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'primeng/api';
 import { StudyZone, StudyZoneForm } from '../../../../../models/study-zone';
 import { StudyZoneService } from '../../../../../services/study-zone/study-zone.service';
@@ -20,7 +18,6 @@ import { StudyZoneMapService } from '../../service/study-zone-map.service';
 })
 export class StudyZoneFormComponent {
   private messageService = inject(MessageService);
-  private translations = inject(TranslateService);
   private studyZoneService = inject(StudyZoneService);
   private studyZoneMapService = inject(StudyZoneMapService);
 
@@ -34,8 +31,8 @@ export class StudyZoneFormComponent {
     name: new FormControl('', [Validators.required]),
     description: new FormControl('', [Validators.required]),
     conclusion: new FormControl(''),
-    start_end_dates: new FormControl(
-      [new Date(), new Date()],
+    start_end_dates: new FormControl<Date[] | null[]>(
+      [new Date(), new Date()] as Date[] | null[],
       [Validators.required]
     ),
     documents: new FormArray([]),
@@ -53,9 +50,10 @@ export class StudyZoneFormComponent {
   ngOnInit(): void {
     this.polygon = this.studyZoneMapService.polygonFilter;
     this.studyZoneService.studyZoneSelected$.subscribe((studyZoneSelected) => {
-      this.studyZoneSelected = studyZoneSelected;
-      console.log('studyZoneSelected', studyZoneSelected)
-      this.studyZoneForm.patchValue(studyZoneSelected);
+      if (studyZoneSelected) {
+        this.studyZoneSelected = studyZoneSelected;
+        this.studyZoneForm.patchValue(studyZoneSelected);
+      }
     });
   }
 
@@ -105,7 +103,7 @@ export class StudyZoneFormComponent {
 
   toggleDialog(): void {
     this.toggleStudyZoneForm.emit();
-    this.studyZoneForm.reset();
+    this.studyZoneService.studyZoneSelected$.next(null);
   }
 
   showWarn(): void {
