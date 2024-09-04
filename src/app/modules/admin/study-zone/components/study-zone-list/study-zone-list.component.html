@@ -49,8 +49,8 @@
           <button
             pButton
             type="button"
-            icon="pi pi-times"
-            (click)="enableStudyZone(studyZone.id)"
+            [icon]="studyZone.is_visible ? 'pi pi-times' : 'pi pi-check'"
+            (click)="toggleEnableStudyZone(studyZone.id)"
           ></button>
         </td>
         <td class="text-center">
@@ -61,7 +61,6 @@
             (click)="confirmDeleteStudyZone($event, studyZone.id)"
           ></button>
           <p-confirmPopup [styleClass]="'custom-confirm-popup'" />
-          <p-toast />
         </td>
         <td class="text-center">
           <button

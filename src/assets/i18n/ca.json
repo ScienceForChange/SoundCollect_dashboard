@@ -335,6 +335,7 @@
         "contactPhone": "Telèfon del contacte",
         "addLogo": "Afegir logotip",
         "delete": "Esborrar",
+        "deleteLogo": "Esborrar logotip",
         "cancel": "Cancel·lar",
         "saveStudyZone": "Guardar zona d'estudi"
       },
@@ -351,7 +352,9 @@
       "studyZoneDialog":{
         "description": "Descripció",
         "conclusion": "Conclusió",
-        "startAndEndDate": "Data d'inici i final"
+        "startAndEndDate": "Data d'inici i final",
+        "files": "Fitxers",
+        "collaborators": "Col·laboradors"
       }
     }
   },

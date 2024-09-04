@@ -10,8 +10,12 @@ export class AppComponent {
   private studyZoneService = inject(StudyZoneService);
   private observationService = inject(ObservationsService);
 
-  ngOnInit(): void {
-    this.observationService.getAllObservations();
+ async ngOnInit(): Promise<void> {
+  try {
+    await this.observationService.getAllObservations();
     this.studyZoneService.fetchStudyZones();
+  } catch (error) {
+    console.error(error);
+  }
   }
 }

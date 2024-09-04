@@ -8,6 +8,25 @@ export interface StudyZoneForm {
   start_end_dates: Date[];
 }
 
+export interface CollaboratorsStudyZone {
+  collaborator_name: string;
+  collaborator_web: null | string;
+  contact_name: string;
+  contact_email: string;
+  contact_phone: string;
+  logo: string;
+  id: number;
+  updated_at: Date;
+  created_at: Date
+  study_zone_id: number;
+}
+
+export interface DocumentsStudyZones {
+  name: string;
+  file: string;
+  id: number;
+}
+
 
 export interface StudyZone {
     id:            number;
@@ -15,6 +34,7 @@ export interface StudyZone {
     name:          string;
     description:   string;
     conclusion:    string;
+    is_visible:    boolean;
     boundaries:    Boundaries;
     start_date:    Date;
     end_date:      Date;

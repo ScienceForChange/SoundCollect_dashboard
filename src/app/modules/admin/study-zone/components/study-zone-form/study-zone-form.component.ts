@@ -1,17 +1,22 @@
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import {
-  Component,
-  effect,
-  EventEmitter,
-  inject,
-  Input,
-  Output,
-} from '@angular/core';
-import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
-import { TranslateService } from '@ngx-translate/core';
+  AbstractControl,
+  FormArray,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { MessageService } from 'primeng/api';
-import { StudyZone, StudyZoneForm } from '../../../../../models/study-zone';
+import {
+  CollaboratorsStudyZone,
+  DocumentsStudyZones,
+  StudyZone,
+  StudyZoneForm,
+} from '../../../../../models/study-zone';
 import { StudyZoneService } from '../../../../../services/study-zone/study-zone.service';
 import { StudyZoneMapService } from '../../service/study-zone-map.service';
+
+import compareObjectsValues from '../../../../../../utils/compareObjects';
 
 @Component({
   selector: 'app-study-zone-form',
@@ -20,7 +25,6 @@ import { StudyZoneMapService } from '../../service/study-zone-map.service';
 })
 export class StudyZoneFormComponent {
   private messageService = inject(MessageService);
-  private translations = inject(TranslateService);
   private studyZoneService = inject(StudyZoneService);
   private studyZoneMapService = inject(StudyZoneMapService);
 
@@ -28,14 +32,15 @@ export class StudyZoneFormComponent {
   @Output() toggleStudyZoneForm: EventEmitter<void> = new EventEmitter<void>();
 
   private polygon: any = null;
+  private updatedCollaborators: { [key: string]: any } = {};
 
   studyZoneForm: FormGroup = new FormGroup({
     user_id: new FormControl('', [Validators.required]),
     name: new FormControl('', [Validators.required]),
     description: new FormControl('', [Validators.required]),
     conclusion: new FormControl(''),
-    start_end_dates: new FormControl(
-      [new Date(), new Date()],
+    start_end_dates: new FormControl<Date[] | null[]>(
+      [new Date(), new Date()] as Date[] | null[],
       [Validators.required]
     ),
     documents: new FormArray([]),
@@ -53,25 +58,69 @@ export class StudyZoneFormComponent {
   ngOnInit(): void {
     this.polygon = this.studyZoneMapService.polygonFilter;
     this.studyZoneService.studyZoneSelected$.subscribe((studyZoneSelected) => {
-      this.studyZoneSelected = studyZoneSelected;
-      console.log('studyZoneSelected', studyZoneSelected)
-      this.studyZoneForm.patchValue(studyZoneSelected);
+      if (studyZoneSelected) {
+        const studyZoneForm = {
+          ...studyZoneSelected,
+          collaborators: studyZoneSelected.relationships.collaborators,
+          documents: studyZoneSelected.relationships.documents,
+          start_end_dates: [
+            new Date(studyZoneSelected.start_date),
+            new Date(studyZoneSelected.end_date),
+          ],
+        };
+
+        this.studyZoneSelected = studyZoneForm;
+        this.studyZoneForm.patchValue(studyZoneForm);
+        this.addCollaborator(studyZoneSelected.relationships.collaborators);
+        this.addDocument(studyZoneSelected.relationships.documents);
+      }
     });
   }
 
-  addCollaborator(): void {
+  addCollaborator(collaborators?: CollaboratorsStudyZone[]): void {
+    if (!!collaborators) {
+      collaborators.forEach((collaborator) => {
+        this.collaborators.push(
+          new FormGroup({
+            collaborator_name: new FormControl(collaborator.collaborator_name, [
+              Validators.required,
+            ]),
+            logo: new FormControl(collaborator.logo, [Validators.required]),
+            contact_name: new FormControl(collaborator.contact_name, []),
+            contact_email: new FormControl(collaborator.contact_email, [
+              Validators.email,
+            ]),
+            contact_phone: new FormControl(collaborator.contact_phone, []),
+            id: new FormControl(collaborator.id, []),
+          })
+        );
+      });
+      return;
+    }
     this.collaborators.push(
       new FormGroup({
         collaborator_name: new FormControl('', [Validators.required]),
         logo: new FormControl(null, [Validators.required]),
         contact_name: new FormControl('', []),
-        contact_email: new FormControl('', []),
+        contact_email: new FormControl('', [Validators.email]),
         contact_phone: new FormControl('', []),
       })
     );
   }
 
-  addDocument(): void {
+  addDocument(documents?: DocumentsStudyZones[]): void {
+    if (!!documents) {
+      documents.forEach((document) => {
+        this.documents.push(
+          new FormGroup({
+            name: new FormControl(document.name, [Validators.required]),
+            file: new FormControl(document.file, [Validators.required]),
+            id: new FormControl(document.id, []),
+          })
+        );
+      });
+      return;
+    }
     this.documents.push(
       new FormGroup({
         name: new FormControl('', [Validators.required]),
@@ -99,13 +148,17 @@ export class StudyZoneFormComponent {
     this.documents.removeAt(index);
   }
 
+  removeCollaboratorsLogo(index: number): void {
+    this.collaborators.controls[index].get('logo').setValue(null);
+  }
+
   removeCollaborator(index: number): void {
     this.collaborators.removeAt(index);
   }
 
   toggleDialog(): void {
     this.toggleStudyZoneForm.emit();
-    this.studyZoneForm.reset();
+    this.studyZoneService.studyZoneSelected$.next(null);
   }
 
   showWarn(): void {
@@ -158,19 +211,68 @@ export class StudyZoneFormComponent {
       });
       return;
     }
-    const studyZoneUpdated = {
-      ...this.studyZoneSelected,
-      ...this.studyZoneForm.value,
-      start_date: this.studyZoneForm.value.start_end_dates[0],
-      end_date: this.studyZoneForm.value.start_end_dates[1],
-    };
+
+    const studyZoneFormValues = this.studyZoneForm.value;
+
+    Object.keys(studyZoneFormValues).forEach((key) => {
+      if (key === 'collaborators') {
+        studyZoneFormValues.collaborators.forEach(
+          (collaborator: CollaboratorsStudyZone, index: number) => {
+            const SZSelectedCol =
+              this.studyZoneSelected.relationships.collaborators.find(
+                (collaboratorSelected) => {
+                  return collaboratorSelected.id === collaborator.id;
+                }
+              );
+            const { areEqual, differentKeys } = compareObjectsValues(
+              SZSelectedCol,
+              collaborator
+            );
+            if (areEqual) {
+              // Remove the id key from studyZoneFormValues collaborator
+              delete studyZoneFormValues[key][index].id;
+            }
+            //If some of the differentKeys are logo, I have to add the logo_data to the collaborator object
+            if (differentKeys.includes('logo')) {
+              studyZoneFormValues[key][index].logo_data = collaborator.logo;
+            }
+          }
+        );
+      }
+      if (key === 'documents') {
+        studyZoneFormValues.documents.forEach(
+          (document: DocumentsStudyZones, index: number) => {
+            const SZSelectedDoc =
+              this.studyZoneSelected.relationships.documents.find(
+                (documentSelected) => documentSelected.id === document.id
+              );
+            const { areEqual, differentKeys } = compareObjectsValues(
+              SZSelectedDoc,
+              document
+            );
+            if (areEqual) {
+              // Remove the id key from studyZoneFormValues collaborator
+              delete studyZoneFormValues[key][index].id;
+            }
+            if (differentKeys.includes('file')) {
+              studyZoneFormValues[key][index].file_data = document.file;
+            }
+          }
+        );
+      }
+    });
+
     this.studyZoneService
-      .updateStudyZone(this.studyZoneSelected.id, studyZoneUpdated)
+      .updateStudyZone(
+        this.studyZoneSelected.id,
+        studyZoneFormValues,
+        this.studyZoneSelected.boundaries
+      )
       .subscribe({
         next: () => {
           this.showSuccess(true);
           this.toggleStudyZoneForm.emit();
-          this.studyZoneForm.reset();
+          this.studyZoneService.studyZoneSelected$.next(null);
         },
         error: (error) => {
           this.showWarn();

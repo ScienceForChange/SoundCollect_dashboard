@@ -1,4 +1,4 @@
-import { Component, effect, inject } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { StudyZoneMapService } from '../../service/study-zone-map.service';
 import { StudyZone } from '../../../../../models/study-zone';
 import { StudyZoneService } from '../../../../../services/study-zone/study-zone.service';
@@ -11,13 +11,10 @@ import { StudyZoneService } from '../../../../../services/study-zone/study-zone.
 export class StudyZoneDialogComponent {
   private studyZoneMapService = inject(StudyZoneMapService);
   private studyZoneService = inject(StudyZoneService);
-  visible: boolean = false;
+  @Input() visible: boolean = false;
   studyZone!: StudyZone;
 
   constructor() {
-    effect(() => {
-      this.visible = this.studyZoneMapService.studyZoneDialogVisible();
-    });
     this.studyZoneService.studyZoneSelected$.subscribe((studyZone) => {
       this.studyZone = studyZone;
     })
@@ -25,5 +22,6 @@ export class StudyZoneDialogComponent {
 
   closeDialog(): void {
     this.studyZoneMapService.studyZoneDialogVisible.update(() => false);
+    this.studyZoneService.studyZoneSelected$.next(null);
   }
 }

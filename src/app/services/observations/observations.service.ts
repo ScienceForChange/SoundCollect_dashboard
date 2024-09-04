@@ -47,35 +47,39 @@ export class ObservationsService {
 
   constructor(private http: HttpClient) {}
 
-  public getAllObservations(): void {
-    this.loading$.next(true);
-    this.http
-      .get<{ success: string; data: Observations[] }>(
-        `${environment.BACKEND_BASE_URL}/observations?with-levels=true`
-      )
-      .pipe(
-        map((res) => {
-          try {
-            const observationsBetween20and80 = res.data.filter(
-              (obs) => +obs.attributes.Leq >= 20 && +obs.attributes.Leq <= 80
-            );
-            return observationsBetween20and80;
-          } catch (error) {
+  public getAllObservations(): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      this.loading$.next(true);
+      this.http
+        .get<{ success: string; data: Observations[] }>(
+          `${environment.BACKEND_BASE_URL}/observations?with-levels=true`
+        )
+        .pipe(
+          map((res) => {
+            try {
+              const observationsBetween20and80 = res.data.filter(
+                (obs) => +obs.attributes.Leq >= 20 && +obs.attributes.Leq <= 80
+              );
+              return observationsBetween20and80;
+            } catch (error) {
+              console.error(error);
+              throw Error('Error filtering observations', error);
+            }
+          })
+        )
+        .subscribe({
+          next: (data) => {
+            this.observations$.next(data);
+            this.loading$.next(false);
+            resolve();
+          },
+          error: (error) => {
             console.error(error);
-            throw Error('Error filtering observations', error);
-          }
-        })
-      )
-      .subscribe({
-        next: (data) => {
-          this.observations$.next(data);
-          this.loading$.next(false);
-        },
-        error: (error) => {
-          console.error(error);
-          this.loading$.next(false);
-        },
-      });
+            this.loading$.next(false);
+            reject(error);
+          },
+        });
+    })
   }
 
   public getAllObservationsNumbers(): Observable<any> {

@@ -12,7 +12,7 @@ import {
   catchError,
   throwError,
 } from 'rxjs';
-import { StudyZone, StudyZoneForm } from '../../models/study-zone';
+import { Boundaries, StudyZone, StudyZoneForm } from '../../models/study-zone';
 
 @Injectable({
   providedIn: 'root',
@@ -46,7 +46,6 @@ export class StudyZoneService {
       .subscribe({
         next: ({ data }) => {
           this.observationService.loading$.next(false);
-          console.log('data', data)
           this.studyZones$.next(data);
         },
         error: (error) => {
@@ -56,11 +55,40 @@ export class StudyZoneService {
       });
   }
 
+  public toggleEnableStudyZone(id: number): Observable<boolean> {
+    this.observationService.loading$.next(true);
+    const isVisible = this.studyZones$
+      .getValue()
+      .find((zone) => zone.id === id).is_visible;
+    return this.http
+      .patch<{ success: string; data: StudyZone }>(
+        `${environment.BACKEND_BASE_URL}/admin-panel/study-zone/${id}/toggle`,
+        {}
+      )
+      .pipe(
+        map(() => {
+          this.observationService.loading$.next(false);
+          const studyZones = this.studyZones$.getValue().map((studyZone) => {
+            if (studyZone.id === id) {
+              return { ...studyZone, is_visible: !isVisible };
+            }
+            return studyZone;
+          });
+          this.studyZones$.next(studyZones);
+          return !isVisible;
+        }),
+        catchError((error) => {
+          this.observationService.loading$.next(false);
+          return throwError(() => error);
+        })
+      );
+  }
+
   public createStudyZone(
     polygon: Number[],
     result: StudyZoneForm
   ): Observable<void> {
-    //TODO SI SUBO ALGÚN DOCUMENTO NO FUNCIONA, ME DEVUELVE UN ERROR 422
+    this.observationService.loading$.next(true);
     return this.http
       .post<{ success: string; data: StudyZone }>(
         `${environment.BACKEND_BASE_URL}/admin-panel/study-zone`,
@@ -85,17 +113,15 @@ export class StudyZoneService {
       );
   }
 
-  public updateStudyZone(id: number, result: StudyZone): Observable<void> {
+  public updateStudyZone(id: number, result: StudyZoneForm, boundaries:Boundaries): Observable<void> {
     this.observationService.loading$.next(true);
     const studyZone = {
-      coordinates: result.boundaries.coordinates
+      coordinates: boundaries.coordinates
         .flat()
-        .map((coord) => coord.join(' ')),
-      name: result.name,
-      description: result.description,
-      start_date: result.start_date,
-      end_date: result.end_date,
-      //TODO PODER ACTUALIZAR LAS DEMÁS COSAS
+        .map((coord) => coord.reverse().join(' ')),
+      start_date: result.start_end_dates[0],
+      end_date: result.start_end_dates[1],
+      ...result,
     };
     return this.http
       .patch<{ success: string; data: StudyZone }>(
