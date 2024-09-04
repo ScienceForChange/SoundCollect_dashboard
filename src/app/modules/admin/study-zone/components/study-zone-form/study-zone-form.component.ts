@@ -135,11 +135,11 @@ export class StudyZoneFormComponent {
     reader.readAsDataURL(file);
     if (isDocument) {
       reader.onload = () => {
-        this.documents.controls[index].get('file').setValue(reader.result);
+        this.documents.controls[index].get('file_data').setValue(reader.result);
       };
     } else {
       reader.onload = () => {
-        this.collaborators.controls[index].get('logo').setValue(reader.result);
+        this.collaborators.controls[index].get('logo_data').setValue(reader.result);
       };
     }
   }
@@ -150,6 +150,7 @@ export class StudyZoneFormComponent {
 
   removeCollaboratorsLogo(index: number): void {
     this.collaborators.controls[index].get('logo').setValue(null);
+    this.collaborators.controls[index].get('logo_data').setValue(null);
   }
 
   removeCollaborator(index: number): void {
