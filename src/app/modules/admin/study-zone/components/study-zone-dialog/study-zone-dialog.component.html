@@ -8,22 +8,75 @@
   <div class="flex flex-column gap-4">
     <!-- Descripción -->
     <div class="flex flex-column gap-2">
-      <h3 class="text-lg">{{ "admin.studyZone.studyZoneDialog.description" | translate }}:</h3>
+      <h3 class="text-lg">
+        {{ "admin.studyZone.studyZoneDialog.description" | translate }}:
+      </h3>
       <p>{{ studyZone?.description }}</p>
     </div>
     <!-- Conclusión -->
     <div class="flex flex-column gap-2">
-      <h3 class="text-lg">{{ "admin.studyZone.studyZoneDialog.conclusion" | translate }}:</h3>
+      <h3 class="text-lg">
+        {{ "admin.studyZone.studyZoneDialog.conclusion" | translate }}:
+      </h3>
       <p>{{ studyZone?.conclusion }}</p>
     </div>
     <!-- Fechas de inicio y fin -->
     <div class="flex flex-column gap-2">
-      <h3 class="text-lg">{{ "admin.studyZone.studyZoneDialog.startAndEndDate" | translate }}:</h3>
+      <h3 class="text-lg">
+        {{ "admin.studyZone.studyZoneDialog.startAndEndDate" | translate }}:
+      </h3>
       <p>
-        {{ studyZone?.start_date | date: "dd/MM/yyyy" }} - {{ studyZone?.end_date | date: "dd/MM/yyyy" }}
+        {{ studyZone?.start_date | date : "dd/MM/yyyy" }} -
+        {{ studyZone?.end_date | date : "dd/MM/yyyy" }}
       </p>
     </div>
+    <!-- Ficheros -->
+    <div class="flex flex-column gap-2">
+      <h3 class="text-lg">
+        {{ "admin.studyZone.studyZoneDialog.files" | translate }}:
+      </h3>
+      <ul class="m-0">
+        @for(file of studyZone.relationships.documents; track $index){
+        <li>
+          <a href="{{ file.file }}" target="_blank">{{ file.name }}</a>
+        </li>
+        }
+      </ul>
+    </div>
+    <!-- Colaboradores -->
+    <div class="flex flex-column gap-2">
+      <h3 class="text-lg">
+        {{ "admin.studyZone.studyZoneDialog.collaborators" | translate }}:
+      </h3>
+      @for(collaborator of studyZone.relationships.collaborators; track $index){
+      <div>
+        <p>
+          <span class="font-medium">Nom del col·laborador :</span>
+          {{ collaborator.collaborator_name }}
+        </p>
+        <p>
+          <span class="font-medium">Nom del contacte :</span>
+          {{ collaborator.contact_name }}
+        </p>
+        <p>
+          <span class="font-medium">Email del contacte :</span>
+          <a href="mailto:{{ collaborator.contact_email }}">{{
+            collaborator.contact_email
+          }}</a>
+        </p>
+        <p>
+          <span class="font-medium">Telèfon del contacte :</span>
+          {{ collaborator.contact_phone }}
+        </p>
+        <p><span class="font-medium">Logotip :</span></p>
+        <img
+          src="{{ collaborator.logo }}"
+          alt="Logo del col·laborador"
+          class="w-full"
+        />
+      </div>
+      <hr />
+      }
+    </div>
   </div>
-  <!-- Ficheros -->
-  <!-- Colaboradores -->
 </p-dialog>

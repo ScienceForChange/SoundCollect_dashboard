@@ -352,7 +352,9 @@
       "studyZoneDialog":{
         "description": "Descripció",
         "conclusion": "Conclusió",
-        "startAndEndDate": "Data d'inici i final"
+        "startAndEndDate": "Data d'inici i final",
+        "files": "Fitxers",
+        "collaborators": "Col·laboradors"
       }
     }
   },
