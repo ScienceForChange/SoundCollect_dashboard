@@ -59,55 +59,56 @@ export class StudyZoneFormComponent {
             new Date(studyZoneSelected.end_date),
           ],
         };
-        delete studyZoneForm.relationships;
-        delete studyZoneForm.start_date;
-        delete studyZoneForm.end_date;
 
         this.studyZoneSelected = studyZoneForm;
         this.studyZoneForm.patchValue(studyZoneForm);
-        this.addCollaborator(studyZoneSelected.relationships.collaborators)
-        this.addDocument(studyZoneSelected.relationships.documents)
+        this.addCollaborator(studyZoneSelected.relationships.collaborators);
+        this.addDocument(studyZoneSelected.relationships.documents);
       }
     });
   }
 
   addCollaborator(collaborators?: CollaboratorsStudyZone[]): void {
-    if(!!collaborators) {
-      collaborators.forEach(collaborator => {
+    if (!!collaborators) {
+      collaborators.forEach((collaborator) => {
         this.collaborators.push(
           new FormGroup({
-            collaborator_name: new FormControl(collaborator.collaborator_name, [Validators.required]),
+            collaborator_name: new FormControl(collaborator.collaborator_name, [
+              Validators.required,
+            ]),
             logo: new FormControl(collaborator.logo, [Validators.required]),
             contact_name: new FormControl(collaborator.contact_name, []),
-            contact_email: new FormControl(collaborator.contact_email, [Validators.email]),
+            contact_email: new FormControl(collaborator.contact_email, [
+              Validators.email,
+            ]),
             contact_phone: new FormControl(collaborator.contact_phone, []),
           })
         );
-      }); 
-      return      
+      });
+      return;
     }
     this.collaborators.push(
       new FormGroup({
-      collaborator_name: new FormControl('', [Validators.required]),
-      logo: new FormControl(null, [Validators.required]),
-      contact_name: new FormControl('', []),
-      contact_email: new FormControl('', [Validators.email]),
-      contact_phone: new FormControl('', []),
+        collaborator_name: new FormControl('', [Validators.required]),
+        logo: new FormControl(null, [Validators.required]),
+        contact_name: new FormControl('', []),
+        contact_email: new FormControl('', [Validators.email]),
+        contact_phone: new FormControl('', []),
       })
     );
   }
 
   addDocument(documents?: DocumentsStudyZones[]): void {
-    if(!!documents) {
-      documents.forEach(document => {
+    if (!!documents) {
+      documents.forEach((document) => {
         this.documents.push(
           new FormGroup({
             name: new FormControl(document.name, [Validators.required]),
             file: new FormControl(document.file, [Validators.required]),
           })
         );
-      }); 
-      return      
+      });
+      return;
     }
     this.documents.push(
       new FormGroup({
@@ -134,6 +135,10 @@ export class StudyZoneFormComponent {
 
   removeDocument(index: number): void {
     this.documents.removeAt(index);
+  }
+
+  removeCollaboratorsLogo(index: number): void {
+    this.collaborators.controls[index].get('logo').setValue(null);
   }
 
   removeCollaborator(index: number): void {
@@ -195,20 +200,18 @@ export class StudyZoneFormComponent {
       });
       return;
     }
-    const studyZoneUpdated = {
-      ...this.studyZoneSelected,
-      ...this.studyZoneForm.value,
-      start_date: this.studyZoneForm.value.start_end_dates[0],
-      end_date: this.studyZoneForm.value.start_end_dates[1],
-    };
 
     this.studyZoneService
-      .updateStudyZone(this.studyZoneSelected.id, studyZoneUpdated)
+      .updateStudyZone(
+        this.studyZoneSelected.id,
+        this.studyZoneForm.value,
+        this.studyZoneSelected.boundaries
+      )
       .subscribe({
         next: () => {
           this.showSuccess(true);
           this.toggleStudyZoneForm.emit();
-          this.studyZoneForm.reset();
+          this.studyZoneService.studyZoneSelected$.next(null);
         },
         error: (error) => {
           this.showWarn();

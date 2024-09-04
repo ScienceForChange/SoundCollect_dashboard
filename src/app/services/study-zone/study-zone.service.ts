@@ -12,7 +12,7 @@ import {
   catchError,
   throwError,
 } from 'rxjs';
-import { StudyZone, StudyZoneForm } from '../../models/study-zone';
+import { Boundaries, StudyZone, StudyZoneForm } from '../../models/study-zone';
 
 @Injectable({
   providedIn: 'root',
@@ -88,6 +88,7 @@ export class StudyZoneService {
     polygon: Number[],
     result: StudyZoneForm
   ): Observable<void> {
+    this.observationService.loading$.next(true);
     return this.http
       .post<{ success: string; data: StudyZone }>(
         `${environment.BACKEND_BASE_URL}/admin-panel/study-zone`,
@@ -112,16 +113,15 @@ export class StudyZoneService {
       );
   }
 
-  public updateStudyZone(id: number, result: StudyZone): Observable<void> {
+  public updateStudyZone(id: number, result: StudyZoneForm, boundaries:Boundaries): Observable<void> {
     this.observationService.loading$.next(true);
     const studyZone = {
-      coordinates: result.boundaries.coordinates
+      coordinates: boundaries.coordinates
         .flat()
         .map((coord) => coord.reverse().join(' ')),
-      name: result.name,
-      description: result.description,
-      start_date: result.start_date,
-      end_date: result.end_date,
+      start_date: result.start_end_dates[0],
+      end_date: result.start_end_dates[1],
+      ...result,
     };
     return this.http
       .patch<{ success: string; data: StudyZone }>(

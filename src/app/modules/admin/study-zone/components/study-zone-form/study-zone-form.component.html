@@ -16,7 +16,7 @@
         required
         pInputText
       />
-      <label for="name">{{ 'admin.studyZone.form.name' | translate }}</label>
+      <label for="name">{{ "admin.studyZone.form.name" | translate }}</label>
     </span>
     <span class="p-float-label mt-5">
       <textarea
@@ -27,7 +27,9 @@
         required
         pInputTextarea
       ></textarea>
-      <label for="description">{{ 'admin.studyZone.form.description' | translate }}</label>
+      <label for="description">{{
+        "admin.studyZone.form.description" | translate
+      }}</label>
     </span>
     <span class="p-float-label mt-5">
       <textarea
@@ -38,7 +40,9 @@
         required
         pInputTextarea
       ></textarea>
-      <label for="conclusion">{{ 'admin.studyZone.form.conclusion' | translate }}</label>
+      <label for="conclusion">{{
+        "admin.studyZone.form.conclusion" | translate
+      }}</label>
     </span>
     <span class="p-float-label mt-5">
       <p-calendar
@@ -48,11 +52,13 @@
         [touchUI]="true"
         required
       />
-      <label for="conclusion">{{ 'admin.studyZone.form.startEndDate' | translate }}</label>
+      <label for="conclusion">{{
+        "admin.studyZone.form.startEndDate" | translate
+      }}</label>
     </span>
     <p-divider class="mt-3 mb-3" />
     <div class="flex flex-column gap-3">
-      <span>{{ 'admin.studyZone.form.addFiles' | translate }}</span>
+      <span>{{ "admin.studyZone.form.addFiles" | translate }}</span>
       @if(documents.controls[0]){
       <div formArrayName="documents" class="flex flex-column gap-5 mt-5">
         <div
@@ -70,8 +76,11 @@
               required
               pInputText
             />
-            <label for="name">{{ 'admin.studyZone.form.nameFile' | translate }}</label>
+            <label for="name">{{
+              "admin.studyZone.form.nameFile" | translate
+            }}</label>
           </span>
+          @if(!studyZoneSelected?.relationships.documents[i].file){
           <p-fileUpload
             mode="basic"
             chooseLabel="{{ 'admin.studyZone.form.addFile' | translate }}"
@@ -81,6 +90,7 @@
             required
             (onSelect)="onUploadFile($event, i, true)"
           />
+          }
           <p-button
             icon="pi pi-trash"
             type="button"
@@ -101,7 +111,7 @@
     </div>
     <p-divider class="mt-3 mb-3" />
     <div class="flex flex-column gap-3">
-      <span>{{ 'admin.studyZone.form.addCollaborator' | translate }}</span>
+      <span>{{ "admin.studyZone.form.addCollaborator" | translate }}</span>
       @if(collaborators.controls[0]){
       <div formArrayName="collaborators" class="flex flex-column gap-5">
         <div
@@ -119,7 +129,9 @@
               required
               pInputText
             />
-            <label for="collaborator_name">{{ 'admin.studyZone.form.collaboratorName' | translate }}</label>
+            <label for="collaborator_name">{{
+              "admin.studyZone.form.collaboratorName" | translate
+            }}</label>
           </span>
           <span class="p-float-label">
             <input
@@ -131,7 +143,9 @@
               required
               pInputText
             />
-            <label for="contact_name">{{ 'admin.studyZone.form.contactName' | translate }}</label>
+            <label for="contact_name">{{
+              "admin.studyZone.form.contactName" | translate
+            }}</label>
           </span>
           <span class="p-float-label">
             <input
@@ -143,7 +157,9 @@
               required
               pInputText
             />
-            <label for="contact_email">{{ 'admin.studyZone.form.contactEmail' | translate }}</label>
+            <label for="contact_email">{{
+              "admin.studyZone.form.contactEmail" | translate
+            }}</label>
           </span>
           <span class="p-float-label">
             <input
@@ -155,8 +171,12 @@
               required
               pInputText
             />
-            <label for="contact_phone">{{ 'admin.studyZone.form.contactPhone' | translate }}</label>
+            <label for="contact_phone">{{
+              "admin.studyZone.form.contactPhone" | translate
+            }}</label>
           </span>
+          @if(!collaborator.value.logo ||
+          !studyZoneSelected?.relationships.collaborators[i].logo){
           <p-fileUpload
             mode="basic"
             chooseLabel="{{ 'admin.studyZone.form.addLogo' | translate }}"
@@ -166,6 +186,25 @@
             required
             (onSelect)="onUploadFile($event, i, false)"
           />
+          } @else {
+          <img
+            [src]="collaborator.value.logo"
+            [alt]="
+              studyZoneSelected?.relationships.collaborators[i]
+                .collaborator_name
+            "
+            width="400"
+            height="100"
+            style="object-fit: cover; object-position: center"
+          />
+          <p-button
+            icon="pi pi-trash"
+            type="button"
+            label="{{ 'admin.studyZone.form.deleteLogo' | translate }}"
+            severity="secondary"
+            (click)="removeCollaboratorsLogo(i)"
+          />
+          }
           <p-button
             type="button"
             icon="pi pi-trash"
@@ -190,7 +229,10 @@
         severity="secondary"
         (onClick)="toggleDialog()"
       />
-      <p-button label="{{ 'admin.studyZone.form.saveStudyZone' | translate }}" (onClick)="submit()" />
+      <p-button
+        label="{{ 'admin.studyZone.form.saveStudyZone' | translate }}"
+        (onClick)="submit()"
+      />
     </div>
   </form>
 </p-dialog>
