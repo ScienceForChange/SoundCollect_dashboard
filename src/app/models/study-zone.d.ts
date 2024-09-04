@@ -10,15 +10,21 @@ export interface StudyZoneForm {
 
 export interface CollaboratorsStudyZone {
   collaborator_name: string;
+  collaborator_web: null | string;
   contact_name: string;
   contact_email: string;
   contact_phone: string;
   logo: string;
+  id: number;
+  updated_at: Date;
+  created_at: Date
+  study_zone_id: number;
 }
 
 export interface DocumentsStudyZones {
   name: string;
   file: string;
+  id: number;
 }
 
 

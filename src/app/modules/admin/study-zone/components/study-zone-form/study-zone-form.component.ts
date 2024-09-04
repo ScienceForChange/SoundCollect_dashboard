@@ -1,5 +1,11 @@
 import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
-import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormArray,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import {
   CollaboratorsStudyZone,
@@ -9,6 +15,8 @@ import {
 } from '../../../../../models/study-zone';
 import { StudyZoneService } from '../../../../../services/study-zone/study-zone.service';
 import { StudyZoneMapService } from '../../service/study-zone-map.service';
+
+import compareObjectsValues from '../../../../../../utils/compareObjects';
 
 @Component({
   selector: 'app-study-zone-form',
@@ -24,6 +32,7 @@ export class StudyZoneFormComponent {
   @Output() toggleStudyZoneForm: EventEmitter<void> = new EventEmitter<void>();
 
   private polygon: any = null;
+  private updatedCollaborators: { [key: string]: any } = {};
 
   studyZoneForm: FormGroup = new FormGroup({
     user_id: new FormControl('', [Validators.required]),
@@ -82,6 +91,7 @@ export class StudyZoneFormComponent {
               Validators.email,
             ]),
             contact_phone: new FormControl(collaborator.contact_phone, []),
+            id: new FormControl(collaborator.id, []),
           })
         );
       });
@@ -105,6 +115,7 @@ export class StudyZoneFormComponent {
           new FormGroup({
             name: new FormControl(document.name, [Validators.required]),
             file: new FormControl(document.file, [Validators.required]),
+            id: new FormControl(document.id, []),
           })
         );
       });
@@ -201,10 +212,60 @@ export class StudyZoneFormComponent {
       return;
     }
 
+    const studyZoneFormValues = this.studyZoneForm.value;
+
+    Object.keys(studyZoneFormValues).forEach((key) => {
+      if (key === 'collaborators') {
+        studyZoneFormValues.collaborators.forEach(
+          (collaborator: CollaboratorsStudyZone, index: number) => {
+            const SZSelectedCol =
+              this.studyZoneSelected.relationships.collaborators.find(
+                (collaboratorSelected) => {
+                  return collaboratorSelected.id === collaborator.id;
+                }
+              );
+            const { areEqual, differentKeys } = compareObjectsValues(
+              SZSelectedCol,
+              collaborator
+            );
+            if (areEqual) {
+              // Remove the id key from studyZoneFormValues collaborator
+              delete studyZoneFormValues[key][index].id;
+            }
+            //If some of the differentKeys are logo, I have to add the logo_data to the collaborator object
+            if (differentKeys.includes('logo')) {
+              studyZoneFormValues[key][index].logo_data = collaborator.logo;
+            }
+          }
+        );
+      }
+      if (key === 'documents') {
+        studyZoneFormValues.documents.forEach(
+          (document: DocumentsStudyZones, index: number) => {
+            const SZSelectedDoc =
+              this.studyZoneSelected.relationships.documents.find(
+                (documentSelected) => documentSelected.id === document.id
+              );
+            const { areEqual, differentKeys } = compareObjectsValues(
+              SZSelectedDoc,
+              document
+            );
+            if (areEqual) {
+              // Remove the id key from studyZoneFormValues collaborator
+              delete studyZoneFormValues[key][index].id;
+            }
+            if (differentKeys.includes('file')) {
+              studyZoneFormValues[key][index].file_data = document.file;
+            }
+          }
+        );
+      }
+    });
+
     this.studyZoneService
       .updateStudyZone(
         this.studyZoneSelected.id,
-        this.studyZoneForm.value,
+        studyZoneFormValues,
         this.studyZoneSelected.boundaries
       )
       .subscribe({
