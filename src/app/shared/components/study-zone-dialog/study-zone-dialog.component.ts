@@ -1,7 +1,7 @@
 import { Component, inject, Input } from '@angular/core';
-import { StudyZoneMapService } from '../../service/study-zone-map.service';
-import { StudyZone } from '../../../../../models/study-zone';
-import { StudyZoneService } from '../../../../../services/study-zone/study-zone.service';
+import { StudyZoneMapService } from '../../../modules/admin/study-zone/service/study-zone-map.service';
+import { StudyZoneService } from '../../../services/study-zone/study-zone.service';
+import { StudyZone } from '../../../models/study-zone';
 
 @Component({
   selector: 'app-study-zone-dialog',
@@ -17,7 +17,7 @@ export class StudyZoneDialogComponent {
   constructor() {
     this.studyZoneService.studyZoneSelected$.subscribe((studyZone) => {
       this.studyZone = studyZone;
-    })
+    });
   }
 
   closeDialog(): void {

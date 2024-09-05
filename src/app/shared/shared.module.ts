@@ -12,12 +12,14 @@ import { SliderStepComponent } from './components/slider-step/slider-step.compon
 import { InfoModalComponent } from './components/info-modal/info-modal.component';
 
 import { IconModule } from './icons/icons.module';
+import { StudyZoneDialogComponent } from './components/study-zone-dialog/study-zone-dialog.component';
 
 @NgModule({
   declarations: [
     SpinnerComponent,
     SliderStepComponent,
-    InfoModalComponent
+    InfoModalComponent,
+    StudyZoneDialogComponent
   ],
   exports: [
     IconModule,
@@ -26,6 +28,7 @@ import { IconModule } from './icons/icons.module';
     SliderStepComponent,
     InfoModalComponent,
     DialogModule,
+    StudyZoneDialogComponent
   ],
   imports: [
     DialogModule,
