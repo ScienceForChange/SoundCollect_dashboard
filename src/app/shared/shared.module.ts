@@ -2,8 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 
-import { TranslateModule } from '@ngx-translate/core';
-
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 
@@ -24,11 +22,9 @@ import { StudyZoneDialogComponent } from './components/study-zone-dialog/study-z
   exports: [
     IconModule,
     SpinnerComponent,
-    TranslateModule,
     SliderStepComponent,
     InfoModalComponent,
-    DialogModule,
-    StudyZoneDialogComponent
+    StudyZoneDialogComponent,
   ],
   imports: [
     DialogModule,
