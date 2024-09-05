@@ -7,7 +7,9 @@
         (onClick)="activeFilters()"
         [ngClass]="{ active: isFilterActive }"
         pTooltip="{{
-          isFilterActive ? ('map.filters.disable' | translate) : ('map.filters.enable' | translate)
+          isFilterActive
+            ? ('map.filters.disable' | translate)
+            : ('map.filters.enable' | translate)
         }}"
         tooltipPosition="bottom"
       >
@@ -19,26 +21,24 @@
       <p-button
         (onClick)="toggleShowFilters()"
         [ngClass]="{ active: showFilters }"
-        pTooltip="{{'map.filters.title' | translate}}"
+        pTooltip="{{ 'map.filters.title' | translate }}"
         tooltipPosition="bottom"
       >
         <i class="pi pi-sliders-h"></i>
       </p-button>
       <p-button
         (onClick)="toggleShowMapLayers()"
-        pTooltip="{{'map.layers.title' | translate}}"
+        pTooltip="{{ 'map.layers.title' | translate }}"
         tooltipPosition="bottom"
       >
         <i class="pi pi-clone"></i>
       </p-button>
       <p-button
-        (onClick)="toggleShowMapLayers()"
-        pTooltip="{{'map.layers.title' | translate}}"
+        (onClick)="toggleShowMapStudyZonesLayers()"
+        label="Zones d'estudi"
         tooltipPosition="bottom"
       >
-        <i class="pi pi-clone"></i>
       </p-button>
     </div>
   </ng-template>
 </p-toolbar>
-

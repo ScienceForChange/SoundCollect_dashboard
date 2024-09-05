@@ -17,6 +17,7 @@ import { SliderModule } from 'primeng/slider';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { TooltipModule } from 'primeng/tooltip';
+import { ToggleButtonModule } from 'primeng/togglebutton';
 
 import { MapComponent } from './page/map.component';
 
@@ -29,6 +30,7 @@ import { OneThirdOctaveChartComponent } from './components/one-third-octave-char
 
 import { SharedComponentsModule } from '../../shared/shared.module';
 import { SoundPressureDisplayPipe } from '../../pipes/sound-pressure-display.pipe';
+import { MapZoneStudyLayersComponent } from './components/map-study-zone-layers/map-study-zone-layers.component';
 
 
 @NgModule({
@@ -37,6 +39,7 @@ import { SoundPressureDisplayPipe } from '../../pipes/sound-pressure-display.pip
     MapComponent,
     MapFiltersComponent,
     MapLayersComponent,
+    MapZoneStudyLayersComponent,
     MapToolBarComponent,
     ObservationInfoModalComponent,
     OneThirdOctaveChartComponent,
@@ -62,6 +65,7 @@ import { SoundPressureDisplayPipe } from '../../pipes/sound-pressure-display.pip
     ToastModule,
     ToolbarModule,
     TooltipModule,
+    ToggleButtonModule
   ],
 })
 export class MapModule {}

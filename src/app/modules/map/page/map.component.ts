@@ -29,10 +29,13 @@ export class MapComponent implements AfterViewInit, OnDestroy {
 
   public showFilters: WritableSignal<boolean> = signal<boolean>(false);
   public showMapLayers: WritableSignal<boolean> = signal<boolean>(false);
+  public showMapStudyZonesLayers: WritableSignal<boolean> = signal<boolean>(false);
+
   public activeFilters: boolean = false;
   private subscriptions = new Subscription();
   public observationSelected!: Observations;
   public isOpenObservationInfoModal: boolean = false;
+  public isSZModalVisible: boolean = false; 
 
   constructor() {
     this.subscriptions.add(
@@ -40,10 +43,20 @@ export class MapComponent implements AfterViewInit, OnDestroy {
         this.activeFilters = value;
       })
     );
+    this.subscriptions.add(
+      this.mapService.studyZoneDialogVisible$.subscribe((value) => {
+        this.isSZModalVisible = value;
+        console.log('value', value)
+      })
+    )
   }
 
   public toogleActiveFilters(): void {
     this.mapService.isFilterActive.next(!this.activeFilters);
+  }
+
+  public toggleSZModal(): void {
+    this.mapService.studyZoneDialogVisible$.next(!this.isSZModalVisible);
   }
 
   public hideModal(): void {
