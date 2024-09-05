@@ -10,11 +10,13 @@
   <app-map-tool-bar
     [showFilters]="showFilters"
     [showMapLayers]="showMapLayers"
+    [showMapStudyZonesLayers]="showMapStudyZonesLayers"
     [isFilterActive]="activeFilters"
     (toggleActiveFilters)="toogleActiveFilters()"
   />
   <app-map-filters [showFilters]="showFilters" [isFilterActive]="activeFilters" />
   <app-map-layers [showMapLayers]="showMapLayers" />
+  <app-map-study-zone-layers [showMapLayers]="showMapStudyZonesLayers" /> 
   @if(isOpenObservationInfoModal){
     <app-observation-info-modal
       [isOpen]="isOpenObservationInfoModal"

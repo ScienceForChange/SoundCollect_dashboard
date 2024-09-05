@@ -29,6 +29,7 @@ import { OneThirdOctaveChartComponent } from './components/one-third-octave-char
 
 import { SharedComponentsModule } from '../../shared/shared.module';
 import { SoundPressureDisplayPipe } from '../../pipes/sound-pressure-display.pipe';
+import { MapZoneStudyLayersComponent } from './components/map-study-zone-layers/map-study-zone-layers.component';
 
 
 @NgModule({
@@ -37,6 +38,7 @@ import { SoundPressureDisplayPipe } from '../../pipes/sound-pressure-display.pip
     MapComponent,
     MapFiltersComponent,
     MapLayersComponent,
+    MapZoneStudyLayersComponent,
     MapToolBarComponent,
     ObservationInfoModalComponent,
     OneThirdOctaveChartComponent,

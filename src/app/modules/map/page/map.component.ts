@@ -29,6 +29,8 @@ export class MapComponent implements AfterViewInit, OnDestroy {
 
   public showFilters: WritableSignal<boolean> = signal<boolean>(false);
   public showMapLayers: WritableSignal<boolean> = signal<boolean>(false);
+  public showMapStudyZonesLayers: WritableSignal<boolean> = signal<boolean>(false);
+
   public activeFilters: boolean = false;
   private subscriptions = new Subscription();
   public observationSelected!: Observations;
