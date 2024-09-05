@@ -46,12 +46,17 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     this.subscriptions.add(
       this.mapService.studyZoneDialogVisible$.subscribe((value) => {
         this.isSZModalVisible = value;
+        console.log('value', value)
       })
     )
   }
 
   public toogleActiveFilters(): void {
     this.mapService.isFilterActive.next(!this.activeFilters);
+  }
+
+  public toggleSZModal(): void {
+    this.mapService.studyZoneDialogVisible$.next(!this.isSZModalVisible);
   }
 
   public hideModal(): void {
