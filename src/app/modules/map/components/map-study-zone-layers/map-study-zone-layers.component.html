@@ -7,13 +7,15 @@
   [closeOnEscape]="true"
 >
   <div
-    *ngFor="let studyZone of studyZones; trackBy: trackById"
+    *ngFor="let studyZone of studyZones; trackBy: trackById; let i = index"
     class="flex align-items-center mt-3"
   >
-    <p-radioButton
-      [value]="studyZone.id"
-      [(ngModel)]="layerId"
-      (onClick)="toggleLayerVisibility(studyZone.id)"
+    <p-toggleButton
+      styleClass="toggleButton"
+      [(ngModel)]="studyZonesModel[i]"
+      onIcon="pi pi-eye-slash"
+      offIcon="pi pi-eye"
+      (onChange)="toggleLayerVisibility(studyZone.id, $event)"
     />
     <label for="light-v10" class="ml-2">
       {{ studyZone.name }}

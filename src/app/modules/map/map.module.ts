@@ -17,6 +17,7 @@ import { SliderModule } from 'primeng/slider';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { TooltipModule } from 'primeng/tooltip';
+import { ToggleButtonModule } from 'primeng/togglebutton';
 
 import { MapComponent } from './page/map.component';
 
@@ -64,6 +65,7 @@ import { MapZoneStudyLayersComponent } from './components/map-study-zone-layers/
     ToastModule,
     ToolbarModule,
     TooltipModule,
+    ToggleButtonModule
   ],
 })
 export class MapModule {}

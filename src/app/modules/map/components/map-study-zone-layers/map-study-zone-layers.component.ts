@@ -22,6 +22,7 @@ export class MapZoneStudyLayersComponent implements OnInit, OnDestroy {
   private studyZoneService = inject(StudyZoneService);
   private subscriptions = new Subscription();
   studyZones: StudyZone[] = [];
+  studyZonesModel: { [key: number]: boolean }[] = [];
 
   @Input() showMapLayers?: WritableSignal<boolean>;
 
@@ -31,7 +32,11 @@ export class MapZoneStudyLayersComponent implements OnInit, OnDestroy {
     this.subscriptions.add(
       this.studyZoneService.studyZones$.subscribe((studyZones) => {
         this.studyZones = studyZones;
-        console.log('studyZones', studyZones)
+        this.studyZonesModel = studyZones.map((studyZone) => ({
+          [studyZone.id]: false,
+        }));
+        console.log('studyZones', studyZones);
+        console.log('studyZonesModel', this.studyZonesModel);
       })
     );
   }
@@ -39,10 +44,15 @@ export class MapZoneStudyLayersComponent implements OnInit, OnDestroy {
     return item.id;
   }
 
-  toggleLayerVisibility(layerId: number) {
-    const studyZoneSelected = this.studyZones.find((studyZone) => studyZone.id === layerId);
-    console.log('studyZoneSelected', studyZoneSelected)
-    // this.mapService.map.setStyle('mapbox://styles/mapbox/' + layerId);
+  toggleLayerVisibility(layerId: number, e: any) {
+    const studyZoneSelected = this.studyZones.find(
+      (studyZone) => studyZone.id === layerId
+    );
+    if (!e.checked) {
+      this.mapService.drawSZPolygonFromId(studyZoneSelected);
+      return;
+    }
+    this.mapService.eraseSZPolygonFromId(studyZoneSelected.id);
   }
 
   ngOnDestroy(): void {

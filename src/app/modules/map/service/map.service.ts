@@ -12,6 +12,7 @@ import { ObservationsService } from '../../../services/observations/observations
 import { MapObservation } from '../../../models/map';
 import { FormFilterValues } from '../../../models/forms';
 import { Observations } from '../../../models/observations';
+import { StudyZone } from '../../../models/study-zone';
 
 @Injectable({
   providedIn: 'root',
@@ -259,6 +260,34 @@ export class MapService {
         >[],
       },
     });
+    //Añadir source para los polygonos de las zonas de estudio
+    this.map.addSource('studyZone', {
+      type: 'geojson',
+      data: {
+        type: 'FeatureCollection',
+        features: [],
+      },
+    });
+    //Relleno zona de estudio
+    this.map.addLayer({
+      id: 'studyZone',
+      type: 'fill',
+      source: 'studyZone',
+      paint: {
+        'fill-color': '#088',
+        'fill-opacity': 0.2,
+      },
+    });
+    //Borde de la zona de estudio
+    this.map.addLayer({
+      id: 'studyZoneLines',
+      type: 'line',
+      source: 'studyZone',
+      paint: {
+        'line-color': '#FFF',
+        'line-width': 2,
+      },
+    });
 
     // resaltar la línea a la que se hace hover de color negro
     this.map.addLayer({
@@ -304,7 +333,42 @@ export class MapService {
       },
     });
   }
-  //TODO MAKE A LOADING FOR MAP
+
+  public drawSZPolygonFromId(studyZone:StudyZone): void {
+    let source = this.map.getSource('studyZone') as mapboxgl.GeoJSONSource;
+
+    const newFeature: GeoJSON.Feature<GeoJSON.Polygon> = {
+      type: 'Feature',
+      properties: {
+        id: studyZone.id,
+      },
+      geometry: {
+        type: 'Polygon',
+        coordinates: [
+          studyZone.boundaries.coordinates[0].map((coordinate) => [
+            coordinate[1],
+            coordinate[0],
+          ]),
+        ],
+      },
+    };
+    //Add the new feature to the studyZone source
+    const data = source._data as GeoJSON.FeatureCollection<GeoJSON.Geometry>;
+    data.features.push(newFeature);
+
+    source.setData(data);
+  }
+
+  public eraseSZPolygonFromId(id: number) {
+    let source = this.map.getSource('studyZone') as mapboxgl.GeoJSONSource;
+    const { features, ...rest } =
+      source._data as GeoJSON.FeatureCollection<GeoJSON.Geometry>;
+    const filterFeatures = features.filter(
+      (feature) => feature.properties['id'] !== id
+    );
+    source.setData({ features: filterFeatures, ...rest });
+  }
+
   public initializeMap(): void {
     if (!this.isMapReady) return;
 
@@ -329,13 +393,6 @@ export class MapService {
         this.buildClustersAndLayers(this.features$.getValue());
       }
     });
-
-    // // Add event listeners for 'zoomstart' and 'touchstart' events
-    // this.map.on('zoomstart', this.deletePointsSpiderfy.bind(this));
-    // this.map.on('touchstart', this.deletePointsSpiderfy.bind(this));
-
-    // // Add event listeners for 'click' events on layers
-    // this.map.on('click', 'clusters', this.centerZoomCluster.bind(this));
 
     // Add event listeners for 'mouseenter' and 'mouseleave' events on layers
     this.map.on('mouseenter', 'LineString', this.mouseEvent.bind(this));
