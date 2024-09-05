@@ -11,6 +11,7 @@ import { InfoModalComponent } from './components/info-modal/info-modal.component
 
 import { IconModule } from './icons/icons.module';
 import { StudyZoneDialogComponent } from './components/study-zone-dialog/study-zone-dialog.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { StudyZoneDialogComponent } from './components/study-zone-dialog/study-z
     SliderStepComponent,
     InfoModalComponent,
     StudyZoneDialogComponent,
+    TranslateModule
   ],
   imports: [
     DialogModule,
@@ -32,6 +34,7 @@ import { StudyZoneDialogComponent } from './components/study-zone-dialog/study-z
     CommonModule,
     HttpClientModule,
     IconModule,
+    TranslateModule
   ],
 })
 export class SharedComponentsModule {}

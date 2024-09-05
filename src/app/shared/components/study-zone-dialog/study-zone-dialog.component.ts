@@ -13,15 +13,8 @@ export class StudyZoneDialogComponent {
   translateService = inject(TranslateService);
   private studyZoneMapService = inject(StudyZoneMapService);
   private studyZoneService = inject(StudyZoneService);
-  
+  @Input() studyZone!: StudyZone
   @Input() visible: boolean = false;
-  studyZone!: StudyZone;
-
-  constructor() {
-    this.studyZoneService.studyZoneSelected$.subscribe((studyZone) => {
-      this.studyZone = studyZone;
-    });
-  }
 
   closeDialog(): void {
     this.studyZoneMapService.studyZoneDialogVisible.update(() => false);
