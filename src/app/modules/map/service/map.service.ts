@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 
 import { LngLat, LngLatBounds, Map } from 'mapbox-gl';
 
@@ -13,6 +13,7 @@ import { MapObservation } from '../../../models/map';
 import { FormFilterValues } from '../../../models/forms';
 import { Observations } from '../../../models/observations';
 import { StudyZone } from '../../../models/study-zone';
+import { StudyZoneService } from '../../../services/study-zone/study-zone.service';
 
 @Injectable({
   providedIn: 'root',
@@ -58,7 +59,15 @@ export class MapService {
   public isOpenObservationInfoModal: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
 
-  constructor(private observationsService: ObservationsService) {
+  public studyZoneSelected$: BehaviorSubject<StudyZone | null> =
+    new BehaviorSubject<StudyZone | null>(null);
+  public studyZoneDialogVisible$: BehaviorSubject<boolean> =
+    new BehaviorSubject<boolean>(false);
+
+  constructor(
+    private observationsService: ObservationsService,
+    private studyZoneService: StudyZoneService
+  ) {
     //Subscribe to know if the filter is active
     this.isFilterActive.subscribe((isFilterActive) => {
       if (!this.map) return;
@@ -334,7 +343,7 @@ export class MapService {
     });
   }
 
-  public drawSZPolygonFromId(studyZone:StudyZone): void {
+  public drawSZPolygonFromId(studyZone: StudyZone): void {
     let source = this.map.getSource('studyZone') as mapboxgl.GeoJSONSource;
 
     const newFeature: GeoJSON.Feature<GeoJSON.Polygon> = {
@@ -369,6 +378,14 @@ export class MapService {
     source.setData({ features: filterFeatures, ...rest });
   }
 
+  public selectStudyZone(id: number): void {
+    const SZselected = this.studyZoneService.studyZones$
+      .getValue()
+      .find((studyZone) => studyZone.id === id);
+    this.studyZoneSelected$.next(SZselected);
+    console.log('SZselected', SZselected);
+  }
+
   public initializeMap(): void {
     if (!this.isMapReady) return;
 
@@ -397,6 +414,13 @@ export class MapService {
     // Add event listeners for 'mouseenter' and 'mouseleave' events on layers
     this.map.on('mouseenter', 'LineString', this.mouseEvent.bind(this));
     this.map.on('mouseleave', 'LineString', this.mouseEvent.bind(this));
+    this.map.on('mouseenter', 'studyZone', (e: any) => {
+      this.map.getCanvas().style.cursor = 'pointer';
+    });
+
+    this.map.on('mouseleave', 'studyZone', (e: any) => {
+      this.map.getCanvas().style.cursor = 'inherit';
+    });
 
     this.map.on('click', 'LineString', (e) => {
       const feature = e.features[0];
@@ -406,6 +430,15 @@ export class MapService {
         .find((obs) => obs.id === feature.properties['id']);
       this.observationSelected = obs;
       this.isOpenObservationInfoModal.next(true);
+    });
+
+    this.map.on('click', 'studyZone', (e: any) => {
+      this.map.getCanvas().style.cursor = 'inherit';
+      console.log('e', e);
+      if (e.features.length > 0) {
+        this.selectStudyZone(e.features[0].properties.id);
+        this.studyZoneDialogVisible$.next(true);
+      }
     });
   }
 }

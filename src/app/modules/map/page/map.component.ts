@@ -35,6 +35,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   private subscriptions = new Subscription();
   public observationSelected!: Observations;
   public isOpenObservationInfoModal: boolean = false;
+  public isSZModalVisible: boolean = false; 
 
   constructor() {
     this.subscriptions.add(
@@ -42,6 +43,11 @@ export class MapComponent implements AfterViewInit, OnDestroy {
         this.activeFilters = value;
       })
     );
+    this.subscriptions.add(
+      this.mapService.studyZoneDialogVisible$.subscribe((value) => {
+        this.isSZModalVisible = value;
+      })
+    )
   }
 
   public toogleActiveFilters(): void {
