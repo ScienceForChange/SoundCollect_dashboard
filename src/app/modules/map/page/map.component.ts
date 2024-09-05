@@ -107,5 +107,6 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
     this.mapService.map = null;
+    this.mapService.studyZoneDialogVisible$.next(false);
   }
 }
