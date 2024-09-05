@@ -6,9 +6,6 @@ import {
   BehaviorSubject,
   map,
   Observable,
-  switchMap,
-  of,
-  delay,
   catchError,
   throwError,
 } from 'rxjs';

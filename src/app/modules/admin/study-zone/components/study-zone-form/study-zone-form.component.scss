@@ -8,6 +8,7 @@
   .p-fileupload{
     display: flex;
     justify-content: center;
+    flex-wrap: wrap;
   }
   p-button{
     width: fit-content;

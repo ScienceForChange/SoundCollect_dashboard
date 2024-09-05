@@ -31,6 +31,7 @@
       </p>
     </div>
     <!-- Ficheros -->
+    @if(studyZone.relationships.documents.length > 0){
     <div class="flex flex-column gap-2">
       <h3 class="text-lg">
         {{ "admin.studyZone.studyZoneDialog.files" | translate }}:
@@ -43,6 +44,7 @@
         }
       </ul>
     </div>
+    } @if(studyZone.relationships.collaborators.length > 0){
     <!-- Colaboradores -->
     <div class="flex flex-column gap-2">
       <h3 class="text-lg">
@@ -78,5 +80,6 @@
       <hr />
       }
     </div>
+    }
   </div>
 </p-dialog>
