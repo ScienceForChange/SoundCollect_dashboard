@@ -80,7 +80,7 @@
               "admin.studyZone.form.nameFile" | translate
             }}</label>
           </span>
-          @if(!studyZoneSelected?.relationships.documents[i].file){
+          @if(!studyZoneSelected?.documents[i]?.file_data){
           <p-fileUpload
             mode="basic"
             chooseLabel="{{ 'admin.studyZone.form.addFile' | translate }}"
@@ -175,8 +175,8 @@
               "admin.studyZone.form.contactPhone" | translate
             }}</label>
           </span>
-          @if(!collaborator.value.logo ||
-          !studyZoneSelected?.relationships.collaborators[i].logo){
+          <!-- TODO SOLUCIONAR ESTO -->
+          @if(!collaborator.value.logo_data){
           <p-fileUpload
             mode="basic"
             chooseLabel="{{ 'admin.studyZone.form.addLogo' | translate }}"
@@ -188,11 +188,8 @@
           />
           } @else {
           <img
-            [src]="collaborator.value.logo"
-            [alt]="
-              studyZoneSelected?.relationships.collaborators[i]
-                .collaborator_name
-            "
+            [src]="collaborator.value.logo_data"
+            [alt]="collaborator.value.collaborator_name"
             width="400"
             height="100"
             style="object-fit: cover; object-position: center"

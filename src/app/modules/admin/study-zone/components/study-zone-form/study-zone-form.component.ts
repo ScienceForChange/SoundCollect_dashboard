@@ -17,6 +17,7 @@ import { StudyZoneService } from '../../../../../services/study-zone/study-zone.
 import { StudyZoneMapService } from '../../service/study-zone-map.service';
 
 import compareObjectsValues from '../../../../../../utils/compareObjects';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-study-zone-form',
@@ -27,18 +28,18 @@ export class StudyZoneFormComponent {
   private messageService = inject(MessageService);
   private studyZoneService = inject(StudyZoneService);
   private studyZoneMapService = inject(StudyZoneMapService);
+  private translations = inject(TranslateService);
 
   @Input() visible: boolean = false;
   @Output() toggleStudyZoneForm: EventEmitter<void> = new EventEmitter<void>();
 
   private polygon: any = null;
-  private updatedCollaborators: { [key: string]: any } = {};
 
   studyZoneForm: FormGroup = new FormGroup({
     user_id: new FormControl('', [Validators.required]),
     name: new FormControl('', [Validators.required]),
     description: new FormControl('', [Validators.required]),
-    conclusion: new FormControl(''),
+    conclusion: new FormControl(' '),
     start_end_dates: new FormControl<Date[] | null[]>(
       [new Date(), new Date()] as Date[] | null[],
       [Validators.required]
@@ -46,7 +47,7 @@ export class StudyZoneFormComponent {
     documents: new FormArray([]),
     collaborators: new FormArray([]),
   });
-  studyZoneSelected: StudyZone | null = null;
+  studyZoneSelected: StudyZoneForm | null = null;
 
   get documents(): FormArray {
     return this.studyZoneForm.get('documents') as FormArray;
@@ -58,11 +59,28 @@ export class StudyZoneFormComponent {
   ngOnInit(): void {
     this.polygon = this.studyZoneMapService.polygonFilter;
     this.studyZoneService.studyZoneSelected$.subscribe((studyZoneSelected) => {
-      if (studyZoneSelected) {
-        const studyZoneForm = {
+      const isUpdate = !!studyZoneSelected;
+      if (isUpdate) {
+        const studyZoneForm: StudyZoneForm = {
           ...studyZoneSelected,
-          collaborators: studyZoneSelected.relationships.collaborators,
-          documents: studyZoneSelected.relationships.documents,
+          collaborators: studyZoneSelected.relationships.collaborators.map(
+            (col) => {
+              //Delete logo key as backend only works with logo_data
+              const { logo, ...rest } = col;
+              return {
+                ...rest,
+                logo_data: col.logo,
+              };
+            }
+          ),
+          documents: studyZoneSelected.relationships.documents.map((doc) => {
+            //Delete logo key as backend only works with file_data
+            const { file, ...rest } = doc;
+            return {
+              ...rest,
+              file_data: doc.file,
+            };
+          }),
           start_end_dates: [
             new Date(studyZoneSelected.start_date),
             new Date(studyZoneSelected.end_date),
@@ -70,7 +88,11 @@ export class StudyZoneFormComponent {
         };
 
         this.studyZoneSelected = studyZoneForm;
+
+        //Update the form with the values of the selected studyZone when
         this.studyZoneForm.patchValue(studyZoneForm);
+
+        //Create the form controls for the collaborators and documents
         this.addCollaborator(studyZoneSelected.relationships.collaborators);
         this.addDocument(studyZoneSelected.relationships.documents);
       }
@@ -78,14 +100,17 @@ export class StudyZoneFormComponent {
   }
 
   addCollaborator(collaborators?: CollaboratorsStudyZone[]): void {
-    if (!!collaborators) {
+    const isUpdating = !!collaborators;
+    if (isUpdating) {
       collaborators.forEach((collaborator) => {
         this.collaborators.push(
           new FormGroup({
             collaborator_name: new FormControl(collaborator.collaborator_name, [
               Validators.required,
             ]),
-            logo: new FormControl(collaborator.logo, [Validators.required]),
+            logo_data: new FormControl(collaborator.logo, [
+              Validators.required,
+            ]),
             contact_name: new FormControl(collaborator.contact_name, []),
             contact_email: new FormControl(collaborator.contact_email, [
               Validators.email,
@@ -97,10 +122,11 @@ export class StudyZoneFormComponent {
       });
       return;
     }
+    //Creating new collaborator
     this.collaborators.push(
       new FormGroup({
         collaborator_name: new FormControl('', [Validators.required]),
-        logo: new FormControl(null, [Validators.required]),
+        logo_data: new FormControl(null, [Validators.required]),
         contact_name: new FormControl('', []),
         contact_email: new FormControl('', [Validators.email]),
         contact_phone: new FormControl('', []),
@@ -109,22 +135,24 @@ export class StudyZoneFormComponent {
   }
 
   addDocument(documents?: DocumentsStudyZones[]): void {
-    if (!!documents) {
+    const isUpdating = !!documents;
+    if (isUpdating) {
       documents.forEach((document) => {
         this.documents.push(
           new FormGroup({
             name: new FormControl(document.name, [Validators.required]),
-            file: new FormControl(document.file, [Validators.required]),
+            file_data: new FormControl(document.file, [Validators.required]),
             id: new FormControl(document.id, []),
           })
         );
       });
       return;
     }
+    //Creating new document
     this.documents.push(
       new FormGroup({
         name: new FormControl('', [Validators.required]),
-        file: new FormControl(null, [Validators.required]),
+        file_data: new FormControl(null, [Validators.required]),
       })
     );
   }
@@ -139,7 +167,9 @@ export class StudyZoneFormComponent {
       };
     } else {
       reader.onload = () => {
-        this.collaborators.controls[index].get('logo_data').setValue(reader.result);
+        this.collaborators.controls[index]
+          .get('logo_data')
+          .setValue(reader.result);
       };
     }
   }
@@ -149,7 +179,6 @@ export class StudyZoneFormComponent {
   }
 
   removeCollaboratorsLogo(index: number): void {
-    this.collaborators.controls[index].get('logo').setValue(null);
     this.collaborators.controls[index].get('logo_data').setValue(null);
   }
 
@@ -165,8 +194,12 @@ export class StudyZoneFormComponent {
   showWarn(): void {
     this.messageService.add({
       severity: 'warn',
-      summary: 'Ha succeit un error',
-      detail: 'Tenca el formulari i torna a intentar-ho',
+      summary: this.translations.instant(
+        'admin.studyZone.form.messages.errorSummary'
+      ),
+      detail: this.translations.instant(
+        'admin.studyZone.form.messages.errorDetail'
+      ),
     });
   }
 
@@ -174,15 +207,23 @@ export class StudyZoneFormComponent {
     if (!isUpdate) {
       this.messageService.add({
         severity: 'success',
-        summary: "Zona d'estudi creada",
-        detail: 'Ara ja la podrás visualitzar al llistat',
+        summary: this.translations.instant(
+          'admin.studyZone.form.messages.createSummary'
+        ),
+        detail: this.translations.instant(
+          'admin.studyZone.form.messages.createDetail'
+        ),
       });
       return;
     }
     this.messageService.add({
       severity: 'success',
-      summary: "Zona d'estudi actualitzada",
-      detail: "Has actualitzat la zona d'estudi amb exit",
+      summary: this.translations.instant(
+        'admin.studyZone.form.messages.updateSummary'
+      ),
+      detail: this.translations.instant(
+        'admin.studyZone.form.messages.updateDetail'
+      ),
     });
   }
 
@@ -194,6 +235,8 @@ export class StudyZoneFormComponent {
         : null;
       const result: StudyZoneForm = {
         ...this.studyZoneForm.value,
+        collaborators: this.studyZoneForm.value.collaborators,
+        documents: this.studyZoneForm.value.documents,
         user_id: userId,
       };
       const polygon = this.polygon().geometry.coordinates[0].map(
@@ -215,27 +258,31 @@ export class StudyZoneFormComponent {
 
     const studyZoneFormValues = this.studyZoneForm.value;
 
+    //Update collaborators and documents values to send to the backend
     Object.keys(studyZoneFormValues).forEach((key) => {
       if (key === 'collaborators') {
         studyZoneFormValues.collaborators.forEach(
           (collaborator: CollaboratorsStudyZone, index: number) => {
-            const SZSelectedCol =
-              this.studyZoneSelected.relationships.collaborators.find(
-                (collaboratorSelected) => {
-                  return collaboratorSelected.id === collaborator.id;
-                }
-              );
-            const { areEqual, differentKeys } = compareObjectsValues(
-              SZSelectedCol,
-              collaborator
+            const SZSelectedCol = this.studyZoneSelected.collaborators.find(
+              (collaboratorSelected) => {
+                return collaboratorSelected.id === collaborator.id;
+              }
             );
-            if (areEqual) {
-              // Remove the id key from studyZoneFormValues collaborator
-              delete studyZoneFormValues[key][index].id;
-            }
-            //If some of the differentKeys are logo, I have to add the logo_data to the collaborator object
-            if (differentKeys.includes('logo')) {
-              studyZoneFormValues[key][index].logo_data = collaborator.logo;
+            const isNewCollaborator = !!SZSelectedCol;
+            const isLogoDeleted = !collaborator.logo_data;
+            if (isNewCollaborator) {
+              const { areEqual } = compareObjectsValues(
+                SZSelectedCol,
+                collaborator
+              );
+              if (isLogoDeleted) {
+                studyZoneFormValues[key][index].logo = null;
+              }
+              if (areEqual) {
+                studyZoneFormValues[key][index].logo =
+                  studyZoneFormValues[key][index].logo_data;
+                studyZoneFormValues[key][index].logo_data = null;
+              }
             }
           }
         );
@@ -243,26 +290,27 @@ export class StudyZoneFormComponent {
       if (key === 'documents') {
         studyZoneFormValues.documents.forEach(
           (document: DocumentsStudyZones, index: number) => {
-            const SZSelectedDoc =
-              this.studyZoneSelected.relationships.documents.find(
-                (documentSelected) => documentSelected.id === document.id
-              );
-            const { areEqual, differentKeys } = compareObjectsValues(
-              SZSelectedDoc,
-              document
+            const SZSelectedDoc = this.studyZoneSelected.documents.find(
+              (documentSelected) => documentSelected.id === document.id
             );
-            if (areEqual) {
-              // Remove the id key from studyZoneFormValues collaborator
-              delete studyZoneFormValues[key][index].id;
-            }
-            if (differentKeys.includes('file')) {
-              studyZoneFormValues[key][index].file_data = document.file;
+            const isNewDocument = !!SZSelectedDoc;
+            if (isNewDocument) {
+              const { areEqual } = compareObjectsValues(
+                SZSelectedDoc,
+                document
+              );
+              if (areEqual) {
+                studyZoneFormValues[key][index].file =
+                  studyZoneFormValues[key][index].file_data;
+                studyZoneFormValues[key][index].file_data = null;
+              }
             }
           }
         );
       }
     });
 
+    console.log('studyZoneFormValues', studyZoneFormValues);
     this.studyZoneService
       .updateStudyZone(
         this.studyZoneSelected.id,
