@@ -1,28 +1,27 @@
-import {
-  Component,
-  OnDestroy,
-  OnInit,
-  inject,
-} from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 
-import { MapService } from '../../../modules/map/service/map.service';
 import { ObservationsService } from '../../../services/observations/observations.service';
+import { StudyZoneService } from '../../../services/study-zone/study-zone.service';
 
 @Component({
   selector: 'app-layout',
   templateUrl: './app.layout.component.html',
 })
-export class AppLayoutComponent implements OnInit, OnDestroy {
-  mapService = inject(MapService);
-  observationService = inject(ObservationsService);
+export class AppLayoutComponent implements OnInit {
+  private observationService = inject(ObservationsService);
+  private studyZoneService = inject(StudyZoneService);
 
   loading: boolean = false;
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.observationService.loading$.subscribe((value) => {
       this.loading = value;
     });
+    try {
+      await this.observationService.getAllObservations();
+      this.studyZoneService.fetchStudyZones();
+    } catch (error) {
+      console.error(error);
+    }
   }
-
-  ngOnDestroy(): void {}
 }
