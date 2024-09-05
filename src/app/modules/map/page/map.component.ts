@@ -17,6 +17,7 @@ import { Subscription } from 'rxjs';
 
 import { MapService } from '../service/map.service';
 import { Observations } from '../../../models/observations';
+import { StudyZone } from '../../../models/study-zone';
 
 @Component({
   selector: 'app-map',
@@ -29,10 +30,15 @@ export class MapComponent implements AfterViewInit, OnDestroy {
 
   public showFilters: WritableSignal<boolean> = signal<boolean>(false);
   public showMapLayers: WritableSignal<boolean> = signal<boolean>(false);
+  public showMapStudyZonesLayers: WritableSignal<boolean> =
+    signal<boolean>(false);
+
   public activeFilters: boolean = false;
   private subscriptions = new Subscription();
   public observationSelected!: Observations;
   public isOpenObservationInfoModal: boolean = false;
+  public isSZModalVisible: boolean = false;
+  public studyZoneSelected!: StudyZone;
 
   constructor() {
     this.subscriptions.add(
@@ -40,10 +46,24 @@ export class MapComponent implements AfterViewInit, OnDestroy {
         this.activeFilters = value;
       })
     );
+    this.subscriptions.add(
+      this.mapService.studyZoneDialogVisible$.subscribe((value) => {
+        this.isSZModalVisible = value;
+      })
+    );
+    this.subscriptions.add(
+      this.mapService.studyZoneSelected$.subscribe((value) => {
+        this.studyZoneSelected = value;
+      })
+    );
   }
 
   public toogleActiveFilters(): void {
     this.mapService.isFilterActive.next(!this.activeFilters);
+  }
+
+  public toggleSZModal(): void {
+    this.mapService.studyZoneDialogVisible$.next(!this.isSZModalVisible);
   }
 
   public hideModal(): void {
@@ -87,5 +107,6 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
     this.mapService.map = null;
+    this.mapService.studyZoneDialogVisible$.next(false);
   }
 }

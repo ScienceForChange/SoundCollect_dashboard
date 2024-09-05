@@ -2,8 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 
-import { TranslateModule } from '@ngx-translate/core';
-
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 
@@ -12,20 +10,23 @@ import { SliderStepComponent } from './components/slider-step/slider-step.compon
 import { InfoModalComponent } from './components/info-modal/info-modal.component';
 
 import { IconModule } from './icons/icons.module';
+import { StudyZoneDialogComponent } from './components/study-zone-dialog/study-zone-dialog.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
     SpinnerComponent,
     SliderStepComponent,
-    InfoModalComponent
+    InfoModalComponent,
+    StudyZoneDialogComponent
   ],
   exports: [
     IconModule,
     SpinnerComponent,
-    TranslateModule,
     SliderStepComponent,
     InfoModalComponent,
-    DialogModule,
+    StudyZoneDialogComponent,
+    TranslateModule
   ],
   imports: [
     DialogModule,
@@ -33,6 +34,7 @@ import { IconModule } from './icons/icons.module';
     CommonModule,
     HttpClientModule,
     IconModule,
+    TranslateModule
   ],
 })
 export class SharedComponentsModule {}

@@ -8,6 +8,7 @@ import { Component, EventEmitter, Input, Output, WritableSignal } from '@angular
 export class MapToolBarComponent {
   @Input() showFilters?: WritableSignal<boolean>;
   @Input() showMapLayers?: WritableSignal<boolean>;
+  @Input() showMapStudyZonesLayers?: WritableSignal<boolean>;
   @Input() isFilterActive: boolean = false;
   
   @Output() toggleActiveFilters: EventEmitter<void> = new EventEmitter<void>();
@@ -19,6 +20,10 @@ export class MapToolBarComponent {
   toggleShowMapLayers(): void {
     this.showMapLayers.set(!this.showMapLayers());
     this.showFilters.set(false);
+  }
+
+  toggleShowMapStudyZonesLayers(): void {
+    this.showMapStudyZonesLayers.set(!this.showMapStudyZonesLayers());
   }
 
   toggleShowFilters(): void {

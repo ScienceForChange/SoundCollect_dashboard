@@ -1,0 +1,32 @@
+:host ::ng-deep {
+    .floatSidebar {
+      background-color: var(--surface-overlay);
+      border-radius: 12px;
+      height: fit-content;
+      margin: 10rem 0.5rem auto;
+      max-height: calc(100vh - 6rem);
+      min-width: 390px;
+      z-index: 50 !important;
+      .p-sidebar-header {
+        padding: 0 0.15rem 0.5rem;
+      }
+      .p-sidebar-content {
+        padding: 0;
+      }
+    }
+    .toggleButton{
+      background-color: var(--orange);
+      border: none;
+    }
+    // Hide scrollbar for Chrome, Safari and Opera
+    ::-webkit-scrollbar {
+      display: none;
+    }
+  
+    // Hide scrollbar for Firefox
+    scrollbar-width: none;
+  
+    // Hide scrollbar for IE and Edge
+    -ms-overflow-style: none;
+  }
+  
