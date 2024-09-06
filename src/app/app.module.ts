@@ -32,6 +32,7 @@ import { MapModule } from './modules/map/map.module';
 import { ErrorModule } from './modules/error/error.module';
 import { HomeModule } from './modules/home/home.module';
 import { StudyZoneModule } from './modules/admin/study-zone/study-zone.module';
+import { BrowserModule } from '@angular/platform-browser';
 
 export function HttpLoaderFactory(http: HttpClient) {
   console.log('http', http)
@@ -44,6 +45,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     AppRoutingModule,
     BrowserAnimationsModule,
     ErrorModule,
+    BrowserModule,
     HttpClientModule,
     LoginModule,
     MapModule,
