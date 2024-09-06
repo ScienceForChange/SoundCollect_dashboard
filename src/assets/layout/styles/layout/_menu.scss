@@ -19,6 +19,42 @@
   overflow-x: hidden;
 }
 
+.language-dialog {
+  button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    outline: 0 none;
+    color: var(--text-color);
+    cursor: pointer;
+    padding: 0.75rem 1rem;
+    border-radius: $borderRadius;
+    transition: background-color $transitionDuration,
+      box-shadow $transitionDuration;
+
+    img {
+      flex: 1;
+    }
+    span {
+      flex: 6;
+    }
+
+    &.active {
+      background: var(--orange-transparency);
+      border-color: var(--primary-color);
+    }
+
+    &:hover {
+      background-color: var(--orange-transparency);
+    }
+
+    &:focus {
+      @include focused-inset();
+    }
+  }
+}
+
 .layout-menu {
   margin: 0;
   padding: 0;

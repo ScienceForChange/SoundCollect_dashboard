@@ -36,7 +36,7 @@
   </li>
   <p-divider />
   <li>
-    <a [href]="'app.linkManual'| translate" target='_blank'>
+    <a [href]="'app.linkManual' | translate" target="_blank">
       <i class="pi pi-fw pi-book mr-2" style="font-size: 1.7rem"></i>
       <span class="menu-item"> {{ "app.manual" | translate }} </span>
     </a>
@@ -50,6 +50,17 @@
   </li>
   <p-divider />
   <div class="h-full flex flex-column justify-content-end gap-3">
+    <li>
+      <button
+        (click)="toggleLanguageMenu()"
+        pButton
+        type="button"
+        class="p-button-rounded p-button-outlined w-full"
+      >
+        <i class="pi pi-fw pi-globe mr-2" style="font-size: 1.7rem"></i>
+        <span class="menu-item">{{ "app.languageDialog.language" | translate }}: {{ currentLang }} </span>
+      </button>
+    </li>
     <li>
       <button
         (click)="logout()"

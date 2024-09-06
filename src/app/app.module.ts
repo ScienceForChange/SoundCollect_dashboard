@@ -34,6 +34,7 @@ import { HomeModule } from './modules/home/home.module';
 import { StudyZoneModule } from './modules/admin/study-zone/study-zone.module';
 
 export function HttpLoaderFactory(http: HttpClient) {
+  console.log('http', http)
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
 @NgModule({
