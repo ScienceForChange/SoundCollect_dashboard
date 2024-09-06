@@ -290,7 +290,7 @@
     },
     "temporalEvolution": {
       "title": "Evolució temporal sobre els nivells de so dB(A) en un període de temps",
-      "serie1": "Sèrie 1",
+      "serie1": "Sèrie 1 EN",
       "serie2": "Sèrie 2",
       "morningSerie1": "Dia Sèrie 1",
       "morningSerie2": "Dia Sèrie 2",
@@ -299,7 +299,7 @@
       "nightSerie1": "Nit Sèrie 1",
       "nightSerie2": "Nit Sèrie 2",
       "hours": "Hores",
-      "morning": "Dia",
+      "morning": "Dia EN",
       "afternoon": "Vespre",
       "night": "Nit",
       "pressureLevel": "Nivell de pressió sonora (dBA)",

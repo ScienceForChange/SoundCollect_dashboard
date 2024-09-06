@@ -52,9 +52,5 @@ export class AppLayoutComponent implements OnInit {
     this.currentLang = this.supportedLanguages.find(
       (l) => l.code === lang
     ).name;
-    //I want to get the local that translations service is using
-    console.log('this.translations.currentLang', this.translations.currentLang)
-    console.log('this.translations.getBrowserLang()', this.translations.getBrowserLang())
-    console.log('this.translations.getLangs', this.translations.getLangs())
   }
 }
