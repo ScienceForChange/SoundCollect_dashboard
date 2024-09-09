@@ -27,10 +27,14 @@
             width: 100%;
           }
         }
-        &:hover {
+        &:hover, &.active {
           width: 250px;
-          .menu-item {
-            transition: opacity 0.1s 0.3s ease;
+
+          #admin-menu{
+            height: auto;
+          }
+          .menu-item,.p-menuitem-text {
+            transition: opacity 0.1s 0.4s ease;
             opacity: 1;
             width: 100%;
           }

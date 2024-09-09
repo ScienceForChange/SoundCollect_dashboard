@@ -1,8 +1,10 @@
 <div class="layout-wrapper layout-theme-light layout-overlay p-ripple-disabled">
-  <div class="layout-sidebar">
+  <div class="layout-sidebar" [class.active]="isAdminMenuOpen">
     <app-menu
+
       [currentLang]="currentLang"
       (toggleLangMenu)="openLanguageMenu()"
+      (toggleAdminMenu)="toggleAdminMenu($event)"
     />
   </div>
   <div class="layout-main-container">

@@ -106,7 +106,7 @@
     }
   }
 
-  .menu-item {
+  .menu-item,.p-menuitem-text {
     transition: opacity $transitionDuration ease;
     opacity: 0;
     width: 100%;
@@ -187,6 +187,22 @@
           }
         }
       }
+    }
+  }
+  .p-panelmenu-panel {
+    font-family: "Space Grotesk";
+    chevronrighticon {
+      display: none !important;
+    }
+    .p-panelmenu-header-content {
+      background-color: transparent;
+      border: none;
+    }
+    .p-menuitem-icon {
+      font-size: 1.7rem;
+    }
+    .p-menuitem-text {
+      font-weight: normal;
     }
   }
 }
