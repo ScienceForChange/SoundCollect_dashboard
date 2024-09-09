@@ -10,12 +10,14 @@ export class AppComponent {
   private changeDetectorRef = inject(ChangeDetectorRef);
 
   constructor() {
-    this.translate.setDefaultLang('ca');
-    this.translate.use('ca');
+    const locale = localStorage.getItem('locale') || 'ca';
+    this.translate.setDefaultLang(locale);
+    this.translate.use(locale);
     this.translate.addLangs(['en', 'es', 'ca']);
-    this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
-      // TODO instant() are not updating when language changes
-      this.changeDetectorRef.detectChanges();
-    });
+
+    // this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
+    //   // TODO instant() are not updating when language changes
+    //   this.changeDetectorRef.detectChanges();
+    // });
   }
 }

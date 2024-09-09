@@ -55,7 +55,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     HomeModule,
     StudyZoneModule,
     TranslateModule.forRoot({
-      defaultLanguage: environment.DEFAULT_LANGUAGE,
+      // defaultLanguage: environment.DEFAULT_LANGUAGE,
       loader: {
         provide: TranslateLoader,
         useFactory: HttpLoaderFactory,

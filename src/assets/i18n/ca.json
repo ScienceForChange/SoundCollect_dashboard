@@ -290,6 +290,8 @@
     },
     "temporalEvolution": {
       "title": "Evolució temporal sobre els nivells de so dB(A) en un període de temps",
+      "serieLabel1":"Sèrie de dades 1",
+      "serieLabel2":"Sèrie de dades 2",
       "serie1": "Sèrie 1",
       "serie2": "Sèrie 2",
       "morningSerie1": "Dia Sèrie 1",

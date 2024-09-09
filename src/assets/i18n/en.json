@@ -290,6 +290,8 @@
     },
     "temporalEvolution": {
       "title": "Temporal evolution of dB(A) sound levels over a period of time",
+      "serieLabel1":"Data series 1",
+      "serieLabel2":"Data series 2",
       "serie1": "Series 1",
       "serie2": "Series 2",
       "morningSerie1": "Morning series 1",

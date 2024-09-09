@@ -34,9 +34,9 @@ export class AppLayoutComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     //TODO habrá que crear una función que devuelva los valores del observable
     //También se pueden actualizar los valores subscribiendote al onLangChange 
-    this.translations.stream(['app.languageDialog.english','app.languageDialog.spanish']).subscribe((value) => {
-      console.log('value', value)
-    })
+    // this.translations.stream(['app.languageDialog.english','app.languageDialog.spanish']).subscribe((value) => {
+    //   console.log('value', value)
+    // })
     this.observationService.loading$.subscribe((value) => {
       this.loading = value;
     });
@@ -53,9 +53,11 @@ export class AppLayoutComponent implements OnInit {
   }
 
   changeLanguage(lang: string): void {
-    this.translations.use(lang)
-    this.currentLang = this.supportedLanguages.find(
-      (l) => l.code === lang
-    ).name;
+    localStorage.setItem('locale', lang);
+    window.location.reload();
+    // this.translations.use(lang)
+    // this.currentLang = this.supportedLanguages.find(
+    //   (l) => l.code === lang
+    // ).name;
   }
 }
