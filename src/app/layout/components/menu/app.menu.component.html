@@ -41,13 +41,15 @@
       <span class="menu-item"> {{ "app.manual" | translate }} </span>
     </a>
   </li>
-  <p-divider />
-  <li>
-    <a routerLink="/admin/study-zone">
-      <i class="pi pi-fw pi-user-edit mr-2" style="font-size: 1.7rem"></i>
-      <span class="menu-item"> {{ "app.adminPanel" | translate }} </span>
-    </a>
-  </li>
+  <ng-template [ngxPermissionsOnly]="['MANAGE-ADMIN']">
+    <p-divider />
+    <li>
+      <a routerLink="/admin/study-zone">
+        <i class="pi pi-fw pi-user-edit mr-2" style="font-size: 1.7rem"></i>
+        <span class="menu-item"> {{ "app.adminPanel" | translate }} </span>
+      </a>
+    </li>
+  </ng-template>
   <p-divider />
   <div class="h-full flex flex-column justify-content-end gap-3">
     <li>

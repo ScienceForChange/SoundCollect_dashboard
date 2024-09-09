@@ -37,26 +37,8 @@ import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
 import { User } from './models/auth';
 
 export function HttpLoaderFactory(http: HttpClient) {
-  console.log('http', http);
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
-
-export function permissionsFactory(
-  ngxPermissionsService: NgxPermissionsService
-) {
-  return () => {
-    const user: User = JSON.parse(localStorage.getItem('user'));
-    const permissions = user.attributes.permissions_list.map((permission) =>
-      permission.toUpperCase()
-    );
-    ngxPermissionsService.loadPermissions(permissions);
-    var perm = ngxPermissionsService.getPermissions();
-    console.log('perm', perm);
-    return true;
-  };
-}
-
-//var perm = ngxPermissionsService.getPermissions();
 
 @NgModule({
   declarations: [AppComponent],
@@ -98,6 +80,7 @@ export function permissionsFactory(
             .toPromise()
             .then(() => {
               const user: User = JSON.parse(localStorage.getItem('user'));
+              if(!user) return true;
               const permissions = user.attributes.permissions_list.map(
                 (permission) => permission.toUpperCase()
               );

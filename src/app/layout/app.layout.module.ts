@@ -15,6 +15,7 @@ import { ToastModule } from 'primeng/toast';
 import { DividerModule } from 'primeng/divider';
 import { DialogModule } from 'primeng/dialog';
 import { FormsModule } from '@angular/forms';
+import { NgxPermissionsModule } from 'ngx-permissions';
 
 @NgModule({
   declarations: [AppLayoutComponent, AppMenuComponent],
@@ -31,6 +32,7 @@ import { FormsModule } from '@angular/forms';
     DividerModule,
     DialogModule,
     FormsModule,
+    NgxPermissionsModule
   ],
   exports: [AppLayoutComponent],
 })
