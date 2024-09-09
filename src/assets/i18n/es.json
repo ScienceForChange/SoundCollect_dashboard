@@ -44,12 +44,12 @@
     "logout": "Cerrar sesión",
     "linkManual": "http://home.soundcollectapp.com/wp-content/uploads/2024/07/20240717_Manual-de-lusuari_aria-Dashboard-SoundCollect_CAT.pdf",
     "manual": "Manual de uso",
-    "adminPanel": "Panell d'administració",
+    "adminPanel": "Panel de administración",
     "languageDialog": {
       "language": "Idioma",
-      "catalan": "Català",
-      "spanish": "Espanyol",
-      "english": "Anglès"
+      "catalan": "Catalan",
+      "spanish": "Español",
+      "english": "Inglés"
     }
   },
   "home": {
