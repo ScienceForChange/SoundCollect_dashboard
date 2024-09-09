@@ -13,13 +13,11 @@ import { ButtonModule } from 'primeng/button';
 import { MenuModule } from 'primeng/menu';
 import { ToastModule } from 'primeng/toast';
 import { DividerModule } from 'primeng/divider';
-
+import { DialogModule } from 'primeng/dialog';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [
-    AppLayoutComponent,
-    AppMenuComponent,
-  ],
+  declarations: [AppLayoutComponent, AppMenuComponent],
   imports: [
     BrowserModule,
     ButtonModule,
@@ -30,7 +28,9 @@ import { DividerModule } from 'primeng/divider';
     SharedComponentsModule,
     SidebarModule,
     ToastModule,
-    DividerModule
+    DividerModule,
+    DialogModule,
+    FormsModule,
   ],
   exports: [AppLayoutComponent],
 })

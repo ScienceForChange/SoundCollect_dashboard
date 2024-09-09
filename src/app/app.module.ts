@@ -32,8 +32,10 @@ import { MapModule } from './modules/map/map.module';
 import { ErrorModule } from './modules/error/error.module';
 import { HomeModule } from './modules/home/home.module';
 import { StudyZoneModule } from './modules/admin/study-zone/study-zone.module';
+import { BrowserModule } from '@angular/platform-browser';
 
 export function HttpLoaderFactory(http: HttpClient) {
+  console.log('http', http);
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
 @NgModule({
@@ -43,6 +45,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     AppRoutingModule,
     BrowserAnimationsModule,
     ErrorModule,
+    BrowserModule,
     HttpClientModule,
     LoginModule,
     MapModule,
@@ -52,7 +55,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     HomeModule,
     StudyZoneModule,
     TranslateModule.forRoot({
-      defaultLanguage: environment.DEFAULT_LANGUAGE,
       loader: {
         provide: TranslateLoader,
         useFactory: HttpLoaderFactory,
@@ -66,7 +68,10 @@ export function HttpLoaderFactory(http: HttpClient) {
     {
       provide: APP_INITIALIZER,
       useFactory: (translate: TranslateService) => {
-        return () => translate.use(environment.DEFAULT_LANGUAGE).toPromise();
+        return () =>
+          translate
+            .use(localStorage.getItem('locale') || environment.DEFAULT_LANGUAGE)
+            .toPromise();
       },
       deps: [TranslateService],
       multi: true,

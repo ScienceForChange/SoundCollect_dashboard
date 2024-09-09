@@ -1,8 +1,8 @@
 {
   "app": {
     "return": "Tornar",
-    "next": "Seguent",
-    "yes": "Si",
+    "next": "Següent",
+    "yes": "Sí",
     "no": "No",
     "send": "Enviar",
     "accept": "Acceptar",
@@ -12,8 +12,8 @@
     "close": "Tancar",
     "loading": "Carregant...",
     "error": "Error",
-    "errorHandler": "Ha succeït un error inesperat.Posi's en contacte amb el servei tècnic",
-    "knowMore": "Saber més",
+    "errorHandler": "Ha succeït un error inesperat. Posa't en contacte amb el servei tècnic",
+    "knowMore": "Saber-ne més",
     "seeMore": "Veure més",
     "login": "Iniciar sessió",
     "register": "Registra't",
@@ -44,7 +44,13 @@
     "logout": "Tancar sessió",
     "linkManual": "http://home.soundcollectapp.com/wp-content/uploads/2024/07/20240717_Manual-de-lusuari_aria-Dashboard-SoundCollect_CAT.pdf",
     "manual": "Manual d'ús",
-    "adminPanel": "Panell d'administració"
+    "adminPanel": "Panell d'administració",
+    "languageDialog": {
+      "language": "Idioma",
+      "catalan": "Català",
+      "spanish": "Espanyol",
+      "english": "Anglès"
+    }
   },
   "home": {
     "footer": {
@@ -109,7 +115,7 @@
       "naturals": "Naturals",
       "people": "Éssers humans",
       "traffic": "Trànsit",
-      "others": "Altres sorolls",
+      "others": "Altres sons",
       "peopleTypes": "Tipus de persona usuaria",
       "contributor": "Contribuent",
       "citizen": "Ciutadà/na acústic/a",
@@ -126,7 +132,7 @@
     },
     "layers": {
       "title": "Tipus de mapa",
-      "standard": "Estandar",
+      "standard": "Estàndard",
       "satellite": "Satèl·lit"
     },
     "laeqtChart": {
@@ -186,15 +192,15 @@
       "traffic": "Trànsit",
       "people": "Éssers humans",
       "nature": "Sons naturals",
-      "others": "Altres sorolls",
+      "others": "Altres sons",
       "axisY": "Nombre de registres",
       "content": "Aquest gràfic de barres mostra la distribució acumulada de cada tipus de so registrat, expressada en percentatges. Proporciona una visió general de les principals fonts de so en la zona d'estudi. Per exemple, una alta proporció de sons naturals pot indicar un entorn més tranquil i relaxant, mentre que una alta proporció de sons de trànsit pot assenyalar una àrea més concorreguda o sorollosa."
     },
     "quas": {
       "title": "Anàlisi de variables qualitatives - quantitatives",
-      "quiet": "Tranquilitat",
+      "quiet": "Tranquil·litat",
       "lowlyQuiet": "Moderament tranquil",
-      "fairlyQuiet": "Prou tranquil",
+      "fairlyQuiet": "Bastant tranquil",
       "veryQuiet": "Molt tranquil",
       "obsNumber": "Nombre d'observacions",
       "activityLevel": "Nivell d'activitat",
@@ -211,7 +217,7 @@
       "notQuiet": "Gens tranquil",
       "littleQuiet": "Poc tranquil",
       "lowlyQuiet": "Moderament tranquil",
-      "fairlyQuiet": "Prou tranquil",
+      "fairlyQuiet": "Bastant tranquil",
       "veryQuiet": "Molt tranquil",
       "dirty": "Poc net",
       "clean": "Net",
@@ -220,7 +226,7 @@
       "bad": "Dolent",
       "medium": "Mitjà",
       "good": "Bé",
-      "verGood": "Molt bé",
+      "veryGood": "Molt bé",
       "notAccessible": "Poc accessible",
       "accessible": "Accessible",
       "veryAccessible": "Molt accessible",
@@ -240,13 +246,13 @@
     },
     "qualitativeData": {
       "title": "Diagrama de dispersió del paisatge sonor",
-      "content2": "Diagrama de dispersió adaptat de: Mitchell A, Aletta F, Kang J. How to analyse and represent quantitative soundscape data. JASA Express Lett. 2022 Mar;2(3):037201. doi: 10.1121/10.0009794.",
       "content1": "El diagrama de dispersió del paisatge sonor ofereix una visió detallada de com les persones usuàries perceben l'entorn acústic en dues dimensions clau: l'agradabilitat i l'activitat del paisatge sonor, seguint la norma ISO 12913:2004 sobre paisatge sonor. La gràfica agrupa la informació en quatre quadrants del pla cartesià:",
+      "content2": "Diagrama de dispersió adaptat de: Mitchell A, Aletta F, Kang J. How to analyse and represent quantitative soundscape data. JASA Express Lett. 2022 Mar;2(3):037201. doi: 10.1121/10.0009794.",
       "content": {
         "list1": "Quadrant superior esquerre (caòtics): Paisatges sonors amb predomini de sons desagradables que generen incomoditat o angoixa.",
         "list2": "Quadrant inferior esquerre (monòtons): Paisatges sonors que no són ni agradables ni actius, mancant d'elements interessants o atractius.",
         "list3": "Quadrant superior dret (vibrants): Paisatges sonors estimulants i agradables, amb sons positius que contribueixen a una experiència enriquidora i segura.",
-        "list4": "Quadrant inferior dret (calmats): Paisatges sonors ideals per a la relaxació, amb sons de fons suaus i agradables que ajuden a la recuperació després de períodes d'estrès"
+        "list4": "Quadrant inferior dret (calmats): Paisatges sonors ideals per a la relaxació, amb sons de fons suaus i agradables que ajuden a la recuperació després de períodes d'estrès."
       }
     },
     "tonalFrequency": {
@@ -262,13 +268,13 @@
       "title": "Anàlisi psicoacústic",
       "content": {
         "title1": "LOUDNESS (Sonoritat)",
-        "content1": "El paràmetre psicoacústic Loudness (o sonoritat) és una mesura subjectiva de la intensitat amb la qual un soroll és percebut per l'oïda humana. Aquest paràmetre depèn de la freqüència i, per tant, dos events sonors amb el mateix nivell sonor, però diferent freqüència no sempre resulta en la mateixa sensació de volum en l'oïda humana. La unitat de mesura és el “sone”, i mitjançant aquest paràmetre es pot representar la sensació humana al volum del soroll de forma lineal. Per tant, un to que es percep que te el doble de sonoritat, en l'escala de sonoritat se li assigna un valor doble de 'sones'",
+        "content1": "El paràmetre psicoacústic Loudness (o sonoritat) és una mesura subjectiva de la intensitat amb la qual un soroll és percebut per l'oïda humana. Aquest paràmetre depèn de la freqüència i, per tant, dos events sonors amb el mateix nivell sonor, però diferent freqüència no sempre resulta en la mateixa sensació de volum en l'oïda humana. La unitat de mesura és el “sone”, i mitjançant aquest paràmetre es pot representar la sensació humana al volum del soroll de forma lineal. Per tant, un to que es percep que te el doble de volum d’un altre tindrà una sonoritat el doble de gran.",
         "title2": "SHARPNESS (Agudesa)",
-        "content2": "El sharpness (o agudesa) es un paràmetre psicoacústic que compara la quantitat d'energia d'alta freqüència amb l'energia total en una senyal acústica. L'agudesa és caracteritza per ser causada per un so d'alta freqüència (o agut), que pot causar dolor a l'oïda humana. La unitat de mesura de l'agudesa és l'”acum”, i de manera similar a la sonoritat, l'agudesa també delinea la sensació humana de forma lineal",
+        "content2": "La agudesa és un paràmetre que descriu com de penetrant i esmolat es percep un so. Sons amb més energia en les freqüències agudes solen ser percebuts com a més aguts, per exemple, sons de sirenes. Es mesura en acum. Com més gran és l’agudesa, més penetrant es percep el so.",
         "title3": "ROUGHNESS (Rugositat)",
-        "content3": "La rugositat és un paràmetre que quantifica la percepció subjectiva de la modulació d'amplitud ràpida (30-300 Hz) d'un so. La sensació auditiva representada per la rugositat, que sovint produeix sensació de molèstia per a l'orella humana, està relacionada amb les modulacions de sonoritat a freqüències massa elevades per a poder discernir-les per separat (freqüències de modulació superiors a 30 Hz). La unitat de mesura és l'”asper”, i es defineix com a la rugositat produïda per un to de 1000 Hz de 60 dB, que és 100% d'amplitud modulada a 70 Hz.",
-        "title4": "FLUCTUATION STRENGHT (Força de fluctuació)",
-        "content4": "La força de fluctuació és un paràmetre que quantifica la percepció subjectiva de la modulació d'amplitud més lenta (fins a 20 Hz). Per tant, és un concepte similar a la rugositat però per a freqüències baixes. La força de fluctuació persisteix fins als 20 Hz aproximadament, a partir d'on inicia una zona complexa d'avaluar en termes de força de fluctuació i rugositat. Aquesta zona que s'estén fins a freqüències de 30 Hz aproximadament, on la rugositat domina la percepció subjectiva. La unitat de mesura de la força de fluctuació és el “vacil”, que es defineix com a la força de fluctuació produïda per un to de 1000 Hz de 60 dB que és el 100% d'amplitud modulada a 4 Hz."
+        "content3": "La rugositat es refereix a les ràpides variacions d’amplitud en el so, percebudes com a irregularitats. Es mesura en asper. Sons amb una alta rugositat poden ser molestos per a l’oïda humana.",
+        "title4": "FLUCTUATION STRENGTH (Força de fluctuació)",
+        "content4": "Aquest paràmetre mesura la percepció de fluctuacions lentes en la intensitat sonora d’un so. Es mesura en vacil. És particularment rellevant en sons musicals o sorolls de màquines."
       },
       "types": {
         "sharpness": "Agudesa",
@@ -284,6 +290,8 @@
     },
     "temporalEvolution": {
       "title": "Evolució temporal sobre els nivells de so dB(A) en un període de temps",
+      "serieLabel1":"Sèrie de dades 1",
+      "serieLabel2":"Sèrie de dades 2",
       "serie1": "Sèrie 1",
       "serie2": "Sèrie 2",
       "morningSerie1": "Dia Sèrie 1",
