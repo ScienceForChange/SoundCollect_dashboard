@@ -26,24 +26,15 @@ export class AppMenuComponent {
   @Output() toggleLangMenu = new EventEmitter<void>();
   @Output() toggleAdminMenu = new EventEmitter<boolean>();
 
-  private areAllItemsExpanded(): boolean {
-    return this.adminItems.every((menuItem) => menuItem.expanded);
-  }
-
-  //También podría que cuando clicas en el boton del menú se añada una clase a todo el componente que haga que esté todo abierto.
-
-  @HostListener('mouseenter') onMouseEnter() {
-    console.log('Component is hovered', this.areAllItemsExpanded());
-  }
-
   @HostListener('mouseleave') onMouseLeave() {
-    //Aquí comprobare si está abierto en menu, de ser que sí e
-    console.log('Component is not hovered');
+    this.closeAll();
+    setTimeout(() => {
+      this.toggleAdminMenu.emit(false);
+    }, 500);
   }
 
   isAdminMenuOpen: boolean = false;
 
-  //Cada menu item tendrá una función que cerrará el menú
   adminItems: MenuItem[] = [
     {
       label: this.translateService.instant('app.adminPanel'),
@@ -55,7 +46,7 @@ export class AppMenuComponent {
       items: [
         {
           label: "Zonas d'estudi",
-          icon: 'pi pi-fw pi-plus',
+          icon: 'pi pi-fw pi-map',
           command: () => {
             this.toggleAdminMenu.emit(false);
             this.closeAll();
@@ -64,7 +55,7 @@ export class AppMenuComponent {
         },
         {
           label: 'Usuaris',
-          icon: 'pi pi-fw pi-folder-open',
+          icon: 'pi pi-fw pi-users',
           command: () => {
             this.toggleAdminMenu.emit(false);
             this.closeAll();
@@ -73,7 +64,7 @@ export class AppMenuComponent {
         },
         {
           label: 'Observacions',
-          icon: 'pi pi-fw pi-times',
+          icon: 'pi pi-fw pi-map-marker',
           command: () => {
             this.toggleAdminMenu.emit(false);
             this.closeAll();

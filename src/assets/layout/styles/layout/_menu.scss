@@ -106,7 +106,8 @@
     }
   }
 
-  .menu-item,.p-menuitem-text {
+  .menu-item,
+  .p-menuitem-text {
     transition: opacity $transitionDuration ease;
     opacity: 0;
     width: 100%;
@@ -191,7 +192,8 @@
   }
   .p-panelmenu-panel {
     font-family: "Space Grotesk";
-    chevronrighticon {
+    chevronrighticon,
+    chevrondownicon {
       display: none !important;
     }
     .p-panelmenu-header-content {
@@ -203,6 +205,29 @@
     }
     .p-menuitem-text {
       font-weight: normal;
+    }
+    .p-panelmenu-content {
+      border: none;
+    }
+    p-panelmenusub {
+      li {
+        height: auto !important;
+        .p-menuitem-icon {
+          font-size: 1rem !important;
+        }
+        .p-menuitem-content {
+          border-radius: 12px !important;
+          &:hover {
+            background-color: var(--orange-transparency) !important;
+            border-radius: 12px !important;
+            transition: none;
+          }
+          width: 100%;
+          a:hover {
+            background-color: transparent;
+          }
+        }
+      }
     }
   }
 }
