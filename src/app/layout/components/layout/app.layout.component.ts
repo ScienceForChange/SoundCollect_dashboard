@@ -32,6 +32,11 @@ export class AppLayoutComponent implements OnInit {
   isLanguageMenuOpen: boolean = false;
 
   async ngOnInit(): Promise<void> {
+    //TODO habrá que crear una función que devuelva los valores del observable
+    //También se pueden actualizar los valores subscribiendote al onLangChange 
+    this.translations.stream(['app.languageDialog.english','app.languageDialog.spanish']).subscribe((value) => {
+      console.log('value', value)
+    })
     this.observationService.loading$.subscribe((value) => {
       this.loading = value;
     });

@@ -1,104 +1,104 @@
 {
   "app": {
-    "return": "Tornar",
-    "next": "Següent",
-    "yes": "Sí",
+    "return": "Volver",
+    "next": "Siguiente",
+    "yes": "Si",
     "no": "No",
     "send": "Enviar",
-    "accept": "Acceptar",
-    "cancel": "Cancel·lar",
-    "areYouSure": "Estàs segur/a?",
+    "accept": "Aceptar",
+    "cancel": "Cancelar",
+    "areYouSure": "¿Estás seguro/a?",
     "save": "Guardar",
-    "close": "Tancar",
-    "loading": "Carregant...",
+    "close": "Cerrar",
+    "loading": "Cargando...",
     "error": "Error",
-    "errorHandler": "Ha succeït un error inesperat. Posa't en contacte amb el servei tècnic",
-    "knowMore": "Saber-ne més",
-    "seeMore": "Veure més",
-    "login": "Iniciar sessió",
-    "register": "Registra't",
-    "guest": "Continuar com a convidat/da",
-    "user": "Usuari/a",
-    "userTrained": "Usuari/a entrenat/da",
+    "errorHandler": "Ha sucedido un error inesperado. Póngase en contacto con el servicio técnico",
+    "knowMore": "Saber más",
+    "seeMore": "Ver más",
+    "login": "Iniciar sesión",
+    "register": "Regístrate",
+    "guest": "Continuar como invitado/a",
+    "user": "Usuario/a",
+    "userTrained": "Usuario/a entrenado/a",
     "dateFormats": {
       "short": "dd/MM/yyyy",
       "long": "dd/MM/yyyy, HH:mm:ss"
     },
-    "week": "Setmana",
+    "week": "Semana",
     "month": "Mes",
-    "year": "Any",
-    "weeks": "Setmanes",
-    "months": "Mesos",
-    "years": "Anys",
-    "genre": "Gènere",
-    "age": "Edat",
-    "man": "Home",
-    "woman": "Dona",
-    "other": "Altre",
-    "others": "Altres",
-    "unbinarized": "No binari",
-    "unknown": "Preferixo no dir-ho",
-    "terms": "Termes i condicions",
-    "privacy": "Política de privacitat",
-    "observations": "Observacions",
-    "logout": "Tancar sessió",
+    "year": "Año",
+    "weeks": "Semanas",
+    "months": "Meses",
+    "years": "Años",
+    "genre": "Género",
+    "age": "Edad",
+    "man": "Hombre",
+    "woman": "Mujer",
+    "other": "Otro",
+    "others": "Otros",
+    "unbinarized": "No binario",
+    "unknown": "Prefiero no decirlo",
+    "terms": "Términos y condiciones",
+    "privacy": "Política de privacidad",
+    "observations": "Observaciones",
+    "logout": "Cerrar sesión",
     "linkManual": "http://home.soundcollectapp.com/wp-content/uploads/2024/07/20240717_Manual-de-lusuari_aria-Dashboard-SoundCollect_CAT.pdf",
-    "manual": "Manual d'ús",
+    "manual": "Manual de uso",
     "adminPanel": "Panell d'administració",
     "languageDialog": {
       "language": "Idioma",
-      "catalan": "Catalán",
-      "spanish": "Español",
-      "english": "Inglés"
+      "catalan": "Català",
+      "spanish": "Espanyol",
+      "english": "Anglès"
     }
   },
   "home": {
     "footer": {
       "legal": {
-        "legalNotice": "Avís legal",
-        "terms": "Termes i condicions",
-        "privacy": "Política de privacitat",
+        "legalNotice": "Aviso legal",
+        "terms": "Términos y condiciones",
+        "privacy": "Política de privacidad",
         "cookies": "Política de cookies"
       },
-      "allRightsReserved": "Tots els drets reservats",
-      "smallText": "SoundCollect és un projecte coordinat per <a href='https://scienceforchange.eu' target='_blank'>Science For Change</a> dins de la convocatòria del programa operatiu del FEDER de Catalunya 2021-2027 amb número de referència del Contracte EC-2023-89."
+      "allRightsReserved": "Todos los derechos reservados",
+      "smallText": "SoundCollect es un proyecto coordinado por <a href='https://scienceforchange.eu' target='_blank'>Science For Change</a> dentro de la convocatoria del programa operativo del FEDER de Cataluña 2021-2027 con número de referencia del Contrato EC-2023-89"
     },
     "header": {
-      "wellcome": "Et donem la benvinguda a la plataforma de visualització de dades de SoundCollect!",
-      "text": "Aquesta eina ha estat creada per portar la informació sobre les àrees tranquil·les directament al teu abast."
+      "wellcome": "¡Te damos la bienvenida a la plataforma de visualización de datos de SoundCollect!",
+      "text": "Esta herramienta ha sido creada para llevar la información sobre las áreas tranquilas directamente a tu alcance."
     },
     "whatToDo": {
-      "text1": "La nostra plataforma web és un visor de dades interactiu que transforma la informació recopilada per l'aplicació SoundCollect en estadístiques i anàlisis detallades. Tant si ets un/a ciutadà/na interessat/ada en la qualitat sonora del teu entorn, com si ets una persona experta en acústica, aquesta plataforma t'ofereix tot el que necessites per explorar i entendre els paisatges sonors urbans. Recorda que està demostrat que el paisatge sonor urbà,  és un element que afecta i condiciona de forma rellevant la qualitat de vida de les persones.",
-      "listTitle": "Què pots fer a la plataforma?",
+      "text1": "Nuestra plataforma web es un visor de datos interactivo que transforma la información recopilada por la aplicación SoundCollect en estadísticas y análisis detallados. Tanto si eres un/a ciudadano/a interesado/a en la calidad sonora de tu entorno, como si eres una persona experta en acústica, esta plataforma te ofrece todo lo que necesitas para explorar y entender los paisajes sonoros urbanos. Recuerda que está demostrado que el paisaje sonoro urbano es un elemento que afecta y condiciona de forma relevante la calidad de vida de las personas.",
+      "listTitle": "¿Qué puedes hacer en la plataforma?",
       "listItem1": {
-        "title": "Explora el mapa sonor col·laboratiu:",
-        "text": "Visualitza totes les observacions realitzades per la comunitat. Utilitza els filtres per interactuar amb les dades i descobrir zones d'interès."
+        "text": "Visualiza todas las observaciones realizadas por la comunidad. Usa los filtros para interactuar con los datos y descubrir zonas de interés.",
+        "title": "Explora el mapa sonoro colaborativo:"
       },
       "listItem2": {
-        "title": "Accedeix a un resum estadístic general:",
-        "text": "Consulta estadístiques detallades sobre l'abast de l'aplicació en tot el territori de Catalunya, el nombre total de registres i el nombre de persones usuàries actives."
+        "title": "Accede a un resumen estadístico general:",
+        "text": "Consulta estadísticas detalladas sobre el alcance de la aplicación en todo el territorio de Cataluña, el número total de registros y el número de personas usuarias activas."
       },
       "listItem3": {
-        "title": "Realitza una anàlisi detallada:",
-        "text1": "Selecciona una zona d'estudi d'interès i delimita-la espacialment i temporalment per conèixer la tranquil·litat, tant a escala quantitativa, a partir de les dades dels nivells de pressió sonora; com a escala qualitativa, amb dades sobre la percepció de l'entorn acústic.",
-        "text2": "Descarrega't el manual d'usuari de la plataforma per tenir més informació.",
-        "text3": "Explora, analitza i comparteix dades sobre les àrees tranquil·les de Catalunya.",
-        "text4": "Descobrirem junts/es el so de la comunitat!",
+        "title": "Realiza un análisis detallado:",
+        "text1": "Selecciona una zona de estudio de interés y delimítala espacial y temporalmente para conocer la tranquilidad, tanto a escala cuantitativa, a partir de los datos de los niveles de presión sonora; como a escala cualitativa, con datos sobre la percepción del entorno acústico.",
+        "text2": "Descárgate el manual de usuario de la plataforma para tener más información.",
+        "text3": "Explora, analiza y comparte datos sobre las áreas tranquilas de Cataluña.",
+        "text4": "¡Decubriremos juntos/as el sonido de la comunidad!",
         "link": "http://home.soundcollectapp.com/wp-content/uploads/2024/07/20240717_Manual-de-lusuari_aria-Dashboard-SoundCollect_CAT.pdf"
       }
     },
     "dataValidate": {
-      "title": "Procés de validació de les dades",
-      "text1": "Per assegurar la precisió i rellevància de la informació a la plataforma de visualització de dades, els registres han de passar per un procés de validació. Només les dades que compleixin amb els següents requisits seran visibles a la plataforma:",
+      "title": "Proceso de validación de los datos",
+      "text1": "Para asegurar la precisión y relevancia de la información en la plataforma de visualización de datos, los registros deben pasar por un proceso de validación. Solo los datos que cumplan con los siguientes requisitos serán visibles en la plataforma:",
       "listItem1": {
-        "title": "Calibratge de dispositius mòbils:",
-        "text": "Només es consideraran les dades de persones usuàries que hagin calibrat els seus dispositius mòbils correctament. T'expliquem per què per a nosaltres el calibratge és clau:",
-        "text1": "El calibratge adequat assegura que les dades siguin precises i de confiança. Amb el temps, factors com el desgast o canvis en l'entorn poden desviar els resultats.",
-        "text2": "El calibratge garanteix que els mesuraments realitzats en diferents moments o condicions siguin comparables. Això permet obtenir resultats consistents i repetir mesuraments amb confiança al llarg del temps."
+        "title": "Calibración de dispositivos móviles:",
+        "text": "Solo se considerarán los datos de personas usuarias que hayan calibrado sus dispositivos móviles correctamente. Te explicamos por qué para nosotros la calibración es clave:",
+        "text1": "La calibración adecuada asegura que los datos sean precisos y de confianza. Con el tiempo, factores como el desgaste o cambios en el entorno pueden desviar los resultados.",
+        "text2": "La calibración garantiza que las mediciones realizadas en diferentes momentos o condiciones sean comparables. Esto permite obtener resultados consistentes y repetir mediciones con confianza a lo largo del tiempo."
       },
       "listItem2": {
-        "title": "Rang de LAeq acceptable:",
-        "text": "S'acceptaran els registres que continguin valors de  LAeq d'entre 20dBA i 80dBA.  Els valors fora d'aquest rang no es consideren erronis, però no s'inclouran a la plataforma perquè no caracteritzen adequadament una àrea tranquil·la."
+        "title": "Rango de LAeq aceptable:",
+        "text": "Se aceptarán los registros que contengan valores de LAeq de entre 20dBA y 80dBA.  Los valores fuera de este rango no se consideran erróneos, pero no se incluirán en la plataforma por no caracterizar adecuadamente un área tranquila."
       }
     }
   },
@@ -106,215 +106,215 @@
     "observations": "Mapa",
     "titleMenu": "Mapa",
     "filters": {
-      "enable": "Aplicar filtres",
-      "disable": "Desactivar filtres",
-      "title": "Mostrar filtres",
-      "days": "Dies",
-      "hourRange": "Franja horària",
-      "soundTypes": "Tipus de sons",
-      "naturals": "Naturals",
-      "people": "Éssers humans",
-      "traffic": "Trànsit",
-      "others": "Altres sons",
-      "peopleTypes": "Tipus de persona usuaria",
-      "contributor": "Contribuent",
-      "citizen": "Ciutadà/na acústic/a",
-      "explorer": "Explorador/a acústic/a",
-      "traveler": "Viatger/a sonor/a",
-      "informer": "Informador/a expert/a",
-      "pressure": "Pressió sonora",
-      "positivePlaces": "Llocs amb influencia positiva",
-      "stronglyAgree": "Molt d'acord",
-      "agree": "D'acord",
-      "undecided": "Indecís",
-      "disagree": "En desacord",
-      "stronglyDisagree": "Molt en desacord"
+      "enable": "Aplicar filtros",
+      "disable": "Desactivar filtros",
+      "title": "Mostrar filtros",
+      "days": "Días",
+      "hourRange": "Franja horaria",
+      "soundTypes": "Tipos de sonidos",
+      "naturals": "Naturales",
+      "people": "Seres humanos",
+      "traffic": "Tránsito",
+      "others": "Otros sonidos",
+      "peopleTypes": "Tipo de persona usuaria",
+      "contributor": "Contribuyente",
+      "citizen": "Ciudadano/na acústico/a",
+      "explorer": "Explorador/a acústico/a",
+      "traveler": "Viajero/a sonoro/a",
+      "informer": "Informador/a experto/a",
+      "pressure": "Presión sonora",
+      "positivePlaces": "Sitios con influencia positiva",
+      "stronglyAgree": "Muy de acuerdo",
+      "agree": "De acuerdo",
+      "undecided": "Indeciso",
+      "disagree": "En desacuerdo",
+      "stronglyDisagree": "Muy en desacuerdo"
     },
     "layers": {
-      "title": "Tipus de mapa",
-      "standard": "Estàndard",
-      "satellite": "Satèl·lit"
+      "title": "Tipo de mapa",
+      "standard": "Estandar",
+      "satellite": "Satélite"
     },
     "laeqtChart": {
-      "axisX": "Temps (segons)",
-      "axisY": "Nivell de pressió sonora (dBA)"
+      "axisX": "Tiempo (segundos)",
+      "axisY": "Nivel de presión sonora (dBA)"
     },
-    "description": "Consulta estadístiques detallades sobre l'ús de SoundCollect a Catalunya i accedeix a diferents indicadors.",
-    "title": "Mapa sonor col·laboratiu ES"
+    "description": "Consulta estadísticas detalladas sobre el uso de SoundCollect en Cataluña y accede a distintos indicadores.",
+    "title": "Mapa sonoro colaborativo"
   },
   "overview": {
-    "observations": "Resum",
-    "titleMenu": "Resum",
+    "observations": "Resumen",
+    "titleMenu": "Resumen",
     "cataloniaMap": {
-      "regions": "Comarques de Catalunya",
-      "moreObs": "Més observacions",
-      "lessObs": "Menys observacions",
-      "obsNumber": "Nombre d'observacions"
+      "regions": "Comarcas de Cataluña",
+      "moreObs": "Más observaciones",
+      "lessObs": "Menos observaciones",
+      "obsNumber": "Número de observaciones"
     },
     "barChart": {
-      "yAxis": "Nombre de registres",
+      "yAxis": "Número de registros",
       "tooltip": {
-        "date": "Data",
-        "numObs": "Observacions"
+        "date": "Fecha",
+        "numObs": "Observaciones"
       },
-      "title": "Evolució temporal dels registres en SoundCollect",
-      "content": "Aquesta gràfica mostra com varia l'activitat de les persones usuàries al llarg del temps. Et permet identificar patrons d'ús i dates clau, ajudant a avaluar la participació i planificar activitats participatives."
+      "title": "Evolución temporal de los registros en SoundCollect",
+      "content": "Esta gráfica muestra cómo varía la actividad de las personas usuarias a lo largo del tiempo. Te permite identificar patrones de uso y fechas clave, ayudando a evaluar la participación y planificar actividades participativas."
     },
     "observationsNumber": {
-      "total": "Nombre de registres total",
-      "average": "Mitjana de registres per mes per usuari/a",
-      "users": "Nombre total d'usuaris/es"
+      "total": "Número de registros total",
+      "average": "Media de registros por mes por usuario/a",
+      "users": "Número total de usuarios/as"
     },
-    "description": "Consulta estadístiques detallades sobre l'ús de SoundCollect a Catalunya i accedeix a diferents indicadors.",
-    "title": "Resum"
+    "description": "Consulta estadísticas detalladas sobre el uso de SoundCollect en Cataluña y accede a distintos indicadores.",
+    "title": "Resumen"
   },
   "soundscape": {
-    "observations": "Observacions",
-    "titleMenu": "Anàlisi",
+    "observations": "Observaciones",
+    "titleMenu": "Análisis",
     "map": {
-      "createFilter": "Crear zona d'estudi",
-      "editFilter": "Editar filtre",
-      "deleteFilter": "Eliminar filtre",
-      "kmlDownload": "Format KML"
+      "createFilter": "Crear zona de estudio",
+      "editFilter": "Editar filtro",
+      "deleteFilter": "Eliminar filtro",
+      "kmlDownload": "Formato KML"
     },
     "filter": {
-      "morning": "Matí (7:00 - 19:00)",
-      "afternoon": "Vespre (19:00 - 23:00)",
-      "night": "Nit (23:00 - 7:00)",
-      "wholeDay": "Tot el dia"
+      "morning": "Mañana (7:00 - 19:00)",
+      "afternoon": "Anochecer (19:00 - 23:00)",
+      "night": "Noche (23:00 - 7:00)",
+      "wholeDay": "Todo el día"
     },
     "soundLevels": {
-      "title": "Visualització gradual dels nivells de so per hores",
-      "content": "Aquesta gràfica et permetrà observar com varia la tranquil·litat de la zona al llarg del dia, ajudant-te a entendre millor els patrons de so i els períodes de major o menor tranquil·litat. Utilitza un gràfic d'àrea polar per a revelar els patrons de so i els períodes de major o menor tranquil·litat en la zona, amb cada segment representant una hora específica i el seu radi indicant el nivell de pressió sonora en aquest moment."
+    "title": "Visualización gradual de los niveles de sonido por horas",
+    "content": "Esta gráfica te permitirá observar como varía la tranquilidad de la zona a lo largo del día, ayudándote a entender mejor los patrones de sonido y los periodos de mayor o menor tranquilidad. Utiliza un gráfico de área polar para revelar los patrones de sonido y los periodos de mayor o menor tranquilidad en la zona, con cada segmento representando una hora específica y su radio indicando el nivel de presión sonora en este momento."
     },
     "soundTypes": {
-      "title": "Tipus de so",
-      "traffic": "Trànsit",
-      "people": "Éssers humans",
-      "nature": "Sons naturals",
-      "others": "Altres sons",
-      "axisY": "Nombre de registres",
-      "content": "Aquest gràfic de barres mostra la distribució acumulada de cada tipus de so registrat, expressada en percentatges. Proporciona una visió general de les principals fonts de so en la zona d'estudi. Per exemple, una alta proporció de sons naturals pot indicar un entorn més tranquil i relaxant, mentre que una alta proporció de sons de trànsit pot assenyalar una àrea més concorreguda o sorollosa."
+      "title": "Tipos de sonido",
+      "traffic": "Tránsito",
+      "people": "Seres humanos",
+      "nature": "Sonidos naturales",
+      "others": "Otros sonidos",
+      "axisY": "Número de registros",
+      "content": "Este gráfico de barras muestra la distribución acumulada de cada tipo de sonido registrado, expresada en porcentajes. Proporciona una visión general de las principales fuentes de sonido en la zona de estudio. Por ejemplo, una alta proporción de sonidos naturales puede indicar un entorno más tranquilo y relajante, mientras que una alta proporción de sonidos de tráfico puede señalar una área más concurrida o ruidosa."
     },
     "quas": {
-      "title": "Anàlisi de variables qualitatives - quantitatives",
-      "quiet": "Tranquil·litat",
-      "lowlyQuiet": "Moderament tranquil",
-      "fairlyQuiet": "Bastant tranquil",
-      "veryQuiet": "Molt tranquil",
-      "obsNumber": "Nombre d'observacions",
-      "activityLevel": "Nivell d'activitat",
-      "pleasantnessLevel": "Nivell d'agradabilitat",
-      "activity&pleasantness": "Activitat / Agradabilitat",
-      "content": "La gràfica facilita la identificació de patrons i tendències en la relació entre so i percepció. Per exemple, pot revelar si alts nivells de pressió sonora sempre corresponen a una baixa percepció de tranquil·litat o si existeixen excepcions en entorns específics. És una eina clau per a avaluar com l'entorn acústic afecta la percepció del confort, permetent una comprensió més profunda de la relació entre el so mesurat i l'experiència subjectiva de tranquil·litat."
+      "title": "Análisis de variables cualitativas - cuantitativas",
+      "quiet": "Tranquilidad",
+      "lowlyQuiet": "Moderadamente tranquilo",
+      "fairlyQuiet": "Bastante tranquilo",
+      "veryQuiet": "Muy tranquilo",
+      "obsNumber": "Número de observaciones",
+      "activityLevel": "Nivel de actividad",
+      "pleasantnessLevel": "Nivel de agradabilidad",
+      "activity&pleasantness": "Actividad / Agradabilidad",
+      "content": "La gráfica facilita la identificación de patrones y tendencias en la relación entre sonido y percepción. Por ejemplo, puede revelar si altos niveles de presión sonora siempre corresponden a una baja percepción de tranquilidad o si existen excepciones en entornos específicos. Es una herramienta clave para evaluar como el entorno acústico afecta la percepción del confort, permitiendo una comprensión más profunda de la relación entre el sonido mesurado y la experiencia subjetiva de tranquilidad."
     },
     "perception": {
-      "title": "Descripció de la percepció del espai",
-      "quiet": "Tranquilitat",
-      "cleanliness": "Neteja i manteniment",
-      "accessibility": "Accessibilitat",
-      "safety": "Seguretat",
-      "notQuiet": "Gens tranquil",
-      "littleQuiet": "Poc tranquil",
-      "lowlyQuiet": "Moderament tranquil",
-      "fairlyQuiet": "Bastant tranquil",
-      "veryQuiet": "Molt tranquil",
-      "dirty": "Poc net",
-      "clean": "Net",
-      "veryClean": "Molt net",
-      "veryBad": "Molt dolent",
-      "bad": "Dolent",
-      "medium": "Mitjà",
-      "good": "Bé",
-      "veryGood": "Molt bé",
-      "notAccessible": "Poc accessible",
-      "accessible": "Accessible",
-      "veryAccessible": "Molt accessible",
-      "notSafe": "Poc segur",
-      "safe": "Segur",
-      "verySafe": "Molt segur",
-      "content": "Aquest gràfic mostra en percentatges els aspectes de percepció de l'espai, la qual cosa permet identificar característiques que necessiten millora o que generen alta satisfacció en la zona d'estudi."
+      "title": "Descripción de la percepción del espacio",
+      "quiet": "Tranquilidad",
+      "cleanliness": "Limpieza y mantenimiento",
+      "accessibility": "Accesibilidad",
+      "safety": "Seguridad",
+      "notQuiet": "Nada tranquilo",
+      "littleQuiet": "Poco tranquilo",
+      "lowlyQuiet": "Moderadamente tranquilo",
+      "fairlyQuiet": "Bastante tranquilo",
+      "veryQuiet": "Muy tranquilo",
+      "dirty": "Poco limpio",
+      "clean": "Limpio",
+      "veryClean": "Muy limpio",
+      "veryBad": "Muy malo",
+      "bad": "Malo",
+      "medium": "Medio",
+      "good": "Bien",
+      "verGood": "Muy bien",
+      "notAccessible": "Poco accesible",
+      "accessible": "Accesible",
+      "veryAccessible": "Muy accesible",
+      "notSafe": "Poco seguro",
+      "safe": "Seguro",
+      "verySafe": "Muy seguro",
+      "content": "Este gráfico muestra en porcentajes los aspectos de percepción del espacio, lo que permite identificar características que necesitan mejora o generan alta satisfacción en la zona de estudio."
     },
     "pressure": {
-      "title": "Distribució de nivells de pressió sonora a l'àrea tranquil·la",
-      "morning": "Matí (7:00 - 19:00)",
-      "afternoon": "Vespre (19:00 - 23:00)",
-      "night": "Nit (23:00 - 7:00)",
-      "hourRange": "Franja horària",
-      "obsNumber": "Nombre d'observacions",
-      "content": "Aquesta visualització et permet identificar patrons i tendències en els nivells de so de la zona d'interès. Per exemple, podries descobrir que els nivells de pressió sonora són més alts durant les tardes en una zona verda pròxima a un parc on juguen els nens i nenes. Aquesta informació és útil per a avaluar com les activitats i l'entorn afecten la tranquil·litat de l'àrea en diferents moments del dia."
+      "title": "Distribución de niveles de presión sonora en el área tranquila",
+      "morning": "Mañana (7:00 - 19:00)",
+      "afternoon": "Anochecer (19:00 - 23:00)",
+      "night": "Noche (23:00 - 7:00)",
+      "hourRange": "Franja horaria",
+      "obsNumber": "Número de observaciones",
+      "content": "Esta visualización te permite identificar patrones y tendencias en los niveles de sonido de la zona de interés. Por ejemplo, podrías descubrir que los niveles de presión sonora son más altos durante las tardes en una zona verde cercana a un parque en el que juegan los niños y niñas. Esta información es útil para evaluar cómo las actividades y el entorno afectan a la tranquilidad del área en diferentes momentos del día."
     },
     "qualitativeData": {
-      "title": "Diagrama de dispersió del paisatge sonor",
-      "content1": "El diagrama de dispersió del paisatge sonor ofereix una visió detallada de com les persones usuàries perceben l'entorn acústic en dues dimensions clau: l'agradabilitat i l'activitat del paisatge sonor, seguint la norma ISO 12913:2004 sobre paisatge sonor. La gràfica agrupa la informació en quatre quadrants del pla cartesià:",
-      "content2": "Diagrama de dispersió adaptat de: Mitchell A, Aletta F, Kang J. How to analyse and represent quantitative soundscape data. JASA Express Lett. 2022 Mar;2(3):037201. doi: 10.1121/10.0009794.",
-      "content": {
-        "list1": "Quadrant superior esquerre (caòtics): Paisatges sonors amb predomini de sons desagradables que generen incomoditat o angoixa.",
-        "list2": "Quadrant inferior esquerre (monòtons): Paisatges sonors que no són ni agradables ni actius, mancant d'elements interessants o atractius.",
-        "list3": "Quadrant superior dret (vibrants): Paisatges sonors estimulants i agradables, amb sons positius que contribueixen a una experiència enriquidora i segura.",
-        "list4": "Quadrant inferior dret (calmats): Paisatges sonors ideals per a la relaxació, amb sons de fons suaus i agradables que ajuden a la recuperació després de períodes d'estrès."
+      "title": "Diagrama de dispersión del paisaje sonoro",
+      "content1": "El diagrama de dispersión del paisaje sonoro ofrece una visión detallada de como las personas usuarias perciben el entorno acústico en dos dimensiones clave: la agradabilidad y la actividad del paisaje sonoro, siguiendo la norma ISO 12913:2004 sobre paisaje sonoro. La gráfica agrupa la información en cuatro cuadrantes del plano cartesiano:",
+      "content2": "Diagrama de dispersión adaptado de: Mitchell A, Aletta F, Kang J. How to analyse and represent quantitative soundscape data. JASA Express Lett. 2022 Mar;2(3):037201. doi: 10.1121/10.0009794.",
+      "contentList": {
+        "list1": "Cuadrante superior izquierdo (caóticos): Paisajes sonoros con predominio de sonidos desagradables que generan incomodidad o angustia.",
+        "list2": "Cuadrante inferior izquierdo (monótonos): Paisajes sonoros que no son ni agradables ni activos, careciendo de elementos interesantes o atractivos.",
+        "list3": "Cuadrante superior derecho (vibrantes): Paisajes sonoros estimulantes y agradables, con sonidos positivos que contribuyen a una experiencia enriquecedora y segura.",
+        "list4": "Cuadrante inferior derecho (calmados): Paisajes sonoros ideales para la relajación, con sonidos de fondo suaves y agradables que ayudan a la recuperación después de períodos de estrés."
       }
     },
     "tonalFrequency": {
-      "title": "Gràfica d'1/3 d'octava",
-      "frequency": "Freqüència (Hertz)",
-      "presure": "Pressió sonora",
-      "pressurePonderation": "Pressió sonora dBA",
+      "title": "Gráfica de 1/3 de octava",
+      "frequency": "Frecuencia (Hercio)",
+      "pressure": "Presión sonora",
+      "pressurePonderation": "Presión sonora dBA",
       "ponderation": "dB",
       "noPonderation": "dBA",
-      "content": "Aquest gràfic mostra com es distribueix l'energia dels sons en l'àrea seleccionada al llarg d'un espectre de freqüències. La seva utilitat radica a identificar si predominen les freqüències baixes o altes en l'àrea d'estudi. Les freqüències baixes representen sons greus, com el retrunyir d'un motor, mentre que les freqüències altes inclouen sons aguts, com el cant d'un ocell. El gràfic permet alternar entre el nivell de pressió sonora sense ponderació (Leq) i amb ponderació A (LAeq)."
+      "content": "Este gráfico muestra como se distribuye la energía de los sonidos en el área seleccionada a lo largo de un espectro de frecuencias. Su utilidad radica en identificar si predominan las frecuencias bajas o altas en el área de estudio. Las frecuencias bajas representan sonidos graves, como el retumbar de un motor, mientras que las frecuencias altas incluyen sonidos agudos, como el canto de un pájaro. El gráfico permite alternar entre el nivel de presión sonora sin ponderación (Leq) y con ponderación A (LAeq)."
     },
     "physcoAcustic": {
-      "title": "Anàlisi psicoacústic",
+      "title": "Análisis psicoacústico",
       "content": {
-        "title1": "LOUDNESS (Sonoritat)",
-        "content1": "El paràmetre psicoacústic Loudness (o sonoritat) és una mesura subjectiva de la intensitat amb la qual un soroll és percebut per l'oïda humana. Aquest paràmetre depèn de la freqüència i, per tant, dos events sonors amb el mateix nivell sonor, però diferent freqüència no sempre resulta en la mateixa sensació de volum en l'oïda humana. La unitat de mesura és el “sone”, i mitjançant aquest paràmetre es pot representar la sensació humana al volum del soroll de forma lineal. Per tant, un to que es percep que te el doble de volum d’un altre tindrà una sonoritat el doble de gran.",
-        "title2": "SHARPNESS (Agudesa)",
-        "content2": "La agudesa és un paràmetre que descriu com de penetrant i esmolat es percep un so. Sons amb més energia en les freqüències agudes solen ser percebuts com a més aguts, per exemple, sons de sirenes. Es mesura en acum. Com més gran és l’agudesa, més penetrant es percep el so.",
-        "title3": "ROUGHNESS (Rugositat)",
-        "content3": "La rugositat es refereix a les ràpides variacions d’amplitud en el so, percebudes com a irregularitats. Es mesura en asper. Sons amb una alta rugositat poden ser molestos per a l’oïda humana.",
-        "title4": "FLUCTUATION STRENGTH (Força de fluctuació)",
-        "content4": "Aquest paràmetre mesura la percepció de fluctuacions lentes en la intensitat sonora d’un so. Es mesura en vacil. És particularment rellevant en sons musicals o sorolls de màquines."
+        "title1": "LOUDNESS (Sonoridad)",
+        "content1": "El parámetro psicoacústico loudness (o sonoridad) es una medida subjetiva de la intensidad con la que un ruido es percibido por el oído humano. Este parámetro depende de la frecuencia y, por tanto, dos eventos sonoros con el mismo nivel sonoro, pero diferente frecuencia no siempre resulta en la misma sensación de volumen en el oído humano. La unidad de medida es el “sone”, y mediante este parámetro se puede representar la sensación humana al volumen del ruido de forma lineal. Por tanto, un tono que se percibe que tiene el doble de sonoridad, en la escala de sonoridad se le asigna un valor doble de 'sones'.",
+        "title2": "SHARPNESS (Agudeza)",
+        "content2": "El sharpness (o agudeza) es un parámetro psicoacústico que compara la cantidad de energía de alta frecuencia con la energía total en una señal acústica. La agudeza se caracteriza por ser causada por un sonido de alta frecuencia (o agudo), que puede causar dolor en el oído humano. La unidad de medida de la agudeza es el “acum”, y de forma similar a la sonoridad, la agudeza también delinea la sensación humana de forma lineal.",
+        "title3": "ROUGHNESS (Rugosidad)",
+        "content3": "La rugosidad es un parámetro que cuantifica la percepción subjetiva de la modulación de amplitud rápida (30-300 Hz) de un sonido. La sensación auditiva representada por la rugosidad, que a menudo produce sensación de molestia para la oreja humana, está relacionada con las modulaciones de sonoridad a frecuencias demasiado elevadas para poder discernirlas por separado (frecuencias de modulación superiores a 30 Hz). La unidad de medida de la rugosidad es el asper.",
+        "title4": "FLUCTUATION STRENGTH (Fuerza de fluctuación)",
+        "content4": "La fuerza de fluctuación se define como un sonido de baja frecuencia que cambia con el tiempo, lo cual es percibido como pulsaciones lentas. Esto se puede observar en un sonido constante que contiene una serie de cambios cíclicos que son inferiores a 20 Hz (como el sonido producido por un helicóptero a la distancia)."
       },
       "types": {
-        "sharpness": "Agudesa",
-        "roughtness": "Rugositat",
-        "loudness": "Sonoritat",
-        "fluctuationStrenght": "Força de fluctuació"
+        "sharpness": "Agudeza",
+        "roughtness": "Rugosidad",
+        "loudness": "Sonoridad",
+        "fluctuationStrenght": "Fuerza de fluctuación"
       },
       "tooltip": {
         "hour": "Hora",
-        "numObs": "Observacions",
-        "standardDeviation": "Desviació estàndard"
+        "numObs": "Observaciones",
+        "standardDeviation": "Desviación estandar"
       }
     },
     "temporalEvolution": {
-      "title": "Evolució temporal sobre els nivells de so dB(A) en un període de temps",
-      "serie1": "Sèrie 1",
-      "serie2": "Sèrie 2",
-      "morningSerie1": "Dia Sèrie 1",
-      "morningSerie2": "Dia Sèrie 2",
-      "afternoonSerie1": "Vespre Sèrie 1",
-      "afternoonSerie2": "Vespre Sèrie 2",
-      "nightSerie1": "Nit Sèrie 1",
-      "nightSerie2": "Nit Sèrie 2",
-      "hours": "Hores",
-      "morning": "Dia",
-      "afternoon": "Vespre",
-      "night": "Nit",
-      "pressureLevel": "Nivell de pressió sonora (dBA)",
+      "title": "Evolución temporal sobre los niveles de sonido dB(A) en un período de tiempo",
+      "serie1": "Serie 1",
+      "serie2": "Serie 2",
+      "morningSerie1": "Día Serie 1",
+      "morningSerie2": "Día Serie 2",
+      "afternoonSerie1": "Anochecer Serie 1",
+      "afternoonSerie2": "Anochecer Serie 2",
+      "nightSerie1": "Noche Serie 1",
+      "nightSerie2": "Noche Serie 2",
+      "hours": "Horas",
+      "morning": "Mañana",
+      "afternoon": "Anochecer",
+      "night": "Noche",
+      "pressureLevel": "Nivel de presión sonora (dBA)",
       "tooltip": {
         "hour": "Hora",
-        "numObs": "Observacions"
+        "numObs": "Observaciones"
       },
-      "content": "Aquesta gràfica t'ajuda a entendre com els nivells de so canvien al llarg del dia i identificar períodes amb alta o baixa variabilitat en els nivells de pressió sonora. Permet analitzar les variacions de so en una zona específica al llarg del temps i comparar dues sèries de dades. Utilitza un format de veles, on cada vela representa els nivells de pressió sonora per a una hora específica."
+      "content": "Esta gráfica te ayuda a entender como los niveles de sonido cambian a lo largo del día e identificar períodos con alta o baja variabilidad en los niveles de presión sonora. Permite analizar las variaciones de sonido en una zona específica a lo largo del tiempo y comparar dos series de datos. Utiliza un formato de velas, en el que cada vela representa los niveles de presión sonora para una hora específica."
     },
     "tagCloud": {
-      "title": "Mesures per a protegir acústicament la zona d'estudi",
-      "content": "Aquest núvol de paraules es genera a partir de les respostes a la pregunta oberta: “Quines mesures proposaries per a protegir acústicament aquest espai?” La visualització destaca els suggeriments dels usuaris, mostrant en major grandària les paraules o frases més freqüents, la qual cosa facilita identificar les mesures més populars o rellevants per a millorar la protecció acústica en la zona d'estudi."
+      "title": "Medidas para proteger acústicamente la zona de estudio",
+      "content": "Esta nube de palabras se genera a partir de las respuestas a la pregunta abierta: '¿Qué medidas propondrías para proteger acústicamente este espacio?' La visualización destaca las sugerencias de los usuarios, mostrando en mayor tamaño las palabras o frases más frecuentes, lo que facilita identificar las medidas más populares o relevantes para mejorar la protección acústica en la zona de estudio."
     },
-    "description": "Defineix una zona d'estudi i ajusta el període de temps per a avaluar la tranquil·litat de l'àrea. Analitza tant la percepció acústica qualitativa com els nivells de pressió sonora quantitatius.",
-    "title": "Anàlisi"
+    "description": "Define una zona de estudio y ajusta el período de tiempo para evaluar la tranquilidad del área. Analiza tanto la percepción acústica cualitativa como los niveles de presión sonora cuantitativos.",
+    "title": "Análisis"
   },
   "admin": {
     "studyZone": {
@@ -373,15 +373,15 @@
     }
   },
   "login": {
-    "title": "Accedeix al Dashboard",
-    "subtitle": "Inicia sessió amb el teu usuari de l'app per a continuar",
-    "submitButton": "Iniciar sessió",
+    "title": "Accede al Dashboard",
+    "subtitle": "Inicia sesión con tu usuario de la app para continuar",
+    "submitButton": "Iniciar sesión",
     "errorTitle": "Error",
-    "errorSubtitle": "Usuari/a o contrasenya incorrectes"
+    "errorSubtitle": "Usuario/a o contraseña incorrectos"
   },
   "error": {
-    "title": "Oops!",
-    "subtitle": "Alguna cosa no ha sortit bé.",
-    "button": "Tornar"
+    "title": "¡Oops!",
+    "subtitle": "Algo no ha salido bien.",
+    "button": "Volver"
   }
 }

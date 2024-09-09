@@ -55,50 +55,50 @@
   "home": {
     "footer": {
       "legal": {
-        "legalNotice": "Avís legal",
-        "terms": "Termes i condicions",
-        "privacy": "Política de privacitat",
+        "legalNotice": "Aviso legal",
+        "terms": "Términos y condiciones",
+        "privacy": "Política de privacidad",
         "cookies": "Política de cookies"
       },
-      "allRightsReserved": "Tots els drets reservats",
-      "smallText": "SoundCollect és un projecte coordinat per <a href='https://scienceforchange.eu' target='_blank'>Science For Change</a> dins de la convocatòria del programa operatiu del FEDER de Catalunya 2021-2027 amb número de referència del Contracte EC-2023-89."
+      "allRightsReserved": "Todos los derechos reservados",
+      "smallText": "SoundCollect es un proyecto coordinado por <a href='https://scienceforchange.eu' target='_blank'>Science For Change</a> dentro de la convocatoria del programa operativo del FEDER de Cataluña 2021-2027 con número de referencia del Contrato EC-2023-89"
     },
     "header": {
-      "wellcome": "Et donem la benvinguda a la plataforma de visualització de dades de SoundCollect!",
-      "text": "Aquesta eina ha estat creada per portar la informació sobre les àrees tranquil·les directament al teu abast."
+      "wellcome": "¡Te damos la bienvenida a la plataforma de visualización de datos de SoundCollect!",
+      "text": "Esta herramienta ha sido creada para llevar la información sobre las áreas tranquilas directamente a tu alcance."
     },
     "whatToDo": {
-      "text1": "La nostra plataforma web és un visor de dades interactiu que transforma la informació recopilada per l'aplicació SoundCollect en estadístiques i anàlisis detallades. Tant si ets un/a ciutadà/na interessat/ada en la qualitat sonora del teu entorn, com si ets una persona experta en acústica, aquesta plataforma t'ofereix tot el que necessites per explorar i entendre els paisatges sonors urbans. Recorda que està demostrat que el paisatge sonor urbà,  és un element que afecta i condiciona de forma rellevant la qualitat de vida de les persones.",
-      "listTitle": "Què pots fer a la plataforma?",
+      "text1": "Nuestra plataforma web es un visor de datos interactivo que transforma la información recopilada por la aplicación SoundCollect en estadísticas y análisis detallados. Tanto si eres un/a ciudadano/a interesado/a en la calidad sonora de tu entorno, como si eres una persona experta en acústica, esta plataforma te ofrece todo lo que necesitas para explorar y entender los paisajes sonoros urbanos. Recuerda que está demostrado que el paisaje sonoro urbano es un elemento que afecta y condiciona de forma relevante la calidad de vida de las personas.",
+      "listTitle": "¿Qué puedes hacer en la plataforma?",
       "listItem1": {
-        "title": "Explora el mapa sonor col·laboratiu:",
-        "text": "Visualitza totes les observacions realitzades per la comunitat. Utilitza els filtres per interactuar amb les dades i descobrir zones d'interès."
+        "text": "Visualiza todas las observaciones realizadas por la comunidad. Usa los filtros para interactuar con los datos y descubrir zonas de interés.",
+        "title": "Explora el mapa sonoro colaborativo:"
       },
       "listItem2": {
-        "title": "Accedeix a un resum estadístic general:",
-        "text": "Consulta estadístiques detallades sobre l'abast de l'aplicació en tot el territori de Catalunya, el nombre total de registres i el nombre de persones usuàries actives."
+        "title": "Accede a un resumen estadístico general:",
+        "text": "Consulta estadísticas detalladas sobre el alcance de la aplicación en todo el territorio de Cataluña, el número total de registros y el número de personas usuarias activas."
       },
       "listItem3": {
-        "title": "Realitza una anàlisi detallada:",
-        "text1": "Selecciona una zona d'estudi d'interès i delimita-la espacialment i temporalment per conèixer la tranquil·litat, tant a escala quantitativa, a partir de les dades dels nivells de pressió sonora; com a escala qualitativa, amb dades sobre la percepció de l'entorn acústic.",
-        "text2": "Descarrega't el manual d'usuari de la plataforma per tenir més informació.",
-        "text3": "Explora, analitza i comparteix dades sobre les àrees tranquil·les de Catalunya.",
-        "text4": "Descobrirem junts/es el so de la comunitat!",
+        "title": "Realiza un análisis detallado:",
+        "text1": "Selecciona una zona de estudio de interés y delimítala espacial y temporalmente para conocer la tranquilidad, tanto a escala cuantitativa, a partir de los datos de los niveles de presión sonora; como a escala cualitativa, con datos sobre la percepción del entorno acústico.",
+        "text2": "Descárgate el manual de usuario de la plataforma para tener más información.",
+        "text3": "Explora, analiza y comparte datos sobre las áreas tranquilas de Cataluña.",
+        "text4": "¡Decubriremos juntos/as el sonido de la comunidad!",
         "link": "http://home.soundcollectapp.com/wp-content/uploads/2024/07/20240717_Manual-de-lusuari_aria-Dashboard-SoundCollect_CAT.pdf"
       }
     },
     "dataValidate": {
-      "title": "Procés de validació de les dades",
-      "text1": "Per assegurar la precisió i rellevància de la informació a la plataforma de visualització de dades, els registres han de passar per un procés de validació. Només les dades que compleixin amb els següents requisits seran visibles a la plataforma:",
+      "title": "Proceso de validación de los datos",
+      "text1": "Para asegurar la precisión y relevancia de la información en la plataforma de visualización de datos, los registros deben pasar por un proceso de validación. Solo los datos que cumplan con los siguientes requisitos serán visibles en la plataforma:",
       "listItem1": {
-        "title": "Calibratge de dispositius mòbils:",
-        "text": "Només es consideraran les dades de persones usuàries que hagin calibrat els seus dispositius mòbils correctament. T'expliquem per què per a nosaltres el calibratge és clau:",
-        "text1": "El calibratge adequat assegura que les dades siguin precises i de confiança. Amb el temps, factors com el desgast o canvis en l'entorn poden desviar els resultats.",
-        "text2": "El calibratge garanteix que els mesuraments realitzats en diferents moments o condicions siguin comparables. Això permet obtenir resultats consistents i repetir mesuraments amb confiança al llarg del temps."
+        "title": "Calibración de dispositivos móviles:",
+        "text": "Solo se considerarán los datos de personas usuarias que hayan calibrado sus dispositivos móviles correctamente. Te explicamos por qué para nosotros la calibración es clave:",
+        "text1": "La calibración adecuada asegura que los datos sean precisos y de confianza. Con el tiempo, factores como el desgaste o cambios en el entorno pueden desviar los resultados.",
+        "text2": "La calibración garantiza que las mediciones realizadas en diferentes momentos o condiciones sean comparables. Esto permite obtener resultados consistentes y repetir mediciones con confianza a lo largo del tiempo."
       },
       "listItem2": {
-        "title": "Rang de LAeq acceptable:",
-        "text": "S'acceptaran els registres que continguin valors de  LAeq d'entre 20dBA i 80dBA.  Els valors fora d'aquest rang no es consideren erronis, però no s'inclouran a la plataforma perquè no caracteritzen adequadament una àrea tranquil·la."
+        "title": "Rango de LAeq aceptable:",
+        "text": "Se aceptarán los registros que contengan valores de LAeq de entre 20dBA y 80dBA.  Los valores fuera de este rango no se consideran erróneos, pero no se incluirán en la plataforma por no caracterizar adecuadamente un área tranquila."
       }
     }
   },
