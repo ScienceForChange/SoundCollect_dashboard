@@ -1,23 +1,8 @@
-import { Component, inject, ChangeDetectorRef } from '@angular/core';
-import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
 })
 export class AppComponent {
-  private translate = inject(TranslateService);
-  private changeDetectorRef = inject(ChangeDetectorRef);
-
-  constructor() {
-    const locale = localStorage.getItem('locale') || 'ca';
-    this.translate.setDefaultLang(locale);
-    this.translate.use(locale);
-    this.translate.addLangs(['en', 'es', 'ca']);
-
-    // this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
-    //   // TODO instant() are not updating when language changes
-    //   this.changeDetectorRef.detectChanges();
-    // });
-  }
 }
