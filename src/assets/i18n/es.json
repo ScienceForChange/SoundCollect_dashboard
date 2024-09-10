@@ -272,18 +272,18 @@
       "content": {
         "title1": "LOUDNESS (Sonoridad)",
         "content1": "El parámetro psicoacústico loudness (o sonoridad) es una medida subjetiva de la intensidad con la que un ruido es percibido por el oído humano. Este parámetro depende de la frecuencia y, por tanto, dos eventos sonoros con el mismo nivel sonoro, pero diferente frecuencia no siempre resulta en la misma sensación de volumen en el oído humano. La unidad de medida es el “sone”, y mediante este parámetro se puede representar la sensación humana al volumen del ruido de forma lineal. Por tanto, un tono que se percibe que tiene el doble de sonoridad, en la escala de sonoridad se le asigna un valor doble de 'sones'.",
-        "title2": "SHARPNESS (Agudeza)",
-        "content2": "El sharpness (o agudeza) es un parámetro psicoacústico que compara la cantidad de energía de alta frecuencia con la energía total en una señal acústica. La agudeza se caracteriza por ser causada por un sonido de alta frecuencia (o agudo), que puede causar dolor en el oído humano. La unidad de medida de la agudeza es el “acum”, y de forma similar a la sonoridad, la agudeza también delinea la sensación humana de forma lineal.",
-        "title3": "ROUGHNESS (Rugosidad)",
-        "content3": "La rugosidad es un parámetro que cuantifica la percepción subjetiva de la modulación de amplitud rápida (30-300 Hz) de un sonido. La sensación auditiva representada por la rugosidad, que a menudo produce sensación de molestia para la oreja humana, está relacionada con las modulaciones de sonoridad a frecuencias demasiado elevadas para poder discernirlas por separado (frecuencias de modulación superiores a 30 Hz). La unidad de medida de la rugosidad es el asper.",
-        "title4": "FLUCTUATION STRENGTH (Fuerza de fluctuación)",
-        "content4": "La fuerza de fluctuación se define como un sonido de baja frecuencia que cambia con el tiempo, lo cual es percibido como pulsaciones lentas. Esto se puede observar en un sonido constante que contiene una serie de cambios cíclicos que son inferiores a 20 Hz (como el sonido producido por un helicóptero a la distancia)."
+        "title2": "SHARPNESS (Nitidez)",
+        "content2": "El sharpness (o nitidez) es un parámetro psicoacústico que compara la cantidad de energía de alta frecuencia con la energía total en una señal acústica. La agudeza se caracteriza por ser causada por un sonido de alta frecuencia (o agudo), que puede causar dolor en el oído humano. La unidad de medida de la agudeza es el “acum”, y de forma similar a la sonoridad, la agudeza también delinea la sensación humana de forma lineal.",
+        "title3": "ROUGHNESS (Aspereza)",
+        "content3": "La aspereza es un parámetro que cuantifica la percepción subjetiva de la modulación de amplitud rápida (30-300 Hz) de un sonido. La sensación auditiva representada por la rugosidad, que a menudo produce sensación de molestia para la oreja humana, está relacionada con las modulaciones de sonoridad a frecuencias demasiado elevadas para poder discernirlas por separado (frecuencias de modulación superiores a 30 Hz). La unidad de medida de la rugosidad es el asper.",
+        "title4": "FLUCTUATION STRENGTH (Fuerza fluctante)",
+        "content4": "La fuerza fluctante se define como un sonido de baja frecuencia que cambia con el tiempo, lo cual es percibido como pulsaciones lentas. Esto se puede observar en un sonido constante que contiene una serie de cambios cíclicos que son inferiores a 20 Hz (como el sonido producido por un helicóptero a la distancia)."
       },
       "types": {
-        "sharpness": "Agudeza",
-        "roughtness": "Rugosidad",
+        "sharpness": "Nitidez",
+        "roughtness": "Aspereza",
         "loudness": "Sonoridad",
-        "fluctuationStrenght": "Fuerza de fluctuación"
+        "fluctuationStrenght": "Fuerza fluctante"
       },
       "tooltip": {
         "hour": "Hora",
