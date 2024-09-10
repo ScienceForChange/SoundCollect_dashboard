@@ -35,8 +35,6 @@ export class MapZoneStudyLayersComponent implements OnInit, OnDestroy {
         this.studyZonesModel = studyZones.map((studyZone) => ({
           [studyZone.id]: false,
         }));
-        console.log('studyZones', studyZones);
-        console.log('studyZonesModel', this.studyZonesModel);
       })
     );
   }

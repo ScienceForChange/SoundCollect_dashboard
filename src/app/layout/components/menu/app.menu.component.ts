@@ -43,7 +43,6 @@ export class AppMenuComponent implements OnInit {
       label: this.translateService.instant('app.adminPanel'),
       icon: 'pi pi-fw pi-user-edit',
       command: () => {
-        console.log('clicked');
         this.toggleAdminMenu.emit(true);
       },
       items: [],

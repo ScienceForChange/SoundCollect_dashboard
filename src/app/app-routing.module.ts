@@ -46,6 +46,12 @@ const routes: Routes = [
           {
             path: 'study-zone',
             component: StudyZoneComponent,
+            canActivate: [ngxPermissionsGuard],
+            data: {
+              permissions: {
+                only: ['MANAGE-STUDY-ZONES'],
+              },
+            },
           },
         ],
       },
