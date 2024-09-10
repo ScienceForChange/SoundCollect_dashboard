@@ -192,10 +192,10 @@
     },
     "soundTypes": {
       "title": "Tipos de sonido",
-      "traffic": "Tránsito",
-      "people": "Seres humanos",
-      "nature": "Sonidos naturales",
-      "others": "Otros sonidos",
+      "soroll-del-transit": "Tránsito",
+      "essers-humans": "Seres humanos",
+      "sons-naturals": "Sonidos naturales",
+      "altres-sorolls": "Otros sonidos",
       "axisY": "Número de registros",
       "content": "Este gráfico de barras muestra la distribución acumulada de cada tipo de sonido registrado, expresada en porcentajes. Proporciona una visión general de las principales fuentes de sonido en la zona de estudio. Por ejemplo, una alta proporción de sonidos naturales puede indicar un entorno más tranquilo y relajante, mientras que una alta proporción de sonidos de tráfico puede señalar una área más concurrida o ruidosa."
     },

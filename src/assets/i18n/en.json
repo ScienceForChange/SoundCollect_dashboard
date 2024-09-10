@@ -192,10 +192,10 @@
     },
     "soundTypes": {
       "title": "Types of sounds",
-      "traffic": "Traffic",
-      "people": "People",
-      "nature": "Nature",
-      "others": "Other sounds",
+      "soroll-del-transit": "Traffic",
+      "essers-humans": "People",
+      "sons-naturals": "Nature",
+      "altres-sorolls": "Other sounds",
       "axisY": "Number of records",
       "content": "This bar graph shows the cumulative distribution of each type of recorded sound, expressed in percentages. Provides an overview of the main sound sources in the study area. For example, a high proportion of natural sounds may indicate a quieter, more relaxing environment, while a high proportion of traffic sounds may signal a busier or noisier area."
     },

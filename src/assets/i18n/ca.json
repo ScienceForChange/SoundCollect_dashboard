@@ -191,10 +191,10 @@
     },
     "soundTypes": {
       "title": "Tipus de so",
-      "traffic": "Trànsit",
-      "people": "Éssers humans",
-      "nature": "Sons naturals",
-      "others": "Altres sons",
+      "soroll-del-transit": "Trànsit",
+      "essers-humans": "Éssers humans",
+      "sons-naturals": "Sons naturals",
+      "altres-sorolls": "Altres sons",
       "axisY": "Nombre de registres",
       "content": "Aquest gràfic de barres mostra la distribució acumulada de cada tipus de so registrat, expressada en percentatges. Proporciona una visió general de les principals fonts de so en la zona d'estudi. Per exemple, una alta proporció de sons naturals pot indicar un entorn més tranquil i relaxant, mentre que una alta proporció de sons de trànsit pot assenyalar una àrea més concorreguda o sorollosa."
     },

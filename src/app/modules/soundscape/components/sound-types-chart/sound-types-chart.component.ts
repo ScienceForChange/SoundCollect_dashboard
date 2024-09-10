@@ -49,7 +49,11 @@ export class SoundTypesChartComponent implements OnInit, OnDestroy{
 
     this.totalObservationTypes = 0;
     const data = this.getDataFromObservations();
-    const types = data.types;
+    const types = data.types.map(type => {
+      const typeFormated = type.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/ /g, '-')
+      return this.translations.instant(`soundscape.soundTypes.${typeFormated}`);
+    });
+
     const rawData = data.cuantity;
 
     if(rawData.length > 0) {
