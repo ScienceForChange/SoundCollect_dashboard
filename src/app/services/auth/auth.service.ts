@@ -2,12 +2,18 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { NavigationEnd, Router, Event } from '@angular/router';
 
-import { BehaviorSubject, Observable, tap } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import {
+  BehaviorSubject,
+  lastValueFrom,
+  Observable,
+  tap,
+  throwError,
+} from 'rxjs';
+import { catchError, filter } from 'rxjs/operators';
 import { NgxPermissionsService } from 'ngx-permissions';
 
 import { environment } from '../../../environments/environment';
-import { UserLoginResponse } from '../../models/auth';
+import { UserLoginResponse, User } from '../../models/auth';
 
 export interface RecoverPasswords {
   password: String;
@@ -65,13 +71,33 @@ export class AuthService {
           }
           localStorage.setItem('user', JSON.stringify(res.data.user));
           localStorage.setItem('access_token', res.data.token);
+          this._isLoggedIn.next(true);
+          
           const permissions = res.data.user.attributes.permissions_list.map(
             (permission) => permission.toUpperCase()
           );
           this.ngxPermissionsService.loadPermissions(permissions);
-          this._isLoggedIn.next(true);
         })
       );
+  }
+
+  getUserLogged(): Promise<{ status: string; data: User }> {
+    return lastValueFrom(
+      this.http
+        .get<{ status: string; data: User }>(`${environment.BACKEND_BASE_URL}/user`)
+        .pipe(
+          tap((res) => {
+            localStorage.setItem('user', JSON.stringify(res.data));
+          }),
+          catchError((err) => {
+            localStorage.removeItem('user');
+            localStorage.removeItem('access_token');
+            this.router.navigate(['/login']);
+            this.ngxPermissionsService.flushPermissions();
+            return throwError(() => err);
+          })
+        )
+    );
   }
 
   logout() {

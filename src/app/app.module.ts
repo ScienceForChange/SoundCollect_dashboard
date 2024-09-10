@@ -34,7 +34,7 @@ import { HomeModule } from './modules/home/home.module';
 import { StudyZoneModule } from './modules/admin/study-zone/study-zone.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
-import { User } from './models/auth';
+import { AuthService } from './services/auth/auth.service';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -72,23 +72,26 @@ export function HttpLoaderFactory(http: HttpClient) {
       provide: APP_INITIALIZER,
       useFactory: (
         translate: TranslateService,
-        ngxPermissionsService: NgxPermissionsService
+        ngxPermissionsService: NgxPermissionsService,
+        authService: AuthService
       ) => {
-        return () =>
+        return () =>//Problema por que esto se ejecuta en login y en login no tengo acceso a ver user
           translate
             .use(localStorage.getItem('locale') || environment.DEFAULT_LANGUAGE)
             .toPromise()
-            .then(() => {
-              const user: User = JSON.parse(localStorage.getItem('user'));
-              if(!user) return true;
-              const permissions = user.attributes.permissions_list.map(
+            .then(async () => {
+              const user = await authService.getUserLogged();
+              if (!user.data) return true;
+              const permissions = user.data.attributes.permissions_list.map(
                 (permission) => permission.toUpperCase()
               );
               ngxPermissionsService.loadPermissions(permissions);
               return true;
+            }).catch((err) => {
+              ngxPermissionsService.loadPermissions([]);
             });
       },
-      deps: [TranslateService, NgxPermissionsService],
+      deps: [TranslateService, NgxPermissionsService, AuthService],
       multi: true,
     },
     {
