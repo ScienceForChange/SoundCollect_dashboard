@@ -175,7 +175,9 @@
       "createFilter": "Crear zona de estudio",
       "editFilter": "Editar filtro",
       "deleteFilter": "Eliminar filtro",
-      "kmlDownload": "Formato KML"
+      "kmlDownload": "Formato KML",
+      "gpkgDownload": "Formato GPKG"
+
     },
     "filter": {
       "morning": "Mañana (7:00 - 19:00)",
