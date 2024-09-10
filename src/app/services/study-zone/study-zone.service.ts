@@ -38,7 +38,7 @@ export class StudyZoneService {
     this.observationService.loading$.next(true);
     this.http
       .get<{ success: string; data: StudyZone[] }>(
-        `${environment.BACKEND_BASE_URL}/admin-panel/study-zone`
+        `${environment.BACKEND_BASE_URL}/study-zone`
       )
       .subscribe({
         next: ({ data }) => {

@@ -175,7 +175,9 @@
       "createFilter": "Create a study area",
       "editFilter": "Edit filter",
       "deleteFilter": "Delete filter",
-      "kmlDownload": "KML Format"
+      "kmlDownload": "KML Format",
+      "gpkgDownload": "GPKG Format"
+
     },
     "filter": {
       "morning": "Morning (7:00 - 19:00)",

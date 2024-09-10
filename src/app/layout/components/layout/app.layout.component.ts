@@ -30,6 +30,7 @@ export class AppLayoutComponent implements OnInit {
   currentLang: string = this.translations.instant('app.languageDialog.catalan');
   loading: boolean = false;
   isLanguageMenuOpen: boolean = false;
+  isAdminMenuOpen: boolean = false; 
 
   async ngOnInit(): Promise<void> {
     const defaultLocaleSelected = localStorage.getItem('locale');
@@ -54,5 +55,9 @@ export class AppLayoutComponent implements OnInit {
   changeLanguage(lang: string): void {
     localStorage.setItem('locale', lang);
     window.location.reload();
+  }
+
+  toggleAdminMenu(value:boolean): void {
+    this.isAdminMenuOpen = value;
   }
 }

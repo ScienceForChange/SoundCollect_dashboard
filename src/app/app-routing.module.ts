@@ -10,6 +10,7 @@ import { SoundscapeComponent } from './modules/soundscape/page/soundscape.compon
 import { ErrorComponent } from './modules/error/page/error.component';
 import { HomeComponent } from './modules/home/page/home.component';
 import { StudyZoneComponent } from './modules/admin/study-zone/study-zone/study-zone.component';
+import { ngxPermissionsGuard } from 'ngx-permissions';
 
 const routes: Routes = [
   {
@@ -35,13 +36,19 @@ const routes: Routes = [
       },
       {
         path: 'admin',
+        canActivate: [ngxPermissionsGuard],
+        data: {
+          permissions: {
+            only: ['MANAGE-ADMIN'],
+          },
+        },
         children: [
           {
-            path: 'study-zone', 
+            path: 'study-zone',
             component: StudyZoneComponent,
-          }
-        ]
-      }
+          },
+        ],
+      },
     ],
   },
   {

@@ -106,7 +106,8 @@
     }
   }
 
-  .menu-item {
+  .menu-item,
+  .p-menuitem-text {
     transition: opacity $transitionDuration ease;
     opacity: 0;
     width: 100%;
@@ -184,6 +185,46 @@
                 }
               }
             }
+          }
+        }
+      }
+    }
+  }
+  .p-panelmenu-panel {
+    font-family: "Space Grotesk";
+    chevronrighticon,
+    chevrondownicon {
+      display: none !important;
+    }
+    .p-panelmenu-header-content {
+      background-color: transparent;
+      border: none;
+    }
+    .p-menuitem-icon {
+      font-size: 1.7rem;
+    }
+    .p-menuitem-text {
+      font-weight: normal;
+    }
+    .p-panelmenu-content {
+      border: none;
+    }
+    p-panelmenusub {
+      li {
+        height: auto !important;
+        .p-menuitem-icon {
+          font-size: 1rem !important;
+        }
+        .p-menuitem-content {
+          border-radius: 12px !important;
+          &:hover {
+            background-color: var(--orange-transparency) !important;
+            border-radius: 12px !important;
+            transition: none;
+          }
+          width: 100%;
+          a:hover {
+            background-color: transparent;
           }
         }
       }

@@ -33,11 +33,13 @@ import { ErrorModule } from './modules/error/error.module';
 import { HomeModule } from './modules/home/home.module';
 import { StudyZoneModule } from './modules/admin/study-zone/study-zone.module';
 import { BrowserModule } from '@angular/platform-browser';
+import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
+import { User } from './models/auth';
 
 export function HttpLoaderFactory(http: HttpClient) {
-  console.log('http', http);
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
+
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -61,19 +63,32 @@ export function HttpLoaderFactory(http: HttpClient) {
         deps: [HttpClient],
       },
     }),
+    NgxPermissionsModule.forRoot(),
   ],
   providers: [
     MessageService,
     ConfirmationService,
     {
       provide: APP_INITIALIZER,
-      useFactory: (translate: TranslateService) => {
+      useFactory: (
+        translate: TranslateService,
+        ngxPermissionsService: NgxPermissionsService
+      ) => {
         return () =>
           translate
             .use(localStorage.getItem('locale') || environment.DEFAULT_LANGUAGE)
-            .toPromise();
+            .toPromise()
+            .then(() => {
+              const user: User = JSON.parse(localStorage.getItem('user'));
+              if(!user) return true;
+              const permissions = user.attributes.permissions_list.map(
+                (permission) => permission.toUpperCase()
+              );
+              ngxPermissionsService.loadPermissions(permissions);
+              return true;
+            });
       },
-      deps: [TranslateService],
+      deps: [TranslateService, NgxPermissionsService],
       multi: true,
     },
     {

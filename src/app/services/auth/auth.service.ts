@@ -52,6 +52,7 @@ export class AuthService {
       })
       .pipe(
         tap((res) => {
+          console.log('res', res)
           if (this.lastUrl && this.lastUrl !== '/login') {
             this.router.navigate([this.lastUrl]);
             this.lastUrl = null;
