@@ -25,7 +25,7 @@ export class ErrorInterceptor implements HttpInterceptor {
       catchError((err) => {
         console.log(err)
         
-        if ([401, 403].includes(err.status)) {
+        if ([401, 403].includes(err.status) && this.authService.isLoggedIn) {
           // auto logout if 401 Unauthorized or 403 Forbidden response returned from api
           this.authService.logout();
         }
