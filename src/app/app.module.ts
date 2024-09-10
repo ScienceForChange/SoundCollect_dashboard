@@ -75,7 +75,7 @@ export function HttpLoaderFactory(http: HttpClient) {
         ngxPermissionsService: NgxPermissionsService,
         authService: AuthService
       ) => {
-        return () =>
+        return () =>//Problema por que esto se ejecuta en login y en login no tengo acceso a ver user
           translate
             .use(localStorage.getItem('locale') || environment.DEFAULT_LANGUAGE)
             .toPromise()
@@ -87,6 +87,8 @@ export function HttpLoaderFactory(http: HttpClient) {
               );
               ngxPermissionsService.loadPermissions(permissions);
               return true;
+            }).catch((err) => {
+              ngxPermissionsService.loadPermissions([]);
             });
       },
       deps: [TranslateService, NgxPermissionsService, AuthService],
