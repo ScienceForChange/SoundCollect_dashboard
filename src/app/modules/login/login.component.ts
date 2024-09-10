@@ -58,7 +58,7 @@ export class LoginComponent {
   });
 
   constructor() {
-    this.authService.isLoggedIn.value && this.router.navigate(['/']);
+    if(this.authService.isLoggedIn.value) this.router.navigate(['/']);
 
     this.router.events
       .pipe(

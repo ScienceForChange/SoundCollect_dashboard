@@ -7,10 +7,11 @@ export interface UserLoginResponse {
     user:  User;
     token: string;
   }
+
   
   export interface User {
-    type:          string;
-    uuid:          string;
+    type?:          string;
+    id:             string;
     attributes:    Attributes;
     relationships?: {};
   }
