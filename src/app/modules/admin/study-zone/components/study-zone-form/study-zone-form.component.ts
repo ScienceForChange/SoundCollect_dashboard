@@ -310,7 +310,6 @@ export class StudyZoneFormComponent {
       }
     });
 
-    console.log('studyZoneFormValues', studyZoneFormValues);
     this.studyZoneService
       .updateStudyZone(
         this.studyZoneSelected.id,
