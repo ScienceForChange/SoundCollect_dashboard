@@ -109,7 +109,6 @@ export class MapFiltersComponent implements OnInit {
     });
   }
 
-  //Podría llamar a un servicio que lo que hace es encargarse de filtrar los datos.
   private filterData(values: FormFilterValues): void {
     this.mapService.filterMapObservations(values);
   }

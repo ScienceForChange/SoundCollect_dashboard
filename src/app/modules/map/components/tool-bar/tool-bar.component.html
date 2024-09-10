@@ -4,21 +4,6 @@
   <ng-template pTemplate="end">
     <div class="flex gap-2">
       <p-button
-        (onClick)="activeFilters()"
-        [ngClass]="{ active: isFilterActive }"
-        pTooltip="{{
-          isFilterActive
-            ? ('map.filters.disable' | translate)
-            : ('map.filters.enable' | translate)
-        }}"
-        tooltipPosition="bottom"
-      >
-        <i
-          class="pi"
-          [ngClass]="isFilterActive ? 'pi-filter' : 'pi-filter-slash'"
-        ></i>
-      </p-button>
-      <p-button
         (onClick)="toggleShowFilters()"
         [ngClass]="{ active: showFilters }"
         pTooltip="{{ 'map.filters.title' | translate }}"
@@ -32,6 +17,22 @@
         tooltipPosition="bottom"
       >
         <i class="pi pi-clone"></i>
+      </p-button>
+      <p-button
+        [disabled]="isFilterBtnDisbaled"
+        (onClick)="activeFilters()"
+        [ngClass]="{ active: isFilterActive }"
+        pTooltip="{{
+          isFilterActive
+            ? ('map.filters.disable' | translate)
+            : ('map.filters.enable' | translate)
+        }}"
+        tooltipPosition="bottom"
+      >
+        <i
+          class="pi"
+          [ngClass]="isFilterActive ? 'pi-filter' : 'pi-filter-slash'"
+        ></i>
       </p-button>
       <p-button
         [disabled]="isStudyZonesBtnDisbaled"

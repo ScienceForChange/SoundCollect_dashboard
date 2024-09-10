@@ -40,6 +40,8 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   public isOpenObservationInfoModal: boolean = false;
   public isSZModalVisible: boolean = false;
   public isStudyZonesBtnDisbaled: boolean = false;
+  public isFilterBtnDisbaled:boolean = true;
+
 
   private subscriptions = new Subscription();
   public observationSelected!: Observations;
@@ -66,9 +68,14 @@ export class MapComponent implements AfterViewInit, OnDestroy {
         this.isStudyZonesBtnDisbaled = studyZones.length === 0;
       })
     )
+    this.subscriptions.add(
+      this.mapService.isFilterBtnDisbaled.subscribe((value) => {
+        this.isFilterBtnDisbaled = value;
+      })
+    )
   }
 
-  public toogleActiveFilters(): void {
+  public toggleActiveFilters(): void {
     this.mapService.isFilterActive.next(!this.activeFilters);
   }
 

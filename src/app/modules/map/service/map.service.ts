@@ -27,6 +27,8 @@ export class MapService {
 
   public isFilterActive: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
+  public isFilterBtnDisbaled: BehaviorSubject<boolean> =
+    new BehaviorSubject<boolean>(true);
 
   private mapObservations: MapObservation[] = [];
   private filteredFeatures: Feature[] = [];
@@ -168,6 +170,13 @@ export class MapService {
         typeUsers,
         positivePlaces,
       } = values;
+
+      if (type || days || soundPressure || hours || typeUser || positivePlace) {
+        this.isFilterBtnDisbaled.next(false);
+      } else {
+        this.isFilterBtnDisbaled.next(true);
+      }
+
       if (type) {
         const typesToFilter = Object.keys(typeFilter).filter(
           (key) => typeFilter[Number(key) as keyof typeof typeFilter]
@@ -199,7 +208,7 @@ export class MapService {
         });
       }
       if (days) {
-        daysFilter[0].setHours(0,0,0,0) 
+        daysFilter[0].setHours(0, 0, 0, 0);
 
         const isOneDate =
           !daysFilter[1] ||
@@ -208,8 +217,8 @@ export class MapService {
         if (!isOneDate) {
           mapObs = mapObs.filter((obs) => {
             const obsDate = new Date(obs.created_at);
-            obsDate.setHours(0,0,0,0)
-            daysFilter[1].setHours(0,0,0,0) 
+            obsDate.setHours(0, 0, 0, 0);
+            daysFilter[1].setHours(0, 0, 0, 0);
             return (
               obsDate.getTime() >= daysFilter[0].getTime() &&
               obsDate.getTime() <= daysFilter[1].getTime()
@@ -217,10 +226,9 @@ export class MapService {
           });
         } else {
           mapObs = mapObs.filter((obs) => {
-            
             const obsDate = new Date(obs.created_at);
-            obsDate.setHours(0,0,0,0)
-            return obsDate.getTime() === daysFilter[0].getTime()
+            obsDate.setHours(0, 0, 0, 0);
+            return obsDate.getTime() === daysFilter[0].getTime();
           });
         }
       }
