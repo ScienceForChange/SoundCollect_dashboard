@@ -389,7 +389,6 @@ export class MapService {
       .getValue()
       .find((studyZone) => studyZone.id === id);
     this.studyZoneSelected$.next(SZselected);
-    console.log('SZselected', SZselected);
   }
 
   public initializeMap(): void {
@@ -440,7 +439,6 @@ export class MapService {
 
     this.map.on('click', 'studyZone', (e: any) => {
       this.map.getCanvas().style.cursor = 'inherit';
-      console.log('e', e);
       if (e.features.length > 0) {
         this.selectStudyZone(e.features[0].properties.id);
         this.studyZoneDialogVisible$.next(true);

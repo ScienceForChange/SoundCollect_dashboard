@@ -4,6 +4,7 @@ import { NavigationEnd, Router, Event } from '@angular/router';
 
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { filter } from 'rxjs/operators';
+import { NgxPermissionsService } from 'ngx-permissions';
 
 import { environment } from '../../../environments/environment';
 import { UserLoginResponse } from '../../models/auth';
@@ -28,7 +29,11 @@ export class AuthService {
     return this._isLoggedIn;
   }
 
-  constructor(private http: HttpClient, private router: Router) {
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private ngxPermissionsService: NgxPermissionsService
+  ) {
     this.router.events
       .pipe(
         filter(
@@ -52,7 +57,6 @@ export class AuthService {
       })
       .pipe(
         tap((res) => {
-          console.log('res', res)
           if (this.lastUrl && this.lastUrl !== '/login') {
             this.router.navigate([this.lastUrl]);
             this.lastUrl = null;
@@ -61,6 +65,10 @@ export class AuthService {
           }
           localStorage.setItem('user', JSON.stringify(res.data.user));
           localStorage.setItem('access_token', res.data.token);
+          const permissions = res.data.user.attributes.permissions_list.map(
+            (permission) => permission.toUpperCase()
+          );
+          this.ngxPermissionsService.loadPermissions(permissions);
           this._isLoggedIn.next(true);
         })
       );
@@ -84,6 +92,7 @@ export class AuthService {
         localStorage.removeItem('user');
         localStorage.removeItem('access_token');
         this.router.navigate(['/login']);
+        this.ngxPermissionsService.flushPermissions();
       });
   }
 }
