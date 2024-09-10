@@ -11,7 +11,7 @@
   <form [formGroup]="filtersForm" class="flex gap-2 align-items-end">
     <div class="flex-auto">
       <label for="daysFilterS1" class="font-bold block mb-2">
-        Sèrie de dades 1</label
+        {{'soundscape.temporalEvolution.serieLabel1' | translate}}</label
       >
       <p-calendar
         formControlName="daysFilterS1"
@@ -26,7 +26,7 @@
     </div>
     <div>
       <label for="daysFilterS2" class="font-bold block mb-2">
-        Sèrie de dades 2</label
+        {{'soundscape.temporalEvolution.serieLabel2' | translate}}</label
       >
       <p-calendar
         formControlName="daysFilterS2"

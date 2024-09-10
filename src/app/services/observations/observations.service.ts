@@ -7,20 +7,17 @@ import {
   map,
   filter,
   switchMap,
-  catchError,
-  throwError,
 } from 'rxjs';
 
 import * as turf from '@turf/turf';
 
 import { Parser } from '@json2csv/plainjs';
-import { flatten, Transform, unwind } from '@json2csv/transforms';
 
-import { saveAs } from 'file-saver'; // save the file
+import { saveAs } from 'file-saver';
 
 import tokml from "@maphubs/tokml"
 
-import { environment } from '../../../environments/environments';
+import { environment } from '../../../environments/environment';
 import { Observations, ObservationsDataChart } from '../../models/observations';
 import { Json2CSVBaseOptions } from '@json2csv/plainjs/dist/mjs/BaseParser';
 
@@ -50,35 +47,39 @@ export class ObservationsService {
 
   constructor(private http: HttpClient) {}
 
-  public getAllObservations(): void {
-    this.loading$.next(true);
-    this.http
-      .get<{ success: string; data: Observations[] }>(
-        `${environment.BACKEND_BASE_URL}/observations?with-levels=true`
-      )
-      .pipe(
-        map((res) => {
-          try {
-            const observationsBetween20and80 = res.data.filter(
-              (obs) => +obs.attributes.Leq >= 20 && +obs.attributes.Leq <= 80
-            );
-            return observationsBetween20and80;
-          } catch (error) {
+  public getAllObservations(): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      this.loading$.next(true);
+      this.http
+        .get<{ success: string; data: Observations[] }>(
+          `${environment.BACKEND_BASE_URL}/observations?with-levels=true`
+        )
+        .pipe(
+          map((res) => {
+            try {
+              const observationsBetween20and80 = res.data.filter(
+                (obs) => +obs.attributes.Leq >= 20 && +obs.attributes.Leq <= 80
+              );
+              return observationsBetween20and80;
+            } catch (error) {
+              console.error(error);
+              throw Error('Error filtering observations', error);
+            }
+          })
+        )
+        .subscribe({
+          next: (data) => {
+            this.observations$.next(data);
+            this.loading$.next(false);
+            resolve();
+          },
+          error: (error) => {
             console.error(error);
-            throw Error('Error filtering observations', error);
-          }
-        })
-      )
-      .subscribe({
-        next: (data) => {
-          this.observations$.next(data);
-          this.loading$.next(false);
-        },
-        error: (error) => {
-          console.error(error);
-          this.loading$.next(false);
-        },
-      });
+            this.loading$.next(false);
+            reject(error);
+          },
+        });
+    })
   }
 
   public getAllObservationsNumbers(): Observable<any> {
@@ -497,51 +498,152 @@ export class ObservationsService {
       );
   }
 
-  private convertToCSV(objArray: object[]): Promise<string> {
+
+  private convertToCSV(objArray: Observations[]): Promise<string> {
     return new Promise<string>((resolve, reject) => {
       try {
         const opts: Json2CSVBaseOptions<object, object> = {
-          transforms: [
-            unwind({ paths: ['images'] }),
-            flatten({ objects: true, arrays: true }),
-          ],
           fields: [
-            'attributes.Leq',
-            'attributes.LAeqT',
-            'attributes.LAmax',
-            'attributes.LAmin',
-            'attributes.L90',
-            'attributes.L10',
-            'attributes.sharpness_S',
-            'attributes.loudness_N',
-            'attributes.roughtness',
-            'attributes.fluctuation_strength_F',
-            'attributes.images',
-            'attributes.latitude',
-            'attributes.longitude',
-            'attributes.quiet',
-            'attributes.cleanliness',
-            'attributes.accessibility',
-            'attributes.safety',
-            'attributes.influence',
-            'attributes.protection',
-            'attributes.wind_speed',
-            'attributes.humidity',
-            'attributes.temperature',
-            'attributes.pressure',
-            'attributes.pleasant',
-            'attributes.chaotic',
-            'attributes.vibrant',
-            'attributes.uneventful',
-            'attributes.calm',
-            'attributes.annoying',
-            'attributes.eventful',
-            'attributes.monotonous',
-            'attributes.overall',
-            'attributes.user_id',
-            'attributes.created_at',
-            'attributes.updated_at',
-            'attributes.roughtness_R',
+            {
+              label: 'ID_Observation',
+              value: 'id',
+            },
+            {
+              label: 'ID_User',
+              value: 'relationships.user.id',
+            },
+            {
+              label: 'Date_Time',
+              value: 'attributes.created_at',
+            },
+            {
+              label: 'Latitude',
+              value: 'attributes.latitude',
+            },
+            {
+              label: 'Longitude',
+              value: 'attributes.longitude',
+            },
+            {
+              label: 'LAeq',
+              value: 'attributes.Leq',
+            },
+            {
+              label: 'LAeq,t',
+              value: 'attributes.LAeqT',
+            },
+            {
+              label: 'LAmax',
+              value: 'attributes.LAmax',
+            },
+            {
+              label: 'LAmin',
+              value: 'attributes.LAmin',
+            },
+            {
+              label: 'L90',
+              value: 'attributes.L90',
+            },
+            {
+              label: 'L10',
+              value: 'attributes.L10',
+            },
+            {
+              label: 'Sharpness',
+              value: 'attributes.sharpness_S',
+            },
+            {
+              label: 'Loudness',
+              value: 'attributes.loudness_N',
+            },
+            {
+              label: 'Roughtness',
+              value: 'attributes.roughtness_R',
+            },
+            {
+              label: 'Fluctuation strength',
+              value: 'attributes.fluctuation_strength_F',
+            },
+            {
+              label: 'Type of sound',
+              value: (row:any) => row.relationships.types.map((type:any) => type.name).join(','),
+            },
+            {
+              label: 'Quiet',
+              value: 'attributes.quiet',
+            },
+            {
+              label: 'Cleanliness',
+              value: 'attributes.cleanliness',
+            },
+            {
+              label: 'Accessibility',
+              value: 'attributes.accessibility',
+            },
+            {
+              label: 'Safety',
+              value: 'attributes.safety',
+            },
+            {
+              label: 'Influence',
+              value: 'attributes.influence',
+            },
+            {
+              label: 'Action_protections',
+              value: 'attributes.protection',
+            },
+            {
+              label: 'Pleasant',
+              value: 'attributes.pleasant',
+            },
+            {
+              label: 'Chaotic',
+              value: 'attributes.chaotic',
+            },
+            {
+              label: 'Vibrant',
+              value: 'attributes.vibrant',
+            },
+            {
+              label: 'Uneventful',
+              value: 'attributes.uneventful',
+            },
+            {
+              label: 'Calm',
+              value: 'attributes.calm',
+            },
+            {
+              label: 'Annoying',
+              value: 'attributes.annoying',
+            },
+            {
+              label: 'Eventful',
+              value: 'attributes.eventful',
+            },
+            {
+              label: 'Monotonous',
+              value: 'attributes.monotonous',
+            },
+            {
+              label: 'Appropriateness',
+              value: 'attributes.overall',
+            },
+            {
+              label: 'wind_speed_m/s',
+              value: 'attributes.wind_speed',
+            },
+            {
+              label: 'humidity_%',
+              value: 'attributes.humidity',
+            },
+            {
+              label: 'temperature_Cº',
+              value: 'attributes.temperature',
+            },
+            {
+              label: 'pressure_hPa',
+              value: 'attributes.pressure',
+            },
           ],
         };
         const parser = new Parser(opts);
@@ -578,13 +680,13 @@ export class ObservationsService {
       if (!csvData || !csvTags) {
         this.loading$.next(false);
         throw Error('Error converting data to CSV');
-      };
+      }
 
       let file = new Blob([csvData], { type: 'text/csv;charset=utf-8' });
       let fileTags = new Blob([csvTags], { type: 'text/csv;charset=utf-8' });
-      
-      await new Promise((res,rej) => res(saveAs(file, 'observacions.csv'))) 
-      await new Promise((res,rej) => res(saveAs(fileTags, 'paraules.csv')))
+
+      await new Promise((res, rej) => res(saveAs(file, 'observacions.csv')));
+      await new Promise((res, rej) => res(saveAs(fileTags, 'paraules.csv')));
 
       this.loading$.next(false);
     } catch (error) {
@@ -594,7 +696,7 @@ export class ObservationsService {
     }
   }
 
-  public async downloadKMZ() {
+  public downloadKML() {
     try {
       this.loading$.next(true);
 
@@ -624,12 +726,12 @@ export class ObservationsService {
           ),
         },
         properties: {
-          id: obs.id,
-          LAmax: obs.attributes.LAmax,
-          LAmin: obs.attributes.LAmin,
-          L90: obs.attributes.L90,
-          L10: obs.attributes.L10,
-          Leq: obs.attributes.Leq,
+          ID_Observation: obs.id,
+          LAeq: Number(obs.attributes.Leq).toFixed(1),
+          LAmax: Number(obs.attributes.LAmax).toFixed(1),
+          LAmin: Number(obs.attributes.LAmin).toFixed(1),
+          L90: Number(obs.attributes.L90).toFixed(1),
+          L10: Number(obs.attributes.L10).toFixed(1),
         },
       }));
       let geoJson = {
@@ -637,19 +739,127 @@ export class ObservationsService {
         features: features,
       };
 
-      const kml = tokml(geoJson);
-
-      let file = new Blob([kml], { type: 'application/vnd.google-earth.kml+xml' });
-
-      await new Promise((res,rej) => res(saveAs(file, 'observacions.kml'))) 
-
       this.loading$.next(false);
+      this.http.post<Blob>(
+        `${environment.BACKEND_BASE_URL}/kml`,
+        {
+          geojson: geoJson
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/binary',
+          },
+          withCredentials: true,
+          responseType: 'blob' as 'json'
+        }
+      )
+      .subscribe({
+        next: (resp:any) => {
+          this.loading$.next(false);
+          const blob = new Blob([resp], { type: "text/csv;charset=utf-8" });
+          const fileURL = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = fileURL;
+          const date = new Date();
+          const dateSlug = `${date.toISOString().slice(0,10)}-${date.getHours()}-${date.getMinutes()}-${date.getSeconds()}`;
+          link.download = `observacions-${ dateSlug }.kml`;
+          link.click();
+          link.remove();
+        },
+        error: (err) => {
+          this.loading$.next(false);
+          console.error(err);
+        }
+      });
 
     } catch (error) {
       this.loading$.next(false);
       console.error(error);
       throw Error('Error downloading KMZ', error);
-      
+    }
+  }
+  public downloadGPKG() {
+    try {
+      this.loading$.next(true);
+
+      const observations = this.observations$.getValue();
+      const features: Feature[] = observations.map((obs) => ({
+        type: 'Feature',
+        geometry: {
+          type: 'LineString',
+          coordinates: obs.relationships.segments.reduce(
+            (
+              acc: turf.Position[],
+              segment: any,
+              index: number
+            ): turf.Position[] => {
+              acc.push([
+                Number(segment.start_longitude),
+                Number(segment.start_latitude),
+              ]);
+              if (index + 1 === obs.relationships.segments.length)
+                acc.push([
+                  Number(segment.end_longitude),
+                  Number(segment.end_latitude),
+                ]);
+              return acc;
+            },
+            []
+          ),
+        },
+        properties: {
+          ID_Observation: obs.id,
+          LAeq: Number(obs.attributes.Leq).toFixed(1),
+          LAmax: Number(obs.attributes.LAmax).toFixed(1),
+          LAmin: Number(obs.attributes.LAmin).toFixed(1),
+          L90: Number(obs.attributes.L90).toFixed(1),
+          L10: Number(obs.attributes.L10).toFixed(1),
+        },
+      }));
+      let geoJson = {
+        type: 'FeatureCollection' as const,
+        features: features,
+      };
+
+      this.loading$.next(false);
+      this.http.post<Blob>(
+        `${environment.BACKEND_BASE_URL}/geopackage`,
+        {
+          geojson: geoJson
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/binary',
+          },
+          withCredentials: true,
+          responseType: 'blob' as 'json'
+        }
+      )
+      .subscribe({
+        next: (resp:any) => {
+          this.loading$.next(false);
+          const blob = new Blob([resp], { type: "text/csv;charset=utf-8" });
+          const fileURL = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = fileURL;
+          const date = new Date();
+          const dateSlug = `${date.toISOString().slice(0,10)}-${date.getHours()}-${date.getMinutes()}-${date.getSeconds()}`;
+          link.download = `observacions-${ dateSlug }.gpkg`;
+          link.click();
+          link.remove();
+        },
+        error: (err) => {
+          this.loading$.next(false);
+          console.error(err);
+        }
+      });
+
+    } catch (error) {
+      this.loading$.next(false);
+      console.error(error);
+      throw Error('Error downloading GPKG', error);
     }
   }
 }

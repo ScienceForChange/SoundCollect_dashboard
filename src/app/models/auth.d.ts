@@ -18,6 +18,10 @@ export interface UserLoginResponse {
   export interface Attributes {
     avatar_id: number;
     profile:   Profile;
+    created_at: Date;
+    updated_at: Date;
+    permissions_list: string[];
+    roles_list: string[];
   }
   
   export interface Profile {

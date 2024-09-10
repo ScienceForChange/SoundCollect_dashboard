@@ -8,6 +8,9 @@ import { MapComponent } from './modules/map/page/map.component';
 import { OverviewComponent } from './modules/overview/page/overview/overview.component';
 import { SoundscapeComponent } from './modules/soundscape/page/soundscape.component';
 import { ErrorComponent } from './modules/error/page/error.component';
+import { HomeComponent } from './modules/home/page/home.component';
+import { StudyZoneComponent } from './modules/admin/study-zone/study-zone/study-zone.component';
+import { ngxPermissionsGuard } from 'ngx-permissions';
 
 const routes: Routes = [
   {
@@ -17,6 +20,10 @@ const routes: Routes = [
     children: [
       {
         path: '',
+        component: HomeComponent,
+      },
+      {
+        path: 'map',
         component: MapComponent,
       },
       {
@@ -26,6 +33,27 @@ const routes: Routes = [
       {
         path: 'resum',
         component: OverviewComponent,
+      },
+      {
+        path: 'admin',
+        canActivate: [ngxPermissionsGuard],
+        data: {
+          permissions: {
+            only: ['MANAGE-ADMIN'],
+          },
+        },
+        children: [
+          {
+            path: 'study-zone',
+            component: StudyZoneComponent,
+            canActivate: [ngxPermissionsGuard],
+            data: {
+              permissions: {
+                only: ['MANAGE-STUDY-ZONES'],
+              },
+            },
+          },
+        ],
       },
     ],
   },

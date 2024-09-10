@@ -4503,7 +4503,7 @@
     background-color: #ffffff;
   }
   .p-divider.p-divider-horizontal {
-    margin: 1rem 0;
+    margin: 0.25rem 0;
     padding: 0 1rem;
   }
   .p-divider.p-divider-horizontal:before {

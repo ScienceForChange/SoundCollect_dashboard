@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 
 import { LngLat, LngLatBounds, Map } from 'mapbox-gl';
 
@@ -12,6 +12,8 @@ import { ObservationsService } from '../../../services/observations/observations
 import { MapObservation } from '../../../models/map';
 import { FormFilterValues } from '../../../models/forms';
 import { Observations } from '../../../models/observations';
+import { StudyZone } from '../../../models/study-zone';
+import { StudyZoneService } from '../../../services/study-zone/study-zone.service';
 
 @Injectable({
   providedIn: 'root',
@@ -57,7 +59,15 @@ export class MapService {
   public isOpenObservationInfoModal: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
 
-  constructor(private observationsService: ObservationsService) {
+  public studyZoneSelected$: BehaviorSubject<StudyZone | null> =
+    new BehaviorSubject<StudyZone | null>(null);
+  public studyZoneDialogVisible$: BehaviorSubject<boolean> =
+    new BehaviorSubject<boolean>(false);
+
+  constructor(
+    private observationsService: ObservationsService,
+    private studyZoneService: StudyZoneService
+  ) {
     //Subscribe to know if the filter is active
     this.isFilterActive.subscribe((isFilterActive) => {
       if (!this.map) return;
@@ -189,22 +199,28 @@ export class MapService {
         });
       }
       if (days) {
+        daysFilter[0].setHours(0,0,0,0) 
+
         const isOneDate =
           !daysFilter[1] ||
-          daysFilter[0].getDate() === daysFilter[1]?.getDate();
+          daysFilter[0].getTime() === daysFilter[1]?.getTime();
 
         if (!isOneDate) {
           mapObs = mapObs.filter((obs) => {
             const obsDate = new Date(obs.created_at);
+            obsDate.setHours(0,0,0,0)
+            daysFilter[1].setHours(0,0,0,0) 
             return (
-              obsDate.getDate() >= daysFilter[0].getDate() &&
-              obsDate.getDate() <= daysFilter[1].getDate()
+              obsDate.getTime() >= daysFilter[0].getTime() &&
+              obsDate.getTime() <= daysFilter[1].getTime()
             );
           });
         } else {
           mapObs = mapObs.filter((obs) => {
+            
             const obsDate = new Date(obs.created_at);
-            return obsDate.getDate() === daysFilter[0].getDate();
+            obsDate.setHours(0,0,0,0)
+            return obsDate.getTime() === daysFilter[0].getTime()
           });
         }
       }
@@ -259,6 +275,34 @@ export class MapService {
         >[],
       },
     });
+    //Añadir source para los polygonos de las zonas de estudio
+    this.map.addSource('studyZone', {
+      type: 'geojson',
+      data: {
+        type: 'FeatureCollection',
+        features: [],
+      },
+    });
+    //Relleno zona de estudio
+    this.map.addLayer({
+      id: 'studyZone',
+      type: 'fill',
+      source: 'studyZone',
+      paint: {
+        'fill-color': '#088',
+        'fill-opacity': 0.2,
+      },
+    });
+    //Borde de la zona de estudio
+    this.map.addLayer({
+      id: 'studyZoneLines',
+      type: 'line',
+      source: 'studyZone',
+      paint: {
+        'line-color': '#FFF',
+        'line-width': 2,
+      },
+    });
 
     // resaltar la línea a la que se hace hover de color negro
     this.map.addLayer({
@@ -304,7 +348,49 @@ export class MapService {
       },
     });
   }
-  //TODO MAKE A LOADING FOR MAP
+
+  public drawSZPolygonFromId(studyZone: StudyZone): void {
+    let source = this.map.getSource('studyZone') as mapboxgl.GeoJSONSource;
+
+    const newFeature: GeoJSON.Feature<GeoJSON.Polygon> = {
+      type: 'Feature',
+      properties: {
+        id: studyZone.id,
+      },
+      geometry: {
+        type: 'Polygon',
+        coordinates: [
+          studyZone.boundaries.coordinates[0].map((coordinate) => [
+            coordinate[1],
+            coordinate[0],
+          ]),
+        ],
+      },
+    };
+    //Add the new feature to the studyZone source
+    const data = source._data as GeoJSON.FeatureCollection<GeoJSON.Geometry>;
+    data.features.push(newFeature);
+
+    source.setData(data);
+  }
+
+  public eraseSZPolygonFromId(id: number) {
+    let source = this.map.getSource('studyZone') as mapboxgl.GeoJSONSource;
+    const { features, ...rest } =
+      source._data as GeoJSON.FeatureCollection<GeoJSON.Geometry>;
+    const filterFeatures = features.filter(
+      (feature) => feature.properties['id'] !== id
+    );
+    source.setData({ features: filterFeatures, ...rest });
+  }
+
+  public selectStudyZone(id: number): void {
+    const SZselected = this.studyZoneService.studyZones$
+      .getValue()
+      .find((studyZone) => studyZone.id === id);
+    this.studyZoneSelected$.next(SZselected);
+  }
+
   public initializeMap(): void {
     if (!this.isMapReady) return;
 
@@ -330,16 +416,16 @@ export class MapService {
       }
     });
 
-    // // Add event listeners for 'zoomstart' and 'touchstart' events
-    // this.map.on('zoomstart', this.deletePointsSpiderfy.bind(this));
-    // this.map.on('touchstart', this.deletePointsSpiderfy.bind(this));
-
-    // // Add event listeners for 'click' events on layers
-    // this.map.on('click', 'clusters', this.centerZoomCluster.bind(this));
-
     // Add event listeners for 'mouseenter' and 'mouseleave' events on layers
     this.map.on('mouseenter', 'LineString', this.mouseEvent.bind(this));
     this.map.on('mouseleave', 'LineString', this.mouseEvent.bind(this));
+    this.map.on('mouseenter', 'studyZone', (e: any) => {
+      this.map.getCanvas().style.cursor = 'pointer';
+    });
+
+    this.map.on('mouseleave', 'studyZone', (e: any) => {
+      this.map.getCanvas().style.cursor = 'inherit';
+    });
 
     this.map.on('click', 'LineString', (e) => {
       const feature = e.features[0];
@@ -349,6 +435,14 @@ export class MapService {
         .find((obs) => obs.id === feature.properties['id']);
       this.observationSelected = obs;
       this.isOpenObservationInfoModal.next(true);
+    });
+
+    this.map.on('click', 'studyZone', (e: any) => {
+      this.map.getCanvas().style.cursor = 'inherit';
+      if (e.features.length > 0) {
+        this.selectStudyZone(e.features[0].properties.id);
+        this.studyZoneDialogVisible$.next(true);
+      }
     });
   }
 }

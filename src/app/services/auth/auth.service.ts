@@ -4,8 +4,9 @@ import { NavigationEnd, Router, Event } from '@angular/router';
 
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { filter } from 'rxjs/operators';
+import { NgxPermissionsService } from 'ngx-permissions';
 
-import { environment } from '../../../environments/environments';
+import { environment } from '../../../environments/environment';
 import { UserLoginResponse } from '../../models/auth';
 
 export interface RecoverPasswords {
@@ -14,8 +15,6 @@ export interface RecoverPasswords {
   token?: String | null;
   email?: String | null;
 }
-
-
 
 @Injectable({
   providedIn: 'root',
@@ -30,7 +29,11 @@ export class AuthService {
     return this._isLoggedIn;
   }
 
-  constructor(private http: HttpClient, private router: Router) {
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private ngxPermissionsService: NgxPermissionsService
+  ) {
     this.router.events
       .pipe(
         filter(
@@ -41,15 +44,17 @@ export class AuthService {
       .subscribe((event: NavigationEnd) => {
         this.lastUrl = event.urlAfterRedirects;
       });
-      localStorage.getItem('access_token') && this._isLoggedIn.next(true);
+    localStorage.getItem('access_token') && this._isLoggedIn.next(true);
   }
 
-  login(user: {email:string,password:string}): Observable<UserLoginResponse> {
+  login(user: {
+    email: string;
+    password: string;
+  }): Observable<UserLoginResponse> {
     return this.http
-      .post<UserLoginResponse>(
-        `${environment.BACKEND_BASE_URL}/login`,
-        { ...user }
-      )
+      .post<UserLoginResponse>(`${environment.BACKEND_BASE_URL}/login`, {
+        ...user,
+      })
       .pipe(
         tap((res) => {
           if (this.lastUrl && this.lastUrl !== '/login') {
@@ -60,11 +65,14 @@ export class AuthService {
           }
           localStorage.setItem('user', JSON.stringify(res.data.user));
           localStorage.setItem('access_token', res.data.token);
+          const permissions = res.data.user.attributes.permissions_list.map(
+            (permission) => permission.toUpperCase()
+          );
+          this.ngxPermissionsService.loadPermissions(permissions);
           this._isLoggedIn.next(true);
         })
       );
   }
-
 
   logout() {
     this.http
@@ -84,7 +92,7 @@ export class AuthService {
         localStorage.removeItem('user');
         localStorage.removeItem('access_token');
         this.router.navigate(['/login']);
+        this.ngxPermissionsService.flushPermissions();
       });
   }
-
 }

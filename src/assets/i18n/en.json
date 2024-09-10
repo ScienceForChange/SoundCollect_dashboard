@@ -1,6 +1,6 @@
 {
-  "common": {
-    "return": "Back",
+  "app": {
+    "return": "Return",
     "next": "Next",
     "yes": "Yes",
     "no": "No",
@@ -10,34 +10,382 @@
     "areYouSure": "Are you sure?",
     "save": "Save",
     "close": "Close",
-    "loading": "Loading",
+    "loading": "Loading...",
     "error": "Error",
-    "knowMore": "Learn more",
+    "errorHandler": "An unexpected error has occurred. Contact technical support",
+    "knowMore": "Know more",
     "seeMore": "See more",
     "login": "Login",
-    "register": "Register",
+    "register": "Sign up",
     "guest": "Continue as a guest",
     "user": "User",
     "userTrained": "Trained user",
     "dateFormats": {
       "short": "dd/MM/yyyy",
       "long": "dd/MM/yyyy, HH:mm:ss"
+    },
+    "week": "Week",
+    "month": "Month",
+    "year": "Year",
+    "weeks": "Weeks",
+    "months": "Months",
+    "years": "Years",
+    "genre": "Gender",
+    "age": "Age",
+    "man": "Man",
+    "woman": "Woman",
+    "other": "Other",
+    "others": "Others",
+    "unbinarized": "Non-binary",
+    "unknown": "I prefer not to say",
+    "terms": "Terms and conditions",
+    "privacy": "Privacy policy",
+    "observations": "Observations",
+    "logout": "Logout",
+    "linkManual": "http://home.soundcollectapp.com/wp-content/uploads/2024/07/20240717_Manual-de-lusuari_aria-Dashboard-SoundCollect_CAT.pdf",
+    "manual": "Manual",
+    "adminPanel": "Administration panel",
+    "languageDialog": {
+      "language": "Language",
+      "catalan": "Catalan",
+      "spanish": "Spanish",
+      "english": "English"
     }
   },
-  "soundscape": {
-    "titleMenu": "Soundscape",
-    "map":{
-      "createFilter": "Create filter",
-      "editFilter": "Edit filter",
-      "deleteFilter": "Delete filter"
+  "home": {
+    "footer": {
+      "legal": {
+        "legalNotice": "Legal warning",
+        "terms": "Terms and conditions",
+        "privacy": "Privacy policy",
+        "cookies": "Cookies policy"
+      },
+      "allRightsReserved": "All rights reserved",
+      "smallText": "SoundCollect is a project coordinated by <a href='https://scienceforchange.eu' target='_blank'>Science For Change</a> within the call for the FEDER operational program of Catalonia 2021-2027 with reference number of Contract EC-2023-89"
     },
-    "filter":{
+    "header": {
+      "wellcome": "Welcome to the SoundCollect data visualization platform!",
+      "text": "This tool has been created to bring information about quiet areas directly within your reach."
+    },
+    "whatToDo": {
+      "text1": "Our web platform is an interactive data viewer that transforms the information collected by the SoundCollect application into detailed statistics and analysis. Whether you are a citizen interested in the sound quality of your environment or an acoustic expert, this platform offers you everything you need to explore and understand urban sound landscapes. Remember that it has been demonstrated that the urban sound landscape is an element that affects and conditions the quality of life of people in a relevant way.",
+      "listTitle": "What can you do on the platform?",
+      "listItem1":  {
+        "title": "Explore the collaborative sound map:",
+        "text": "View all observations made by the community. Use filters to interact with data and discover areas of interest."
+      },
+      "listItem2": {
+        "title": "Access a general statistical summary:",
+        "text": "Consult detailed statistics on the reach of the application throughout the territory of Catalonia, the total number of registrations and the number of active users."
+      },
+      "listItem3": {
+        "title": "Perform a detailed analysis:",
+        "text1": "Select an area of study of interest and delimit it spatially and temporarily to know the tranquility, both on a quantitative scale, from the data of the levels of sound pressure; and on a qualitative scale, with data on the perception of the acoustic environment.",
+        "text2": "Download the platform user manual for more information.",
+        "text3": "Explore, analyse and share data on the quiet areas of Catalonia.",
+        "text4": "We will discover together the sound of the community!",
+        "link": "http://home.soundcollectapp.com/wp-content/uploads/2024/07/20240717_Manual-de-lusuari_aria-Dashboard-SoundCollect_CAT.pdf"
+      }
+    },
+    "dataValidate": {
+      "title": "Data validation process",
+      "text1": "To ensure the accuracy and relevance of the information on the data visualization platform, the records must go through a validation process. Only data that meet the following requirements will be visible on the platform:",
+      "listItem1": {
+        "title": "Calibration of mobile devices:",
+        "text": "Only the data of users who have calibrated their mobile devices correctly will be considered. We explain why calibration is key for us:",
+        "text1": "Proper calibration ensures that data is accurate and trustworthy. Over time, factors such as wear and tear or changes in the environment can skew results.",
+        "text2": "Calibration ensures that measurements made at different times or conditions are comparable. This allows you to obtain consistent results and repeat measurements with confidence over time."
+      },
+      "listItem2": {
+        "title": "Acceptable LAeq range:",
+        "text": "Records containing LAeq values ​​between 20dBA and 80dBA will be accepted. Values ​​outside this range are not considered erroneous, but will not be included in the platform because they do not adequately characterize a quiet area."
+      }
+    }
+  },
+  "map": {
+    "observations": "Map",
+    "titleMenu": "Map",
+    "filters": {
+      "enable": "Apply filters",
+      "disable": "Deactivate filters",
+      "title": "Show filters",
+      "days": "Days",
+      "hourRange": "Hour range",
+      "soundTypes": "Types of sounds",
+      "naturals": "Natural sounds",
+      "people": "People",
+      "traffic": "Traffic",
+      "others": "Other sounds",
+      "peopleTypes": "Types of users",
+      "contributor": "Contributor",
+      "citizen": "Acoustic citizen",
+      "explorer": "Acoustic explorer",
+      "traveler": "Acoustic traveller",
+      "informer": "Acoustic informer",
+      "pressure": "Sound pressure",
+      "positivePlaces": "Places with positive influence",
+      "stronglyAgree": "Strongly agree",
+      "agree": "Agree",
+      "undecided": "Undecided",
+      "disagree": "Disagree",
+      "stronglyDisagree": "Strongly disagree"
+    },
+    "layers": {
+      "title": "Map type",
+      "standard": "Standard",
+      "satellite": "Satellite"
+    },
+    "laeqtChart": {
+      "axisX": "Time (seconds)",
+      "axisY": "Sound pressure level (dBA)"
+    },
+    "description": "Consult detailed statistics on the use of SoundCollect in Catalonia and access different indicators.",
+    "title": "Collaborative sound map"
+  },
+  "overview": {
+    "observations": "Summary",
+    "titleMenu": "Summary",
+    "cataloniaMap": {
+      "regions": "Catalonia regions",
+      "moreObs": "More observations",
+      "lessObs": "Less observations",
+      "obsNumber": "Number of observations"
+    },
+    "barChart": {
+      "yAxis": "Number of records ",
+      "tooltip": {
+        "date": "Date",
+        "numObs": "Observations"
+      },
+      "title": "Temporal evolution of records in SoundCollect",
+      "content": "This graph shows how user activity varies over time. It allows you to identify usage patterns and key dates, helping to evaluate participation and plan participatory activities."
+    },
+    "observationsNumber": {
+      "total": "Total number of records",
+      "average": "Average number of registrations per month per user",
+      "users": "Total number of users"
+    },
+    "description": "Consult detailed statistics on the use of SoundCollect in Catalonia and access different indicators.",
+    "title": "Summary"
+  },
+  "soundscape": {
+    "observations": "Observations",
+    "titleMenu": "Analysis",
+    "map": {
+      "createFilter": "Create a study area",
+      "editFilter": "Edit filter",
+      "deleteFilter": "Delete filter",
+      "kmlDownload": "KML Format",
+      "gpkgDownload": "GPKG Format"
+
+    },
+    "filter": {
       "morning": "Morning (7:00 - 19:00)",
       "afternoon": "Afternoon (19:00 - 23:00)",
       "night": "Night (23:00 - 7:00)",
       "wholeDay": "Whole day"
+    },
+    "soundLevels": {
+      "title": "Gradual display of sound levels by hour",
+      "content": "This graph will allow you to observe how the tranquility of the area varies throughout the day, helping you better understand the sound patterns and the periods of greater or lesser tranquility. It uses a polar area chart to reveal sound patterns and quiet periods in the area, with each segment representing a specific time and its radius indicating the sound pressure level at the moment."
+    },
+    "soundTypes": {
+      "title": "Types of sounds",
+      "traffic": "Traffic",
+      "people": "People",
+      "nature": "Nature",
+      "others": "Other sounds",
+      "axisY": "Number of records",
+      "content": "This bar graph shows the cumulative distribution of each type of recorded sound, expressed in percentages. Provides an overview of the main sound sources in the study area. For example, a high proportion of natural sounds may indicate a quieter, more relaxing environment, while a high proportion of traffic sounds may signal a busier or noisier area."
+    },
+    "quas": {
+      "title": "Analysis of qualitative - quantitative variables",
+      "quiet": "Quiet",
+      "lowlyQuiet": "Lowly quiet",
+      "fairlyQuiet": "Lowly quiet",
+      "veryQuiet": "Very quiet",
+      "obsNumber": "Number of observations",
+      "activityLevel": "Activity level",
+      "pleasantnessLevel": "Pleasantness level",
+      "activity&pleasantness": "Activity / Pleasantness",
+      "content": "The graph makes it easy to identify patterns and trends in the relationship between sound and perception. For example, it can reveal whether high sound pressure levels always correspond to a low perception of quiet or whether there are exceptions in specific environments. It is a key tool to evaluate how the acoustic environment affects the perception of comfort, allowing a deeper understanding of the relationship between measured sound and the subjective experience of tranquility."
+    },
+    "perception": {
+      "title": "Description of the perception of space",
+      "quiet": "Quiet",
+      "cleanliness": "Cleanliness and maintenance",
+      "accessibility": "Accessibility",
+      "safety": "Safety",
+      "notQuiet": "Not quiet",
+      "littleQuiet": "Little quiet",
+      "lowlyQuiet": "Lowly quiet",
+      "fairlyQuiet": "Fairly quiet",
+      "veryQuiet": "Very quiet",
+      "dirty": "Dirty",
+      "clean": "Clean",
+      "veryClean": "Very clean",
+      "veryBad": "Very  bad",
+      "bad": "Bad",
+      "medium": "Medium",
+      "good": "Good",
+      "veryGood": "Very good",
+      "notAccessible": "Not accessible",
+      "accessible": "Accessible",
+      "veryAccessible": "Very accessible",
+      "notSafe": "Not safe",
+      "safe": "Safe ",
+      "verySafe": "Very safe",
+      "content": "This graph shows the aspects of space perception in percentages, which allows identifying characteristics that need improvement or generate high satisfaction in the study area."
+    },
+    "pressure": {
+      "title": "Distribution of sound pressure levels in the quiet area",
+      "morning": "Morning (7:00 - 19:00)",
+      "afternoon": "Afternoon (19:00 - 23:00)",
+      "night": "Night (23:00 - 7:00)",
+      "hourRange": "Hour range",
+      "obsNumber": "Number of observations",
+      "content": "This visualization allows you to identify patterns and trends in sound levels in the area of ​​interest. For example, you might discover that sound pressure levels are higher during the afternoons in a green area near a park where children play. This information is useful for evaluating how activities and the environment affect the tranquility of the area at different times of the day."
+    },
+    "qualitativeData": {
+      "title": "Soundscape scatterplot",
+      "content1": "The soundscape scatter diagram offers a detailed view of how users perceive the acoustic environment in two key dimensions: pleasantness and activity of the soundscape, following the ISO 12913:2004 standard on soundscape. The graph groups the information into four quadrants of the Cartesian plane:",
+      "content2": "Scatterplot adapted from: Mitchell A, Aletta F, Kang J. How to analyze and represent quantitative soundscape data. JASA Express Lett. 2022 Mar;2(3):037201. doi: 10.1121/10.0009794.",
+      "content": {
+        "list1": "Upper left quadrant (chaotic): Soundscapes with a predominance of unpleasant sounds that generate discomfort or distress.",
+        "list2": "Lower left quadrant (monotonous): Soundscapes that are neither pleasant nor active, lacking interesting or attractive elements.",
+        "list3": "Upper right quadrant (vibrant): Stimulating and pleasant soundscapes, with positive sounds that contribute to an enriching and safe experience.",
+        "list4": "Lower right quadrant (calm): Soundscapes ideal for relaxation, with soft and pleasant background sounds that help recovery after periods of stress."
+      }
+    },
+    "tonalFrequency": {
+      "title": "1/3 octave graph",
+      "frequency": "Frequency (Hertz)",
+      "presure": "Sound pressure",
+      "pressurePonderation": "Sound pressure dBA",
+      "ponderation": "dB",
+      "noPonderation": "dBA",
+      "content": "This graph shows how the energy of sounds in the selected area is distributed along a frequency spectrum. Its usefulness lies in identifying whether low or high frequencies predominate in the study area. Low frequencies represent low-pitched sounds, such as the rumble of an engine, while high frequencies include high-pitched sounds, such as a bird chirping. The graph allows you to switch between the sound pressure level without weighting (Leq) and with A weighting (LAeq)."
+    },
+    "physcoAcustic": {
+      "title": "Psychoacoustic analysis",
+      "content": {
+        "title1": "LOUDNESS",
+        "content1": "The psychoacoustic parameter loudness is a subjective measure of the intensity with which a noise is perceived by the human ear. This parameter depends on the frequency and, therefore, two sound events with the same sound level, but different frequency do not always result in the same sensation of volume in the human ear. The unit of measurement is the “sone”, and through this parameter the human sensation of noise volume can be represented linearly. Therefore, a tone that is perceived to have twice the loudness is assigned a double value of 'sones' on the loudness scale.",
+        "title2": "SHARPNESS",
+        "content2": "Sharpness is a psychoacoustic parameter that compares the amount of high-frequency energy with the total energy in an acoustic signal. Sharpness is characterized by being caused by a high-frequency (or high-pitched) sound, which can cause pain in the human ear. The unit of measurement for sharpness is the “acum”, and similar to loudness, sharpness also delineates human sensation in a linear manner.",
+        "title3": "ROUGHNESS",
+        "content3": "Roughness is a parameter that quantifies the subjective perception of the rapid amplitude modulation (30-300 Hz) of a sound. The auditory sensation represented by roughness, which often produces a sensation of discomfort to the human ear, is related to loudness modulations at frequencies too high to be discerned separately (modulation frequencies higher than 30 Hz). The unit of measurement is the 'asper', and is defined as the roughness produced by a 60 dB 1000 Hz tone, which is 100% amplitude modulated at 70 Hz.",
+        "title4": "FLUCTUATION STRENGTH",
+        "content4": "Fluctuation strength is a parameter that quantifies the subjective perception of slower amplitude modulation (up to 20 Hz). Therefore, it is a concept similar to roughness but for low frequencies. The fluctuation force persists until approximately 20 Hz, from where a complex zone begins to be evaluated in terms of fluctuation force and roughness. This zone extends to frequencies of approximately 30 Hz, where roughness dominates subjective perception. The unit of measurement for fluctuation strength is the 'vacil', which is defined as the fluctuation strength produced by a 60 dB 1000 Hz tone that is 100% amplitude modulated at 4 Hz."
+      },
+      "types": {
+        "sharpness": "Sharpness",
+        "roughtness": "Roughness",
+        "loudness": "Loudness",
+        "fluctuationStrenght": "Fluctuation strenght"
+      },
+      "tooltip": {
+        "hour": "Hour range",
+        "numObs": "Observations",
+        "standardDeviation": "Standard deviation"
+      }
+    },
+    "temporalEvolution": {
+      "title": "Temporal evolution of dB(A) sound levels over a period of time",
+      "serieLabel1":"Data series 1",
+      "serieLabel2":"Data series 2",
+      "serie1": "Series 1",
+      "serie2": "Series 2",
+      "morningSerie1": "Morning series 1",
+      "morningSerie2": "Morning series 2",
+      "afternoonSerie1": "Afternoon series 1",
+      "afternoonSerie2": "Afternoon series 2",
+      "nightSerie1": "Night series 1",
+      "nightSerie2": "Night series 2",
+      "hours": "Hours",
+      "morning": "Morning",
+      "afternoon": "Afternoon",
+      "night": "Night",
+      "pressureLevel": "Sound pressure level (dBA)",
+      "tooltip": {
+        "hour": "Hour",
+        "numObs": "Observations"
+      },
+      "content": "This graph helps you understand how sound levels change throughout the day and identify periods with high or low variability in sound pressure levels. It allows you to analyze sound variations in a specific area over time and compare two data series. It uses a candlestick chart, where each candlestick represents the sound pressure levels for a specific time."
+    },
+    "tagCloud": {
+      "title": "Measures to acoustically protect the study area",
+      "content": "This word cloud is generated from the answers to the open question: 'What measures would you propose to acoustically protect this space?' The visualization highlights user suggestions, showing the most frequent words or phrases in larger size, making it easier to identify the most popular or relevant measures to improve noise protection in the study area."
+    },
+    "description": "Define a study area and adjust the time period to evaluate the tranquility of the area. It analyzes both qualitative acoustic perception and quantitative sound pressure levels.",
+    "title": "Analysis"
+  },
+  "admin": {
+    "studyZone": {
+      "map": {
+        "createFilter": "Crear zona d'estudi",
+        "deleteFilter": "Esborrar zona d'estudi",
+        "saveStudyZone": "Guardar zona d'estudi"
+      },
+      "form": {
+        "title": "Informació de la zona d'estudi",
+        "name": "Nom",
+        "description": "Descripció",
+        "conclusion": "Conclusió",
+        "startEndDate": "Data d'inici i final",
+        "addFiles": "Afegir fitxers",
+        "nameFile": "Nom del document",
+        "addFile": "Afegir fitxer",
+        "deleteFile": "Esborrar fitxer",
+        "addDocument": "Afegir document",
+        "addCollaborator": "Afegir col·laborador",
+        "collaboratorName": "Nom del col·laborador",
+        "contactName": "Nom del contacte",
+        "contactEmail": "Email del contacte",
+        "contactPhone": "Telèfon del contacte",
+        "addLogo": "Afegir logotip",
+        "delete": "Esborrar",
+        "deleteLogo": "Esborrar logotip",
+        "cancel": "Cancel·lar",
+        "saveStudyZone": "Guardar zona d'estudi",
+        "messages": {
+          "updateSummary": "Zona d'estudi actualitzada",
+          "updateDetail": "La zona d'estudi s'ha actualitzat correctament",
+          "createSummary": "Zona d'estudi creada",
+          "createDetail": "La zona d'estudi s'ha creat correctament",
+          "errorSummary": "Ha succeït un error",
+          "errorDetail": "No s'ha pogut crear la zona d'estudi,tenca el formulari i torna a intentar-ho"
+        }
+      },
+      "list": {
+        "title": "Llistat de zones d'estudi",
+        "name": "Nom",
+        "startDate": "Data d'inici",
+        "endDate": "Data de finalització",
+        "view": "Visualitzar",
+        "enable": "Deshabilitar",
+        "delete": "Esborrar",
+        "update": "Modificar"
+      },
+      "studyZoneDialog": {
+        "description": "Descripció",
+        "conclusion": "Conclusió",
+        "startAndEndDate": "Data d'inici i final",
+        "files": "Fitxers",
+        "collaborators": "Col·laboradors"
+      }
     }
-
+  },
+  "login": {
+    "title": "Access the Dashboard",
+    "subtitle": "Sign in with your app user to continue",
+    "submitButton": "Login",
+    "errorTitle": "Error",
+    "errorSubtitle": "Incorrect username or password"
+  },
+  "error": {
+    "title": "Oops!",
+    "subtitle": "Something went wrong.",
+    "button": "Return"
   }
-
 }

@@ -1,0 +1,24 @@
+<p-sidebar
+  [(visible)]="showMapLayers"
+  [position]="'right'"
+  [modal]="false"
+  [styleClass]="'floatSidebar col-10 lg:col-3 md:col-4'"
+  [blockScroll]="false"
+  [closeOnEscape]="true"
+>
+  <div
+    *ngFor="let studyZone of studyZones; trackBy: trackById; let i = index"
+    class="flex align-items-center mt-3"
+  >
+    <p-toggleButton
+      styleClass="toggleButton"
+      [(ngModel)]="studyZonesModel[i]"
+      onIcon="pi pi-eye-slash"
+      offIcon="pi pi-eye"
+      (onChange)="toggleLayerVisibility(studyZone.id, $event)"
+    />
+    <label for="light-v10" class="ml-2">
+      {{ studyZone.name }}
+    </label>
+  </div>
+</p-sidebar>

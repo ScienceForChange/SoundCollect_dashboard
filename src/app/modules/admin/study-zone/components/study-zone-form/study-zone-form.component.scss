@@ -1,0 +1,23 @@
+:host ::ng-deep {
+  .p-calendar {
+    width: 100%;
+    input {
+      padding: 1rem;
+    }
+  }
+  .p-fileupload{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  p-button{
+    width: fit-content;
+  }
+  .p-dialog-header{
+    justify-content: center;
+  }
+  form,.p-dialog-content{
+    scrollbar-width: none;
+  }
+}
+
