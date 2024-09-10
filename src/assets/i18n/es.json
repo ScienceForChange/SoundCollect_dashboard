@@ -128,7 +128,8 @@
       "agree": "De acuerdo",
       "undecided": "Indeciso",
       "disagree": "En desacuerdo",
-      "stronglyDisagree": "Muy en desacuerdo"
+      "stronglyDisagree": "Muy en desacuerdo",
+      "studyZones": "Zonas de estudio"
     },
     "layers": {
       "title": "Tipo de mapa",

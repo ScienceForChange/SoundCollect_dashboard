@@ -128,7 +128,8 @@
       "agree": "Agree",
       "undecided": "Undecided",
       "disagree": "Disagree",
-      "stronglyDisagree": "Strongly disagree"
+      "stronglyDisagree": "Strongly disagree",
+      "studyZones": "Study Zones"
     },
     "layers": {
       "title": "Map type",

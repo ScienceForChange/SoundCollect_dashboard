@@ -34,8 +34,9 @@
         <i class="pi pi-clone"></i>
       </p-button>
       <p-button
+        [disabled]="isStudyZonesBtnDisbaled"
         (onClick)="toggleShowMapStudyZonesLayers()"
-        label="Zones d'estudi"
+        label="{{ 'map.filters.studyZones' | translate }}"
         tooltipPosition="bottom"
       >
       </p-button>

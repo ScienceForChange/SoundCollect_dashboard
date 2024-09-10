@@ -128,7 +128,8 @@
       "agree": "D'acord",
       "undecided": "Indecís",
       "disagree": "En desacord",
-      "stronglyDisagree": "Molt en desacord"
+      "stronglyDisagree": "Molt en desacord",
+      "studyZones": "Zones d'estudi"
     },
     "layers": {
       "title": "Tipus de mapa",

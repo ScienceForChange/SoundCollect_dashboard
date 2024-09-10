@@ -18,6 +18,7 @@ import { Subscription } from 'rxjs';
 import { MapService } from '../service/map.service';
 import { Observations } from '../../../models/observations';
 import { StudyZone } from '../../../models/study-zone';
+import { StudyZoneService } from '../../../services/study-zone/study-zone.service';
 
 @Component({
   selector: 'app-map',
@@ -27,6 +28,8 @@ import { StudyZone } from '../../../models/study-zone';
 export class MapComponent implements AfterViewInit, OnDestroy {
   @ViewChild('mapDiv') mapDivElement!: ElementRef;
   private mapService = inject(MapService);
+  private studyZoneService = inject(StudyZoneService);
+
 
   public showFilters: WritableSignal<boolean> = signal<boolean>(false);
   public showMapLayers: WritableSignal<boolean> = signal<boolean>(false);
@@ -34,10 +37,12 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     signal<boolean>(false);
 
   public activeFilters: boolean = false;
-  private subscriptions = new Subscription();
-  public observationSelected!: Observations;
   public isOpenObservationInfoModal: boolean = false;
   public isSZModalVisible: boolean = false;
+  public isStudyZonesBtnDisbaled: boolean = false;
+
+  private subscriptions = new Subscription();
+  public observationSelected!: Observations;
   public studyZoneSelected!: StudyZone;
 
   constructor() {
@@ -56,6 +61,11 @@ export class MapComponent implements AfterViewInit, OnDestroy {
         this.studyZoneSelected = value;
       })
     );
+    this.subscriptions.add(
+      this.studyZoneService.studyZones$.subscribe((studyZones) => {
+        this.isStudyZonesBtnDisbaled = studyZones.length === 0;
+      })
+    )
   }
 
   public toogleActiveFilters(): void {
