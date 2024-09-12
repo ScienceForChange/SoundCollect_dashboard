@@ -1,38 +1,18 @@
 import {
   Component,
-  effect,
   ElementRef,
   EventEmitter,
   inject,
-  Input,
   Output,
   signal,
   ViewChild,
 } from '@angular/core';
-import MapboxDraw from '@mapbox/mapbox-gl-draw';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import mapboxgl, {
-  IControl,
-  LngLat,
-  LngLatBounds,
   Map,
-  MapEvent,
 } from 'mapbox-gl';
-import { Observations } from '../../../../../models/observations';
-import { ObservationsService } from '../../../../../services/observations/observations.service';
-import { Subscription } from 'rxjs';
-import { GeoJSONObject } from '@turf/turf';
 import { StudyZoneMapService } from '../../service/study-zone-map.service';
 
-interface Feature<
-  G extends GeoJSON.Geometry | null = GeoJSON.Geometry,
-  P = { [name: string]: any } | null
-> extends GeoJSONObject {
-  type: 'Feature';
-  geometry: G;
-  id?: string | number | undefined;
-  properties: P;
-}
 
 @Component({
   selector: 'app-study-zone-map',
@@ -48,7 +28,6 @@ export class StudyZoneMapComponent {
 
   polygonFilter = signal<any | undefined>(undefined);
 
-  private map!: Map;
   private language: string = localStorage.getItem('locale') || 'ca';
 
   public layerId: string = 'light-v10';
@@ -62,7 +41,7 @@ export class StudyZoneMapComponent {
   }
 
   public toggleLayerVisibility(layerId: string) {
-    this.map.setStyle('mapbox://styles/mapbox/' + layerId);
+    this.studyZoneMapService.map.setStyle('mapbox://styles/mapbox/' + layerId);
   }
 
   ngOnInit(): void {
