@@ -8,7 +8,9 @@
 >
   <ng-template pTemplate="header">
     <div class="text-center">
-      <h2 class="headline-m font-medium">Detall de l'Observació</h2>
+      <h2 class="headline-m font-medium">
+        {{ "map.infoModal.title" | translate }}
+      </h2>
     </div>
   </ng-template>
   @if(observationSelected){
@@ -26,9 +28,11 @@
     <div class="w-full">
       <!-- Información general -->
       <h3 class="text-left headline-s font-medium">
-        Informació formació general
+        {{ "map.infoModal.information" | translate }}
       </h3>
-      <h4 class="title-m mb-0">Tipus de so</h4>
+      <h4 class="title-m mb-0">
+        {{ "map.infoModal.typeOfSound" | translate }}
+      </h4>
       <ul class="body-m mt-0">
         @for(typeOfSound of observationSelected.relationships.types; track
         $index){
@@ -37,17 +41,17 @@
         </li>
         }
       </ul>
-      <h4 class="title-m mb-0">Data</h4>
+      <h4 class="title-m mb-0">{{ "map.infoModal.data" | translate }}</h4>
       <p class="body-m">
         {{ observationSelected.attributes.created_at }}
       </p>
       <!-- Información meteorológica -->
-      <h3 class="text-left headline-s font-medium">Informació meteorològica</h3>
+      <h3 class="text-left headline-s font-medium">{{ "map.infoModal.meteorologyInfo" | translate }}</h3>
       <div class="flex gap-2">
         <div
           class="flex flex-column p-3 justify-content-center align-items-center border-round-2xl meteo-information"
         >
-          <p class="mb-0">Vent</p>
+          <p class="mb-0">{{ "map.infoModal.wind" | translate }}</p>
           <icon-wind [iconClass]="'icon-orange'" />
           <p class="font-medium">
             {{ observationSelected.attributes.wind_speed }} m/s
@@ -56,7 +60,7 @@
         <div
           class="flex flex-column p-3 justify-content-center align-items-center border-round-2xl meteo-information"
         >
-          <p class="mb-0">Humitat</p>
+          <p class="mb-0">{{ "map.infoModal.humidity" | translate }}</p>
           <icon-humidity [iconClass]="'icon-orange'" />
           <p class="font-medium">
             {{ observationSelected.attributes.humidity }}%
@@ -65,7 +69,7 @@
         <div
           class="flex flex-column p-3 justify-content-center align-items-center border-round-2xl meteo-information"
         >
-          <p class="mb-0">Temp</p>
+          <p class="mb-0">{{ "map.infoModal.temperature" | translate }}</p>
           <icon-thermostat [iconClass]="'icon-orange'" />
           <p class="font-medium">
             {{ observationSelected.attributes.temperature }}c
@@ -74,7 +78,7 @@
         <div
           class="flex flex-column p-3 justify-content-center align-items-center border-round-2xl meteo-information"
         >
-          <p class="mb-0">Pressió</p>
+          <p class="mb-0">{{ "map.infoModal.pressure" | translate }}</p>
           <icon-pressure [iconClass]="'icon-orange'" />
           <p class="font-medium">
             {{ observationSelected.attributes.pressure }}hPa
@@ -82,33 +86,35 @@
         </div>
       </div>
       <!-- Àudio registrat -->
-      <h3 class="text-left headline-s font-medium">Àudio registrat</h3>
+      <h3 class="text-left headline-s font-medium">{{ "map.infoModal.audioRegister" | translate }}</h3>
       <ul class="body-m mt-0">
         <li>
-          <span class="font-medium">Nivell percentil L10:</span>
+          <span class="font-medium">{{ "map.infoModal.L10Level" | translate }}:</span>
           {{ observationSelected.attributes.L10 }}
         </li>
         <li>
-          <span class="font-medium">Nivell percentil L90:</span>
+          <span class="font-medium">{{ "map.infoModal.L90Level" | translate }}:</span>
           {{ observationSelected.attributes.L90 }}
         </li>
         <li>
-          <span class="font-medium">Nivell SPL equivalent LAeq:</span>
+          <span class="font-medium">{{ "map.infoModal.SPLEquivalent" | translate }}:</span>
           {{ observationSelected.attributes.Leq }}
         </li>
         <li>
-          <span class="font-medium">Nivell màxim Lmax:</span>
+          <span class="font-medium">{{ "map.infoModal.LmaxLevel" | translate }}:</span>
           {{ observationSelected.attributes.LAmax }}
         </li>
         <li>
-          <span class="font-medium">Nivell mínim Lmin:</span>
+          <span class="font-medium">{{ "map.infoModal.LminLevel" | translate }}:</span>
           {{ observationSelected.attributes.LAmin }}
         </li>
       </ul>
-      <h3 class="text-left headline-s font-medium">Nivell SPL continu equivalent LAeq,t:</h3>
-      <app-laeq-tchart [observationSelected]="observationSelected"/>
-      <h3 class="text-left headline-s font-medium">1/3 d'octava:</h3>
-      <app-one-third-octave-chart [observationSelected]="observationSelected"/>
+      <h3 class="text-left headline-s font-medium">
+        {{ "map.infoModal.LAeqt" | translate }}:
+      </h3>
+      <app-laeq-tchart [observationSelected]="observationSelected" />
+      <h3 class="text-left headline-s font-medium">{{ "map.infoModal.1/3Octave" | translate }}:</h3>
+      <app-one-third-octave-chart [observationSelected]="observationSelected" />
     </div>
   </div>
 

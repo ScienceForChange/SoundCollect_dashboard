@@ -140,6 +140,25 @@
       "axisX": "Time (seconds)",
       "axisY": "Sound pressure level (dBA)"
     },
+    "infoModal":{
+      "title":"Observation Detail",
+      "information":"General information",
+      "typeOfSound":"Sound type",
+      "data":"Data",
+      "meteorologyInfo":"Meteorological information",
+      "wind":"Wind",
+      "humidity":"Humidity",
+      "temperature":"Temperature",
+      "pressure":"Pressure",
+      "audioRegister":"Recorded audio",
+      "L10Level":"L10 percentile level",
+      "L90Level":"L90 percentile level",
+      "SPLEquivalent":"Equivalent SPL level LAeq",
+      "LmaxLevel":"Maximum level Lmax",
+      "LminLevel":"Minimum level Lmin",
+      "LAeqt":"Equivalent continuous SPL level LAeq,t",
+      "1/3Octave":"1/3 octave"
+    },
     "description": "Consult detailed statistics on the use of SoundCollect in Catalonia and access different indicators.",
     "title": "Collaborative sound map"
   },
@@ -177,8 +196,8 @@
       "editFilter": "Edit filter",
       "deleteFilter": "Delete filter",
       "kmlDownload": "KML Format",
-      "gpkgDownload": "GPKG Format"
-
+      "gpkgDownload": "GPKG Format",
+      "graphicFile": "Graphic file"
     },
     "filter": {
       "morning": "Morning (7:00 - 19:00)",

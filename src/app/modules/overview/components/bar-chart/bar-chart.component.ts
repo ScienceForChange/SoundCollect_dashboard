@@ -56,7 +56,7 @@ export class BarChartComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   });
   private observations: ObservationsDataChart[] = [];
-  private obsFiltered: ObservationsDataChart[] = [];
+  public obsFiltered: ObservationsDataChart[] = [];
   public today: Date = new Date();
   public timeFilterSelected: string = this.timesFilter.DELETE;
   public minDate!: Date;
@@ -250,6 +250,8 @@ export class BarChartComponent implements OnInit, AfterViewInit, OnDestroy {
           });
 
           this.obsFiltered = arr30DaysBefore;
+          console.log('this.obsFiltered', this.obsFiltered, !this.obsFiltered.length)
+
 
           const getFirstDayOfEachMonth =
             this.getFirstDayOfEachMonth(arr30DaysBefore);

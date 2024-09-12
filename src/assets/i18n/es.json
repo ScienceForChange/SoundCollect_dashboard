@@ -140,6 +140,25 @@
       "axisX": "Tiempo (segundos)",
       "axisY": "Nivel de presión sonora (dBA)"
     },
+    "infoModal":{
+      "title":"Detalle de la Observación",
+      "information":"Información general",
+      "typeOfSound":"Tipo de sonido",
+      "data":"Datos",
+      "meteorologyInfo":"Información meteorológica",
+      "wind":"Viento",
+      "humidity":"Humedad",
+      "temperature":"Temperatura",
+      "pressure":"Presión",
+      "audioRegister":"Audio registrado",
+      "L10Level":"Nivel percentil L10",
+      "L90Level":"Nivel percentil L90",
+      "SPLEquivalent":"Nivel SPL equivalente LAeq",
+      "LmaxLevel":"Nivel máximo Lmax",
+      "LminLevel":"Nivel mínimo Lmin",
+      "LAeqt":"Nivel SPL continuo equivalente LAeq,t",
+      "1/3Octave":"1/3 de octava"
+    },
     "description": "Consulta estadísticas detalladas sobre el uso de SoundCollect en Cataluña y accede a distintos indicadores.",
     "title": "Mapa sonoro colaborativo"
   },
@@ -177,8 +196,8 @@
       "editFilter": "Editar filtro",
       "deleteFilter": "Eliminar filtro",
       "kmlDownload": "Formato KML",
-      "gpkgDownload": "Formato GPKG"
-
+      "gpkgDownload": "Formato GPKG",
+      "graphicFile": "Archivo gráfico"
     },
     "filter": {
       "morning": "Mañana (7:00 - 19:00)",

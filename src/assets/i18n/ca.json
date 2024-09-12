@@ -140,6 +140,25 @@
       "axisX": "Temps (segons)",
       "axisY": "Nivell de pressió sonora (dBA)"
     },
+    "infoModal":{
+      "title":"Detall de l'Observació",
+      "information":"Informació general",
+      "typeOfSound":"Tipus de so",
+      "data":"Dades",
+      "meteorologyInfo":"Informació meteorològica",
+      "wind":"Vent",
+      "humidity":"Humitat",
+      "temperature":"Temperatura",
+      "pressure":"Pressió",
+      "audioRegister":"Àudio registrat",
+      "L10Level":"Nivell percentil L10",
+      "L90Level":"Nivell percentil L90",
+      "SPLEquivalent":"Nivell SPL equivalent LAeq",
+      "LmaxLevel":"Nivell màxim Lmax",
+      "LminLevel":"Nivell mínim Lmin",
+      "LAeqt":"Nivell SPL continu equivalent LAeq,t",
+      "1/3Octave":"1/3 d'octava"
+    },
     "description": "Consulta estadístiques detallades sobre l'ús de SoundCollect a Catalunya i accedeix a diferents indicadors.",
     "title": "Mapa sonor col·laboratiu"
   },
@@ -177,7 +196,8 @@
       "editFilter": "Editar filtre",
       "deleteFilter": "Eliminar filtre",
       "kmlDownload": "Format KML",
-      "gpkgDownload": "Format GPKG"
+      "gpkgDownload": "Format GPKG",
+      "graphicFile": "Arxiu gràfic"
     },
     "filter": {
       "morning": "Matí (7:00 - 19:00)",

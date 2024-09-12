@@ -19,10 +19,10 @@
         [maxDate]="today"
       />
     </form>
-    <p-button label="{{'app.weeks' | translate }}" [disabled]="timeFilterSelected === timesFilter.WEEK" (onClick)="timeFilter(timesFilter.WEEK)" />
-    <p-button label="{{'app.months' | translate }}" [disabled]="timeFilterSelected === timesFilter.MONTH" (onClick)="timeFilter(timesFilter.MONTH)" />
-    <p-button label="{{'app.years' | translate }}" [disabled]="timeFilterSelected === timesFilter.YEAR" (onClick)="timeFilter(timesFilter.YEAR)" />
-    <p-button icon="pi pi-times" [disabled]="timeFilterSelected === timesFilter.DELETE" (onClick)="timeFilter(timesFilter.DELETE)" />
+    <p-button  label="{{'app.weeks' | translate }}" [disabled]="timeFilterSelected === timesFilter.WEEK || !obsFiltered.length" (onClick)="timeFilter(timesFilter.WEEK)" />
+    <p-button  label="{{'app.months' | translate }}" [disabled]="timeFilterSelected === timesFilter.MONTH || !obsFiltered.length" (onClick)="timeFilter(timesFilter.MONTH)" />
+    <p-button  label="{{'app.years' | translate }}" [disabled]="timeFilterSelected === timesFilter.YEAR || !obsFiltered.length" (onClick)="timeFilter(timesFilter.YEAR)" />
+    <p-button  icon="pi pi-times" [disabled]="timeFilterSelected === timesFilter.DELETE || !obsFiltered.length" (onClick)="timeFilter(timesFilter.DELETE)" />
   </div>
 
   <div id="bar-chart-container"></div>
