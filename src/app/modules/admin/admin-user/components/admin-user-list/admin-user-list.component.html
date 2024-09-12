@@ -1,0 +1,42 @@
+<div class="card w-full" >
+  <p-table #dt1 [value]="adminUsers" [globalFilterFields]="[
+    'user.name',
+    'user.email',
+    ]" dataKey="id" [tableStyle]="{ 'min-width': '50rem' }" [rows]="15" [paginator]="false" stateStorage="session"
+    stateKey="statedemo-session">
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width: 10%">
+          Name
+        </th>
+        <th style="width: 45%">
+          email
+        </th>
+        <th style="width: 45%">
+          Actions
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-adminUser>
+      <tr>
+        <td>
+          <span class="p-column-title">email</span>
+          {{ adminUser.attributes.name }}
+        </td>
+        <td class="text-right">
+          <span class="p-column-title">Description</span>
+          <span class="ml-1 vertical-align-end">{{ adminUser.attributes.email }}</span>
+        </td>
+        <td class="text-right">
+          <button pButton type="button" icon="pi pi-pencil" class="p-button-rounded p-button-success" [routerLink]="['edit', adminUser.id]"></button>
+          <button pButton type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteUser(adminUser)"></button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="4">No Users found.</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

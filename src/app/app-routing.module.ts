@@ -11,6 +11,9 @@ import { ErrorComponent } from './modules/error/page/error.component';
 import { HomeComponent } from './modules/home/page/home.component';
 import { StudyZoneComponent } from './modules/admin/study-zone/study-zone/study-zone.component';
 import { ngxPermissionsGuard } from 'ngx-permissions';
+import { AdminUserComponent } from './modules/admin/admin-user/admin-user/admin-user.component';
+import { AdminUserListComponent } from './modules/admin/admin-user/components/admin-user-list/admin-user-list.component';
+import { AdminUserFormComponent } from './modules/admin/admin-user/components/admin-user-form/admin-user-form.component';
 
 const routes: Routes = [
   {
@@ -52,6 +55,48 @@ const routes: Routes = [
                 only: ['MANAGE-STUDY-ZONES'],
               },
             },
+          },
+          {
+            path: 'admin-user',
+            component: AdminUserComponent,
+            canActivate: [ngxPermissionsGuard],
+            data: {
+              permissions: {
+                only: ['MANAGE-ADMIN-USERS'],
+              },
+            },
+            children: [
+              {
+                path: '',
+                component: AdminUserListComponent,
+                canActivate: [ngxPermissionsGuard],
+                data: {
+                  permissions: {
+                    only: ['MANAGE-ADMIN-USERS'],
+                  },
+                }
+              },
+              {
+                path: 'new',
+                component: AdminUserFormComponent,
+                canActivate: [ngxPermissionsGuard],
+                data: {
+                  permissions: {
+                    only: ['CREATE-ADMIN-USERS'],
+                  },
+                },
+              },
+              {
+                path: 'edit/:id',
+                component: AdminUserFormComponent,
+                canActivate: [ngxPermissionsGuard],
+                data: {
+                  permissions: {
+                    only: ['EDIT-ADMIN-USERS'],
+                  },
+                }
+              }
+            ]
           },
         ],
       },

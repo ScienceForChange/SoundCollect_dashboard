@@ -35,6 +35,7 @@ import { StudyZoneModule } from './modules/admin/study-zone/study-zone.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
 import { AuthService } from './services/auth/auth.service';
+import { AdminUserModule } from './modules/admin/admin-user/admin-user.module';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -56,6 +57,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     SoundscapeModule,
     HomeModule,
     StudyZoneModule,
+    AdminUserModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
