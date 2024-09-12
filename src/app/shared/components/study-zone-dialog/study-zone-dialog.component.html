@@ -53,24 +53,24 @@
       @for(collaborator of studyZone.relationships.collaborators; track $index){
       <div>
         <p>
-          <span class="font-medium">Nom del col·laborador :</span>
+          <span class="font-medium">{{ "admin.studyZone.studyZoneDialog.collaboratorName" | translate }} :</span>
           {{ collaborator.collaborator_name }}
         </p>
         <p>
-          <span class="font-medium">Nom del contacte :</span>
+          <span class="font-medium">{{ "admin.studyZone.studyZoneDialog.contactName" | translate }} :</span>
           {{ collaborator.contact_name }}
         </p>
         <p>
-          <span class="font-medium">Email del contacte :</span>
+          <span class="font-medium">{{ "admin.studyZone.studyZoneDialog.contactEmail" | translate }} :</span>
           <a href="mailto:{{ collaborator.contact_email }}">{{
             collaborator.contact_email
           }}</a>
         </p>
         <p>
-          <span class="font-medium">Telèfon del contacte :</span>
+          <span class="font-medium">{{ "admin.studyZone.studyZoneDialog.contactPhone" | translate }} :</span>
           {{ collaborator.contact_phone }}
         </p>
-        <p><span class="font-medium">Logotip :</span></p>
+        <p><span class="font-medium">{{ "admin.studyZone.studyZoneDialog.logo" | translate }} :</span></p>
         <img
           src="{{ collaborator.logo }}"
           alt="Logo del col·laborador"

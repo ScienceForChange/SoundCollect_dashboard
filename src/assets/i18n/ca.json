@@ -392,7 +392,12 @@
         "conclusion": "Conclusió",
         "startAndEndDate": "Data d'inici i final",
         "files": "Fitxers",
-        "collaborators": "Col·laboradors"
+        "collaborators": "Col·laboradors",
+        "collaboratorName":"Nom del col·laborador",
+        "contactName": "Nom del contacte",
+        "contactEmail": "Email del contacte",
+        "contactPhone": "Telèfon del contacte",
+        "logo": "Logotip"
       }
     }
   },
