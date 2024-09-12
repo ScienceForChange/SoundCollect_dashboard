@@ -140,6 +140,8 @@
       "axisX": "Temps (segons)",
       "axisY": "Nivell de pressió sonora (dBA)"
     },
+    "description": "Consulta estadístiques detallades sobre l'ús de SoundCollect a Catalunya i accedeix a diferents indicadors.",
+    "title": "Mapa sonor col·laboratiu",
     "infoModal":{
       "title":"Detall de l'Observació",
       "information":"Informació general",
@@ -158,9 +160,7 @@
       "LminLevel":"Nivell mínim Lmin",
       "LAeqt":"Nivell SPL continu equivalent LAeq,t",
       "1/3Octave":"1/3 d'octava"
-    },
-    "description": "Consulta estadístiques detallades sobre l'ús de SoundCollect a Catalunya i accedeix a diferents indicadors.",
-    "title": "Mapa sonor col·laboratiu"
+    }
   },
   "overview": {
     "observations": "Resum",
@@ -292,9 +292,9 @@
         "title1": "LOUDNESS (Sonoritat)",
         "content1": "El paràmetre psicoacústic Loudness (o sonoritat) és una mesura subjectiva de la intensitat amb la qual un soroll és percebut per l'oïda humana. Aquest paràmetre depèn de la freqüència i, per tant, dos events sonors amb el mateix nivell sonor, però diferent freqüència no sempre resulta en la mateixa sensació de volum en l'oïda humana. La unitat de mesura és el “sone”, i mitjançant aquest paràmetre es pot representar la sensació humana al volum del soroll de forma lineal. Per tant, un to que es percep que te el doble de volum d’un altre tindrà una sonoritat el doble de gran.",
         "title2": "SHARPNESS (Nitidesa)",
-        "content2": "La agudesa és un paràmetre que descriu com de penetrant i esmolat es percep un so. Sons amb més energia en les freqüències agudes solen ser percebuts com a més aguts, per exemple, sons de sirenes. Es mesura en acum. Com més gran és l’agudesa, més penetrant es percep el so.",
+        "content2": "La nitidesa és un paràmetre que descriu com de penetrant i esmolat es percep un so. Sons amb més energia en les freqüències agudes solen ser percebuts com a més aguts, per exemple, sons de sirenes. Es mesura en acum. Com més gran és l’agudesa, més penetrant es percep el so.",
         "title3": "ROUGHNESS (Aspror)",
-        "content3": "La rugositat es refereix a les ràpides variacions d’amplitud en el so, percebudes com a irregularitats. Es mesura en asper. Sons amb una alta rugositat poden ser molestos per a l’oïda humana.",
+        "content3": "L'aspror es refereix a les ràpides variacions d’amplitud en el so, percebudes com a irregularitats. Es mesura en asper. Sons amb una alta rugositat poden ser molestos per a l’oïda humana.",
         "title4": "FLUCTUATION STRENGTH (Força fluctant)",
         "content4": "Aquest paràmetre mesura la percepció de fluctuacions lentes en la intensitat sonora d’un so. Es mesura en vacil. És particularment rellevant en sons musicals o sorolls de màquines."
       },
