@@ -10,6 +10,9 @@ export class MapToolBarComponent {
   @Input() showMapLayers?: WritableSignal<boolean>;
   @Input() showMapStudyZonesLayers?: WritableSignal<boolean>;
   @Input() isFilterActive: boolean = false;
+  @Input() isStudyZonesBtnDisbaled: boolean = false;
+  @Input() isFilterBtnDisbaled: boolean = true;
+
   
   @Output() toggleActiveFilters: EventEmitter<void> = new EventEmitter<void>();
 

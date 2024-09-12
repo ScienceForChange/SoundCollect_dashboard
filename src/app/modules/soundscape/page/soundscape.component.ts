@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild, effect, inject, signal } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 
 import mapboxgl, { IControl, LngLat, LngLatBounds, Map, MapEvent, } from 'mapbox-gl';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
@@ -10,7 +11,6 @@ import { GeoJSONObject} from '@turf/turf';
 
 import { Observations } from '../../../models/observations';
 import { ObservationsService } from '../../../services/observations/observations.service';
-import { TranslateService } from '@ngx-translate/core';
 
 export interface Feature<G extends GeoJSON.Geometry | null = GeoJSON.Geometry, P = { [name: string]: any } | null> extends GeoJSONObject {
   type: "Feature";
@@ -43,6 +43,7 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
   private draw!: MapboxDraw;
   private observationsService = inject(ObservationsService);
   private observations$!: Subscription;
+  private language: string = localStorage.getItem('locale') || 'ca';  
 
   public observations!: Observations[];
   public points: [number, number][] = [];
@@ -163,13 +164,21 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
 
     const geocoder = new MapboxGeocoder({
       accessToken: mapboxgl.accessToken,
-      language: 'ca',
+      language: this.language,
       limit: 5,
       marker: false,
       zoom: 17,
     });
 
     this.map.addControl(geocoder, 'top-left');
+
+    this.map.on('styledata', () => {
+      //Update language
+      this.map.setLayoutProperty('country-label', 'text-field', [
+        'get',
+        `name_${this.language}`,
+      ]);
+    })
 
     //Added the obs to map when the style is loaded or toggled
     this.map.on('style.load', () => {
@@ -441,7 +450,6 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
     //La función updatedSubareaPolygon se llama cuando se actualiza un polígono
     this.map.on('draw.update' as MapEvent, this.onDrawUpdated.bind(this));
 
-    // this.addObservationsToMap();
   }
 
   private onDrawSelect(event: any) {
@@ -479,41 +487,41 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
       }
     });
 
-    // resaltar la línea a la que se hace hover de color negro
-    this.map.addLayer({
-      id: 'lineLayer-hover',
-      type: 'line',
-      source: 'polylines',
-      layout: {
+    // // resaltar la línea a la que se hace hover de color negro
+    // this.map.addLayer({
+    //   id: 'lineLayer-hover',
+    //   type: 'line',
+    //   source: 'polylines',
+    //   layout: {
 
-        'line-join': 'round',
-        'line-cap': 'round'
-      },
-      paint: {
-          'line-color': '#333',
-          'line-width': 3,
-          'line-gap-width': 5,
-      },
-      filter: ['==', 'id', '']  // Filtro vacío para iniciar
-    });
+    //     'line-join': 'round',
+    //     'line-cap': 'round'
+    //   },
+    //   paint: {
+    //       'line-color': '#333',
+    //       'line-width': 3,
+    //       'line-gap-width': 5,
+    //   },
+    //   filter: ['==', 'id', '']  // Filtro vacío para iniciar
+    // });
 
-    // resaltar la línea seleccionada de color naranja
-    this.map.addLayer({
-      id: 'lineLayer-select',
-      type: 'line',
-      source: 'polylines',
-      layout: {
+    // // resaltar la línea seleccionada de color naranja
+    // this.map.addLayer({
+    //   id: 'lineLayer-select',
+    //   type: 'line',
+    //   source: 'polylines',
+    //   layout: {
 
-        'line-join': 'round',
-        'line-cap': 'round'
-      },
-      paint: {
-          'line-color': '#FF7A1F',
-          'line-width': 4,
-          'line-gap-width': 5,
-      },
-      filter: ['==', 'id', '']  // Filtro vacío para iniciar
-    });
+    //     'line-join': 'round',
+    //     'line-cap': 'round'
+    //   },
+    //   paint: {
+    //       'line-color': '#FF7A1F',
+    //       'line-width': 4,
+    //       'line-gap-width': 5,
+    //   },
+    //   filter: ['==', 'id', '']  // Filtro vacío para iniciar
+    // });
 
     // Agregar capa para los paths individuales
     this.map.addLayer({
@@ -559,15 +567,15 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
       }
     });
 
-    this.map.on('mouseenter', 'LineString', (e:any) => {
-      this.map.getCanvas().style.cursor = 'pointer';
-      for( let feature of e.features) {
-        if (feature.properties.type === 'LineString' && feature.properties.id !== undefined) {
-          this.map.setFilter('lineLayer-hover', ['==', 'id', feature.properties.id]);
-          return;
-        }
-      };
-    });
+    // this.map.on('mouseenter', 'LineString', (e:any) => {
+    //   this.map.getCanvas().style.cursor = 'pointer';
+    //   for( let feature of e.features) {
+    //     if (feature.properties.type === 'LineString' && feature.properties.id !== undefined) {
+    //       this.map.setFilter('lineLayer-hover', ['==', 'id', feature.properties.id]);
+    //       return;
+    //     }
+    //   };
+    // });
 
     this.map.on('click', 'LineString', (e:any) => {
       this.map.getCanvas().style.cursor = 'inherit';
@@ -579,10 +587,10 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
       };
     });
 
-    this.map.on('mouseleave', 'LineString', (e:any) => {
-      this.map.getCanvas().style.cursor = 'inherit';
-      this.map.setFilter('lineLayer-hover', ['==', 'id', '']);
-    });
+    // this.map.on('mouseleave', 'LineString', (e:any) => {
+    //   this.map.getCanvas().style.cursor = 'inherit';
+    //   this.map.setFilter('lineLayer-hover', ['==', 'id', '']);
+    // });
 
   };
 

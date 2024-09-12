@@ -128,7 +128,8 @@
       "agree": "Agree",
       "undecided": "Undecided",
       "disagree": "Disagree",
-      "stronglyDisagree": "Strongly disagree"
+      "stronglyDisagree": "Strongly disagree",
+      "studyZones": "Study Zones"
     },
     "layers": {
       "title": "Map type",
@@ -140,7 +141,26 @@
       "axisY": "Sound pressure level (dBA)"
     },
     "description": "Consult detailed statistics on the use of SoundCollect in Catalonia and access different indicators.",
-    "title": "Collaborative sound map"
+    "title": "Collaborative sound map",
+    "infoModal":{
+      "title":"Observation Detail",
+      "information":"General information",
+      "typeOfSound":"Sound type",
+      "data":"Data",
+      "meteorologyInfo":"Meteorological information",
+      "wind":"Wind",
+      "humidity":"Humidity",
+      "temperature":"Temperature",
+      "pressure":"Pressure",
+      "audioRegister":"Recorded audio",
+      "L10Level":"L10 percentile level",
+      "L90Level":"L90 percentile level",
+      "SPLEquivalent":"Equivalent SPL level LAeq",
+      "LmaxLevel":"Maximum level Lmax",
+      "LminLevel":"Minimum level Lmin",
+      "LAeqt":"Equivalent continuous SPL level LAeq,t",
+      "1/3Octave":"1/3 octave"
+    }
   },
   "overview": {
     "observations": "Summary",
@@ -176,8 +196,8 @@
       "editFilter": "Edit filter",
       "deleteFilter": "Delete filter",
       "kmlDownload": "KML Format",
-      "gpkgDownload": "GPKG Format"
-
+      "gpkgDownload": "GPKG Format",
+      "graphicFile": "Graphic file"
     },
     "filter": {
       "morning": "Morning (7:00 - 19:00)",
@@ -191,10 +211,10 @@
     },
     "soundTypes": {
       "title": "Types of sounds",
-      "traffic": "Traffic",
-      "people": "People",
-      "nature": "Nature",
-      "others": "Other sounds",
+      "soroll-del-transit": "Traffic",
+      "essers-humans": "People",
+      "sons-naturals": "Nature",
+      "altres-sorolls": "Other sounds",
       "axisY": "Number of records",
       "content": "This bar graph shows the cumulative distribution of each type of recorded sound, expressed in percentages. Provides an overview of the main sound sources in the study area. For example, a high proportion of natural sounds may indicate a quieter, more relaxing environment, while a high proportion of traffic sounds may signal a busier or noisier area."
     },
@@ -323,56 +343,61 @@
   "admin": {
     "studyZone": {
       "map": {
-        "createFilter": "Crear zona d'estudi",
-        "deleteFilter": "Esborrar zona d'estudi",
-        "saveStudyZone": "Guardar zona d'estudi"
+        "createFilter": "Create study area",
+        "deleteFilter": "Delete study area",
+        "saveStudyZone": "Save study area"
       },
       "form": {
-        "title": "Informació de la zona d'estudi",
-        "name": "Nom",
-        "description": "Descripció",
-        "conclusion": "Conclusió",
-        "startEndDate": "Data d'inici i final",
-        "addFiles": "Afegir fitxers",
-        "nameFile": "Nom del document",
-        "addFile": "Afegir fitxer",
-        "deleteFile": "Esborrar fitxer",
-        "addDocument": "Afegir document",
-        "addCollaborator": "Afegir col·laborador",
-        "collaboratorName": "Nom del col·laborador",
-        "contactName": "Nom del contacte",
-        "contactEmail": "Email del contacte",
-        "contactPhone": "Telèfon del contacte",
-        "addLogo": "Afegir logotip",
-        "delete": "Esborrar",
-        "deleteLogo": "Esborrar logotip",
-        "cancel": "Cancel·lar",
-        "saveStudyZone": "Guardar zona d'estudi",
+        "title": "Information about the study area",
+        "name": "Name",
+        "description": "Description",
+        "conclusion": "Conclusion",
+        "startEndDate": "Start and end date",
+        "addFiles": "Add files",
+        "nameFile": "File name",
+        "addFile": "Add file",
+        "deleteFile": "Delete file",
+        "addDocument": "Add document",
+        "addCollaborator": "Add collaborator",
+        "collaboratorName": "Collaborator name",
+        "contactName": "Contact name",
+        "contactEmail": "Contact email",
+        "contactPhone": "Contact phone",
+        "addLogo": "Add a logo",
+        "delete": "Delete",
+        "deleteLogo": "Delete logo",
+        "cancel": "Cancel",
+        "saveStudyZone": "Save study area",
         "messages": {
-          "updateSummary": "Zona d'estudi actualitzada",
-          "updateDetail": "La zona d'estudi s'ha actualitzat correctament",
-          "createSummary": "Zona d'estudi creada",
-          "createDetail": "La zona d'estudi s'ha creat correctament",
-          "errorSummary": "Ha succeït un error",
-          "errorDetail": "No s'ha pogut crear la zona d'estudi,tenca el formulari i torna a intentar-ho"
+          "updateSummary": "Study area updated",
+          "updateDetail": "Study area has been successfully updated",
+          "createSummary": "Study area created",
+          "createDetail": "Study area has been successfully created",
+          "errorSummary": "An error has occurred",
+          "errorDetail": "Study area could not be created, please close the form and try again"
         }
       },
       "list": {
-        "title": "Llistat de zones d'estudi",
-        "name": "Nom",
-        "startDate": "Data d'inici",
-        "endDate": "Data de finalització",
-        "view": "Visualitzar",
-        "enable": "Deshabilitar",
-        "delete": "Esborrar",
-        "update": "Modificar"
+        "title": "List of study areas",
+        "name": "Name",
+        "startDate": "Start date",
+        "endDate": "End date",
+        "view": "View",
+        "enable": "Enable",
+        "delete": "Delete",
+        "update": "Update"
       },
       "studyZoneDialog": {
-        "description": "Descripció",
-        "conclusion": "Conclusió",
-        "startAndEndDate": "Data d'inici i final",
-        "files": "Fitxers",
-        "collaborators": "Col·laboradors"
+        "description": "Description",
+        "conclusion": "Conclusion",
+        "startAndEndDate": "Start and end date",
+        "files": "Files",
+        "collaborators": "Collaborators",
+        "collaboratorName":"Name of the collaborator",
+        "contactName": "Contact Name",
+        "contactEmail": "Contact email",
+        "contactPhone": "Contact phone number",
+        "logo": "Logo"
       }
     }
   },
