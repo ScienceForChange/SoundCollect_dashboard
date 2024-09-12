@@ -43,6 +43,7 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
   private draw!: MapboxDraw;
   private observationsService = inject(ObservationsService);
   private observations$!: Subscription;
+  private language: string = localStorage.getItem('locale') || 'ca';  
 
   public observations!: Observations[];
   public points: [number, number][] = [];
@@ -163,13 +164,21 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
 
     const geocoder = new MapboxGeocoder({
       accessToken: mapboxgl.accessToken,
-      language: 'ca',
+      language: this.language,
       limit: 5,
       marker: false,
       zoom: 17,
     });
 
     this.map.addControl(geocoder, 'top-left');
+
+    this.map.on('styledata', () => {
+      //Update language
+      this.map.setLayoutProperty('country-label', 'text-field', [
+        'get',
+        `name_${this.language}`,
+      ]);
+    })
 
     //Added the obs to map when the style is loaded or toggled
     this.map.on('style.load', () => {

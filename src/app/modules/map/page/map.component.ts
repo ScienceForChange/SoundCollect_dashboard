@@ -41,7 +41,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   public isSZModalVisible: boolean = false;
   public isStudyZonesBtnDisbaled: boolean = false;
   public isFilterBtnDisbaled:boolean = true;
-
+  private language: string = localStorage.getItem('locale') || 'ca';  
 
   private subscriptions = new Subscription();
   public observationSelected!: Observations;
@@ -104,9 +104,8 @@ export class MapComponent implements AfterViewInit, OnDestroy {
 
     const geocoder = new MapboxGeocoder({
       accessToken: mapboxgl.accessToken,
-      language: 'ca',
+      language: this.language,
       limit: 5,
-      // mapboxgl: mapboxgl,
       marker: false,
       zoom: 17,
     });
