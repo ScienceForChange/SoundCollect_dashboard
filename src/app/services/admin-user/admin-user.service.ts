@@ -20,6 +20,13 @@ export class AdminUserService {
     );
   }
 
+  public getAdminUser(id: string): Observable<AdminUser> {
+    return this.http.get<{data: AdminUser}>(`${environment.BACKEND_BASE_URL}/admin-panel/admin-users/${id}`)
+    .pipe(
+      map((response) => response.data)
+    );
+  }
+
   public deleteAdminUser(user: AdminUser): Observable<void> {
     return this.http.delete<void>(`${environment.BACKEND_BASE_URL}/admin-panel/admin-users/${user.id}`);
   }

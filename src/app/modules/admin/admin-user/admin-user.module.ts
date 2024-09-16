@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AdminUserListComponent } from './components/admin-user-list/admin-user-list.component';
-import { AdminUserComponent } from './admin-user/admin-user.component';
+import { AdminUserComponent } from './page/admin-user.component';
 import { RouterModule } from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
 import { SharedComponentsModule } from '../../../shared/shared.module';

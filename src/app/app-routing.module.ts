@@ -11,7 +11,7 @@ import { ErrorComponent } from './modules/error/page/error.component';
 import { HomeComponent } from './modules/home/page/home.component';
 import { StudyZoneComponent } from './modules/admin/study-zone/study-zone/study-zone.component';
 import { ngxPermissionsGuard } from 'ngx-permissions';
-import { AdminUserComponent } from './modules/admin/admin-user/admin-user/admin-user.component';
+import { AdminUserComponent } from './modules/admin/admin-user/page/admin-user.component';
 import { AdminUserListComponent } from './modules/admin/admin-user/components/admin-user-list/admin-user-list.component';
 import { AdminUserFormComponent } from './modules/admin/admin-user/components/admin-user-form/admin-user-form.component';
 
@@ -77,7 +77,7 @@ const routes: Routes = [
                 }
               },
               {
-                path: 'new',
+                path: 'create',
                 component: AdminUserFormComponent,
                 canActivate: [ngxPermissionsGuard],
                 data: {
@@ -87,12 +87,12 @@ const routes: Routes = [
                 },
               },
               {
-                path: 'edit/:id',
+                path: 'update/:id',
                 component: AdminUserFormComponent,
                 canActivate: [ngxPermissionsGuard],
                 data: {
                   permissions: {
-                    only: ['EDIT-ADMIN-USERS'],
+                    only: ['UPDATE-ADMIN-USERS'],
                   },
                 }
               }
