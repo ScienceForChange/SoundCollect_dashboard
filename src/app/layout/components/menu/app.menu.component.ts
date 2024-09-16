@@ -74,19 +74,19 @@ export class AppMenuComponent implements OnInit {
             command: () => {
               this.toggleAdminMenu.emit(false);
               this.closeAll();
-              this.router.navigate(['/admin/manage-users']);
+              this.router.navigate(['/admin/users']);
             },
           });
           break;
         }
-        case 'MANAGE-ROLES': {
+        case 'MANAGE-ADMIN-USERS': {
           this.adminItems[0].items.push({
             label: 'Rols',
             icon: 'pi pi-fw pi-user-edit',
             command: () => {
               this.toggleAdminMenu.emit(false);
               this.closeAll();
-              this.router.navigate(['/admin/manage-users']);
+              this.router.navigate(['/admin/admin-user']);
             },
           });
           break;

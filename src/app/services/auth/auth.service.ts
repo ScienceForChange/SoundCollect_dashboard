@@ -72,7 +72,7 @@ export class AuthService {
           localStorage.setItem('user', JSON.stringify(res.data.user));
           localStorage.setItem('access_token', res.data.token);
           this._isLoggedIn.next(true);
-          
+
           const permissions = res.data.user.attributes.permissions_list.map(
             (permission) => permission.toUpperCase()
           );
