@@ -36,6 +36,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
 import { AuthService } from './services/auth/auth.service';
 import { AdminUserModule } from './modules/admin/admin-user/admin-user.module';
+import { RoleModule } from './modules/admin/role/role.module';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -58,6 +59,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     HomeModule,
     StudyZoneModule,
     AdminUserModule,
+    RoleModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
