@@ -1,6 +1,8 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { AdminUserService } from '../../../../../services/admin-user/admin-user.service';
 import { AdminUser } from '../../../../../models/admin-user';
+import { MenuItem } from 'primeng/api';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-user-list',
@@ -10,6 +12,7 @@ import { AdminUser } from '../../../../../models/admin-user';
 export class AdminUserListComponent implements OnInit {
 
   adminUserService: AdminUserService = inject(AdminUserService);
+  router = inject(Router);
 
   adminUsers: AdminUser[] = [];
 
@@ -24,4 +27,5 @@ export class AdminUserListComponent implements OnInit {
       this.adminUsers = this.adminUsers.filter((u) => u.id !== user.id);
     });
   }
+  
 }

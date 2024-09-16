@@ -27,6 +27,20 @@ export class AdminUserService {
     );
   }
 
+  public createAdminUser(user: AdminUser): Observable<AdminUser> {
+    return this.http.post<{data: AdminUser}>(`${environment.BACKEND_BASE_URL}/admin-panel/admin-users`, user)
+    .pipe(
+      map((response) => response.data)
+    );
+  }
+
+  public updateAdminUser(user: AdminUser): Observable<AdminUser> {
+    return this.http.patch<{data: AdminUser}>(`${environment.BACKEND_BASE_URL}/admin-panel/admin-users/${user.id}`, user)
+    .pipe(
+      map((response) => response.data)
+    );
+  }
+
   public deleteAdminUser(user: AdminUser): Observable<void> {
     return this.http.delete<void>(`${environment.BACKEND_BASE_URL}/admin-panel/admin-users/${user.id}`);
   }

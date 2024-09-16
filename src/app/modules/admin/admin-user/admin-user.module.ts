@@ -9,6 +9,12 @@ import { AdminUserFormComponent } from './components/admin-user-form/admin-user-
 import { AdminUserShowComponent } from './components/admin-user-show/admin-user-show.component';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
+import { MenubarModule } from 'primeng/menubar';
+import { ReactiveFormsModule } from '@angular/forms';
+import { InputTextModule } from 'primeng/inputtext';
+import { PasswordModule } from 'primeng/password';
+import { CheckboxModule } from 'primeng/checkbox';
+
 
 
 
@@ -22,10 +28,15 @@ import { ButtonModule } from 'primeng/button';
   imports: [
     BrowserModule,
     RouterModule,
+    ReactiveFormsModule,
     SharedComponentsModule,
     CommonModule,
     TableModule,
-    ButtonModule
+    MenubarModule,
+    ButtonModule,
+    InputTextModule,
+    PasswordModule,
+    CheckboxModule
   ],
   exports: [RouterModule]
 })

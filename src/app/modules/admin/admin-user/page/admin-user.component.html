@@ -1,9 +1,13 @@
-<section class="flex flex-wrap flex-1">
-  <div class="col-12 flex flex-column gap-2 align-items-start">
-    <h2 class="font-bold mt-0 mb-0">{{ "admin-user.title" | translate }}</h2>
-    <p>
-      {{ "admin-user.description" | translate }}
-    </p>
-  </div>
+
+<p-menubar>
+  <ng-template pTemplate="start">
+    <h3 class="mb-0">{{ "admin-user.title" | translate }}</h3>
+  </ng-template>
+  <ng-template pTemplate="end">
+    <button pButton type="button" label="Create User" icon="pi pi-plus" [routerLink]="['create']"></button>
+  </ng-template>
+</p-menubar>
+
+<section class="flex flex-wrap flex-1 w-100">
   <router-outlet />
 </section>
