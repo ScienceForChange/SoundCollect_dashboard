@@ -53,15 +53,13 @@ export class AdminUserFormComponent implements OnInit, OnDestroy {
       this.adminUser = user;
       this.userForm.patchValue(this.adminUser);
       this.userForm.patchValue(this.adminUser.attributes);
-      console.log(this.userForm);
     });
 
   }
+
   submit(): void {
+
     if(this.userForm.valid) {
-
-      let adminUser: AdminUser = this.userForm.value;
-
       if(this.userForm.value.id) {
         this.adminUserService.updateAdminUser(this.userForm.value).subscribe(() => {
           console.log('User updated');
@@ -73,8 +71,8 @@ export class AdminUserFormComponent implements OnInit, OnDestroy {
         });
       }
     }
+    
   }
-
 
   ngOnDestroy(): void {
     if(this.roles$) this.roles$.unsubscribe();
