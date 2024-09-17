@@ -420,11 +420,12 @@
     "delete": "Delete",
     "list": {
       "name": "Rol name",
-      "actions": "Actions"
+      "actions": "Actions",
+      "no_registers": "No roles"
     },
     "permissions": "Permissions",
     "name": "Name",
-    "permission":{
+    "permission": {
       "manage-study-zones": "Manage study areas",
       "create-study-zones": "Create study areas",
       "update-study-zones": "Update study areas",
@@ -440,5 +441,17 @@
       "update-roles": "Update roles",
       "delete-roles": "Delete roles"
     }
+  },
+  "admin-user": {
+    "title": "Admin users",
+    "create": "Create user",
+    "list": {
+      "name": "Name",
+      "email": "email",
+      "actions": "Actions",
+      "roles": "Roles"
+    },
+    "edit": "Edit",
+    "delete": "Delete"
   }
 }

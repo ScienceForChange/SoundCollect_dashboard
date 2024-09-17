@@ -15,9 +15,11 @@ export class RoleListComponent implements OnInit, OnDestroy {
   private messageService: MessageService            = inject(MessageService);
   private confirmationService: ConfirmationService  = inject(ConfirmationService);
   private rolService: RolService                    = inject(RolService);
+
+
   private roles$!: Subscription;
 
-  roles!: Role[];
+  roles: Role[] = [];
 
   ngOnInit(): void {
     this.roles$ = this.rolService.getRoles().subscribe((response) => {
@@ -29,7 +31,7 @@ export class RoleListComponent implements OnInit, OnDestroy {
     if (this.roles$) this.roles$.unsubscribe();
   }
 
-  deleteRole(id: number, event: Event): void {
+  deleteRole(role: Role, event: Event): void {
     this.confirmationService.confirm({
       target: event.target as EventTarget,
       icon: 'pi pi-exclamation-circle',
@@ -40,23 +42,25 @@ export class RoleListComponent implements OnInit, OnDestroy {
       rejectButtonStyleClass: 'p-button-outlined p-button-sm',
       acceptButtonStyleClass: 'p-button-sm',
       accept: () => {
-        this.rolService.deleteRole(id).subscribe({
-          next: (response) => {
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Success',
-              detail: 'Role deleted successfully'
-            });
-            this.roles = this.roles.filter((role) => role.id !== id);
-          },
-          error: (error) => {
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Error',
-              detail: 'Error deleting role'
-            });
-          }
-        });
+        if(role.name !== 'superadmin') {
+          this.rolService.deleteRole(role.id).subscribe({
+            next: (response) => {
+              this.messageService.add({
+                severity: 'success',
+                summary: 'Success',
+                detail: 'Role deleted successfully'
+              });
+              this.roles = this.roles.filter((r) => r.id !== role.id);
+            },
+            error: (error) => {
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'Error deleting role'
+              });
+            }
+          });
+        }
       }
     });
 

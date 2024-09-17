@@ -419,7 +419,8 @@
     "delete": "Esborrar",
     "list": {
       "name": "Nom dels rols",
-      "actions": "Accions"
+      "actions": "Accions",
+      "no_registers": "Sense roles registrats"
     },
     "permissions": "Permisos",
     "name": "Nom",
@@ -440,5 +441,16 @@
       "delete-roles": "Esborrar rols"
     },
     "delete-message": "Si us plau, confirmeu per procedir a esborrar."
+  },
+  "admin-user": {
+    "create": "Crear usuari",
+    "list": {
+      "name": "Nom",
+      "email": "email",
+      "actions": "Accions",
+      "roles": "Rols"
+    },
+    "edit": "Editar",
+    "delete": "Esborrar"
   }
 }

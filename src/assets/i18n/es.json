@@ -420,7 +420,8 @@
     "delete": "Borrar",
     "list": {
       "actions": "Acciones",
-      "name": "Nombre de los roles"
+      "name": "Nombre de los roles",
+      "no_registers": "No hay roles registrados"
     },
     "name": "Nombre",
     "permissions": "Permisos",
@@ -441,5 +442,17 @@
       "delete-roles": "Borrar roles"
     },
     "delete-message": "Por favor, confirme para borrar."
+  },
+  "admin-user": {
+    "title": "Usuarios administradores",
+    "create": "Crear usuario",
+    "list": {
+      "name": "Nombre",
+      "email": "email",
+      "actions": "Acciones",
+      "roles": "Roles"
+    },
+    "edit": "Editar",
+    "delete": "Borrar"
   }
 }
