@@ -17,6 +17,7 @@ import { AdminUserComponent } from './page/admin-user.component';
 import { AdminUserListComponent } from './components/admin-user-list/admin-user-list.component';
 import { AdminUserFormComponent } from './components/admin-user-form/admin-user-form.component';
 import { AdminUserShowComponent } from './components/admin-user-show/admin-user-show.component';
+import { NgxPermissionsModule } from 'ngx-permissions';
 
 
 
@@ -39,7 +40,8 @@ import { AdminUserShowComponent } from './components/admin-user-show/admin-user-
     InputTextModule,
     PasswordModule,
     CheckboxModule,
-    ConfirmPopupModule
+    ConfirmPopupModule,
+    NgxPermissionsModule
   ],
   exports: [RouterModule]
 })

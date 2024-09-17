@@ -3,7 +3,9 @@
     <h3 class="mb-0">{{ "admin-user.title" | translate }}</h3>
   </ng-template>
   <ng-template pTemplate="end">
-    <button pButton type="button" [label]="'admin-user.create' | translate" icon="pi pi-plus" [routerLink]="['create']"></button>
+    <ng-template  [ngxPermissionsOnly]="['CREATE-ADMIN-USERS']" >
+      <button pButton type="button" [label]="'admin-user.create' | translate" icon="pi pi-plus" [routerLink]="['create']"></button>
+    </ng-template>
   </ng-template>
 </p-menubar>
 

@@ -440,7 +440,8 @@
       "update-roles": "Actualitzar rols",
       "delete-roles": "Esborrar rols"
     },
-    "delete-message": "Si us plau, confirmeu per procedir a esborrar."
+    "delete-message": "Si us plau, confirmeu per procedir a esborrar.",
+    "edit": "Editar"
   },
   "admin-user": {
     "create": "Crear usuari",

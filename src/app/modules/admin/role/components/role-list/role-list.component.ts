@@ -43,6 +43,7 @@ export class RoleListComponent implements OnInit, OnDestroy {
       acceptButtonStyleClass: 'p-button-sm',
       accept: () => {
         if(role.name !== 'superadmin') {
+          console.log(role);
           this.rolService.deleteRole(role.id).subscribe({
             next: (response) => {
               this.messageService.add({

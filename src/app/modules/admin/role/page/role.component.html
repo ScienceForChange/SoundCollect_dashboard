@@ -4,7 +4,11 @@
     <h3 class="mb-0">{{ "role.title" | translate }}</h3>
   </ng-template>
   <ng-template pTemplate="end">
-    <button pButton type="button" [label]="'role.create' | translate" icon="pi pi-plus" [routerLink]="['create']"></button>
+
+    <ng-template  [ngxPermissionsOnly]="['CREATE-ROLES']">
+      <button pButton type="button" [label]="'role.create' | translate" icon="pi pi-plus" [routerLink]="['create']"></button>
+    </ng-template>
+    
   </ng-template>
 </p-menubar>
 

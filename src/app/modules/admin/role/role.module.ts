@@ -17,6 +17,7 @@ import { RoleComponent } from './page/role.component';
 import { RoleListComponent } from './components/role-list/role-list.component';
 import { RoleFormComponent } from './components/role-form/role-form.component';
 import { RoleShowComponent } from './components/role-show/role-show.component';
+import { NgxPermissionsModule } from 'ngx-permissions';
 
 
 @NgModule({
@@ -27,6 +28,7 @@ import { RoleShowComponent } from './components/role-show/role-show.component';
     RoleShowComponent
   ],
   imports: [
+    NgxPermissionsModule,
     BrowserModule,
     RouterModule,
     ReactiveFormsModule,
