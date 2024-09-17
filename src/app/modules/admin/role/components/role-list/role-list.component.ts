@@ -19,7 +19,6 @@ export class RoleListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.roles$ = this.rolService.getRoles().subscribe((response) => {
       this.roles = response.data;
-      console.log(response.data);
     });
   }
 

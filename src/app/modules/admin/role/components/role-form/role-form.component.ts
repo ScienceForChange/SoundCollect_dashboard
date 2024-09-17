@@ -20,36 +20,64 @@ export class RoleFormComponent implements OnInit, OnDestroy {
 
   private roles$!: Subscription;
   private adminUser$!: Subscription;
+  private permissions$!: Subscription;
   private activatedRoute$!: Subscription;
 
   public adminUsers! : AdminUser;
   public roles: Role[] = [];
+  public role!: Role;
   public permissions: string[] = [];
 
   public roleForm: FormGroup = this.fb.group({
+
     id:               [null],
-    name:             ['', [Validators.minLength(3)]],
+    name:             ['', [Validators.required, Validators.minLength(3)]],
     permissions_list: [[], [Validators.required]],
+
   });
 
   ngOnInit(): void {
+
     this.roles$ = this.rolService.getRoles().subscribe((roles) => {
-      console.log(roles);
+      this.roles = roles.data;
     });
 
-    this.adminUser$ = this.adminUserService.getAdminUsers().subscribe((adminUsers) => {
-      console.log(adminUsers);
+    this.permissions$ = this.rolService.getAllPermissions().subscribe((permissions) => {
+      this.permissions = permissions.data;
     });
 
     this.activatedRoute$ = this.activatedRoute.params.subscribe((params) => {
-      
+      if(params['id']) {
+        this.rolService.getRole(params['id']).subscribe((role) => {
+          this.role = role.data;
+          this.roleForm.patchValue(this.role);
+        });
+      }
     });
 
+  }
+
+  submit(): void {
+
+    if(this.roleForm.valid) {
+      if(this.roleForm.value.id) {
+        this.rolService.updateRole(this.roleForm.value).subscribe(() => {
+          console.log('role updated');
+        });
+      }
+      else {
+        this.rolService.createRole(this.roleForm.value).subscribe(() => {
+          console.log('role created');
+        });
+      }
+    }
+    
   }
 
   ngOnDestroy(): void {
     if(this.roles$)           this.roles$.unsubscribe();
     if(this.adminUser$)       this.adminUser$.unsubscribe();
+    if(this.permissions$)     this.permissions$.unsubscribe();
     if(this.activatedRoute$)  this.activatedRoute$.unsubscribe();
   }
 
