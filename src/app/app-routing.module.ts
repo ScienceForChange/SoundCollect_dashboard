@@ -11,6 +11,12 @@ import { ErrorComponent } from './modules/error/page/error.component';
 import { HomeComponent } from './modules/home/page/home.component';
 import { StudyZoneComponent } from './modules/admin/study-zone/study-zone/study-zone.component';
 import { ngxPermissionsGuard } from 'ngx-permissions';
+import { AdminUserComponent } from './modules/admin/admin-user/page/admin-user.component';
+import { AdminUserListComponent } from './modules/admin/admin-user/components/admin-user-list/admin-user-list.component';
+import { AdminUserFormComponent } from './modules/admin/admin-user/components/admin-user-form/admin-user-form.component';
+import { RoleComponent } from './modules/admin/role/page/role.component';
+import { RoleListComponent } from './modules/admin/role/components/role-list/role-list.component';
+import { RoleFormComponent } from './modules/admin/role/components/role-form/role-form.component';
 
 const routes: Routes = [
   {
@@ -52,6 +58,90 @@ const routes: Routes = [
                 only: ['MANAGE-STUDY-ZONES'],
               },
             },
+          },
+          {
+            path: 'admin-user',
+            component: AdminUserComponent,
+            canActivate: [ngxPermissionsGuard],
+            data: {
+              permissions: {
+                only: ['MANAGE-ADMIN-USERS'],
+              },
+            },
+            children: [
+              {
+                path: '',
+                component: AdminUserListComponent,
+                canActivate: [ngxPermissionsGuard],
+                data: {
+                  permissions: {
+                    only: ['MANAGE-ADMIN-USERS'],
+                  },
+                }
+              },
+              {
+                path: 'create',
+                component: AdminUserFormComponent,
+                canActivate: [ngxPermissionsGuard],
+                data: {
+                  permissions: {
+                    only: ['CREATE-ADMIN-USERS'],
+                  },
+                },
+              },
+              {
+                path: 'update/:id',
+                component: AdminUserFormComponent,
+                canActivate: [ngxPermissionsGuard],
+                data: {
+                  permissions: {
+                    only: ['UPDATE-ADMIN-USERS'],
+                  },
+                }
+              }
+            ]
+          },
+          {
+            path: 'role',
+            component: RoleComponent,
+            canActivate: [ngxPermissionsGuard],
+            data: {
+              permissions: {
+                only: ['MANAGE-ROLES'],
+              },
+            },
+            children: [
+              {
+                path: '',
+                component: RoleListComponent,
+                canActivate: [ngxPermissionsGuard],
+                data: {
+                  permissions: {
+                    only: ['MANAGE-ROLES'],
+                  },
+                }
+              },
+              {
+                path: 'create',
+                component: RoleFormComponent,
+                canActivate: [ngxPermissionsGuard],
+                data: {
+                  permissions: {
+                    only: ['CREATE-ROLES'],
+                  },
+                },
+              },
+              {
+                path: 'update/:id',
+                component: RoleFormComponent,
+                canActivate: [ngxPermissionsGuard],
+                data: {
+                  permissions: {
+                    only: ['UPDATE-ROLES'],
+                  },
+                }
+              }
+            ]
           },
         ],
       },

@@ -6,6 +6,8 @@ import { FeatureCollection, Geometry } from 'geojson';
 
 import { BehaviorSubject } from 'rxjs';
 
+import { TranslateService } from '@ngx-translate/core';
+
 import { Feature } from '@turf/turf';
 
 import { ObservationsService } from '../../../services/observations/observations.service';
@@ -27,12 +29,15 @@ export class MapService {
 
   public isFilterActive: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
+  public isFilterBtnDisbaled: BehaviorSubject<boolean> =
+    new BehaviorSubject<boolean>(true);
 
   private mapObservations: MapObservation[] = [];
   private filteredFeatures: Feature[] = [];
   public features$: BehaviorSubject<Feature[]> = new BehaviorSubject<Feature[]>(
     []
   );
+  private language: string = localStorage.getItem('locale') || 'ca';  
   public initialGeoJson: { type: string; features: Feature[] } = {
     type: 'FeatureCollection',
     features: [],
@@ -66,7 +71,7 @@ export class MapService {
 
   constructor(
     private observationsService: ObservationsService,
-    private studyZoneService: StudyZoneService
+    private studyZoneService: StudyZoneService,
   ) {
     //Subscribe to know if the filter is active
     this.isFilterActive.subscribe((isFilterActive) => {
@@ -168,6 +173,13 @@ export class MapService {
         typeUsers,
         positivePlaces,
       } = values;
+
+      if (type || days || soundPressure || hours || typeUser || positivePlace) {
+        this.isFilterBtnDisbaled.next(false);
+      } else {
+        this.isFilterBtnDisbaled.next(true);
+      }
+
       if (type) {
         const typesToFilter = Object.keys(typeFilter).filter(
           (key) => typeFilter[Number(key) as keyof typeof typeFilter]
@@ -199,7 +211,7 @@ export class MapService {
         });
       }
       if (days) {
-        daysFilter[0].setHours(0,0,0,0) 
+        daysFilter[0].setHours(0, 0, 0, 0);
 
         const isOneDate =
           !daysFilter[1] ||
@@ -208,8 +220,8 @@ export class MapService {
         if (!isOneDate) {
           mapObs = mapObs.filter((obs) => {
             const obsDate = new Date(obs.created_at);
-            obsDate.setHours(0,0,0,0)
-            daysFilter[1].setHours(0,0,0,0) 
+            obsDate.setHours(0, 0, 0, 0);
+            daysFilter[1].setHours(0, 0, 0, 0);
             return (
               obsDate.getTime() >= daysFilter[0].getTime() &&
               obsDate.getTime() <= daysFilter[1].getTime()
@@ -217,10 +229,9 @@ export class MapService {
           });
         } else {
           mapObs = mapObs.filter((obs) => {
-            
             const obsDate = new Date(obs.created_at);
-            obsDate.setHours(0,0,0,0)
-            return obsDate.getTime() === daysFilter[0].getTime()
+            obsDate.setHours(0, 0, 0, 0);
+            return obsDate.getTime() === daysFilter[0].getTime();
           });
         }
       }
@@ -394,15 +405,6 @@ export class MapService {
   public initializeMap(): void {
     if (!this.isMapReady) return;
 
-    this.map.on('load', () => {
-      //Change map language to ES
-      //Catalan does not exist in mapbox
-      this.map.setLayoutProperty('country-label', 'text-field', [
-        'get',
-        `name_es`,
-      ]);
-    });
-
     //Build all clusters and layers after the style is loaded
     //Usefull when toggling between style map layers
     this.map.on('style.load', () => {
@@ -414,6 +416,14 @@ export class MapService {
         //update the geojson
         this.buildClustersAndLayers(this.features$.getValue());
       }
+
+      this.map.on('styledata', () => {
+        //Update language
+        this.map.setLayoutProperty('country-label', 'text-field', [
+          'get',
+          `name_${this.language}`,
+        ]);
+      })
     });
 
     // Add event listeners for 'mouseenter' and 'mouseleave' events on layers

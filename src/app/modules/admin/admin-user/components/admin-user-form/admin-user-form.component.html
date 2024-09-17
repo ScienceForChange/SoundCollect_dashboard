@@ -1,0 +1,29 @@
+<div class="card w-full" >
+  <form [formGroup]="userForm" class="flex flex-column align-content-start flex-wrap gap-2" (submit)="submit()" >
+    <div class="flex flex-column gap-2">
+      <label for="name">Name:</label>
+      <input pInputText id="name" [formControlName]="'name'" aria-describedby="name-help">
+    </div>
+    <div class="flex flex-column gap-2">
+      <label for="email">Email:</label>
+      <input pInputText id="email" [formControlName]="'email'" aria-describedby="email-help">
+    </div>
+    <div class="flex flex-column gap-2">
+      <label for="password">Password:</label>
+      <p-password id="password" [formControlName]="'password'" aria-describedby="password-help" />
+    </div>
+    <div class="flex flex-column gap-2">
+      <label for="password_confirmation">Password Confirmation:</label>
+      <p-password id="password_confirmation" [formControlName]="'password_confirmation'" aria-describedby="password_confirmation-help" />
+    </div>
+    <div class="flex flex-column gap-2">
+      <label for="role">Roles:</label>
+      @for(role of roles; track role){
+        <p-checkbox id="role" name="role" [formControlName]="'roles_list'" [value]="role.name" [label]="role.name" aria-describedby="role-help" />
+      }
+    </div>
+    <div class="flex flex-column mt-5 gap-2">
+      <button pButton type="submit" label="Submit"></button>
+    </div>
+  </form>
+</div>

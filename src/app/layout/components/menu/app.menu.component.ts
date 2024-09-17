@@ -41,7 +41,7 @@ export class AppMenuComponent implements OnInit {
   adminItems: MenuItem[] = [
     {
       label: this.translateService.instant('app.adminPanel'),
-      icon: 'pi pi-fw pi-user-edit',
+      icon: 'pi pi-fw pi-wrench',
       command: () => {
         this.toggleAdminMenu.emit(true);
       },
@@ -58,7 +58,7 @@ export class AppMenuComponent implements OnInit {
         case 'MANAGE-STUDY-ZONES': {
           this.adminItems[0].items.push({
             label: "Zonas d'estudi",
-            icon: 'pi pi-fw pi-map',
+            icon: 'pi pi-map',
             command: () => {
               this.toggleAdminMenu.emit(false);
               this.closeAll();
@@ -70,23 +70,35 @@ export class AppMenuComponent implements OnInit {
         case 'MANAGE-APP-USERS': {
           this.adminItems[0].items.push({
             label: 'Usuaris',
-            icon: 'pi pi-fw pi-user',
+            icon: 'pi pi-users',
             command: () => {
               this.toggleAdminMenu.emit(false);
               this.closeAll();
-              this.router.navigate(['/admin/manage-users']);
+              this.router.navigate(['/admin/users']);
+            },
+          });
+          break;
+        }
+        case 'MANAGE-ADMIN-USERS': {
+          this.adminItems[0].items.push({
+            label: 'admin-users',
+            icon: 'pi pi-id-card',
+            command: () => {
+              this.toggleAdminMenu.emit(false);
+              this.closeAll();
+              this.router.navigate(['/admin/admin-user']);
             },
           });
           break;
         }
         case 'MANAGE-ROLES': {
           this.adminItems[0].items.push({
-            label: 'Rols',
-            icon: 'pi pi-fw pi-user-edit',
+            label: 'roles',
+            icon: 'pi pi-tags',
             command: () => {
               this.toggleAdminMenu.emit(false);
               this.closeAll();
-              this.router.navigate(['/admin/manage-users']);
+              this.router.navigate(['/admin/role']);
             },
           });
           break;

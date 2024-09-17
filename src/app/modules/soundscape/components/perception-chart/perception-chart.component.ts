@@ -54,21 +54,21 @@ export class PerceptionChartComponent implements OnInit, OnDestroy{
       this.translations.instant('soundscape.perception.bad'),
       this.translations.instant('soundscape.perception.medium'),
       this.translations.instant('soundscape.perception.good'),
-      this.translations.instant('soundscape.perception.verGood')
+      this.translations.instant('soundscape.perception.veryGood')
     ],
     [
       this.translations.instant('soundscape.perception.veryBad'),
       this.translations.instant('soundscape.perception.bad'),
       this.translations.instant('soundscape.perception.medium'),
       this.translations.instant('soundscape.perception.good'),
-      this.translations.instant('soundscape.perception.verGood')
+      this.translations.instant('soundscape.perception.veryGood')
     ],
     [
       this.translations.instant('soundscape.perception.veryBad'),
       this.translations.instant('soundscape.perception.bad'),
       this.translations.instant('soundscape.perception.medium'),
       this.translations.instant('soundscape.perception.good'),
-      this.translations.instant('soundscape.perception.verGood')
+      this.translations.instant('soundscape.perception.veryGood')
     ]
   ];
 

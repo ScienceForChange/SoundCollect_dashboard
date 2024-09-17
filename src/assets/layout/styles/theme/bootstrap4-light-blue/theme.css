@@ -5620,7 +5620,7 @@
 
   .p-menubar {
     padding: 0.5rem 1rem;
-    background: #efefef;
+    background: transparent;
     color: rgba(0, 0, 0, 0.9);
     border: 0 none;
     border-radius: 4px;

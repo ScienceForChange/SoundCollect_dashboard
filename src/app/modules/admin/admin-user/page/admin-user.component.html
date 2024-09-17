@@ -1,0 +1,14 @@
+<p-menubar>
+  <ng-template pTemplate="start">
+    <h3 class="mb-0">{{ "admin-user.title" | translate }}</h3>
+  </ng-template>
+  <ng-template pTemplate="end">
+    <ng-template  [ngxPermissionsOnly]="['CREATE-ADMIN-USERS']" >
+      <button pButton type="button" [label]="'admin-user.create' | translate" icon="pi pi-plus" [routerLink]="['create']"></button>
+    </ng-template>
+  </ng-template>
+</p-menubar>
+
+<section class="flex flex-wrap flex-1 w-100">
+  <router-outlet />
+</section>

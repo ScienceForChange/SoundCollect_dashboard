@@ -128,7 +128,8 @@
       "agree": "D'acord",
       "undecided": "Indecís",
       "disagree": "En desacord",
-      "stronglyDisagree": "Molt en desacord"
+      "stronglyDisagree": "Molt en desacord",
+      "studyZones": "Zones d'estudi"
     },
     "layers": {
       "title": "Tipus de mapa",
@@ -140,7 +141,26 @@
       "axisY": "Nivell de pressió sonora (dBA)"
     },
     "description": "Consulta estadístiques detallades sobre l'ús de SoundCollect a Catalunya i accedeix a diferents indicadors.",
-    "title": "Mapa sonor col·laboratiu"
+    "title": "Mapa sonor col·laboratiu",
+    "infoModal": {
+      "title": "Detall de l'Observació",
+      "information": "Informació general",
+      "typeOfSound": "Tipus de so",
+      "data": "Dades",
+      "meteorologyInfo": "Informació meteorològica",
+      "wind": "Vent",
+      "humidity": "Humitat",
+      "temperature": "Temperatura",
+      "pressure": "Pressió",
+      "audioRegister": "Àudio registrat",
+      "L10Level": "Nivell percentil L10",
+      "L90Level": "Nivell percentil L90",
+      "SPLEquivalent": "Nivell SPL equivalent LAeq",
+      "LmaxLevel": "Nivell màxim Lmax",
+      "LminLevel": "Nivell mínim Lmin",
+      "LAeqt": "Nivell SPL continu equivalent LAeq,t",
+      "1/3Octave": "1/3 d'octava"
+    }
   },
   "overview": {
     "observations": "Resum",
@@ -176,7 +196,8 @@
       "editFilter": "Editar filtre",
       "deleteFilter": "Eliminar filtre",
       "kmlDownload": "Format KML",
-      "gpkgDownload": "Format GPKG"
+      "gpkgDownload": "Format GPKG",
+      "graphicFile": "Arxiu gràfic"
     },
     "filter": {
       "morning": "Matí (7:00 - 19:00)",
@@ -190,10 +211,10 @@
     },
     "soundTypes": {
       "title": "Tipus de so",
-      "traffic": "Trànsit",
-      "people": "Éssers humans",
-      "nature": "Sons naturals",
-      "others": "Altres sons",
+      "soroll-del-transit": "Trànsit",
+      "essers-humans": "Éssers humans",
+      "sons-naturals": "Sons naturals",
+      "altres-sorolls": "Altres sons",
       "axisY": "Nombre de registres",
       "content": "Aquest gràfic de barres mostra la distribució acumulada de cada tipus de so registrat, expressada en percentatges. Proporciona una visió general de les principals fonts de so en la zona d'estudi. Per exemple, una alta proporció de sons naturals pot indicar un entorn més tranquil i relaxant, mentre que una alta proporció de sons de trànsit pot assenyalar una àrea més concorreguda o sorollosa."
     },
@@ -270,18 +291,18 @@
       "content": {
         "title1": "LOUDNESS (Sonoritat)",
         "content1": "El paràmetre psicoacústic Loudness (o sonoritat) és una mesura subjectiva de la intensitat amb la qual un soroll és percebut per l'oïda humana. Aquest paràmetre depèn de la freqüència i, per tant, dos events sonors amb el mateix nivell sonor, però diferent freqüència no sempre resulta en la mateixa sensació de volum en l'oïda humana. La unitat de mesura és el “sone”, i mitjançant aquest paràmetre es pot representar la sensació humana al volum del soroll de forma lineal. Per tant, un to que es percep que te el doble de volum d’un altre tindrà una sonoritat el doble de gran.",
-        "title2": "SHARPNESS (Agudesa)",
-        "content2": "La agudesa és un paràmetre que descriu com de penetrant i esmolat es percep un so. Sons amb més energia en les freqüències agudes solen ser percebuts com a més aguts, per exemple, sons de sirenes. Es mesura en acum. Com més gran és l’agudesa, més penetrant es percep el so.",
-        "title3": "ROUGHNESS (Rugositat)",
-        "content3": "La rugositat es refereix a les ràpides variacions d’amplitud en el so, percebudes com a irregularitats. Es mesura en asper. Sons amb una alta rugositat poden ser molestos per a l’oïda humana.",
-        "title4": "FLUCTUATION STRENGTH (Força de fluctuació)",
+        "title2": "SHARPNESS (Nitidesa)",
+        "content2": "La nitidesa és un paràmetre que descriu com de penetrant i esmolat es percep un so. Sons amb més energia en les freqüències agudes solen ser percebuts com a més aguts, per exemple, sons de sirenes. Es mesura en acum. Com més gran és l’agudesa, més penetrant es percep el so.",
+        "title3": "ROUGHNESS (Aspror)",
+        "content3": "L'aspror es refereix a les ràpides variacions d’amplitud en el so, percebudes com a irregularitats. Es mesura en asper. Sons amb una alta rugositat poden ser molestos per a l’oïda humana.",
+        "title4": "FLUCTUATION STRENGTH (Força fluctant)",
         "content4": "Aquest paràmetre mesura la percepció de fluctuacions lentes en la intensitat sonora d’un so. Es mesura en vacil. És particularment rellevant en sons musicals o sorolls de màquines."
       },
       "types": {
-        "sharpness": "Agudesa",
+        "sharpness": "Nitidesa",
         "roughtness": "Rugositat",
         "loudness": "Sonoritat",
-        "fluctuationStrenght": "Força de fluctuació"
+        "fluctuationStrenght": "Força fluctant"
       },
       "tooltip": {
         "hour": "Hora",
@@ -291,8 +312,8 @@
     },
     "temporalEvolution": {
       "title": "Evolució temporal sobre els nivells de so dB(A) en un període de temps",
-      "serieLabel1":"Sèrie de dades 1",
-      "serieLabel2":"Sèrie de dades 2",
+      "serieLabel1": "Sèrie de dades 1",
+      "serieLabel2": "Sèrie de dades 2",
       "serie1": "Sèrie 1",
       "serie2": "Sèrie 2",
       "morningSerie1": "Dia Sèrie 1",
@@ -371,7 +392,12 @@
         "conclusion": "Conclusió",
         "startAndEndDate": "Data d'inici i final",
         "files": "Fitxers",
-        "collaborators": "Col·laboradors"
+        "collaborators": "Col·laboradors",
+        "collaboratorName": "Nom del col·laborador",
+        "contactName": "Nom del contacte",
+        "contactEmail": "Email del contacte",
+        "contactPhone": "Telèfon del contacte",
+        "logo": "Logotip"
       }
     }
   },
@@ -386,5 +412,46 @@
     "title": "Oops!",
     "subtitle": "Alguna cosa no ha sortit bé.",
     "button": "Tornar"
+  },
+  "role": {
+    "create": "Crear rol",
+    "title": "Rols",
+    "delete": "Esborrar",
+    "list": {
+      "name": "Nom dels rols",
+      "actions": "Accions",
+      "no_registers": "Sense roles registrats"
+    },
+    "permissions": "Permisos",
+    "name": "Nom",
+    "permission": {
+      "manage-study-zones": "Gestionar zones d'estudi",
+      "create-study-zones": "Crear zones d'estudi",
+      "update-study-zones": "Actualitzar zones d'estudi",
+      "delete-study-zones": "Esborrar zones d'estudi",
+      "manage-admin-users": "Gestionar usuaris d'administració",
+      "create-admin-users": "Crear usuaris d'administració",
+      "update-admin-users": "Actualitzar usuaris d'administració",
+      "delete-admin-users": "Esborrar usuaris d'administració",
+      "manage-app-users": "Gestionar usuaris de l'app",
+      "delete-app-users": "Esborrar usuaris de l'app",
+      "manage-roles": "Gestionar rols",
+      "create-roles": "Crear rols",
+      "update-roles": "Actualitzar rols",
+      "delete-roles": "Esborrar rols"
+    },
+    "delete-message": "Si us plau, confirmeu per procedir a esborrar.",
+    "edit": "Editar"
+  },
+  "admin-user": {
+    "create": "Crear usuari",
+    "list": {
+      "name": "Nom",
+      "email": "email",
+      "actions": "Accions",
+      "roles": "Rols"
+    },
+    "edit": "Editar",
+    "delete": "Esborrar"
   }
 }
