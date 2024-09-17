@@ -1,17 +1,19 @@
 <div class="card w-full" >
   <form [formGroup]="roleForm" class="flex flex-column align-content-start flex-wrap gap-2" (submit)="submit()" >
     <div class="flex flex-column gap-2">
-      <label for="name">{{'roles.name'}}:</label>
+      <label for="name">{{'role.name' | translate}}:</label>
       <input pInputText id="name" [formControlName]="'name'" aria-describedby="name-help">
     </div>
     <div class="flex flex-column gap-2">
-      <label for="permission">{{'roles.permissions'}}:</label>
+      <label for="permission">{{'role.permissions' | translate}}:</label>
       @for(permission of permissions; track permission){
-        <p-checkbox id="permission" name="permission" [formControlName]="'permissions_list'" [value]="permission" [label]="permission" aria-describedby="permission-help" />
+        @if(permission != 'manage-admin'){
+          <p-checkbox id="permission" name="permission" [formControlName]="'permissions_list'" [value]="permission" [label]="'role.permission.' + permission | translate" aria-describedby="permission-help" />
+        }
       }
     </div>
     <div class="flex flex-column mt-5 gap-2">
-      <button pButton type="submit" label="Submit" [disabled]="!roleForm.valid" ></button>
+      <button pButton type="submit" [label]="'app.send' | translate" [disabled]="!roleForm.valid" ></button>
     </div>
   </form>
 </div>

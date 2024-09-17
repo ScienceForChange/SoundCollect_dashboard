@@ -16,6 +16,8 @@ import { RoleComponent } from './page/role.component';
 import { RoleListComponent } from './components/role-list/role-list.component';
 import { RoleFormComponent } from './components/role-form/role-form.component';
 import { RoleShowComponent } from './components/role-show/role-show.component';
+import { ToastModule } from 'primeng/toast';
+import { ConfirmPopupModule } from 'primeng/confirmpopup';
 
 
 @NgModule({
@@ -36,7 +38,9 @@ import { RoleShowComponent } from './components/role-show/role-show.component';
     ButtonModule,
     InputTextModule,
     PasswordModule,
-    CheckboxModule
+    CheckboxModule,
+    ToastModule,
+    ConfirmPopupModule
   ]
 })
 export class RoleModule { }

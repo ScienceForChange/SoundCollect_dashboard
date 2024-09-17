@@ -1,10 +1,11 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { RolService } from '../../../../../services/admin-user/rol.service';
 import { AdminUserService } from '../../../../../services/admin-user/admin-user.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { AdminUser, Role } from '../../../../../models/admin-user';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-role-form',
@@ -14,9 +15,10 @@ import { AdminUser, Role } from '../../../../../models/admin-user';
 export class RoleFormComponent implements OnInit, OnDestroy {
 
   private rolService: RolService              = inject(RolService);
-  private adminUserService: AdminUserService  = inject(AdminUserService);
   private activatedRoute: ActivatedRoute      = inject(ActivatedRoute);
   private fb: FormBuilder                     = inject(FormBuilder);
+  private messageService: MessageService      = inject(MessageService);
+  private router: Router                      = inject(Router);
 
   private roles$!: Subscription;
   private adminUser$!: Subscription;
@@ -24,7 +26,6 @@ export class RoleFormComponent implements OnInit, OnDestroy {
   private activatedRoute$!: Subscription;
 
   public adminUsers! : AdminUser;
-  public roles: Role[] = [];
   public role!: Role;
   public permissions: string[] = [];
 
@@ -38,9 +39,6 @@ export class RoleFormComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    this.roles$ = this.rolService.getRoles().subscribe((roles) => {
-      this.roles = roles.data;
-    });
 
     this.permissions$ = this.rolService.getAllPermissions().subscribe((permissions) => {
       this.permissions = permissions.data;
@@ -61,17 +59,47 @@ export class RoleFormComponent implements OnInit, OnDestroy {
 
     if(this.roleForm.valid) {
       if(this.roleForm.value.id) {
-        this.rolService.updateRole(this.roleForm.value).subscribe(() => {
-          console.log('role updated');
+        this.rolService.updateRole(this.roleForm.value).subscribe({
+          next: (response) => {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Success',
+              detail: 'Role updated successfully'
+            });
+            //redirect to role list
+            this.router.navigate(['/admin/role']);
+          },
+          error: (error) => {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: 'Error updating role'
+            });
+          }
         });
       }
       else {
-        this.rolService.createRole(this.roleForm.value).subscribe(() => {
-          console.log('role created');
+        this.rolService.createRole(this.roleForm.value).subscribe({
+          next: (response) => {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Success',
+              detail: 'Role created successfully'
+            });
+            //redirect to role list
+            this.router.navigate(['/admin/role']);
+          },
+          error: (error) => {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: 'Error creating role'
+            });
+          }
         });
       }
     }
-    
+
   }
 
   ngOnDestroy(): void {

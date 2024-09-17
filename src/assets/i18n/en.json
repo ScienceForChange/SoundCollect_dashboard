@@ -70,7 +70,7 @@
     "whatToDo": {
       "text1": "Our web platform is an interactive data viewer that transforms the information collected by the SoundCollect application into detailed statistics and analysis. Whether you are a citizen interested in the sound quality of your environment or an acoustic expert, this platform offers you everything you need to explore and understand urban sound landscapes. Remember that it has been demonstrated that the urban sound landscape is an element that affects and conditions the quality of life of people in a relevant way.",
       "listTitle": "What can you do on the platform?",
-      "listItem1":  {
+      "listItem1": {
         "title": "Explore the collaborative sound map:",
         "text": "View all observations made by the community. Use filters to interact with data and discover areas of interest."
       },
@@ -142,24 +142,24 @@
     },
     "description": "Consult detailed statistics on the use of SoundCollect in Catalonia and access different indicators.",
     "title": "Collaborative sound map",
-    "infoModal":{
-      "title":"Observation Detail",
-      "information":"General information",
-      "typeOfSound":"Sound type",
-      "data":"Data",
-      "meteorologyInfo":"Meteorological information",
-      "wind":"Wind",
-      "humidity":"Humidity",
-      "temperature":"Temperature",
-      "pressure":"Pressure",
-      "audioRegister":"Recorded audio",
-      "L10Level":"L10 percentile level",
-      "L90Level":"L90 percentile level",
-      "SPLEquivalent":"Equivalent SPL level LAeq",
-      "LmaxLevel":"Maximum level Lmax",
-      "LminLevel":"Minimum level Lmin",
-      "LAeqt":"Equivalent continuous SPL level LAeq,t",
-      "1/3Octave":"1/3 octave"
+    "infoModal": {
+      "title": "Observation Detail",
+      "information": "General information",
+      "typeOfSound": "Sound type",
+      "data": "Data",
+      "meteorologyInfo": "Meteorological information",
+      "wind": "Wind",
+      "humidity": "Humidity",
+      "temperature": "Temperature",
+      "pressure": "Pressure",
+      "audioRegister": "Recorded audio",
+      "L10Level": "L10 percentile level",
+      "L90Level": "L90 percentile level",
+      "SPLEquivalent": "Equivalent SPL level LAeq",
+      "LmaxLevel": "Maximum level Lmax",
+      "LminLevel": "Minimum level Lmin",
+      "LAeqt": "Equivalent continuous SPL level LAeq,t",
+      "1/3Octave": "1/3 octave"
     }
   },
   "overview": {
@@ -312,8 +312,8 @@
     },
     "temporalEvolution": {
       "title": "Temporal evolution of dB(A) sound levels over a period of time",
-      "serieLabel1":"Data series 1",
-      "serieLabel2":"Data series 2",
+      "serieLabel1": "Data series 1",
+      "serieLabel2": "Data series 2",
       "serie1": "Series 1",
       "serie2": "Series 2",
       "morningSerie1": "Morning series 1",
@@ -393,7 +393,7 @@
         "startAndEndDate": "Start and end date",
         "files": "Files",
         "collaborators": "Collaborators",
-        "collaboratorName":"Name of the collaborator",
+        "collaboratorName": "Name of the collaborator",
         "contactName": "Contact Name",
         "contactEmail": "Contact email",
         "contactPhone": "Contact phone number",
@@ -412,5 +412,33 @@
     "title": "Oops!",
     "subtitle": "Something went wrong.",
     "button": "Return"
+  },
+  "role": {
+    "title": "Roles",
+    "create": "Create role",
+    "edit": "Edit",
+    "delete": "Delete",
+    "list": {
+      "name": "Rol name",
+      "actions": "Actions"
+    },
+    "permissions": "Permissions",
+    "name": "Name",
+    "permission":{
+      "manage-study-zones": "Manage study areas",
+      "create-study-zones": "Create study areas",
+      "update-study-zones": "Update study areas",
+      "delete-study-zones": "Delete study areas",
+      "manage-admin-users": "Manage admin users",
+      "create-admin-users": "Create admin users",
+      "update-admin-users": "Update admin users",
+      "delete-admin-users": "Delete admin users",
+      "manage-app-users": "Manage app users",
+      "delete-app-users": "Delete app users",
+      "manage-roles": "Manage roles",
+      "create-roles": "Create roles",
+      "update-roles": "Update roles",
+      "delete-roles": "Delete roles"
+    }
   }
 }

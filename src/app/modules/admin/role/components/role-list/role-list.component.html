@@ -1,4 +1,14 @@
 <div class="card w-full" >
+
+  <p-confirmPopup>
+      <ng-template pTemplate="content" let-message>
+          <div class="flex flex-column align-items-center w-full gap-3 border-bottom-1 surface-border p-3 mb-3">
+              <i [class]="'pi pi-exclamation-circle'" class="text-6xl text-primary-500"></i>
+              <p>{{ 'role.delete-message' | translate}}</p>
+          </div>
+      </ng-template>
+  </p-confirmPopup>
+
   <p-table #dt1 [value]="roles"
     [globalFilterFields]="['name']" dataKey="id" [tableStyle]="{ 'min-width': '100%' }"
     [rows]="15" [paginator]="true" stateStorage="session"
@@ -22,8 +32,8 @@
         <td class="text-right">
           <span class="p-column-title">actions</span>
           <div class="flex gap-2 justify-content-end">
-            <button pButton type="button" icon="pi pi-pencil" [label]="'Edit'" class="p-button-rounded p-button-warning" [routerLink]="['update', role.id]"></button>
-            <button pButton type="button" icon="pi pi-trash" [label]="'Delete'" class="p-button-rounded p-button-danger" (click)="deleteRole(role)"></button>
+            <button pButton type="button" icon="pi pi-pencil" [label]="'role.edit' | translate" class="p-button-rounded p-button-warning" [routerLink]="['update', role.id]"></button>
+            <button pButton type="button" icon="pi pi-trash" [label]="'role.delete' | translate" class="p-button-rounded p-button-danger" (click)="deleteRole(role.id, $event)"></button>
           </div>
         </td>
       </tr>

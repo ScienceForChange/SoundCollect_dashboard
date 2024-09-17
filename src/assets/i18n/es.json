@@ -142,24 +142,24 @@
     },
     "description": "Consulta estadísticas detalladas sobre el uso de SoundCollect en Cataluña y accede a distintos indicadores.",
     "title": "Mapa sonoro colaborativo",
-    "infoModal":{
-      "title":"Detalle de la Observación",
-      "information":"Información general",
-      "typeOfSound":"Tipo de sonido",
-      "data":"Datos",
-      "meteorologyInfo":"Información meteorológica",
-      "wind":"Viento",
-      "humidity":"Humedad",
-      "temperature":"Temperatura",
-      "pressure":"Presión",
-      "audioRegister":"Audio registrado",
-      "L10Level":"Nivel percentil L10",
-      "L90Level":"Nivel percentil L90",
-      "SPLEquivalent":"Nivel SPL equivalente LAeq",
-      "LmaxLevel":"Nivel máximo Lmax",
-      "LminLevel":"Nivel mínimo Lmin",
-      "LAeqt":"Nivel SPL continuo equivalente LAeq,t",
-      "1/3Octave":"1/3 de octava"
+    "infoModal": {
+      "title": "Detalle de la Observación",
+      "information": "Información general",
+      "typeOfSound": "Tipo de sonido",
+      "data": "Datos",
+      "meteorologyInfo": "Información meteorológica",
+      "wind": "Viento",
+      "humidity": "Humedad",
+      "temperature": "Temperatura",
+      "pressure": "Presión",
+      "audioRegister": "Audio registrado",
+      "L10Level": "Nivel percentil L10",
+      "L90Level": "Nivel percentil L90",
+      "SPLEquivalent": "Nivel SPL equivalente LAeq",
+      "LmaxLevel": "Nivel máximo Lmax",
+      "LminLevel": "Nivel mínimo Lmin",
+      "LAeqt": "Nivel SPL continuo equivalente LAeq,t",
+      "1/3Octave": "1/3 de octava"
     }
   },
   "overview": {
@@ -206,8 +206,8 @@
       "wholeDay": "Todo el día"
     },
     "soundLevels": {
-    "title": "Visualización gradual de los niveles de sonido por horas",
-    "content": "Esta gráfica te permitirá observar como varía la tranquilidad de la zona a lo largo del día, ayudándote a entender mejor los patrones de sonido y los periodos de mayor o menor tranquilidad. Utiliza un gráfico de área polar para revelar los patrones de sonido y los periodos de mayor o menor tranquilidad en la zona, con cada segmento representando una hora específica y su radio indicando el nivel de presión sonora en este momento."
+      "title": "Visualización gradual de los niveles de sonido por horas",
+      "content": "Esta gráfica te permitirá observar como varía la tranquilidad de la zona a lo largo del día, ayudándote a entender mejor los patrones de sonido y los periodos de mayor o menor tranquilidad. Utiliza un gráfico de área polar para revelar los patrones de sonido y los periodos de mayor o menor tranquilidad en la zona, con cada segmento representando una hora específica y su radio indicando el nivel de presión sonora en este momento."
     },
     "soundTypes": {
       "title": "Tipos de sonido",
@@ -312,8 +312,8 @@
     },
     "temporalEvolution": {
       "title": "Evolución temporal sobre los niveles de sonido dB(A) en un período de tiempo",
-      "serieLabel1":"Serie de datos 1",
-      "serieLabel2":"Serie de datos 2",
+      "serieLabel1": "Serie de datos 1",
+      "serieLabel2": "Serie de datos 2",
       "serie1": "Serie 1",
       "serie2": "Serie 2",
       "morningSerie1": "Día Serie 1",
@@ -393,7 +393,7 @@
         "startAndEndDate": "Fecha de inicio i final",
         "files": "Fitxers",
         "collaborators": "Colaboradores",
-        "collaboratorName":"Nombre del colaborador",
+        "collaboratorName": "Nombre del colaborador",
         "contactName": "Nombre del contacto",
         "contactEmail": "Email del contacto",
         "contactPhone": "Teléfono del contacto",
@@ -412,5 +412,34 @@
     "title": "¡Oops!",
     "subtitle": "Algo no ha salido bien.",
     "button": "Volver"
+  },
+  "role": {
+    "title": "Roles",
+    "create": "Crear rol",
+    "edit": "Editar",
+    "delete": "Borrar",
+    "list": {
+      "actions": "Acciones",
+      "name": "Nombre de los roles"
+    },
+    "name": "Nombre",
+    "permissions": "Permisos",
+    "permission": {
+      "manage-study-zones": "Gestionar zonas de estudio",
+      "create-study-zones": "Crear zonas de estudio",
+      "update-study-zones": "Actualizar zonas de estudio",
+      "delete-study-zones": "Borrar zonas de estudio",
+      "manage-admin-users": "Gestionar usuarios administradores",
+      "create-admin-users": "Crear usuarios administradores",
+      "update-admin-users": "Actualizar usuarios administradores",
+      "delete-admin-users": "Borrar usuarios administradores",
+      "manage-app-users": "Gestionar usuarios de la app",
+      "delete-app-users": "Borrar usuarios de la app",
+      "manage-roles": "Gestionar roles",
+      "create-roles": "Crear roles",
+      "update-roles": "Actualizar roles",
+      "delete-roles": "Borrar roles"
+    },
+    "delete-message": "Por favor, confirme para borrar."
   }
 }
