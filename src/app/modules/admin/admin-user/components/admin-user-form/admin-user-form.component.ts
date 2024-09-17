@@ -3,8 +3,9 @@ import { AdminUserService } from './../../../../../services/admin-user/admin-use
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { RolService } from '../../../../../services/admin-user/rol.service';
 import { Observable, Subscription } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-admin-user-form',
@@ -17,6 +18,8 @@ export class AdminUserFormComponent implements OnInit, OnDestroy {
   private adminUserService: AdminUserService  = inject(AdminUserService);
   private activatedRoute: ActivatedRoute      = inject(ActivatedRoute);
   private fb: FormBuilder                     = inject(FormBuilder);
+  private messageService: MessageService      = inject(MessageService);
+  private router: Router                      = inject(Router);
 
   private roles$!: Subscription;
   private adminUser$!: Subscription;
@@ -61,17 +64,45 @@ export class AdminUserFormComponent implements OnInit, OnDestroy {
 
     if(this.userForm.valid) {
       if(this.userForm.value.id) {
-        this.adminUserService.updateAdminUser(this.userForm.value).subscribe(() => {
-          console.log('User updated');
+        this.adminUserService.updateAdminUser(this.userForm.value).subscribe({
+          next: () => {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Success',
+              detail: 'User updated successfully'
+            });
+            this.router.navigate(['/admin/admin-user']);
+          },
+          error: () => {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: 'Error updating user'
+            });
+          }
         });
       }
       else {
-        this.adminUserService.createAdminUser(this.userForm.value).subscribe(() => {
-          console.log('User created');
+        this.adminUserService.createAdminUser(this.userForm.value).subscribe({
+          next: () => {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Success',
+              detail: 'User created successfully'
+            });
+            this.router.navigate(['/admin/admin-user']);
+          },
+          error: () => {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: 'Error creating user'
+            });
+          }
         });
       }
     }
-    
+
   }
 
   ngOnDestroy(): void {
