@@ -466,5 +466,12 @@
     "enable": "Activar",
     "delete-message": "Si us plau, confirmeu per procedir a esborrar.",
     "restore-message": "Si us plau, confirmeu per procedir a restaurar."
+  },
+  "observations": {
+    "delete": "Esborrar",
+    "geolocation": "Geolocalització",
+    "idUser": "ID Usuari",
+    "delete-message": "Si us plau, confirmeu per procedir a esborrar.",
+    "title": "Observacions"
   }
 }

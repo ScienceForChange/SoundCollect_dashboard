@@ -466,5 +466,12 @@
     "enable": "Enable",
     "delete-message": "Are you sure you want to delete the user?",
     "restore-message": "Are you sure you want to restore the user?"
+  },
+  "observations": {
+    "delete": "Delete",
+    "geolocation": "Geolocation",
+    "idUser": "ID User",
+    "delete-message": "Are you sure you want to delete the observation?",
+    "title": "Observations"
   }
 }

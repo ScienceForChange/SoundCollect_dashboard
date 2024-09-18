@@ -466,5 +466,12 @@
     "enable": "Activar",
     "delete-message": "Por favor, confirme para borrar.",
     "restore-message": "Por favor, confirme para restaurar."
+  },
+  "observations": {
+    "delete": "Borrar",
+    "geolocation": "Geolocalización",
+    "idUser": "ID Usuario",
+    "delete-message": "Por favor, confirme para borrar.",
+    "title": "Observaciones"
   }
 }

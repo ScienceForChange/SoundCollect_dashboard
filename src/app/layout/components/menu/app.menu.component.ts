@@ -81,7 +81,7 @@ export class AppMenuComponent implements OnInit {
         }
         case 'MANAGE-ADMIN-USERS': {
           this.adminItems[0].items.push({
-            label: 'admin-users',
+            label: 'Administradors',
             icon: 'pi pi-id-card',
             command: () => {
               this.toggleAdminMenu.emit(false);
@@ -93,7 +93,7 @@ export class AppMenuComponent implements OnInit {
         }
         case 'MANAGE-ROLES': {
           this.adminItems[0].items.push({
-            label: 'roles',
+            label: 'Rols',
             icon: 'pi pi-tags',
             command: () => {
               this.toggleAdminMenu.emit(false);
@@ -110,7 +110,7 @@ export class AppMenuComponent implements OnInit {
             command: () => {
               this.toggleAdminMenu.emit(false);
               this.closeAll();
-              this.router.navigate(['/admin/observations']);
+              this.router.navigate(['/admin/observation']);
             },
           });
           break;
