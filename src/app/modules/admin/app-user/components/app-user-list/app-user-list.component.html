@@ -1,0 +1,69 @@
+<p-confirmPopup>
+  <ng-template pTemplate="content" let-message>
+      <div class="flex flex-column align-items-center w-full gap-3 border-bottom-1 surface-border p-3 mb-3">
+          <i [class]="'pi pi-exclamation-circle'" class="text-6xl text-primary-500"></i>
+          @if(showTrashedUsers){
+            <p>{{ 'user.restore-message' | translate}}</p>
+          }
+          @else{
+            <p>{{ 'user.delete-message' | translate}}</p>
+          }
+      </div>
+  </ng-template>
+</p-confirmPopup>
+
+<div class="card w-full" >
+  <ng-template [ngxPermissionsOnly]="['MANAGE-ADMIN-USERS']">
+    <p-table #dt1 [value]="users" [globalFilterFields]="['user.name', 'user.email']" dataKey="id" [tableStyle]="{ 'min-width': '100%' }"
+      [rows]="15" [paginator]="users.length > 15" stateStorage="session"
+      stateKey="state-rolelist-session">
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 230px">
+            ID
+          </th>
+          <th style="width: 20%" class="text-left">
+            {{ "user.expert" | translate }}
+          </th>
+          <th style="width: 100px" class="text-right">
+            {{ "admin-user.list.actions" | translate }}
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-user>
+        <tr>
+          <td>
+            <span class="p-column-title">id</span>
+            {{ user.id }}
+          </td>
+          <td>
+            <span class="p-column-title">expert</span>
+            <div class="flex flex-wrap gap-2">
+              <span class="p-tag p-tag-success" *ngIf="user.attributes.is_expert">{{ "user.expert" | translate }}</span>
+              <span class="p-tag p-tag-danger" *ngIf="!user.attributes.is_expert">{{ "user.not-expert" | translate }}</span>
+            </div>
+          </td>
+          <td class="text-right">
+            <span class="p-column-title">actions</span>
+            <div class="flex gap-2 justify-content-end">
+                <ng-template [ngxPermissionsOnly]="['DELETE-APP-USERS']">
+                  @if(showTrashedUsers){
+                    <button pButton type="button" [label]="'user.enable' | translate" icon="pi pi-lock-open" class="p-button-rounded p-button-success" (click)="restoreUser(user, $event)"></button>
+                  }
+                  @else {
+                    <button pButton type="button" [label]="'user.disable' | translate" icon="pi pi-lock" class="p-button-rounded p-button-danger" (click)="deleteUser(user, $event)"></button>
+                  }
+                </ng-template>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="4">No Users found.</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </ng-template>
+</div>
+

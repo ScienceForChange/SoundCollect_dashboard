@@ -1,0 +1,20 @@
+<p-menubar>
+  <ng-template pTemplate="start">
+    <h3 class="mb-0">{{ "app-user.title" | translate }}</h3>
+  </ng-template>
+  <ng-template pTemplate="end">
+    <ng-template [ngxPermissionsOnly]="['UPDATE-ADMIN-USERS']">
+      @if(showTrashedUsers){
+        <button pButton type="button" [label]="'app-user.enabled' | translate" icon="pi pi-lock-open" [routerLink]="'./'"></button>
+      }
+      @else{
+        <button pButton type="button" [label]="'app-user.disabled' | translate" icon="pi pi-lock" [routerLink]="'disabled-users'"></button>
+      }
+    </ng-template>
+  </ng-template>
+</p-menubar>
+
+<section class="flex flex-wrap flex-1 w-100">
+  <router-outlet />
+</section>
+

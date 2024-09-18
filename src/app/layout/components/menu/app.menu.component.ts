@@ -74,7 +74,7 @@ export class AppMenuComponent implements OnInit {
             command: () => {
               this.toggleAdminMenu.emit(false);
               this.closeAll();
-              this.router.navigate(['/admin/users']);
+              this.router.navigate(['/admin/app-user']);
             },
           });
           break;
