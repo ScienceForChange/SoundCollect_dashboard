@@ -453,5 +453,18 @@
     },
     "edit": "Edit",
     "delete": "Delete"
+  },
+  "app-user": {
+    "disabled": "Disabled users",
+    "title": "App users",
+    "enabled": "Enabled users"
+  },
+  "user": {
+    "expert": "Expert",
+    "not-expert": "No expert",
+    "disable": "Disable",
+    "enable": "Enable",
+    "delete-message": "Are you sure you want to delete the user?",
+    "restore-message": "Are you sure you want to restore the user?"
   }
 }

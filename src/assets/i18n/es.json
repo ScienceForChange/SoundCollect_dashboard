@@ -454,5 +454,17 @@
     },
     "edit": "Editar",
     "delete": "Borrar"
+  },
+  "app-user": {
+    "disabled": "Usuarios bloqueados",
+    "enabled": "Usuarios activos"
+  },
+  "user": {
+    "expert": "Experto",
+    "not-expert": "No experto",
+    "disable": "Bloquear",
+    "enable": "Activar",
+    "delete-message": "Por favor, confirme para borrar.",
+    "restore-message": "Por favor, confirme para restaurar."
   }
 }

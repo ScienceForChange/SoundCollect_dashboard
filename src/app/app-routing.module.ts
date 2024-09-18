@@ -17,6 +17,9 @@ import { AdminUserFormComponent } from './modules/admin/admin-user/components/ad
 import { RoleComponent } from './modules/admin/role/page/role.component';
 import { RoleListComponent } from './modules/admin/role/components/role-list/role-list.component';
 import { RoleFormComponent } from './modules/admin/role/components/role-form/role-form.component';
+import { AppUserComponent } from './modules/admin/app-user/page/app-user.component';
+import { AppUserListComponent } from './modules/admin/app-user/components/app-user-list/app-user-list.component';
+import { AppUserFormComponent } from './modules/admin/app-user/components/app-user-form/app-user-form.component';
 
 const routes: Routes = [
   {
@@ -140,6 +143,40 @@ const routes: Routes = [
                     only: ['UPDATE-ROLES'],
                   },
                 }
+              }
+            ]
+          },
+          {
+            path: 'app-user',
+            component: AppUserComponent,
+            canActivate: [ngxPermissionsGuard],
+            data: {
+              permissions: {
+                only: ['MANAGE-APP-USERS'],
+              },
+            },
+            children: [
+              {
+                path: '',
+                component: AppUserListComponent,
+                canActivate: [ngxPermissionsGuard],
+                data: {
+                  permissions: {
+                    only: ['MANAGE-APP-USERS'],
+                  },
+                  trashedUsers: false
+                }
+              },
+              {
+                path: 'disabled-users',
+                component: AppUserListComponent,
+                canActivate: [ngxPermissionsGuard],
+                data: {
+                  permissions: {
+                    only: ['DELETE-APP-USERS'],
+                  },
+                  trashedUsers: true
+                },
               }
             ]
           },
