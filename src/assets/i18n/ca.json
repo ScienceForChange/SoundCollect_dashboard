@@ -453,5 +453,18 @@
     },
     "edit": "Editar",
     "delete": "Esborrar"
+  },
+  "app-user": {
+    "disabled": "Usuaris bloquejats",
+    "title": "Usuaris de l'aplicació",
+    "enabled": "Usuaris actius"
+  },
+  "user": {
+    "expert": "Expert",
+    "not-expert": "No expert",
+    "disable": "Bloquejar",
+    "enable": "Activar",
+    "delete-message": "Si us plau, confirmeu per procedir a esborrar.",
+    "restore-message": "Si us plau, confirmeu per procedir a restaurar."
   }
 }
