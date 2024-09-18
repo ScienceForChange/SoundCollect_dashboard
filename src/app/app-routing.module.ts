@@ -20,6 +20,8 @@ import { RoleFormComponent } from './modules/admin/role/components/role-form/rol
 import { AppUserComponent } from './modules/admin/app-user/page/app-user.component';
 import { AppUserListComponent } from './modules/admin/app-user/components/app-user-list/app-user-list.component';
 import { AppUserFormComponent } from './modules/admin/app-user/components/app-user-form/app-user-form.component';
+import { ObservationComponent } from './modules/admin/observation/page/observation.component';
+import { ObservationListComponent } from './modules/admin/observation/components/observation-list/observation-list.component';
 
 const routes: Routes = [
   {
@@ -176,6 +178,40 @@ const routes: Routes = [
                     only: ['DELETE-APP-USERS'],
                   },
                   trashedUsers: true
+                },
+              }
+            ]
+          },
+          {
+            path: 'observation',
+            component: ObservationComponent,
+            canActivate: [ngxPermissionsGuard],
+            data: {
+              permissions: {
+                only: ['MANAGE-OBSERVATIONS'],
+              },
+            },
+            children: [
+              {
+                path: '',
+                component: ObservationListComponent,
+                canActivate: [ngxPermissionsGuard],
+                data: {
+                  permissions: {
+                    only: ['MANAGE-OBSERVATIONS'],
+                  },
+                  trashedObservations: false
+                }
+              },
+              {
+                path: 'disabled-observations',
+                component: AppUserListComponent,
+                canActivate: [ngxPermissionsGuard],
+                data: {
+                  permissions: {
+                    only: ['DELETE-OBSERVATIONS'],
+                  },
+                  trashedObservations: true
                 },
               }
             ]

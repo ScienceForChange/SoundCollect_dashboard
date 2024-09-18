@@ -38,6 +38,7 @@ import { AuthService } from './services/auth/auth.service';
 import { AdminUserModule } from './modules/admin/admin-user/admin-user.module';
 import { RoleModule } from './modules/admin/role/role.module';
 import { AppUserModule } from './modules/admin/app-user/app-user.module';
+import { ObservationModule } from './modules/admin/observation/observation.module';
 
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -63,6 +64,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     AdminUserModule,
     RoleModule,
     AppUserModule,
+    ObservationModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
