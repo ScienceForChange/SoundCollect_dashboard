@@ -398,7 +398,8 @@
         "contactEmail": "Email del contacto",
         "contactPhone": "Teléfono del contacto",
         "logo": "Logotipo"
-      }
+      },
+      "actions": "Acciones"
     }
   },
   "login": {
@@ -476,5 +477,6 @@
     "delete-message": "Por favor, confirme para borrar.",
     "title": "Observaciones",
     "show": "Ver info"
-  }
+  },
+  "studyZones": "Zonas de estudio"
 }

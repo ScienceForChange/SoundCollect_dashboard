@@ -33,7 +33,6 @@ export class StudyZoneMapComponent {
   public layerId: string = 'light-v10';
 
   public showMapLayers?: boolean;
-  public selectedPolygon: any | undefined = undefined;
   public filterActive: boolean = false;
 
   public toggleShowMapLayers(): void {

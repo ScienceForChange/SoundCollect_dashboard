@@ -1,8 +1,8 @@
 
-:host{
+:host {
   display: flex;
-  flex: 1 1 auto;
-  position: relative;
+  height: 100%;
+  width: 100%;
 }
 .container{
   display: flex;
@@ -44,18 +44,13 @@
       }
     }
   }
-  :host {
-    display: flex;
-    position: relative;
-  }
   .map-container {
+    height: 100%;
+    width: 100%;
     border-radius: 12px;
     border: 1px solid var(--surface-border);
-    height: calc(100vh - 2rem);
-    margin: 0.5rem;
     position: relative;
     top: 0;
-    width: 100%;
     z-index: 1;
   }
 }

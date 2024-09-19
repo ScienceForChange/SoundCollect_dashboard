@@ -398,7 +398,8 @@
         "contactEmail": "Contact email",
         "contactPhone": "Contact phone number",
         "logo": "Logo"
-      }
+      },
+      "actions": "Actions"
     }
   },
   "login": {
@@ -476,5 +477,6 @@
     "delete-message": "Are you sure you want to delete the observation?",
     "title": "Observations",
     "show": "Show info"
-  }
+  },
+  "studyZones": "Study Zones"
 }
