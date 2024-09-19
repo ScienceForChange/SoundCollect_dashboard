@@ -14,7 +14,7 @@ import { LineChart, LineSeriesOption } from 'echarts/charts';
 import { UniversalTransition } from 'echarts/features';
 import { CanvasRenderer } from 'echarts/renderers';
 
-import { Observations } from '../../../../models/observations';
+import { Observations } from '../../../models/observations';
 
 type EChartsOption = echarts.ComposeOption<
   GridComponentOption | LineSeriesOption

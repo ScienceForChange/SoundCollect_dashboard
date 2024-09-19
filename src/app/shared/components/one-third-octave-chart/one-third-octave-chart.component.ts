@@ -7,8 +7,8 @@ import { BarChart, PieChart } from 'echarts/charts';
 import { CanvasRenderer } from 'echarts/renderers';
 import { GridComponent, LegendComponent } from 'echarts/components';
 
-import { Observations } from '../../../../models/observations';
-import energeticAvg from '../../../../../utils/energeticAvg';
+import { Observations } from '../../../models/observations';
+import energeticAvg from '../../../../utils/energeticAvg';
 
 @Component({
   selector: 'app-one-third-octave-chart',

@@ -24,25 +24,20 @@ import { MapComponent } from './page/map.component';
 import { MapToolBarComponent } from './components/tool-bar/tool-bar.component';
 import { MapFiltersComponent } from './components/filters/filters.component';
 import { MapLayersComponent } from './components/map-layers/map-layers.component';
-import { ObservationInfoModalComponent } from './components/observation-info-modal/observation-info-modal.component';
-import { LAeqTChartComponent } from './components/laeq-tchart/laeq-tchart.component';
-import { OneThirdOctaveChartComponent } from './components/one-third-octave-chart/one-third-octave-chart.component';
 
-import { SharedComponentsModule } from '../../shared/shared.module';
 import { SoundPressureDisplayPipe } from '../../pipes/sound-pressure-display.pipe';
 import { MapZoneStudyLayersComponent } from './components/map-study-zone-layers/map-study-zone-layers.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { SharedComponentsModule } from "../../shared/shared.module";
 
 
 @NgModule({
   declarations: [
-    LAeqTChartComponent,
     MapComponent,
     MapFiltersComponent,
     MapLayersComponent,
     MapZoneStudyLayersComponent,
     MapToolBarComponent,
-    ObservationInfoModalComponent,
-    OneThirdOctaveChartComponent,
     SoundPressureDisplayPipe,
   ],
   imports: [
@@ -58,14 +53,15 @@ import { MapZoneStudyLayersComponent } from './components/map-study-zone-layers/
     ProgressBarModule,
     RadioButtonModule,
     ReactiveFormsModule,
-    SharedComponentsModule,
     SidebarModule,
     SkeletonModule,
     SliderModule,
     ToastModule,
     ToolbarModule,
     TooltipModule,
-    ToggleButtonModule
-  ],
+    ToggleButtonModule,
+    TranslateModule,
+    SharedComponentsModule
+],
 })
 export class MapModule {}

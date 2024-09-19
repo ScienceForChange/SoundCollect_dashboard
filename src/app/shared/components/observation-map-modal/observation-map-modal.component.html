@@ -1,0 +1,18 @@
+<p-sidebar
+  header="Header"
+  position="right"
+  [(visible)]="isOpen"
+  (onHide)="closeModal()"
+  [modal]="true"
+  [style]="{ width: '50vw' }"
+  (onShow)="onShow($event)"
+>
+  <ng-template pTemplate="header">
+    <div class="text-center">
+      <h2 class="headline-m font-medium">
+        {{ "observations.geolocation" | translate }}
+      </h2>
+    </div>
+  </ng-template>
+  <div #map id="map"></div>
+</p-sidebar>
