@@ -438,7 +438,9 @@
       "manage-roles": "Gestionar rols",
       "create-roles": "Crear rols",
       "update-roles": "Actualitzar rols",
-      "delete-roles": "Esborrar rols"
+      "delete-roles": "Esborrar rols",
+      "manage-observations": "Gestionar observacions",
+      "delete-observations": "Esborrar observacions"
     },
     "delete-message": "Si us plau, confirmeu per procedir a esborrar.",
     "edit": "Editar"
