@@ -4,11 +4,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import {
-  TranslateLoader,
-  TranslateModule,
-  TranslateService,
-} from '@ngx-translate/core';
+import { TranslateLoader, TranslateModule, TranslateService,} from '@ngx-translate/core';
 
 import { MessageService } from 'primeng/api';
 import { ConfirmationService } from 'primeng/api';

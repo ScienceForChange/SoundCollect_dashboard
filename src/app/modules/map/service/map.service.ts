@@ -37,7 +37,7 @@ export class MapService {
   public features$: BehaviorSubject<Feature[]> = new BehaviorSubject<Feature[]>(
     []
   );
-  private language: string = localStorage.getItem('locale') || 'ca';  
+  private language: string = localStorage.getItem('locale') || 'ca';
   public initialGeoJson: { type: string; features: Feature[] } = {
     type: 'FeatureCollection',
     features: [],
