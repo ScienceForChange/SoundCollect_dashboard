@@ -21,13 +21,14 @@ export class ObservationListComponent {
   private deleteAppUser$!: Subscription;
   private getUsers$!: Subscription;
 
-
   userLogged: User = JSON.parse(localStorage.getItem('user') as string);
 
   router = inject(Router);
 
   observations: Observations[] = [];
   showTrashedObservations:boolean = false;
+  observationSelected!: Observations;
+  observationSelectedForMap!: Observations;
 
   ngOnInit(): void {
 
@@ -36,7 +37,6 @@ export class ObservationListComponent {
     this.observationsService.observations$.subscribe({
       next: (response) => {
         this.observations = response;
-        console.log(this.observations);
       },
       error: (error) => {
         this.messageService.add({

@@ -474,6 +474,7 @@
     "geolocation": "Geolocalització",
     "idUser": "ID Usuari",
     "delete-message": "Si us plau, confirmeu per procedir a esborrar.",
-    "title": "Observacions"
+    "title": "Observacions",
+    "show": "Veure info"
   }
 }

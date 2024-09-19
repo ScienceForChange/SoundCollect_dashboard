@@ -15,6 +15,7 @@ import { StudyZoneDialogComponent } from './components/study-zone-dialog/study-z
 import { ObservationInfoModalComponent } from './components/observation-info-modal/observation-info-modal.component';
 import { LAeqTChartComponent } from './components/laeq-tchart/laeq-tchart.component';
 import { OneThirdOctaveChartComponent } from './components/one-third-octave-chart/one-third-octave-chart.component';
+import { ObservationMapModalComponent } from './components/observation-map-modal/observation-map-modal.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { OneThirdOctaveChartComponent } from './components/one-third-octave-char
     SliderStepComponent,
     InfoModalComponent,
     ObservationInfoModalComponent,
-    StudyZoneDialogComponent
+    StudyZoneDialogComponent,
+    ObservationMapModalComponent
   ],
   exports: [
     IconModule,
@@ -34,6 +36,7 @@ import { OneThirdOctaveChartComponent } from './components/one-third-octave-char
     StudyZoneDialogComponent,
     TranslateModule,
     ObservationInfoModalComponent,
+    ObservationMapModalComponent
   ],
   imports: [
     DialogModule,
