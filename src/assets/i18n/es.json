@@ -439,7 +439,9 @@
       "manage-roles": "Gestionar roles",
       "create-roles": "Crear roles",
       "update-roles": "Actualizar roles",
-      "delete-roles": "Borrar roles"
+      "delete-roles": "Borrar roles",
+      "manage-observations": "Gestionar observaciones",
+      "delete-observations": "Borrar observaciones"
     },
     "delete-message": "Por favor, confirme para borrar."
   },
@@ -466,5 +468,12 @@
     "enable": "Activar",
     "delete-message": "Por favor, confirme para borrar.",
     "restore-message": "Por favor, confirme para restaurar."
+  },
+  "observations": {
+    "delete": "Borrar",
+    "geolocation": "Geolocalización",
+    "idUser": "ID Usuario",
+    "delete-message": "Por favor, confirme para borrar.",
+    "title": "Observaciones"
   }
 }

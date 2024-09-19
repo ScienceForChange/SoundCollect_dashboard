@@ -7,6 +7,7 @@ import {
   map,
   filter,
   switchMap,
+  Subscribable,
 } from 'rxjs';
 
 import * as turf from '@turf/turf';
@@ -38,9 +39,7 @@ export interface Tag {
   providedIn: 'root',
 })
 export class ObservationsService {
-  observations$: BehaviorSubject<Observations[]> = new BehaviorSubject<
-    Observations[]
-  >([]);
+  observations$: BehaviorSubject<Observations[]> = new BehaviorSubject<Observations[]>([]);
   tags: Tag[] = [];
 
   loading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
@@ -862,4 +861,9 @@ export class ObservationsService {
       throw Error('Error downloading GPKG', error);
     }
   }
+
+  public deleteObservation(id: string): Observable<void> {
+    return this.http.delete<void>(`${environment.BACKEND_BASE_URL}/admin-panel/observations/${id}`);
+  }
+
 }
