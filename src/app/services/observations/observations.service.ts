@@ -494,7 +494,7 @@ export class ObservationsService {
       );
   }
 
-  public getObservationsByPolygonAndDates( polygon: string[], hourInterval: [string, string] ): Observable<Observations[]> {
+  public getObservationsByPolygonAndDates( polygon: string[], hourDates: [string, string] ): Observable<Observations[]> {
     this.loading$.next(true);
     return this.http
       .post<{ success: string; data: Observations[] }>(

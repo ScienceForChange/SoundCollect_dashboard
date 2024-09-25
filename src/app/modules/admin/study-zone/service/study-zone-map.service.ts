@@ -113,7 +113,6 @@ export class StudyZoneMapService {
     if(this.allStudyZones){
       this.studyZones.update(() => this.getPolygonFromStudyZones(this.allStudyZones));
       this.pointStudyZones.update(() => this.getPointFromStudyZones(this.allStudyZones));
-      console.log(this.pointStudyZones());
     }
 
 

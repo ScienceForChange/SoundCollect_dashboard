@@ -69,6 +69,8 @@ export class MapService {
   public studyZoneDialogVisible$: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
 
+  private defaultBbox:[[number, number], [number, number]] = [[0.048229834542042, 40.416428760865], [3.3736729893935, 42.914194523824]]; // Catalonia bbox
+
   constructor(
     private observationsService: ObservationsService,
     private studyZoneService: StudyZoneService,
@@ -142,6 +144,7 @@ export class MapService {
 
   public setMap(map: Map): void {
     this.map = map;
+    this.flyToDefaultBbox();
   }
 
   //Add mouse pointer on cluster hover
@@ -385,14 +388,10 @@ export class MapService {
     source.setData(data);
   }
 
-  public eraseSZPolygonFromId(id: number) {
+  public eraseSZPolygonFromId() {
     let source = this.map.getSource('studyZone') as mapboxgl.GeoJSONSource;
-    const { features, ...rest } =
-      source._data as GeoJSON.FeatureCollection<GeoJSON.Geometry>;
-    const filterFeatures = features.filter(
-      (feature) => feature.properties['id'] !== id
-    );
-    source.setData({ features: filterFeatures, ...rest });
+    const { features, ...rest } = source._data as GeoJSON.FeatureCollection<GeoJSON.Geometry>;
+    source.setData({ features: [], ...rest });
   }
   public eraseAllSZPolygons() {
     let source = this.map.getSource('studyZone') as mapboxgl.GeoJSONSource;
@@ -458,5 +457,9 @@ export class MapService {
         this.studyZoneDialogVisible$.next(true);
       }
     });
+  }
+
+  public flyToDefaultBbox() {
+    this.map.fitBounds(this.defaultBbox, { padding: { top: 10, bottom: 10, left: 10, right: 10 } });
   }
 }

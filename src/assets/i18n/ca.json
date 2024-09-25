@@ -134,7 +134,8 @@
     "layers": {
       "title": "Tipus de mapa",
       "standard": "Estàndard",
-      "satellite": "Satèl·lit"
+      "satellite": "Satèl·lit",
+      "noStudyZone": "Cap Zona d'Estudi"
     },
     "laeqtChart": {
       "axisX": "Temps (segons)",
