@@ -37,16 +37,28 @@ export class StudyZoneListComponent {
     const isStudyZoneDisplayed = this.studyZonesIdsDisplayed.some(
       (zoneId) => zoneId === id
     );
+    if (isStudyZoneDisplayed) {
+      this.mapService.selectedPolygonFromId(id);
+    }
+  }
+
+  previewStudyZone(id: number | null = null) {
+
+    if(id === null) {
+      this.studyZonesIdsDisplayed.forEach((zoneId) => {
+        this.mapService.erasePolygonFromId(zoneId);
+      });
+      this.studyZonesIdsDisplayed = [];
+      return;
+    }
+
+    const isStudyZoneDisplayed = this.studyZonesIdsDisplayed.some(
+      (zoneId) => zoneId === id
+    );
     if (!isStudyZoneDisplayed) {
       this.mapService.drawPolygonFromId(id);
       this.studyZonesIdsDisplayed.push(id);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      return;
     }
-    this.mapService.erasePolygonFromId(id);
-    this.studyZonesIdsDisplayed = this.studyZonesIdsDisplayed.filter(
-      (zoneId) => zoneId !== id
-    );
   }
 
   confirmDeleteStudyZone(event: Event, id: number) {

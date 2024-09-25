@@ -13,13 +13,15 @@
           <br/>
           {{ "admin.studyZone.list.endDate" | translate }}
         </th>
-        <th class="text-right" [width]="'10px'">
-          {{ "admin.studyZone.actions" | translate }}
-        </th>
+        <ng-template [ngxPermissionsOnly]="['UPDATE-STUDY-ZONES','DELETE-STUDY-ZONES']">
+          <th class="text-right" [width]="'10px'">
+            {{ "admin.studyZone.actions" | translate }}
+          </th>
+        </ng-template>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-studyZone>
-      <tr (mouseenter)="viewStudyZone(studyZone.id)" (mouseleave)="viewStudyZone(studyZone.id)">
+      <tr (mouseenter)="previewStudyZone(studyZone.id)" (mouseleave)="previewStudyZone()" (click)="viewStudyZone(studyZone.id)">
         <td class="text-left" >
           {{ studyZone.name }}
         </td>
@@ -28,11 +30,18 @@
           <br/>
           {{ studyZone.end_date | date : "dd/MM/yyyy" }}
         </td>
-        <td class="flex justify-content-end gap-2">
-          <button pButton type="button" [icon]="studyZone.is_visible ? 'pi pi-times' : 'pi pi-check'" (click)="toggleEnableStudyZone(studyZone.id)"></button>
-          <button pButton type="button" class="p-button-warning" icon="pi pi-pencil" (click)="editStudyZone(studyZone.id)"></button>
-          <button pButton type="button" class="p-button-danger" icon="pi pi-trash" (click)="confirmDeleteStudyZone($event, studyZone.id)"></button>
-        </td>
+
+        <ng-template [ngxPermissionsOnly]="['UPDATE-STUDY-ZONES','DELETE-STUDY-ZONES']">
+          <td class="flex justify-content-end gap-2">
+            <ng-template [ngxPermissionsOnly]="['UPDATE-STUDY-ZONES']">
+              <button pButton type="button" [icon]="studyZone.is_visible ? 'pi pi-times' : 'pi pi-check'" (click)="toggleEnableStudyZone(studyZone.id)"></button>
+              <button pButton type="button" class="p-button-warning" icon="pi pi-pencil" (click)="editStudyZone(studyZone.id)"></button>
+            </ng-template>
+            <ng-template [ngxPermissionsOnly]="['DELETE-STUDY-ZONES']">
+              <button pButton type="button" class="p-button-danger" icon="pi pi-trash" (click)="confirmDeleteStudyZone($event, studyZone.id)"></button>
+            </ng-template>
+          </td>
+        </ng-template>
         <p-confirmPopup [styleClass]="'custom-confirm-popup'" />
       </tr>
     </ng-template>

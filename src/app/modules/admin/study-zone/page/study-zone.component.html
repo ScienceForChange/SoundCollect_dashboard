@@ -1,14 +1,7 @@
 
 <p-menubar>
   <ng-template pTemplate="start">
-    <h3 class="mb-0">{{ "role.title" | translate }}</h3>
-  </ng-template>
-  <ng-template pTemplate="end">
-
-    <ng-template  [ngxPermissionsOnly]="['CREATE-ROLES']">
-      <button pButton type="button" [label]="'studyZones' | translate" icon="pi pi-plus" [routerLink]="['create']"></button>
-    </ng-template>
-
+    <h3 class="mb-0">{{ "studyzones.title" | translate }}</h3>
   </ng-template>
 </p-menubar>
 

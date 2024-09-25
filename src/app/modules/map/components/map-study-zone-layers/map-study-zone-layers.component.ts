@@ -1,3 +1,4 @@
+import { StudyZone } from './../../../../models/study-zone.d';
 import {
   Component,
   Input,
@@ -9,8 +10,8 @@ import {
 
 import { MapService } from '../../service/map.service';
 import { StudyZoneService } from '../../../../services/study-zone/study-zone.service';
-import { StudyZone } from '../../../../models/study-zone';
 import { Subscription } from 'rxjs';
+import { ObservationsService } from '../../../../services/observations/observations.service';
 
 @Component({
   selector: 'app-map-study-zone-layers',
@@ -20,6 +21,7 @@ import { Subscription } from 'rxjs';
 export class MapZoneStudyLayersComponent implements OnInit, OnDestroy {
   private mapService = inject(MapService);
   private studyZoneService = inject(StudyZoneService);
+  private observationsService = inject(ObservationsService);
   private subscriptions = new Subscription();
   studyZones: StudyZone[] = [];
   studyZonesModel: { [key: number]: boolean }[] = [];
@@ -43,14 +45,32 @@ export class MapZoneStudyLayersComponent implements OnInit, OnDestroy {
   }
 
   toggleLayerVisibility(layerId: number, e: any) {
-    const studyZoneSelected = this.studyZones.find(
+    const studyZoneSelected:StudyZone = this.studyZones.find(
       (studyZone) => studyZone.id === layerId
     );
     if (!e.checked) {
       this.mapService.drawSZPolygonFromId(studyZoneSelected);
+
+      this.mapService.eraseAllSZPolygons();
+      console.log(studyZoneSelected);
+
+      let poligonCoordiantes = studyZoneSelected.boundaries.coordinates.map((coo:any) => {
+        return `${coo.latitude} ${coo.longitude}`;
+      });
+
+      this.observationsService.getObservationsByPolygonAndDates(poligonCoordiantes, [String(studyZoneSelected.start_date), String(studyZoneSelected.end_date)]).subscribe({
+        error: (error) => {
+          console.error(error);
+        }
+      });
+
       return;
     }
+
+    this.observationsService.getAllObservations();
+
     this.mapService.eraseSZPolygonFromId(studyZoneSelected.id);
+    
   }
 
   ngOnDestroy(): void {

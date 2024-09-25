@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import { NgxPermissionsModule } from 'ngx-permissions';
 import { ButtonModule } from 'primeng/button';
 import { SidebarModule } from 'primeng/sidebar';
 import { RadioButtonModule } from 'primeng/radiobutton';
@@ -49,7 +50,8 @@ import { MenubarModule } from 'primeng/menubar';
     DividerModule,
     TableModule,
     ToastModule,
-    MenubarModule
+    MenubarModule,
+    NgxPermissionsModule
   ],
 })
 export class StudyZoneModule {}

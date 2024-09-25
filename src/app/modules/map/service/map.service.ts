@@ -86,30 +86,30 @@ export class MapService {
     });
   }
 
-  //Conseguir todos los olores en el constructor
+  //Conseguir todos los sonidos en el constructor
   public getAllMapObservations(): void {
     if (this.mapObservations.length > 0) {
       this.updateSourceObservations(this.features$.getValue());
       return;
     }
+    
     this.observationsService.observations$.subscribe((data) => {
       try {
-        const features =
-          this.observationsService.getLineStringFromObservations(data);
+        const features = this.observationsService.getLineStringFromObservations(data);
         if (features.length === 0) return;
         this.mapObservations = data.map((obs) => ({
-          id: obs.id,
-          user_id: obs.relationships.user.id,
+          id:         obs.id,
+          user_id:    obs.relationships.user.id,
           user_level: obs.relationships.user.attributes.level,
-          latitude: obs.attributes.latitude,
-          longitude: obs.attributes.longitude,
+          latitude:   obs.attributes.latitude,
+          longitude:  obs.attributes.longitude,
           created_at: new Date(obs.attributes.created_at),
-          types: obs.relationships.types.map((type) => type.id),
-          Leq: obs.attributes.Leq,
-          userType: obs.relationships.user.type,
-          quiet: obs.attributes.quiet,
-          influence: +obs.attributes.influence,
-          path: obs.relationships.segments,
+          types:      obs.relationships.types.map((type) => type.id),
+          Leq:        obs.attributes.Leq,
+          userType:   obs.relationships.user.type,
+          quiet:      obs.attributes.quiet,
+          influence:  +obs.attributes.influence,
+          path:       obs.relationships.segments,
         }));
         this.features$.next(features as Feature[]);
         this.updateSourceObservations(features as Feature[]);
@@ -393,6 +393,10 @@ export class MapService {
       (feature) => feature.properties['id'] !== id
     );
     source.setData({ features: filterFeatures, ...rest });
+  }
+  public eraseAllSZPolygons() {
+    let source = this.map.getSource('studyZone') as mapboxgl.GeoJSONSource;
+    source.setData({ features: [], type: 'FeatureCollection' });
   }
 
   public selectStudyZone(id: number): void {

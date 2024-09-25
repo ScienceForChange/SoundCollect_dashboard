@@ -445,6 +445,12 @@ export class StudyZoneMapService {
     source.setData(data);
   }
 
+  public selectedPolygonFromId(id: number) {
+    this.toggleStudyZonesVisibility()
+    this.erasePolygonFromId(id);
+    this.drawPolygonFromId(id);
+  }
+
   public addObservationsToMap(observations: Observations[] = this.observations) {
 
     //Añadir source para los polygonos de todas las zonas de estudio
