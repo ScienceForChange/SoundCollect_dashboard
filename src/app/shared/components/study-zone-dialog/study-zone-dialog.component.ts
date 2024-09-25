@@ -1,3 +1,5 @@
+import { MapService } from './../../../modules/map/service/map.service';
+import { map } from 'rxjs';
 import { Component, inject, Input } from '@angular/core';
 import { StudyZoneMapService } from '../../../modules/admin/study-zone/service/study-zone-map.service';
 import { StudyZoneService } from '../../../services/study-zone/study-zone.service';
@@ -13,11 +15,13 @@ export class StudyZoneDialogComponent {
   translateService = inject(TranslateService);
   private studyZoneMapService = inject(StudyZoneMapService);
   private studyZoneService = inject(StudyZoneService);
+  private mapService = inject(MapService);
   @Input() studyZone!: StudyZone
   @Input() visible: boolean = false;
 
   closeDialog(): void {
     this.studyZoneMapService.studyZoneDialogVisible.update(() => false);
     this.studyZoneService.studyZoneSelected$.next(null);
+    this.mapService.studyZoneDialogVisible$.next(false);
   }
 }

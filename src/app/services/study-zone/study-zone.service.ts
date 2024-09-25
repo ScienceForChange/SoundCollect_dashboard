@@ -9,11 +9,8 @@ import { Boundaries, StudyZone, StudyZoneForm } from '../../models/study-zone';
   providedIn: 'root',
 })
 export class StudyZoneService {
-  studyZones$: BehaviorSubject<StudyZone[]> = new BehaviorSubject<StudyZone[]>(
-    []
-  );
-  studyZoneSelected$: BehaviorSubject<StudyZone | null> =
-    new BehaviorSubject<StudyZone | null>(null);
+  studyZones$: BehaviorSubject<StudyZone[]> = new BehaviorSubject<StudyZone[]>([]);
+  studyZoneSelected$: BehaviorSubject<StudyZone | null> = new BehaviorSubject<StudyZone | null>(null);
 
   constructor(
     private http: HttpClient,

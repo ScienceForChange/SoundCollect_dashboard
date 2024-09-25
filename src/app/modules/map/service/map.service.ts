@@ -262,8 +262,7 @@ export class MapService {
         });
 
       //Get all features
-      const features =
-        this.observationsService.getLineStringFromObservations(observations);
+      const features = this.observationsService.getLineStringFromObservations(observations);
 
       this.filteredFeatures = features as Feature[];
 
@@ -281,12 +280,7 @@ export class MapService {
       type: 'geojson',
       data: {
         type: 'FeatureCollection',
-        features: features as Feature<
-          Geometry,
-          {
-            [name: string]: any;
-          }
-        >[],
+        features: features as Feature<Geometry,{[name: string]: any;}>[],
       },
     });
     //Añadir source para los polygonos de las zonas de estudio
