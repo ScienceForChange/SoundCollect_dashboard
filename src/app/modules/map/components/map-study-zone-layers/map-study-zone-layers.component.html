@@ -6,19 +6,33 @@
   [blockScroll]="false"
   [closeOnEscape]="true"
 >
-  <div
-    *ngFor="let studyZone of studyZones; trackBy: trackById; let i = index"
-    class="flex align-items-center mt-3"
-  >
-    <p-toggleButton
-      styleClass="toggleButton"
-      [(ngModel)]="studyZonesModel[i]"
-      onIcon="pi pi-eye-slash"
-      offIcon="pi pi-eye"
-      (onChange)="toggleLayerVisibility(studyZone.id, $event)"
-    />
-    <label for="light-v10" class="ml-2">
-      {{ studyZone.name }}
-    </label>
-  </div>
+<div
+  class="flex align-items-center mt-3"
+>
+  <p-radioButton
+    [inputId]="'studyZoneNull'"
+    name="studyZone"
+    [(ngModel)]="layerId"
+    [value]="null" 
+    (onClick)="toggleLayerVisibility(null, $event)"
+  />
+  <label [htmlFor]="'studyZoneNull'" class="ml-2">
+    {{ 'map.layers.noStudyZone' | translate }}
+  </label>
+</div>
+<div
+  *ngFor="let studyZone of studyZones; trackBy: trackById; let i = index"
+  class="flex align-items-center mt-3"
+>
+  <p-radioButton
+    [inputId]="'studyZone' + studyZone.id"
+    name="studyZone"
+    [(ngModel)]="layerId"
+    [value]="studyZone.id" 
+    (onClick)="toggleLayerVisibility(studyZone.id, $event)"
+  />
+  <label [htmlFor]="'studyZone' + studyZone.id " class="ml-2">
+    {{ studyZone.name }}
+  </label>
+</div>
 </p-sidebar>

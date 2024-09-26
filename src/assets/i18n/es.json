@@ -134,7 +134,8 @@
     "layers": {
       "title": "Tipo de mapa",
       "standard": "Estandar",
-      "satellite": "Satélite"
+      "satellite": "Satélite",
+      "noStudyZone": "Ninguna Zona de Estudio"
     },
     "laeqtChart": {
       "axisX": "Tiempo (segundos)",
@@ -398,7 +399,8 @@
         "contactEmail": "Email del contacto",
         "contactPhone": "Teléfono del contacto",
         "logo": "Logotipo"
-      }
+      },
+      "actions": "Acciones"
     }
   },
   "login": {
@@ -476,5 +478,6 @@
     "delete-message": "Por favor, confirme para borrar.",
     "title": "Observaciones",
     "show": "Ver info"
-  }
+  },
+  "studyZones": "Zonas de estudio"
 }

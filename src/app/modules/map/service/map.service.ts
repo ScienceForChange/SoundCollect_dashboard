@@ -27,10 +27,8 @@ export class MapService {
     return !!this.map;
   }
 
-  public isFilterActive: BehaviorSubject<boolean> =
-    new BehaviorSubject<boolean>(false);
-  public isFilterBtnDisbaled: BehaviorSubject<boolean> =
-    new BehaviorSubject<boolean>(true);
+  public isFilterActive: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public isFilterBtnDisbaled: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
   private mapObservations: MapObservation[] = [];
   private filteredFeatures: Feature[] = [];
@@ -69,6 +67,8 @@ export class MapService {
   public studyZoneDialogVisible$: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
 
+  private defaultBbox:[[number, number], [number, number]] = [[0.048229834542042, 40.416428760865], [3.3736729893935, 42.914194523824]]; // Catalonia bbox
+
   constructor(
     private observationsService: ObservationsService,
     private studyZoneService: StudyZoneService,
@@ -86,30 +86,30 @@ export class MapService {
     });
   }
 
-  //Conseguir todos los olores en el constructor
+  //Conseguir todos los sonidos en el constructor
   public getAllMapObservations(): void {
     if (this.mapObservations.length > 0) {
       this.updateSourceObservations(this.features$.getValue());
       return;
     }
+    
     this.observationsService.observations$.subscribe((data) => {
       try {
-        const features =
-          this.observationsService.getLineStringFromObservations(data);
+        const features = this.observationsService.getLineStringFromObservations(data);
         if (features.length === 0) return;
         this.mapObservations = data.map((obs) => ({
-          id: obs.id,
-          user_id: obs.relationships.user.id,
+          id:         obs.id,
+          user_id:    obs.relationships.user.id,
           user_level: obs.relationships.user.attributes.level,
-          latitude: obs.attributes.latitude,
-          longitude: obs.attributes.longitude,
+          latitude:   obs.attributes.latitude,
+          longitude:  obs.attributes.longitude,
           created_at: new Date(obs.attributes.created_at),
-          types: obs.relationships.types.map((type) => type.id),
-          Leq: obs.attributes.Leq,
-          userType: obs.relationships.user.type,
-          quiet: obs.attributes.quiet,
-          influence: +obs.attributes.influence,
-          path: obs.relationships.segments,
+          types:      obs.relationships.types.map((type) => type.id),
+          Leq:        obs.attributes.Leq,
+          userType:   obs.relationships.user.type,
+          quiet:      obs.attributes.quiet,
+          influence:  +obs.attributes.influence,
+          path:       obs.relationships.segments,
         }));
         this.features$.next(features as Feature[]);
         this.updateSourceObservations(features as Feature[]);
@@ -142,6 +142,7 @@ export class MapService {
 
   public setMap(map: Map): void {
     this.map = map;
+    this.flyToDefaultBbox();
   }
 
   //Add mouse pointer on cluster hover
@@ -259,8 +260,7 @@ export class MapService {
         });
 
       //Get all features
-      const features =
-        this.observationsService.getLineStringFromObservations(observations);
+      const features = this.observationsService.getLineStringFromObservations(observations);
 
       this.filteredFeatures = features as Feature[];
 
@@ -278,12 +278,7 @@ export class MapService {
       type: 'geojson',
       data: {
         type: 'FeatureCollection',
-        features: features as Feature<
-          Geometry,
-          {
-            [name: string]: any;
-          }
-        >[],
+        features: features as Feature<Geometry,{[name: string]: any;}>[],
       },
     });
     //Añadir source para los polygonos de las zonas de estudio
@@ -385,14 +380,14 @@ export class MapService {
     source.setData(data);
   }
 
-  public eraseSZPolygonFromId(id: number) {
+  public eraseSZPolygonFromId() {
     let source = this.map.getSource('studyZone') as mapboxgl.GeoJSONSource;
-    const { features, ...rest } =
-      source._data as GeoJSON.FeatureCollection<GeoJSON.Geometry>;
-    const filterFeatures = features.filter(
-      (feature) => feature.properties['id'] !== id
-    );
-    source.setData({ features: filterFeatures, ...rest });
+    const { features, ...rest } = source._data as GeoJSON.FeatureCollection<GeoJSON.Geometry>;
+    source.setData({ features: [], ...rest });
+  }
+  public eraseAllSZPolygons() {
+    let source = this.map.getSource('studyZone') as mapboxgl.GeoJSONSource;
+    source.setData({ features: [], type: 'FeatureCollection' });
   }
 
   public selectStudyZone(id: number): void {
@@ -454,5 +449,9 @@ export class MapService {
         this.studyZoneDialogVisible$.next(true);
       }
     });
+  }
+
+  public flyToDefaultBbox() {
+    this.map.fitBounds(this.defaultBbox, { padding: { top: 10, bottom: 10, left: 10, right: 10 } });
   }
 }

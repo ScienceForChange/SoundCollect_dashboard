@@ -1,75 +1,48 @@
 <div class="card">
-  <p-table [value]="studyZones" [tableStyle]="{ 'min-width': '60rem' }">
+  <p-table [value]="studyZones" [tableStyle]="{ 'min-width': '100%' }">
     <ng-template pTemplate="caption">
       <h2>{{ "admin.studyZone.list.title" | translate }}</h2>
     </ng-template>
     <ng-template pTemplate="header">
       <tr>
-        <th class="text-center">
+        <th class="text-left">
           {{ "admin.studyZone.list.name" | translate }}
         </th>
-        <th class="text-center">
+        <th class="text-center" [width]="'160px'">
           {{ "admin.studyZone.list.startDate" | translate }}
-        </th>
-        <th class="text-center">
+          <br/>
           {{ "admin.studyZone.list.endDate" | translate }}
         </th>
-        <th class="text-center">
-          {{ "admin.studyZone.list.view" | translate }}
-        </th>
-        <th class="text-center">
-          {{ "admin.studyZone.list.enable" | translate }}
-        </th>
-        <th class="text-center">
-          {{ "admin.studyZone.list.delete" | translate }}
-        </th>
-        <th class="text-center">
-          {{ "admin.studyZone.list.update" | translate }}
-        </th>
+        <ng-template [ngxPermissionsOnly]="['UPDATE-STUDY-ZONES','DELETE-STUDY-ZONES']">
+          <th class="text-right" [width]="'10px'">
+            {{ "admin.studyZone.actions" | translate }}
+          </th>
+        </ng-template>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-studyZone>
-      <tr>
-        <td class="text-center">{{ studyZone.name }}</td>
-        <td class="text-center">
-          {{ studyZone.start_date | date : "dd/MM/yyyy" }}
+      <tr [ngClass]="{'selected': studyZoneSelected && studyZoneSelected.id === studyZone.id}" (mouseenter)="previewStudyZone(studyZone.id)" (mouseleave)="previewStudyZone()" (click)="viewStudyZone(studyZone)"> 
+        <td class="text-left" >
+          {{ studyZone.name }}
         </td>
-        <td class="text-center">
+        <td class="text-center" >
+          {{ studyZone.start_date | date : "dd/MM/yyyy" }}
+          <br/>
           {{ studyZone.end_date | date : "dd/MM/yyyy" }}
         </td>
-        <td class="text-center">
-          <button
-            pButton
-            type="button"
-            [icon]="getIcon(studyZone.id)"
-            (click)="viewStudyZone(studyZone.id)"
-          ></button>
-        </td>
-        <td class="text-center">
-          <button
-            pButton
-            type="button"
-            [icon]="studyZone.is_visible ? 'pi pi-times' : 'pi pi-check'"
-            (click)="toggleEnableStudyZone(studyZone.id)"
-          ></button>
-        </td>
-        <td class="text-center">
-          <button
-            pButton
-            type="button"
-            icon="pi pi-trash"
-            (click)="confirmDeleteStudyZone($event, studyZone.id)"
-          ></button>
-          <p-confirmPopup [styleClass]="'custom-confirm-popup'" />
-        </td>
-        <td class="text-center">
-          <button
-            pButton
-            type="button"
-            icon="pi pi-pencil"
-            (click)="editStudyZone(studyZone.id)"
-          ></button>
-        </td>
+
+        <ng-template [ngxPermissionsOnly]="['UPDATE-STUDY-ZONES','DELETE-STUDY-ZONES']">
+          <td class="flex justify-content-end gap-2">
+            <ng-template [ngxPermissionsOnly]="['UPDATE-STUDY-ZONES']">
+              <button pButton type="button" [icon]="studyZone.is_visible ? 'pi pi-times' : 'pi pi-check'" (click)="toggleEnableStudyZone(studyZone.id)"></button>
+              <button pButton type="button" class="p-button-warning" icon="pi pi-pencil" (click)="editStudyZone(studyZone.id)"></button>
+            </ng-template>
+            <ng-template [ngxPermissionsOnly]="['DELETE-STUDY-ZONES']">
+              <button pButton type="button" class="p-button-danger" icon="pi pi-trash" (click)="confirmDeleteStudyZone($event, studyZone.id)"></button>
+            </ng-template>
+          </td>
+        </ng-template>
+        <p-confirmPopup [styleClass]="'custom-confirm-popup'" />
       </tr>
     </ng-template>
   </p-table>

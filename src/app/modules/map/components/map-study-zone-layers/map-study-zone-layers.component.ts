@@ -1,3 +1,4 @@
+import { StudyZone } from './../../../../models/study-zone.d';
 import {
   Component,
   Input,
@@ -9,8 +10,8 @@ import {
 
 import { MapService } from '../../service/map.service';
 import { StudyZoneService } from '../../../../services/study-zone/study-zone.service';
-import { StudyZone } from '../../../../models/study-zone';
 import { Subscription } from 'rxjs';
+import { ObservationsService } from '../../../../services/observations/observations.service';
 
 @Component({
   selector: 'app-map-study-zone-layers',
@@ -20,13 +21,16 @@ import { Subscription } from 'rxjs';
 export class MapZoneStudyLayersComponent implements OnInit, OnDestroy {
   private mapService = inject(MapService);
   private studyZoneService = inject(StudyZoneService);
+  private observationsService = inject(ObservationsService);
   private subscriptions = new Subscription();
+  
   studyZones: StudyZone[] = [];
   studyZonesModel: { [key: number]: boolean }[] = [];
+  
 
   @Input() showMapLayers?: WritableSignal<boolean>;
 
-  layerId: number = 0;
+  layerId: number | null = null;
 
   ngOnInit(): void {
     this.subscriptions.add(
@@ -42,16 +46,69 @@ export class MapZoneStudyLayersComponent implements OnInit, OnDestroy {
     return item.id;
   }
 
-  toggleLayerVisibility(layerId: number, e: any) {
-    const studyZoneSelected = this.studyZones.find(
-      (studyZone) => studyZone.id === layerId
-    );
-    if (!e.checked) {
-      this.mapService.drawSZPolygonFromId(studyZoneSelected);
+  toggleLayerVisibility(layerId: number | null, e: any) {
+    
+    let studyZoneSelected:StudyZone | undefined = undefined;
+
+    this.mapService.eraseSZPolygonFromId();
+    this.mapService.eraseAllSZPolygons();
+
+    if (layerId === null) {
+      this.observationsService.getAllObservations();
+      this.mapService.flyToDefaultBbox();
       return;
     }
-    this.mapService.eraseSZPolygonFromId(studyZoneSelected.id);
+
+    this.layerId = layerId;
+
+    studyZoneSelected = this.studyZones.find(
+      (studyZone) => studyZone.id === layerId
+    );
+    
+    this.mapService.drawSZPolygonFromId(studyZoneSelected);
+    // fly to study zone polygon
+    const bbox = this.getBboxFromPolygon(studyZoneSelected.boundaries.coordinates[0]);
+    this.mapService.map.fitBounds(bbox, { padding: { top: 20, bottom: 20, left: 20, right: 20 } });
+    
+    let poligonCoordiantes = studyZoneSelected.boundaries.coordinates[0].map((coo:any) => {
+      return `${coo[1]} ${coo[0]}`;
+    });
+    this.observationsService.getObservationsByPolygonAndDates(
+      poligonCoordiantes, 
+      [String(studyZoneSelected.start_date), String(studyZoneSelected.end_date)]
+    ).subscribe({
+      error: (error) => {
+        console.error(error);
+      }
+    });
+
   }
+
+  private getBboxFromPolygon(polygon: Number[][]): [[number, number], [number, number]] {
+    const points = polygon.map((p: any) => [p[1], p[0]]);
+    let minX: number = 0,
+      maxX: number = 0,
+      minY: number = 0,
+      maxY: number = 0;
+
+    points.forEach((p, i) => {
+      if (i === 0) {
+        minX = maxX = p[0];
+        minY = maxY = p[1];
+      } else {
+        minX = Math.min(p[0], minX);
+        minY = Math.min(p[1], minY);
+        maxX = Math.max(p[0], maxX);
+        maxY = Math.max(p[1], maxY);
+      }
+    });
+
+    return [
+      [minX, minY],
+      [maxX, maxY],
+    ];
+  }
+
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();

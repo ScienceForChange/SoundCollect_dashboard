@@ -2,24 +2,15 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ObservationsService } from '../observations/observations.service';
 import { environment } from '../../../environments/environment';
-import {
-  BehaviorSubject,
-  map,
-  Observable,
-  catchError,
-  throwError,
-} from 'rxjs';
+import { BehaviorSubject, map, Observable, catchError, throwError } from 'rxjs';
 import { Boundaries, StudyZone, StudyZoneForm } from '../../models/study-zone';
 
 @Injectable({
   providedIn: 'root',
 })
 export class StudyZoneService {
-  studyZones$: BehaviorSubject<StudyZone[]> = new BehaviorSubject<StudyZone[]>(
-    []
-  );
-  studyZoneSelected$: BehaviorSubject<StudyZone | null> =
-    new BehaviorSubject<StudyZone | null>(null);
+  studyZones$: BehaviorSubject<StudyZone[]> = new BehaviorSubject<StudyZone[]>([]);
+  studyZoneSelected$: BehaviorSubject<StudyZone | null> = new BehaviorSubject<StudyZone | null>(null);
 
   constructor(
     private http: HttpClient,
@@ -113,9 +104,7 @@ export class StudyZoneService {
   public updateStudyZone(id: number, result: StudyZoneForm, boundaries:Boundaries): Observable<void> {
     this.observationService.loading$.next(true);
     const studyZone = {
-      coordinates: boundaries.coordinates
-        .flat()
-        .map((coord) => coord.reverse().join(' ')),
+      coordinates: boundaries.coordinates.flat().map((coord) => coord.reverse().join(' ')),
       start_date: result.start_end_dates[0],
       end_date: result.start_end_dates[1],
       ...result,

@@ -134,7 +134,8 @@
     "layers": {
       "title": "Tipus de mapa",
       "standard": "Estàndard",
-      "satellite": "Satèl·lit"
+      "satellite": "Satèl·lit",
+      "noStudyZone": "Cap Zona d'Estudi"
     },
     "laeqtChart": {
       "axisX": "Temps (segons)",
@@ -398,7 +399,8 @@
         "contactEmail": "Email del contacte",
         "contactPhone": "Telèfon del contacte",
         "logo": "Logotip"
-      }
+      },
+      "actions": "Accions"
     }
   },
   "login": {
@@ -476,5 +478,6 @@
     "delete-message": "Si us plau, confirmeu per procedir a esborrar.",
     "title": "Observacions",
     "show": "Veure info"
-  }
+  },
+  "studyZones": "Zones d'estudi"
 }
