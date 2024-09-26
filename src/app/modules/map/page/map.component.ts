@@ -19,6 +19,7 @@ import { MapService } from '../service/map.service';
 import { Observations } from '../../../models/observations';
 import { StudyZone } from '../../../models/study-zone';
 import { StudyZoneService } from '../../../services/study-zone/study-zone.service';
+import { ObservationsService } from '../../../services/observations/observations.service';
 
 @Component({
   selector: 'app-map',
@@ -29,6 +30,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   @ViewChild('mapDiv') mapDivElement!: ElementRef;
   private mapService = inject(MapService);
   private studyZoneService = inject(StudyZoneService);
+  private observationsService = inject(ObservationsService);
 
 
   public showFilters: WritableSignal<boolean> = signal<boolean>(false);
@@ -124,5 +126,6 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     this.subscriptions.unsubscribe();
     this.mapService.map = null;
     this.mapService.studyZoneDialogVisible$.next(false);
+    this.observationsService.getAllObservations();    
   }
 }
