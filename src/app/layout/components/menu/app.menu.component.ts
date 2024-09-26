@@ -57,7 +57,7 @@ export class AppMenuComponent implements OnInit {
       switch (permission) {
         case 'MANAGE-STUDY-ZONES': {
           this.adminItems[0].items.push({
-            label: "Zones d'estudi",
+            label: this.translateService.instant('app.studyZones'),
             icon: 'pi pi-map',
             command: () => {
               this.toggleAdminMenu.emit(false);
@@ -69,7 +69,7 @@ export class AppMenuComponent implements OnInit {
         }
         case 'MANAGE-APP-USERS': {
           this.adminItems[0].items.push({
-            label: 'Usuaris',
+            label: this.translateService.instant('app.users'),
             icon: 'pi pi-users',
             command: () => {
               this.toggleAdminMenu.emit(false);
@@ -81,7 +81,7 @@ export class AppMenuComponent implements OnInit {
         }
         case 'MANAGE-ADMIN-USERS': {
           this.adminItems[0].items.push({
-            label: 'Administradors',
+            label: this.translateService.instant('app.administrators'),
             icon: 'pi pi-id-card',
             command: () => {
               this.toggleAdminMenu.emit(false);
@@ -93,7 +93,7 @@ export class AppMenuComponent implements OnInit {
         }
         case 'MANAGE-ROLES': {
           this.adminItems[0].items.push({
-            label: 'Rols',
+            label: this.translateService.instant('app.roles'),
             icon: 'pi pi-tags',
             command: () => {
               this.toggleAdminMenu.emit(false);
@@ -105,7 +105,7 @@ export class AppMenuComponent implements OnInit {
         }
         case 'MANAGE-OBSERVATIONS': {
           this.adminItems[0].items.push({
-            label: 'Observacions',
+            label: this.translateService.instant('app.observations'),
             icon: 'pi pi-fw pi-map-marker',
             command: () => {
               this.toggleAdminMenu.emit(false);

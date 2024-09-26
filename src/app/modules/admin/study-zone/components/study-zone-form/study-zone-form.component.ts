@@ -39,7 +39,7 @@ export class StudyZoneFormComponent {
     user_id: new FormControl('', [Validators.required]),
     name: new FormControl('', [Validators.required]),
     description: new FormControl('', [Validators.required]),
-    conclusion: new FormControl(' '),
+    conclusion: new FormControl(''),
     start_end_dates: new FormControl<Date[] | null[]>(
       [new Date(), new Date()] as Date[] | null[],
       [Validators.required]

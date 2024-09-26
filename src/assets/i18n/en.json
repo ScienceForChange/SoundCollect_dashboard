@@ -50,7 +50,11 @@
       "catalan": "Catalan",
       "spanish": "Spanish",
       "english": "English"
-    }
+    },
+    "studyZones": "Study Zones",
+    "administrators": "Administrators",
+    "roles": "Roles",
+    "users": "App users"
   },
   "home": {
     "footer": {
@@ -464,12 +468,13 @@
     "enabled": "Enabled users"
   },
   "user": {
-    "expert": "Expert",
-    "not-expert": "No expert",
+    "expert": "Expert informant",
+    "not-expert": "No",
     "disable": "Disable",
     "enable": "Enable",
     "delete-message": "Are you sure you want to delete the user?",
-    "restore-message": "Are you sure you want to restore the user?"
+    "restore-message": "Are you sure you want to restore the user?",
+    "si_expert": "Yes"
   },
   "observations": {
     "delete": "Delete",
@@ -479,5 +484,8 @@
     "title": "Observations",
     "show": "Show info"
   },
-  "studyZones": "Study Zones"
+  "studyZones": "Study Zones",
+  "studyzones": {
+    "title": "Study Zones"
+  }
 }

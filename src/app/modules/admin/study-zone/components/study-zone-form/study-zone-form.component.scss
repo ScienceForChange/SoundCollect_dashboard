@@ -19,5 +19,8 @@
   form,.p-dialog-content{
     scrollbar-width: none;
   }
+  .p-datepicker-touch-ui, .p-calendar .p-datepicker-touch-ui {
+    min-width: auto;
+  }
 }
 
