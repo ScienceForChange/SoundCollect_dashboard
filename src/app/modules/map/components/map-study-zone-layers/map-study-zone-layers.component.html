@@ -20,19 +20,20 @@
     {{ 'map.layers.noStudyZone' | translate }}
   </label>
 </div>
-<div
-  *ngFor="let studyZone of studyZones; trackBy: trackById; let i = index"
-  class="flex align-items-center mt-3"
->
-  <p-radioButton
-    [inputId]="'studyZone' + studyZone.id"
-    name="studyZone"
-    [(ngModel)]="layerId"
-    [value]="studyZone.id" 
-    (onClick)="toggleLayerVisibility(studyZone.id, $event)"
-  />
-  <label [htmlFor]="'studyZone' + studyZone.id " class="ml-2">
-    {{ studyZone.name }}
-  </label>
-</div>
+@for(studyZone of studyZones; track trackById; let i = $index){
+  @if(studyZone.is_visible){
+  <div class="flex align-items-center mt-3">
+      <p-radioButton
+        [inputId]="'studyZone' + studyZone.id"
+        name="studyZone"
+        [(ngModel)]="layerId"
+        [value]="studyZone.id" 
+        (onClick)="toggleLayerVisibility(studyZone.id, $event)"
+      />
+      <label [htmlFor]="'studyZone' + studyZone.id " class="ml-2">
+        {{ studyZone.name }}
+      </label>
+    </div>
+  }
+}
 </p-sidebar>
