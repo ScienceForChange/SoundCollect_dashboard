@@ -629,9 +629,7 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.observations$.unsubscribe();
-    if (this.filterActive) {
-      this.observationsService.getAllObservations()
-    }
+    this.observationsService.getAllObservations()
   }
 }
 
