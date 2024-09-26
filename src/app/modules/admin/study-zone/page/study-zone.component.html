@@ -1,0 +1,21 @@
+
+<p-menubar>
+  <ng-template pTemplate="start">
+    <h3 class="mb-0">{{ "studyzones.title" | translate }}</h3>
+  </ng-template>
+</p-menubar>
+
+<section class="flex flex-wrap flex-1 w-100">
+  <div class="col-12 lg:col-6 xl:col-8">
+    <app-study-zone-map (toggleStudyZoneForm)="toggleStudyZoneForm()" />
+  </div>
+  <div class="col-12 lg:col-6 xl:col-4">
+    <app-study-zone-list (toggleStudyZoneForm)="toggleStudyZoneForm()" />
+  </div>
+  @if(studyZoneFormVisible()){
+    <app-study-zone-form [visible]="studyZoneFormVisible()" (toggleStudyZoneForm)="toggleStudyZoneForm()"/>
+  }
+  @if(visibleDialog) {
+    <app-study-zone-dialog [visible]="visibleDialog" [studyZone]="studyZoneSelected"/>
+  }
+</section>

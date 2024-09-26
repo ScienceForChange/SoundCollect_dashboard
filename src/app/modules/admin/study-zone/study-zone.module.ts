@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import { NgxPermissionsModule } from 'ngx-permissions';
 import { ButtonModule } from 'primeng/button';
 import { SidebarModule } from 'primeng/sidebar';
 import { RadioButtonModule } from 'primeng/radiobutton';
@@ -17,11 +18,12 @@ import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { ToastModule } from 'primeng/toast';
 
 
-import { StudyZoneComponent } from './study-zone/study-zone.component';
+import { StudyZoneComponent } from './page/study-zone.component';
 import { StudyZoneMapComponent } from './components/map/study-zone-map.component';
 import { SharedComponentsModule } from '../../../shared/shared.module';
 import { StudyZoneFormComponent } from './components/study-zone-form/study-zone-form.component';
 import { StudyZoneListComponent } from './components/study-zone-list/study-zone-list.component';
+import { MenubarModule } from 'primeng/menubar';
 
 @NgModule({
   declarations: [
@@ -47,7 +49,9 @@ import { StudyZoneListComponent } from './components/study-zone-list/study-zone-
     FileUploadModule,
     DividerModule,
     TableModule,
-    ToastModule
+    ToastModule,
+    MenubarModule,
+    NgxPermissionsModule
   ],
 })
 export class StudyZoneModule {}

@@ -2,15 +2,13 @@ import { inject, Injectable, signal } from '@angular/core';
 import { ObservationsService } from '../../../../services/observations/observations.service';
 import { Observations } from '../../../../models/observations';
 import { IControl, LngLat, LngLatBounds, Map, MapEvent } from 'mapbox-gl';
-import { GeoJSONObject, Position } from '@turf/turf';
-import { Subscription } from 'rxjs';
+import { GeoJSONObject } from '@turf/turf';
 import MapboxDraw from '@mapbox/mapbox-gl-draw';
 import { StudyZoneService } from '../../../../services/study-zone/study-zone.service';
+import { StudyZone } from '../../../../models/study-zone';
+import { BehaviorSubject } from 'rxjs';
 
-interface Feature<
-  G extends GeoJSON.Geometry | null = GeoJSON.Geometry,
-  P = { [name: string]: any } | null
-> extends GeoJSONObject {
+interface Feature<G extends GeoJSON.Geometry | null = GeoJSON.Geometry,P = { [name: string]: any } | null> extends GeoJSONObject {
   type: 'Feature';
   geometry: G;
   id?: string | number | undefined;
@@ -27,10 +25,16 @@ export class StudyZoneMapService {
   public polygonFilter = signal<any | undefined>(undefined);
   public polylines = signal<Feature[]>([]);
   public startPoints = signal<Feature[]>([]);
+  public studyZones = signal<Feature[]>([]);
+  public pointStudyZones = signal<Feature[]>([]);
+
+  public studyZoneSelected$: BehaviorSubject<StudyZone | null> = new BehaviorSubject<StudyZone>(null);
+
   public studyZoneDialogVisible = signal<boolean>(false);
 
 
   public observations!: Observations[];
+  public allStudyZones!: StudyZone[];
   public map!: Map;
   private draw!: MapboxDraw;
 
@@ -42,7 +46,7 @@ export class StudyZoneMapService {
     maxZoom?: number;
     bounds: LngLatBounds;
     clusterMaxZoom: number;
-  } = {
+    } = {
     zoom: 10,
     mapStyle: 'mapbox://styles/mapbox/light-v11',
     centerMapLocation: [2.1487613, 41.3776589],
@@ -51,27 +55,34 @@ export class StudyZoneMapService {
     bounds: new LngLatBounds(new LngLat(-90, 90), new LngLat(90, -90)),
     clusterMaxZoom: 17,
   };
+
+  private defaultBbox:[[number, number], [number, number]] = [[0.048229834542042, 40.416428760865], [3.3736729893935, 42.914194523824]]; // Catalonia bbox
+
   public layerId: string = 'light-v10';
   public selectedPolygon: any | undefined = undefined;
 
   constructor() {
     this.observationsService.observations$.subscribe((observations) => {
       this.observations = observations;
-      this.polylines.update(() =>
-        this.observationsService.getLineStringFromObservations(
-          this.observations
-        )
-      );
-      this.startPoints.update(() =>
-        this.observationsService.getStartPointsFromObservations(
-          this.observations
-        )
-      );
+      this.polylines.update(() => this.observationsService.getLineStringFromObservations(this.observations));
+      this.startPoints.update(() => this.observationsService.getStartPointsFromObservations(this.observations));
       this.updateMapSource();
+    });
+    this.studyZoneService.studyZones$.subscribe((studyZones) => {
+      this.allStudyZones = studyZones;
+      this.studyZones.update(() => this.getPolygonFromStudyZones(this.allStudyZones));
+      this.pointStudyZones.update(() => this.getPointFromStudyZones(this.allStudyZones));
+      this.updateMapSource();
+    });
+    this.studyZoneSelected$.subscribe((studyZone) => {
+      
+      if (studyZone) this.selectedStudyZone(studyZone.id);
     });
   }
 
   public drawPolygonFilter() {
+    this.toggleObservationsVisibility();
+    this.toggleStudyZonesVisibility();
     if (this.polygonFilter()) {
       this.deletePolygonFilter();
     }
@@ -79,6 +90,8 @@ export class StudyZoneMapService {
   }
 
   public deletePolygonFilter() {
+    this.toggleObservationsVisibility();
+    this.toggleStudyZonesVisibility();
     this.draw.delete(this.polygonFilter().id);
     this.selectedPolygon = undefined;
     this.polygonFilter.update(() => undefined);
@@ -101,28 +114,31 @@ export class StudyZoneMapService {
   }
 
   private updateMapSource() {
-    this.polylines.update(() =>
-      this.observationsService.getLineStringFromObservations(this.observations)
-    );
-    this.startPoints.update(() =>
-      this.observationsService.getStartPointsFromObservations(this.observations)
-    );
+
+    if(this.observations){
+      this.polylines.update(() => this.observationsService.getLineStringFromObservations(this.observations));
+      this.startPoints.update(() => this.observationsService.getStartPointsFromObservations(this.observations));
+    }
+    if(this.allStudyZones){
+      this.studyZones.update(() => this.getPolygonFromStudyZones(this.allStudyZones));
+      this.pointStudyZones.update(() => this.getPointFromStudyZones(this.allStudyZones));
+    }
+
 
     if (!this.map || !this.map.getSource('polylines')) return;
+
     let source = this.map.getSource('polylines') as mapboxgl.GeoJSONSource;
-    source.setData({
-      type: 'FeatureCollection',
-      features: this.polylines(),
-    });
+    source.setData({type: 'FeatureCollection', features: this.polylines()});
 
-    let sourceStartPoints = this.map.getSource(
-      'startPoints'
-    ) as mapboxgl.GeoJSONSource;
+    let sourceStartPoints = this.map.getSource('startPoints') as mapboxgl.GeoJSONSource;
+    sourceStartPoints.setData({ type: 'FeatureCollection', features: this.startPoints()});
 
-    sourceStartPoints.setData({
-      type: 'FeatureCollection',
-      features: this.startPoints(),
-    });
+    let sourceStudyZones = this.map.getSource('allStudyZones') as mapboxgl.GeoJSONSource;
+    sourceStudyZones.setData({ type: 'FeatureCollection', features: this.studyZones()});
+
+    let sourcePointStudyZones = this.map.getSource('allStudyZonesPoints') as mapboxgl.GeoJSONSource;
+    sourcePointStudyZones.setData({ type: 'FeatureCollection', features: this.pointStudyZones()});
+
   }
 
   public onMapLoad() {
@@ -382,34 +398,25 @@ export class StudyZoneMapService {
     this.map.addControl(this.draw as IControl);
 
     //Llamada a la función onPolygonSelect cuando se selecciona un polígono
-    this.map.on(
-      'draw.selectionchange' as MapEvent,
-      this.onDrawSelect.bind(this)
-    );
+    this.map.on('draw.selectionchange' as MapEvent, this.onDrawSelect.bind(this));
 
     //Llamada a la función polygonCreated cuando se termina de dibujar un polígono
     this.map.on('draw.create' as MapEvent, this.onDrawCreated.bind(this));
 
     //La función updatedSubareaPolygon se llama cuando se actualiza un polígono
     this.map.on('draw.update' as MapEvent, this.onDrawUpdated.bind(this));
+
+    this.flyToDefaultBbox();
+
   }
 
-  public erasePolygonFromId(id: number) {
-    let source = this.map.getSource('studyZone') as mapboxgl.GeoJSONSource;
-    const { features, ...rest } =
-      source._data as GeoJSON.FeatureCollection<GeoJSON.Geometry>;
-    const filterFeatures = features.filter(
-      (feature) => feature.properties['id'] !== id
-    );
-    source.setData({ features: filterFeatures, ...rest });
-  }
-
+  
+  // Funcion para dibujar un polígono en la capa de zonas de estudio seleccionada
   public drawPolygonFromId(id: number) {
-    const studyZone = this.studyZoneService.studyZones$
-      .getValue()
-      .find((studyZone) => studyZone.id === id);
+    this.toggleStudyZonesVisibility()
+    const studyZone = this.studyZoneService.studyZones$.getValue().find((studyZone) => studyZone.id === id);
 
-    let source = this.map.getSource('studyZone') as mapboxgl.GeoJSONSource;
+    let source = this.map.getSource('studyZoneSelected') as mapboxgl.GeoJSONSource;
 
     const newFeature: GeoJSON.Feature<GeoJSON.Polygon> = {
       type: 'Feature',
@@ -426,22 +433,33 @@ export class StudyZoneMapService {
         ],
       },
     };
-    //Add the new feature to the studyZone source
-    const data = source._data as GeoJSON.FeatureCollection<GeoJSON.Geometry>;
-    data.features.push(newFeature);
 
-    source.setData(data);
+
   }
 
-  public addObservationsToMap(
-    observations: Observations[] = this.observations
-  ) {
-    //Añadir source para los polygonos de las zonas de estudio
-    this.map.addSource('studyZone', {
+  public selectedPolygonFromId(id: number) {
+    this.studyZoneSelected$.next(this.allStudyZones.find((studyZone) => studyZone.id === id));
+    this.toggleStudyZonesVisibility()
+    this.drawPolygonFromId(id);
+  }
+
+  public addObservationsToMap(observations: Observations[] = this.observations) {
+
+    //Añadir source para los polygonos de todas las zonas de estudio
+    this.map.addSource('allStudyZones', {
       type: 'geojson',
       data: {
         type: 'FeatureCollection',
-        features: [],
+        features: this.studyZones(),
+      },
+    });
+
+    //Añadir source de punto medio de todas las zonas de estudio
+    this.map.addSource('allStudyZonesPoints', {
+      type: 'geojson',
+      data: {
+        type: 'FeatureCollection',
+        features: this.pointStudyZones(),
       },
     });
 
@@ -464,58 +482,70 @@ export class StudyZoneMapService {
 
     //Relleno zona de estudio
     this.map.addLayer({
-      id: 'studyZone',
+      id: 'allStudyZone',
       type: 'fill',
-      source: 'studyZone',
+      source: 'allStudyZones',
+      minzoom: 10,
       paint: {
-        'fill-color': '#088',
+        'fill-color': [
+          "case",
+          ['==', ['get', "status"], 'preview'], "#0AA",
+          ['==', ['get', "status"], 'selected'], "#0AA",
+          "#FF7A1F"
+        ],
         'fill-opacity': 0.2,
+      },
+      layout: {
+        'visibility': 'visible'
       },
     });
 
     //Borde de la zona de estudio
     this.map.addLayer({
-      id: 'studyZoneLines',
+      id: 'allStudyZoneLines',
       type: 'line',
-      source: 'studyZone',
+      source: 'allStudyZones',
+      minzoom: 10,
       paint: {
-        'line-color': '#FFF',
-        'line-width': 2,
+        'line-color':[
+          "case",
+          ['==', ['get', "status"], 'preview'], "#0AA",
+          ['==', ['get', "status"], 'selected'], "#0AA",
+          "#FF7A1F"
+        ],
+        'line-width': 1,
+      },
+      layout: {
+        'visibility': 'visible'
       },
     });
 
-    // resaltar la línea a la que se hace hover de color negro
+    //Representamos las zonas de estudio como puntos al estar en zoom 12
     this.map.addLayer({
-      id: 'lineLayer-hover',
-      type: 'line',
-      source: 'polylines',
-      layout: {
-        'line-join': 'round',
-        'line-cap': 'round',
-      },
+      id: 'allStudyZonesPoints',
+      type: 'circle',
+      source: 'allStudyZonesPoints',
+      maxzoom: 10,
       paint: {
-        'line-color': '#333',
-        'line-width': 3,
-        'line-gap-width': 5,
+        'circle-radius': 5,
+        'circle-color': [
+          "case",
+          ['==', ['get', "status"], 'preview'], "#FFF",
+          ['==', ['get', "status"], 'selected'], "#0AA",
+          "#FFF"
+        ],
+        'circle-pitch-scale': 'viewport',
+        'circle-stroke-color': [
+          "case",
+          ['==', ['get', "status"], 'preview'], "#0AA",
+          ['==', ['get', "status"], 'selected'], "#0AA",
+          "#FF7A1F"
+        ],
+        'circle-stroke-width': 5,
       },
-      filter: ['==', 'id', ''], // Filtro vacío para iniciar
-    });
-
-    // resaltar la línea seleccionada de color naranja
-    this.map.addLayer({
-      id: 'lineLayer-select',
-      type: 'line',
-      source: 'polylines',
       layout: {
-        'line-join': 'round',
-        'line-cap': 'round',
+        'visibility': 'visible'
       },
-      paint: {
-        'line-color': '#FF7A1F',
-        'line-width': 4,
-        'line-gap-width': 5,
-      },
-      filter: ['==', 'id', ''], // Filtro vacío para iniciar
     });
 
     // Agregar capa para los paths individuales
@@ -526,6 +556,7 @@ export class StudyZoneMapService {
       //minzoom: 14,
       source: 'polylines',
       layout: {
+        'visibility': 'none',
         'line-join': 'round',
         'line-cap': 'round',
       },
@@ -551,6 +582,9 @@ export class StudyZoneMapService {
       id: 'start',
       type: 'circle',
       source: 'startPoints',
+      layout: {
+        'visibility': 'none'
+      },
       paint: {
         'circle-radius': 3,
         'circle-color': '#6D6',
@@ -560,59 +594,209 @@ export class StudyZoneMapService {
       },
     });
 
-    this.map.on('mouseenter', 'studyZone', (e: any) => {
+    this.map.on('click', ['allStudyZone', 'allStudyZonesPoints'], (e: any) => {
+      this.selectedPolygonFromId(e.features[0].properties.id);
+    });
+    this.map.on('mouseenter', ['allStudyZone', 'allStudyZonesPoints'], (e: any) => {
+      this.previewStudyZone(e.features[0].properties.id);
       this.map.getCanvas().style.cursor = 'pointer';
+     // this.(e.features[0].properties.id);
     });
 
-    this.map.on('mouseleave', 'studyZone', (e: any) => {
+    this.map.on('mouseleave', ['allStudyZone', 'allStudyZonesPoints'], (e: any) => {
+      this.previewStudyZone();
       this.map.getCanvas().style.cursor = 'inherit';
     });
 
-    this.map.on('click', 'studyZone', (e: any) => {
-      this.map.getCanvas().style.cursor = 'inherit';
-      if(e.features.length > 0) {
-        this.studyZoneService.selectStudyZone(e.features[0].properties.id);
-        this.studyZoneDialogVisible.update(() => true);
-      }
-    });
+  }
 
-    this.map.on('mouseenter', 'LineString', (e: any) => {
-      this.map.getCanvas().style.cursor = 'pointer';
-      for (let feature of e.features) {
-        if (
-          feature.properties.type === 'LineString' &&
-          feature.properties.id !== undefined
-        ) {
-          this.map.setFilter('lineLayer-hover', [
-            '==',
-            'id',
-            feature.properties.id,
-          ]);
-          return;
+  public toggleObservationsVisibility() {
+    let studyZonesLayers : string[] = ['LineString', 'start'];
+    for (let layer of studyZonesLayers) {
+      let visibility = this.map.getLayoutProperty(layer, 'visibility');
+      this.map.setLayoutProperty(layer, 'visibility', visibility === 'visible' ? 'none' : 'visible');
+    }
+  }
+
+  public toggleStudyZonesVisibility() {
+    let studyZonesLayers : string[] = ['allStudyZone', 'allStudyZoneLines', 'allStudyZonesPoints'];
+    for (let layer of studyZonesLayers) {
+      let visibility = this.map.getLayoutProperty(layer, 'visibility');
+      this.map.setLayoutProperty(layer, 'visibility', visibility === 'visible' ? 'none' : 'visible');
+    }
+  }
+
+  // Función para obtener el polígono de las zonas de estudio
+  private getPolygonFromStudyZones(studyZones: StudyZone[]):any {
+    return studyZones.map((studyZone) => {
+      return {
+        type: 'Feature',
+        properties: {
+          id: studyZone.id,
+        },
+        geometry: {
+          type: 'Polygon',
+          coordinates: [
+            studyZone.boundaries.coordinates[0].map((coordinate) => [
+              coordinate[1],
+              coordinate[0],
+            ]),
+          ],
+        },
+      };
+    });
+  }
+
+  // Función para obtener la media de geolocalizacion de las zonas de estudio
+  private getPointFromStudyZones(studyZones: StudyZone[]):any {
+    return studyZones.map((studyZone) => {
+      return {
+        type: 'Feature',
+        properties: {
+          id: studyZone.id,
+        },
+        geometry: {
+          type: 'Point',
+          coordinates: [
+            studyZone.boundaries.coordinates[0].reduce((acc, coordinate) => acc + coordinate[1], 0) / studyZone.boundaries.coordinates[0].length,
+            studyZone.boundaries.coordinates[0].reduce((acc, coordinate) => acc + coordinate[0], 0) / studyZone.boundaries.coordinates[0].length,
+          ],
+        },
+      };
+    });
+  }
+
+
+  //buscamos la id de la feature seleccionada de la capa de puntos de las zonas de estudio
+  //y le añadimos la propiedad status con el valor preview
+  previewStudyZone(id: number | null = null) {
+    let sourcePoints = this.map.getSource('allStudyZonesPoints') as mapboxgl.GeoJSONSource;
+
+    // Eliminamos la propiedad status preview de todos los puntos
+    if (id === null) {
+      const { features, ...rest } = sourcePoints._data as GeoJSON.FeatureCollection<GeoJSON.Geometry>;
+      const newFeatures = features.map((feature) => {
+        //si la feature tiene la propiedad status preview la eliminamos
+        if (feature.properties['status'] === 'preview') {
+          return { ...feature, properties: { ...feature.properties, status: null } };
         }
-      }
-    });
-
-    this.map.on('click', 'LineString', (e: any) => {
-      this.map.getCanvas().style.cursor = 'inherit';
-      for (let feature of e.features) {
-        if (
-          feature.properties.type === 'LineString' &&
-          feature.properties.id !== undefined
-        ) {
-          this.map.setFilter('lineLayer-select', [
-            '==',
-            'id',
-            feature.properties.id,
-          ]);
-          return;
+        return feature;
+      });
+      sourcePoints.setData({ features: newFeatures, ...rest });
+    }
+    const { features, ...rest } = sourcePoints._data as GeoJSON.FeatureCollection<GeoJSON.Geometry>;
+    let previewFeature: GeoJSON.Feature<GeoJSON.Geometry> | null = null;
+    const newFeatures = features.map((feature) => {
+      if (feature.properties['id'] === id) {
+        // Ponemos la feature en preview si status no es selected
+        if (feature.properties['status'] === 'selected') {
+          return feature;
         }
+        previewFeature = { ...feature, properties: { ...feature.properties, status: 'preview' } };
+        return null; // Eliminamos temporalmente la feature del array
       }
-    });
+      return feature;
+    }).filter(feature => feature !== null) as GeoJSON.Feature<GeoJSON.Geometry>[];
 
-    this.map.on('mouseleave', 'LineString', (e: any) => {
-      this.map.getCanvas().style.cursor = 'inherit';
-      this.map.setFilter('lineLayer-hover', ['==', 'id', '']);
+    // Añadimos la feature con preview al final del array
+    if (previewFeature) {
+      newFeatures.push(previewFeature);
+    }
+
+    sourcePoints.setData({ features: newFeatures, ...rest });
+
+
+
+    // hacemos lo mismo con los poligonos
+    let source = this.map.getSource('allStudyZones') as mapboxgl.GeoJSONSource;
+
+    // Eliminamos la propiedad status preview de todos los poligonos
+    if (id === null) {
+      const { features, ...rest } = source._data as GeoJSON.FeatureCollection<GeoJSON.Geometry>;
+      const newFeatures = features.map((feature) => {
+        //si la feature tiene la propiedad status preview la eliminamos
+        if (feature.properties['status'] === 'preview') {
+          return { ...feature, properties: { ...feature.properties, status: null } };
+        }
+        return feature;
+      });
+      source.setData({ features: newFeatures, ...rest });
+      return;
+    }
+    const { features: featuresPolygons, ...restPolygons } = source._data as GeoJSON.FeatureCollection<GeoJSON.Geometry>;
+    let previewFeaturePolygon: GeoJSON.Feature<GeoJSON.Geometry> | null = null;
+    const newFeaturesPolygons = featuresPolygons.map((feature) => {
+      if (feature.properties['id'] === id) {
+        // Ponemos la feature en preview si status no es selected
+        if (feature.properties['status'] === 'selected') {
+          return feature;
+        }
+        // Ponemos la feature en preview
+        previewFeaturePolygon = { ...feature, properties: { ...feature.properties, status: 'preview' } };
+        return null; // Eliminamos temporalmente la feature del array
+      }
+      return feature;
+    }).filter(feature => feature !== null) as GeoJSON.Feature<GeoJSON.Geometry>[];
+
+    // Añadimos la feature con preview al final del array
+    if (previewFeaturePolygon) {
+      newFeaturesPolygons.push(previewFeaturePolygon);
+    }
+
+    source.setData({ features: newFeaturesPolygons, ...restPolygons });
+
+  }
+
+  //cambiamos el status y el color de la zona de estudio seleccionada
+  //demos primero todos los status en null y luego añadimos el status selected a la zona seleccionada
+  selectedStudyZone(id: number | null = null) {
+    let sourcePoints = this.map.getSource('allStudyZonesPoints') as mapboxgl.GeoJSONSource;
+
+    // Eliminamos la propiedad status selected de todos los puntos
+    const { features, ...rest } = sourcePoints._data as GeoJSON.FeatureCollection<GeoJSON.Geometry>;
+    const newFeatures = features.map((feature) => {
+      //si la feature tiene la propiedad status selected la eliminamos
+      if (feature.properties['status'] === 'selected') {
+        return { ...feature, properties: { ...feature.properties, status: null } };
+      }
+      return feature;
     });
+    sourcePoints.setData({ features: newFeatures, ...rest });
+
+    // Eliminamos la propiedad status selected de todos los poligonos
+    let source = this.map.getSource('allStudyZones') as mapboxgl.GeoJSONSource;
+    const { features: featuresPolygons, ...restPolygons } = source._data as GeoJSON.FeatureCollection<GeoJSON.Geometry>;
+    const newFeaturesPolygons = featuresPolygons.map((feature) => {
+      //si la feature tiene la propiedad status selected la eliminamos
+      if (feature.properties['status'] === 'selected') {
+        return { ...feature, properties: { ...feature.properties, status: null } };
+      }
+      return feature;
+    });
+    source.setData({ features: newFeaturesPolygons, ...restPolygons });
+
+    if (id === null) {
+      return;
+    }
+
+    // Añadimos la propiedad status selected a la feature con la id seleccionada
+    const newFeature = newFeatures.find((feature) => feature.properties['id'] === id);
+    if (newFeature) {
+      newFeature.properties['status'] = 'selected';
+    }
+    sourcePoints.setData({ features: newFeatures, ...rest });
+
+    // Añadimos la propiedad status selected a la feature con la id seleccionada
+    const newFeaturePolygon = newFeaturesPolygons.find((feature) => feature.properties['id'] === id);
+    if (newFeaturePolygon) {
+      newFeaturePolygon.properties['status'] = 'selected';
+    }
+    source.setData({ features: newFeaturesPolygons, ...restPolygons });
+  
+  }
+
+
+  public flyToDefaultBbox() {
+    this.map.fitBounds(this.defaultBbox, { padding: { top: 10, bottom: 10, left: 10, right: 10 } });
   }
 }

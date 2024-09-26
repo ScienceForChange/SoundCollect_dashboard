@@ -33,7 +33,6 @@ export class StudyZoneMapComponent {
   public layerId: string = 'light-v10';
 
   public showMapLayers?: boolean;
-  public selectedPolygon: any | undefined = undefined;
   public filterActive: boolean = false;
 
   public toggleShowMapLayers(): void {
@@ -46,6 +45,7 @@ export class StudyZoneMapComponent {
 
   ngOnInit(): void {
     this.polygonFilter = this.studyZoneMapService.polygonFilter;
+
   }
 
   drawPolygonFilter() {
@@ -64,7 +64,6 @@ export class StudyZoneMapComponent {
       style: mapSettings.mapStyle, // style URL
       center: mapSettings.centerMapLocation, // starting position [lng, lat]
       zoom: mapSettings.zoom, // starting zoom
-      cooperativeGestures: true,
     });
 
     this.studyZoneMapService.map.on('load', () =>

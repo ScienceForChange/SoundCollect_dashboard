@@ -57,7 +57,7 @@ export class AppMenuComponent implements OnInit {
       switch (permission) {
         case 'MANAGE-STUDY-ZONES': {
           this.adminItems[0].items.push({
-            label: "Zonas d'estudi",
+            label: "Zones d'estudi",
             icon: 'pi pi-map',
             command: () => {
               this.toggleAdminMenu.emit(false);

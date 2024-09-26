@@ -471,10 +471,7 @@ export class ObservationsService {
     }
   }
 
-  public getObservationsByPolygonAndHours(
-    polygon: Number[],
-    hourInterval: [string, string]
-  ): Observable<Observations[]> {
+  public getObservationsByPolygonAndHours( polygon: Number[], hourInterval: [string, string]): Observable<Observations[]> {
     this.loading$.next(true);
     return this.http
       .post<{ success: string; data: Observations[] }>(
@@ -485,6 +482,29 @@ export class ObservationsService {
           interval: {
             start: `${hourInterval[0]}`,
             end: `${hourInterval[1]}`,
+          },
+        }
+      )
+      .pipe(
+        map(({ data }) => {
+          this.observations$.next(data);
+          this.loading$.next(false);
+          return data;
+        })
+      );
+  }
+
+  public getObservationsByPolygonAndDates( polygon: string[], hourDates: [string, string] ): Observable<Observations[]> {
+    this.loading$.next(true);
+    return this.http
+      .post<{ success: string; data: Observations[] }>(
+        `${environment.BACKEND_BASE_URL}/observations/in-polygon-date-filter`,
+        {
+          concern: 'inside',
+          polygon: polygon,
+          interval: {
+            start: `2023-01-01 00:00:00`,
+            end: `2024-07-22 05:17:03`,
           },
         }
       )

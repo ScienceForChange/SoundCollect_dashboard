@@ -1,7 +1,7 @@
+import { StudyZoneMapService } from './../../service/study-zone-map.service';
 import { Component, EventEmitter, inject, Output } from '@angular/core';
 import { StudyZoneService } from '../../../../../services/study-zone/study-zone.service';
 import { StudyZone } from '../../../../../models/study-zone';
-import { StudyZoneMapService } from '../../service/study-zone-map.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 
 @Component({
@@ -14,6 +14,9 @@ export class StudyZoneListComponent {
   private studyZoneService = inject(StudyZoneService);
   private confirmationService = inject(ConfirmationService);
   private messageService = inject(MessageService);
+  private isStudyZoneDisplayed : boolean = false;
+  public studyZoneSelected: StudyZone | null = null;
+  
 
   @Output() toggleStudyZoneForm: EventEmitter<number> =
     new EventEmitter<number>();
@@ -25,6 +28,9 @@ export class StudyZoneListComponent {
     this.studyZoneService.studyZones$.subscribe((studyZones) => {
       this.studyZones = studyZones;
     });
+    this.mapService.studyZoneSelected$.subscribe((studyZone) => {
+      this.studyZoneSelected = studyZone ? studyZone : null;
+    });
   }
 
   getIcon(studyZoneId: number): string {
@@ -33,20 +39,22 @@ export class StudyZoneListComponent {
       : 'pi pi-eye';
   }
 
-  viewStudyZone(id: number) {
-    const isStudyZoneDisplayed = this.studyZonesIdsDisplayed.some(
-      (zoneId) => zoneId === id
-    );
-    if (!isStudyZoneDisplayed) {
-      this.mapService.drawPolygonFromId(id);
-      this.studyZonesIdsDisplayed.push(id);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+  viewStudyZone(studyZone: StudyZone) {
+
+    if(studyZone.id === this.studyZoneSelected?.id) {
       return;
     }
-    this.mapService.erasePolygonFromId(id);
-    this.studyZonesIdsDisplayed = this.studyZonesIdsDisplayed.filter(
-      (zoneId) => zoneId !== id
+
+    this.isStudyZoneDisplayed = this.studyZonesIdsDisplayed.some(
+      (zoneId) => zoneId === studyZone.id
     );
+    this.mapService.selectedPolygonFromId(studyZone.id);
+  }
+
+  previewStudyZone(id: number | null = null) {
+
+    this.mapService.previewStudyZone(id);
+
   }
 
   confirmDeleteStudyZone(event: Event, id: number) {

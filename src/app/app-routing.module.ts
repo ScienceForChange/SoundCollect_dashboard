@@ -9,7 +9,7 @@ import { OverviewComponent } from './modules/overview/page/overview/overview.com
 import { SoundscapeComponent } from './modules/soundscape/page/soundscape.component';
 import { ErrorComponent } from './modules/error/page/error.component';
 import { HomeComponent } from './modules/home/page/home.component';
-import { StudyZoneComponent } from './modules/admin/study-zone/study-zone/study-zone.component';
+import { StudyZoneComponent } from './modules/admin/study-zone/page/study-zone.component';
 import { ngxPermissionsGuard } from 'ngx-permissions';
 import { AdminUserComponent } from './modules/admin/admin-user/page/admin-user.component';
 import { AdminUserListComponent } from './modules/admin/admin-user/components/admin-user-list/admin-user-list.component';
