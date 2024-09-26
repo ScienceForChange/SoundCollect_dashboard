@@ -21,17 +21,24 @@ export class MapToolBarComponent {
   }
 
   toggleShowMapLayers(): void {
+    this.hideAll();
     this.showMapLayers.set(!this.showMapLayers());
-    this.showFilters.set(false);
   }
 
   toggleShowMapStudyZonesLayers(): void {
+    this.hideAll();
     this.showMapStudyZonesLayers.set(!this.showMapStudyZonesLayers());
   }
 
   toggleShowFilters(): void {
+    this.hideAll();
     this.showFilters.set(!this.showFilters());
-    this.showMapLayers.set(false);
-
   }
+
+  hideAll(): void {
+    this.showFilters.set(false);
+    this.showMapLayers.set(false);
+    this.showMapStudyZonesLayers.set(false);
+  }
+
 }
