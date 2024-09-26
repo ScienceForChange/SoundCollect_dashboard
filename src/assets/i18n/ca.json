@@ -50,7 +50,11 @@
       "catalan": "Català",
       "spanish": "Espanyol",
       "english": "Anglès"
-    }
+    },
+    "studyZones": "Zones d'Estudi",
+    "administrators": "Administradors/es",
+    "roles": "Rols",
+    "users": "Usuaris/es de App"
   },
   "home": {
     "footer": {
@@ -448,7 +452,7 @@
     "edit": "Editar"
   },
   "admin-user": {
-    "create": "Crear usuari",
+    "create": "Crear usuari/a",
     "list": {
       "name": "Nom",
       "email": "email",
@@ -456,20 +460,22 @@
       "roles": "Rols"
     },
     "edit": "Editar",
-    "delete": "Esborrar"
+    "delete": "Esborrar",
+    "title": "Persones  usuàries administradores"
   },
   "app-user": {
-    "disabled": "Usuaris bloquejats",
-    "title": "Usuaris de l'aplicació",
-    "enabled": "Usuaris actius"
+    "disabled": "Usuaris/es bloquejats",
+    "title": "Persones usuàries de l'aplicació",
+    "enabled": "Usuaris/es actius"
   },
   "user": {
-    "expert": "Expert",
-    "not-expert": "No expert",
+    "expert": "Informador/a expert/a",
+    "not-expert": "No",
     "disable": "Bloquejar",
     "enable": "Activar",
     "delete-message": "Si us plau, confirmeu per procedir a esborrar.",
-    "restore-message": "Si us plau, confirmeu per procedir a restaurar."
+    "restore-message": "Si us plau, confirmeu per procedir a restaurar.",
+    "si_expert": "Si"
   },
   "observations": {
     "delete": "Esborrar",
@@ -479,5 +485,8 @@
     "title": "Observacions",
     "show": "Veure info"
   },
-  "studyZones": "Zones d'estudi"
+  "studyZones": "Zones d'estudi",
+  "studyzones": {
+    "title": "Zones d'Estudi"
+  }
 }
