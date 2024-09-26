@@ -21,7 +21,7 @@
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-studyZone>
-      <tr (mouseenter)="previewStudyZone(studyZone.id)" (mouseleave)="previewStudyZone()" (click)="viewStudyZone(studyZone.id)">
+      <tr [ngClass]="{'selected': studyZoneSelected && studyZoneSelected.id === studyZone.id}" (mouseenter)="previewStudyZone(studyZone.id)" (mouseleave)="previewStudyZone()" (click)="viewStudyZone(studyZone)"> 
         <td class="text-left" >
           {{ studyZone.name }}
         </td>

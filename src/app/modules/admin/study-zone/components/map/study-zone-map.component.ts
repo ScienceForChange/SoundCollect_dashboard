@@ -45,6 +45,7 @@ export class StudyZoneMapComponent {
 
   ngOnInit(): void {
     this.polygonFilter = this.studyZoneMapService.polygonFilter;
+
   }
 
   drawPolygonFilter() {
@@ -63,7 +64,6 @@ export class StudyZoneMapComponent {
       style: mapSettings.mapStyle, // style URL
       center: mapSettings.centerMapLocation, // starting position [lng, lat]
       zoom: mapSettings.zoom, // starting zoom
-      cooperativeGestures: true,
     });
 
     this.studyZoneMapService.map.on('load', () =>

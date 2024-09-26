@@ -27,10 +27,8 @@ export class MapService {
     return !!this.map;
   }
 
-  public isFilterActive: BehaviorSubject<boolean> =
-    new BehaviorSubject<boolean>(false);
-  public isFilterBtnDisbaled: BehaviorSubject<boolean> =
-    new BehaviorSubject<boolean>(true);
+  public isFilterActive: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public isFilterBtnDisbaled: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
   private mapObservations: MapObservation[] = [];
   private filteredFeatures: Feature[] = [];
