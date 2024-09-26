@@ -443,6 +443,7 @@ export class MapService {
     });
 
     this.map.on('click', 'studyZone', (e: any) => {
+      if(this.isOpenObservationInfoModal.getValue()) return;
       this.map.getCanvas().style.cursor = 'inherit';
       if (e.features.length > 0) {
         this.selectStudyZone(e.features[0].properties.id);

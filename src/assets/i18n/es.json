@@ -50,7 +50,11 @@
       "catalan": "Catalan",
       "spanish": "Español",
       "english": "Inglés"
-    }
+    },
+    "studyZones": "Zonas de Estudio",
+    "administrators": "Administradores/as",
+    "roles": "Roles",
+    "users": "Usuarios/as d'App"
   },
   "home": {
     "footer": {
@@ -344,31 +348,31 @@
   "admin": {
     "studyZone": {
       "map": {
-        "createFilter": "Crear zona d'estudi",
-        "deleteFilter": "Esborrar zona d'estudi",
-        "saveStudyZone": "Guardar zona d'estudi"
+        "createFilter": "Crear zona de estudio",
+        "deleteFilter": "Borrar zona de estudio",
+        "saveStudyZone": "Guardar zona de estudio"
       },
       "form": {
         "title": "Informació de la zona d'estudi",
-        "name": "Nom",
-        "description": "Descripció",
-        "conclusion": "Conclusió",
-        "startEndDate": "Data d'inici i final",
-        "addFiles": "Afegir fitxers",
-        "nameFile": "Nom del document",
-        "addFile": "Afegir fitxer",
-        "deleteFile": "Esborrar fitxer",
-        "addDocument": "Afegir document",
-        "addCollaborator": "Afegir col·laborador",
-        "collaboratorName": "Nom del col·laborador",
-        "contactName": "Nom del contacte",
-        "contactEmail": "Email del contacte",
-        "contactPhone": "Telèfon del contacte",
-        "addLogo": "Afegir logotip",
-        "delete": "Esborrar",
+        "name": "Nombre",
+        "description": "Descripción",
+        "conclusion": "Conclusión",
+        "startEndDate": "Fecha de inicio y fin",
+        "addFiles": "Añadir archivos",
+        "nameFile": "Nombre del documento",
+        "addFile": "Añadir archivo",
+        "deleteFile": "Borrar archivo",
+        "addDocument": "Añadir documento",
+        "addCollaborator": "Añadir colaborador",
+        "collaboratorName": "Nombre del colaborador",
+        "contactName": "Nombre de contacto",
+        "contactEmail": "Email de contacto",
+        "contactPhone": "Teléfono de contacto",
+        "addLogo": "Añadir logo",
+        "delete": "Borrar",
         "deleteLogo": "Borrar logotipo",
-        "cancel": "Cancel·lar",
-        "saveStudyZone": "Guardar zona d'estudi",
+        "cancel": "Cancelar",
+        "saveStudyZone": "Guardar zona de estudio",
         "messages": {
           "updateSummary": "Zona de estudio actualitzada",
           "updateDetail": "La zona de estudio se ha actualitzado correctamente",
@@ -379,10 +383,10 @@
         }
       },
       "list": {
-        "title": "Llistat de zones d'estudi",
-        "name": "Nom",
-        "startDate": "Data d'inici",
-        "endDate": "Data de finalització",
+        "title": "Listado de Zonas de Estudio",
+        "name": "Nombre",
+        "startDate": "Fecha de inicio",
+        "endDate": "Fecha de fin",
         "view": "Visualitzar",
         "enable": "Deshabilitar",
         "delete": "Borrar",
@@ -448,8 +452,8 @@
     "delete-message": "Por favor, confirme para borrar."
   },
   "admin-user": {
-    "title": "Usuarios administradores",
-    "create": "Crear usuario",
+    "title": "Personas usuarias administradores",
+    "create": "Crear usuario/a",
     "list": {
       "name": "Nombre",
       "email": "email",
@@ -460,16 +464,18 @@
     "delete": "Borrar"
   },
   "app-user": {
-    "disabled": "Usuarios bloqueados",
-    "enabled": "Usuarios activos"
+    "disabled": "Usuarios/as bloqueados",
+    "enabled": "Usuarios/as activos",
+    "title": "Personas usuarias de la aplicación"
   },
   "user": {
-    "expert": "Experto",
-    "not-expert": "No experto",
+    "expert": "Informador/a experto/a",
+    "not-expert": "No",
     "disable": "Bloquear",
     "enable": "Activar",
     "delete-message": "Por favor, confirme para borrar.",
-    "restore-message": "Por favor, confirme para restaurar."
+    "restore-message": "Por favor, confirme para restaurar.",
+    "si_expert": "Sí"
   },
   "observations": {
     "delete": "Borrar",
@@ -479,5 +485,8 @@
     "title": "Observaciones",
     "show": "Ver info"
   },
-  "studyZones": "Zonas de estudio"
+  "studyZones": "Zonas de estudio",
+  "studyzones": {
+    "title": "Zonas de Estudio"
+  }
 }
