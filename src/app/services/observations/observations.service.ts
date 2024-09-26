@@ -503,8 +503,8 @@ export class ObservationsService {
           concern: 'inside',
           polygon: polygon,
           interval: {
-            start: `2023-01-01 00:00:00`,
-            end: `2024-07-22 05:17:03`,
+            start: hourDates[0],
+            end: hourDates[1],
           },
         }
       )
