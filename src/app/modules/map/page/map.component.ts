@@ -43,7 +43,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   public isSZModalVisible: boolean = false;
   public isStudyZonesBtnDisbaled: boolean = false;
   public isFilterBtnDisbaled:boolean = true;
-  private language: string = localStorage.getItem('locale') || 'ca';  
+  private language: string = localStorage.getItem('locale') || 'ca';
 
   private subscriptions = new Subscription();
   public observationSelected!: Observations;
@@ -126,6 +126,6 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     this.subscriptions.unsubscribe();
     this.mapService.map = null;
     this.mapService.studyZoneDialogVisible$.next(false);
-    this.observationsService.getAllObservations();    
+    this.observationsService.getAllObservations();
   }
 }

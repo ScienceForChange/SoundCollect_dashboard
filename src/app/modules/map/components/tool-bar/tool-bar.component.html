@@ -41,6 +41,13 @@
         tooltipPosition="bottom"
       >
       </p-button>
+      <p-fileUpload
+        mode="basic"
+        chooseLabel="{{ 'map.filters.addGPKP' | translate }}"
+        accept=".gpkg"
+        maxFileSize="1000000"
+        (onSelect)="addGPGKLayers($event)"
+      />
     </div>
   </ng-template>
 </p-toolbar>
