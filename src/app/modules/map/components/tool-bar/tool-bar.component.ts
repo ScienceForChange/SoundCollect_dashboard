@@ -1,5 +1,5 @@
+import { environment } from './../../../../../environments/environment.development';
 import { Component, EventEmitter, inject, Input, Output, WritableSignal } from '@angular/core';
-import { environment } from '../../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { MapService } from '../../service/map.service';
 import { FeatureCollection, Geometry } from 'geojson';
@@ -17,6 +17,7 @@ export class MapToolBarComponent {
   @Input() isStudyZonesBtnDisbaled: boolean = false;
   @Input() isFilterBtnDisbaled: boolean = true;
 
+  public environment = environment;
 
   @Output() toggleActiveFilters: EventEmitter<void> = new EventEmitter<void>();
 
@@ -49,17 +50,7 @@ export class MapToolBarComponent {
   }
 
   addGPGKLayers(event: any): void {
-    console.log(event.files[0]);
-    this.http.post<{ success: string, data: GeoJSON.FeatureCollection<GeoJSON.Geometry> }>
-      (`${environment.BACKEND_BASE_URL}/map/add-layer`
-      ,
-      {
-        file: event.files[0]
-      })
-      .subscribe(({ success, data }: { success: string; data:  GeoJSON.FeatureCollection<GeoJSON.Geometry> }) => {
-      // pintamos las capas en el mapa
-      console.log(data);
-      this.mapService.addGeoJson(data);
-    });
+    // pintamos las capas en el mapa
+    this.mapService.addGeoJson(event.originalEvent.body as FeatureCollection<Geometry>);
   }
 }

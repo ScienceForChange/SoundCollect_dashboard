@@ -43,10 +43,13 @@
       </p-button>
       <p-fileUpload
         mode="basic"
+        name="file"
         chooseLabel="{{ 'map.filters.addGPKP' | translate }}"
+        [url]="environment.BACKEND_BASE_URL + '/map/add-layer'"
         accept=".gpkg"
-        maxFileSize="1000000"
-        (onSelect)="addGPGKLayers($event)"
+        maxFileSize="10000000"
+        [auto]="true" 
+        (onUpload)="addGPGKLayers($event)"
       />
     </div>
   </ng-template>
