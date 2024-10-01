@@ -1,4 +1,8 @@
-import { Component, EventEmitter, Input, Output, WritableSignal } from '@angular/core';
+import { environment } from './../../../../../environments/environment.development';
+import { Component, EventEmitter, inject, Input, Output, WritableSignal } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { MapService } from '../../service/map.service';
+import { FeatureCollection, Geometry } from 'geojson';
 
 @Component({
   selector: 'app-map-tool-bar',
@@ -13,8 +17,12 @@ export class MapToolBarComponent {
   @Input() isStudyZonesBtnDisbaled: boolean = false;
   @Input() isFilterBtnDisbaled: boolean = true;
 
-  
+  public environment = environment;
+
   @Output() toggleActiveFilters: EventEmitter<void> = new EventEmitter<void>();
+
+  http = inject(HttpClient);
+  mapService = inject(MapService);
 
   activeFilters(): void {
     this.toggleActiveFilters.emit();
@@ -41,4 +49,8 @@ export class MapToolBarComponent {
     this.showMapStudyZonesLayers.set(false);
   }
 
+  addGPGKLayers(event: any): void {
+    // pintamos las capas en el mapa
+    this.mapService.addGeoJson(event.originalEvent.body as FeatureCollection<Geometry>);
+  }
 }

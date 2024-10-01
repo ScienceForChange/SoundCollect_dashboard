@@ -16,6 +16,7 @@ import { FormFilterValues } from '../../../models/forms';
 import { Observations } from '../../../models/observations';
 import { StudyZone } from '../../../models/study-zone';
 import { StudyZoneService } from '../../../services/study-zone/study-zone.service';
+import { identifierName } from '@angular/compiler';
 
 @Injectable({
   providedIn: 'root',
@@ -92,7 +93,7 @@ export class MapService {
       this.updateSourceObservations(this.features$.getValue());
       return;
     }
-    
+
     this.observationsService.observations$.subscribe((data) => {
       try {
         const features = this.observationsService.getLineStringFromObservations(data);
@@ -454,5 +455,72 @@ export class MapService {
 
   public flyToDefaultBbox() {
     this.map.fitBounds(this.defaultBbox, { padding: { top: 10, bottom: 10, left: 10, right: 10 } });
+  }
+
+  public addGeoJson(data:GeoJSON.FeatureCollection<GeoJSON.Geometry>) {
+
+
+    //eliminamos las capas de relleno, borde y puntos
+    this.map.getStyle().layers.forEach((layer) => {
+      if (layer.id.includes('gpkg')) {
+        console.log(layer.id);
+        this.map.removeLayer(layer.id);
+      }
+    });
+
+    // De existir ya la fuente, eliminarla y continuar
+    if (this.map.getSource('geojson')) {
+      this.map.removeSource('geojson');
+    }
+    
+    this.map.addSource('geojson', {
+      type: 'geojson',
+      data: data
+    });
+
+    // Añadir la capa dependiendo del tipo de geometría
+    data.features.forEach((feature) => {
+      const geometryType = feature.geometry.type;
+
+      let id = feature.id ? feature.id : Math.random().toString(36).substring(7);
+
+      if (geometryType === 'Polygon' || geometryType === 'MultiPolygon') {
+        // Añadir capa de relleno para Polígonos
+        this.map.addLayer({
+          id: `gpkgfill-${id}`, // Un ID único para cada capa
+          type: 'fill',
+          source: 'geojson',
+          filter: ['==', '$type', 'Polygon'], // Solo polígonos
+          paint: {
+            'fill-color': '#088',
+            'fill-opacity': 0.2,
+          },
+        });
+      } else if (geometryType === 'LineString' || geometryType === 'MultiLineString') {
+        // Añadir capa de borde para Líneas
+        this.map.addLayer({
+          id: `gpkgline-${id}`, // Un ID único para cada capa
+          type: 'line',
+          source: 'geojson',
+          filter: ['==', '$type', 'LineString'], // Solo líneas
+          paint: {
+            'line-color': '#000', // Color de la línea
+            'line-width': 2, // Ancho de la línea
+          },
+        });
+      } else if (geometryType === 'Point' || geometryType === 'MultiPoint') {
+        // Añadir capa de puntos
+        this.map.addLayer({
+          id: `gpkgpoint-${id}`, // Un ID único para cada capa
+          type: 'circle',
+          source: 'geojson',
+          filter: ['==', '$type', 'Point'], // Solo puntos
+          paint: {
+            'circle-color': '#00F', // Color del círculo
+            'circle-radius': 5, // Radio del círculo
+          },
+        });
+      }
+    });
   }
 }

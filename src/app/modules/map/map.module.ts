@@ -29,6 +29,7 @@ import { SoundPressureDisplayPipe } from '../../pipes/sound-pressure-display.pip
 import { MapZoneStudyLayersComponent } from './components/map-study-zone-layers/map-study-zone-layers.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { SharedComponentsModule } from "../../shared/shared.module";
+import { FileUploadModule } from 'primeng/fileupload';
 
 
 @NgModule({
@@ -61,7 +62,8 @@ import { SharedComponentsModule } from "../../shared/shared.module";
     TooltipModule,
     ToggleButtonModule,
     TranslateModule,
-    SharedComponentsModule
+    SharedComponentsModule,
+    FileUploadModule,
 ],
 })
 export class MapModule {}

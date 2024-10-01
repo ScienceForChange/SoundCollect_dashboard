@@ -133,7 +133,8 @@
       "undecided": "Indecís",
       "disagree": "En desacord",
       "stronglyDisagree": "Molt en desacord",
-      "studyZones": "Zones d'estudi"
+      "studyZones": "Zones d'estudi",
+      "addGPKP": "Afegir capa GPKG"
     },
     "layers": {
       "title": "Tipus de mapa",
