@@ -133,7 +133,8 @@
       "undecided": "Undecided",
       "disagree": "Disagree",
       "stronglyDisagree": "Strongly disagree",
-      "studyZones": "Study Zones"
+      "studyZones": "Study Zones",
+      "addGPKP": "Add GPKP layer"
     },
     "layers": {
       "title": "Map type",
