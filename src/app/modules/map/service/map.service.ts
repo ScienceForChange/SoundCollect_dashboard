@@ -464,6 +464,8 @@ export class MapService {
 
   public addGeoJson(data:GeoJSON.FeatureCollection<GeoJSON.Geometry>) {
 
+
+
     const layer = 'waterway-label';
     // De existir ya la fuente Y capas, eliminarla y continuar
     if (this.map.getSource('gpkg-polygons')) {
@@ -573,7 +575,7 @@ export class MapService {
         },
         filter: ['==', '$type', 'LineString'],
       });
-      
+
       this.map.moveLayer('gpkg-lines', layer);
 
       // Añadimos evento de click

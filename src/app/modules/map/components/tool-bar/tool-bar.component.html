@@ -43,11 +43,12 @@
       </p-button>
       <p-fileUpload
         mode="basic"
-        name="file"
+        name="files[]"
         chooseLabel="{{ 'map.filters.addGPKP' | translate }}"
-        [url]="environment.BACKEND_BASE_URL + '/map/gpkg-kml-to-geojson'"
         accept=".gpkg,.kml"
         maxFileSize="10000000"
+        [multiple]="true"
+        [url]="environment.BACKEND_BASE_URL + '/map/gpkg-kml-to-geojson'"
         [auto]="true"
         (onUpload)="addGPGKLayers($event)"
       />
