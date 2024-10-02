@@ -134,7 +134,7 @@
       "disagree": "En desacuerdo",
       "stronglyDisagree": "Muy en desacuerdo",
       "studyZones": "Zonas de estudio",
-      "addGPKP": "Añadir capa GPKG"
+      "addGPKP": "Añadir capa GPKG/KML"
     },
     "layers": {
       "title": "Tipo de mapa",

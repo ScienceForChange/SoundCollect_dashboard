@@ -45,10 +45,10 @@
         mode="basic"
         name="file"
         chooseLabel="{{ 'map.filters.addGPKP' | translate }}"
-        [url]="environment.BACKEND_BASE_URL + '/map/add-layer'"
-        accept=".gpkg"
+        [url]="environment.BACKEND_BASE_URL + '/map/gpkg-kml-to-geojson'"
+        accept=".gpkg,.kml"
         maxFileSize="10000000"
-        [auto]="true" 
+        [auto]="true"
         (onUpload)="addGPGKLayers($event)"
       />
     </div>
