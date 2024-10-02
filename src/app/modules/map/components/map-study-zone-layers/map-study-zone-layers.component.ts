@@ -23,10 +23,10 @@ export class MapZoneStudyLayersComponent implements OnInit, OnDestroy {
   private studyZoneService = inject(StudyZoneService);
   private observationsService = inject(ObservationsService);
   private subscriptions = new Subscription();
-  
+
   studyZones: StudyZone[] = [];
   studyZonesModel: { [key: number]: boolean }[] = [];
-  
+
 
   @Input() showMapLayers?: WritableSignal<boolean>;
 
@@ -47,7 +47,7 @@ export class MapZoneStudyLayersComponent implements OnInit, OnDestroy {
   }
 
   toggleLayerVisibility(layerId: number | null, e: any) {
-    
+
     let studyZoneSelected:StudyZone | undefined = undefined;
 
     this.mapService.eraseSZPolygonFromId();
@@ -64,19 +64,16 @@ export class MapZoneStudyLayersComponent implements OnInit, OnDestroy {
     studyZoneSelected = this.studyZones.find(
       (studyZone) => studyZone.id === layerId
     );
-    
+
     this.mapService.drawSZPolygonFromId(studyZoneSelected);
     // fly to study zone polygon
     const bbox = this.getBboxFromPolygon(studyZoneSelected.boundaries.coordinates[0]);
     this.mapService.map.fitBounds(bbox, { padding: { top: 20, bottom: 20, left: 20, right: 20 } });
-    
+
     let poligonCoordiantes = studyZoneSelected.boundaries.coordinates[0].map((coo:any) => {
       return `${coo[1]} ${coo[0]}`;
     });
-    this.observationsService.getObservationsByPolygonAndDates(
-      poligonCoordiantes, 
-      [String(studyZoneSelected.start_date), String(studyZoneSelected.end_date)]
-    ).subscribe({
+    this.observationsService.getObservationsByPolygonAndDates( poligonCoordiantes, [String(studyZoneSelected.start_date), String(studyZoneSelected.end_date)]).subscribe({
       error: (error) => {
         console.error(error);
       }

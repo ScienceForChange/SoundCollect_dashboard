@@ -1,22 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import {
-  BehaviorSubject,
-  Observable,
-  map,
-  filter,
-  switchMap,
-  Subscribable,
-} from 'rxjs';
+import { BehaviorSubject, Observable, map, filter, switchMap,} from 'rxjs';
 
 import * as turf from '@turf/turf';
 
 import { Parser } from '@json2csv/plainjs';
 
 import { saveAs } from 'file-saver';
-
-import tokml from "@maphubs/tokml"
 
 import { environment } from '../../../environments/environment';
 import { Observations, ObservationsDataChart } from '../../models/observations';
@@ -503,6 +494,7 @@ export class ObservationsService {
           concern: 'inside',
           polygon: polygon,
           interval: {
+            // format: 'YYYY-MM-DD HH:mm:ss',
             start: hourDates[0],
             end: hourDates[1],
           },
