@@ -72,10 +72,7 @@ export class StudyZoneService {
       );
   }
 
-  public createStudyZone(
-    polygon: Number[],
-    result: StudyZoneForm
-  ): Observable<void> {
+  public createStudyZone(polygon: Number[], result: StudyZoneForm): Observable<void> {
     this.observationService.loading$.next(true);
     return this.http
       .post<{ success: string; data: StudyZone }>(
