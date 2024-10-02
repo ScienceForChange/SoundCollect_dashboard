@@ -464,6 +464,7 @@ export class MapService {
 
   public addGeoJson(data:GeoJSON.FeatureCollection<GeoJSON.Geometry>) {
 
+    const layer = 'waterway-label';
     // De existir ya la fuente Y capas, eliminarla y continuar
     if (this.map.getSource('gpkg-polygons')) {
       this.map.removeLayer('gpkg-polygons');
@@ -539,6 +540,8 @@ export class MapService {
         filter: ['==', '$type', 'Polygon'],
       });
 
+      this.map.moveLayer('gpkg-polygons-lines', layer);
+      this.map.moveLayer('gpkg-polygons', layer);
       // Añadimos evento de click
       // this.map.on('click', 'gpkg-polygons', (e) => {
       //   const feature = e.features[0];
@@ -570,6 +573,8 @@ export class MapService {
         },
         filter: ['==', '$type', 'LineString'],
       });
+      
+      this.map.moveLayer('gpkg-lines', layer);
 
       // Añadimos evento de click
       // this.map.on('click', 'gpkg-lines', (e) => {
@@ -580,6 +585,7 @@ export class MapService {
       //     detail: this.getAllFeatureProperties(feature),
       //   });
       // });
+
     }
 
     if(points.features.length > 0) {
@@ -602,6 +608,8 @@ export class MapService {
         filter: ['==', '$type', 'Point'],
       });
 
+      this.map.moveLayer('gpkg-points', layer);
+
       // Añadimos evento de click
       // this.map.on('click', 'gpkg-points', (e) => {
       //   const feature = e.features[0];
@@ -613,12 +621,7 @@ export class MapService {
       // });
     }
 
-    const layer = 'waterway-label'
 
-    this.map.moveLayer('gpkg-polygons-lines', layer);
-    this.map.moveLayer('gpkg-polygons', layer);
-    this.map.moveLayer('gpkg-lines', layer);
-    this.map.moveLayer('gpkg-points', layer);
 
   }
 

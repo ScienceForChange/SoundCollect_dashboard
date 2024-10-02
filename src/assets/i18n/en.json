@@ -134,7 +134,7 @@
       "disagree": "Disagree",
       "stronglyDisagree": "Strongly disagree",
       "studyZones": "Study Zones",
-      "addGPKP": "Add GPKP layer"
+      "addGPKP": "Add GPKP/KML layer"
     },
     "layers": {
       "title": "Map type",
