@@ -59,25 +59,25 @@ export class TonalFrequencyChartComponent implements OnInit, OnDestroy {
   }
 
   private updateYAxis(event:any){
-      let name = this.translate.instant('soundscape.tonalFrequency.presure');
-      this.hertzLevels[this.hertzLevels.length - 1] = '';
-      if(event.selected.dB){
-        name += ` ${this.translate.instant('soundscape.tonalFrequency.ponderation')}`;
-        this.hertzLevels[this.hertzLevels.length - 1] = 'Lea';
-      }
-      if(event.selected.dBA){
-        name += ` ${this.translate.instant('soundscape.tonalFrequency.noPonderation')}`;
-        this.hertzLevels[this.hertzLevels.length - 1] += ' LAea';
-      }
-      if(event.selected.dBC){
-        name += ` ${this.translate.instant('soundscape.tonalFrequency.ponderation-c')}`;
-        this.hertzLevels[this.hertzLevels.length - 1] += ' LCea';
-      }
+    let name = this.translate.instant('soundscape.tonalFrequency.presure');
+    this.hertzLevels[this.hertzLevels.length - 1] = '';
+    if(event.selected.dB){
+      name += ` ${this.translate.instant('soundscape.tonalFrequency.ponderation')}`;
+      this.hertzLevels[this.hertzLevels.length - 1] = 'Lea';
+    }
+    if(event.selected.dBA){
+      name += ` ${this.translate.instant('soundscape.tonalFrequency.noPonderation')}`;
+      this.hertzLevels[this.hertzLevels.length - 1] += ' LAea';
+    }
+    if(event.selected.dBC){
+      name += ` ${this.translate.instant('soundscape.tonalFrequency.ponderation-c')}`;
+      this.hertzLevels[this.hertzLevels.length - 1] += ' LCea';
+    }
 
-      this.options = {...this.options, yAxis: {name: name, nameLocation: 'middle', nameGap: 35, type: 'value'}}
+    this.options = {...this.options, yAxis: {name: name, nameLocation: 'middle', nameGap: 35, type: 'value'}}
 
-  // Apply the updated options to the chart
-  this.chart.setOption(this.options);
+    // Apply the updated options to the chart
+    this.chart.setOption(this.options);
   }
 
   private updateChart(): void {
