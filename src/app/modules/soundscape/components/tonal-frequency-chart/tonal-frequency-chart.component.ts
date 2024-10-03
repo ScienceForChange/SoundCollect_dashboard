@@ -120,7 +120,7 @@ export class TonalFrequencyChartComponent implements OnInit, OnDestroy {
         },
         data: seriesData.ponderationc,
       },
-    ];
+    ]
 
     this.options = {
       grid,
@@ -173,22 +173,27 @@ export class TonalFrequencyChartComponent implements OnInit, OnDestroy {
     let noPonderation: number[] = [];
 
     const observationsSegmentsSpec_3 = this.observations.map((obs) => obs.relationships.segments).map(
-      (segment) => segment.map((segment) => segment.spec_3)
+      (segment) => segment.map((segment) => segment.spec_3 ? segment.spec_3 : [0])
     ).flat()
     const observationsSegmentsSpec_3_dB = this.observations.map((obs) => obs.relationships.segments).map(
-      (segment) => segment.map((segment) => segment.spec_3_dB)
+      (segment) => segment.map((segment) => segment.spec_3_dB ? segment.spec_3_dB : [0])
+    ).flat()
+    const observationsSegmentsSpec_3_dBC = this.observations.map((obs) => obs.relationships.segments).map(
+      (segment) => segment.map((segment) => segment.spec_3_dBC ? segment.spec_3_dBC : [0])
     ).flat()
 
     for (let i = 0; i < this.hertzLevels.length; i++) {
-      const spec_3_at_idx = observationsSegmentsSpec_3.map((segment) => segment[i]);
-      const spec_3_dB_at_idx = observationsSegmentsSpec_3_dB.map((segment) => segment[i]);
+      const spec_3_at_idx     = observationsSegmentsSpec_3.map((segment) => segment[i] ? segment[i] : 0)
+      const spec_3_dB_at_idx  = observationsSegmentsSpec_3_dB.map((segment) => segment[i] ? segment[i] : 0);
+      const spec_3_dBC_at_idx = observationsSegmentsSpec_3_dBC.map((segment) => segment[i] ? segment[i] : 0);
 
-      const energeticAvgNoPond = energeticAvg(spec_3_dB_at_idx);
-      const energeticAvgPond = energeticAvg(spec_3_at_idx);
+      const energeticAvgNoPond  = energeticAvg(spec_3_dB_at_idx);
+      const energeticAvgPond    = energeticAvg(spec_3_at_idx);
+      const energeticAvgPondC   = energeticAvg(spec_3_dBC_at_idx);
 
       noPonderation.push(energeticAvgNoPond);
       ponderation.push(energeticAvgPond);
-      ponderationc.push(energeticAvgPond);
+      ponderationc.push(energeticAvgPondC);
     }
 
     return { ponderation, ponderationc, noPonderation };
