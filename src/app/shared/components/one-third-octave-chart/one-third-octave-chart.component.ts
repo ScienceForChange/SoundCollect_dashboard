@@ -38,8 +38,8 @@ export class OneThirdOctaveChartComponent implements OnInit, AfterViewInit {
       CanvasRenderer,
       PieChart,
     ]);
-    this.hertzLevels =
-      this.observationSelected.relationships.segments[0].freq_3;
+    this.hertzLevels = this.observationSelected.relationships.segments[0].freq_3;
+    this.hertzLevels.push('Lea LAea LCea');
   }
 
   private updateYAxis(event:any){
