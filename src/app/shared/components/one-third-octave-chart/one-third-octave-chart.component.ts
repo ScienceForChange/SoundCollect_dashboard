@@ -28,7 +28,7 @@ export class OneThirdOctaveChartComponent implements OnInit, AfterViewInit {
   };
 
   public totalObservationTypes: number = 0;
-  private hertzLevels: number[] = [];
+  private hertzLevels: Array<number|string> = [];
 
   ngOnInit(): void {
     echarts.use([
@@ -42,24 +42,24 @@ export class OneThirdOctaveChartComponent implements OnInit, AfterViewInit {
       this.observationSelected.relationships.segments[0].freq_3;
   }
 
-  private updateYAxis(event: any) {
+  private updateYAxis(event:any){
     let name = this.translate.instant('soundscape.tonalFrequency.presure');
-    let isWithPonderationSelected =
-      !Object.values(event.selected)[1] && Object.values(event.selected)[0];
-    if (isWithPonderationSelected) {
-      name = this.translate.instant(
-        'soundscape.tonalFrequency.pressurePonderation'
-      );
+    this.hertzLevels[this.hertzLevels.length - 1] = '';
+    if(event.selected.dB){
+      name += ` ${this.translate.instant('soundscape.tonalFrequency.ponderation')}`;
+      this.hertzLevels[this.hertzLevels.length - 1] = 'Lea';
     }
-    this.options = {
-      ...this.options,
-      yAxis: {
-        name: name,
-        nameLocation: 'middle',
-        nameGap: 35,
-        type: 'value',
-      },
-    };
+    if(event.selected.dBA){
+      name += ` ${this.translate.instant('soundscape.tonalFrequency.noPonderation')}`;
+      this.hertzLevels[this.hertzLevels.length - 1] += ' LAea';
+    }
+    if(event.selected.dBC){
+      name += ` ${this.translate.instant('soundscape.tonalFrequency.ponderation-c')}`;
+      this.hertzLevels[this.hertzLevels.length - 1] += ' LCea';
+    }
+
+    this.options = {...this.options, yAxis: {name: name, nameLocation: 'middle', nameGap: 35, type: 'value'}}
+
     // Apply the updated options to the chart
     this.myBarChart.setOption(this.options);
   }
@@ -149,7 +149,7 @@ export class OneThirdOctaveChartComponent implements OnInit, AfterViewInit {
         },
         series,
       };
-      
+
       this.myBarChart.hideLoading();
       this.myBarChart.setOption(this.options);
     }, 100);
@@ -173,8 +173,9 @@ export class OneThirdOctaveChartComponent implements OnInit, AfterViewInit {
 
     if (!segmentsSpec_3[0] || !segmentsSpec_3_dB[0] || !segmentsSpec_3_dBC[0]) {
       return { ponderation, ponderationc, noPonderation };
-    } else {
-      for (let i = 0; i < this.hertzLevels.length; i++) {
+    }
+    else {
+      for (let i = 0; i < this.hertzLevels.length - 1; i++) {
         const spec_3_at_idx     = segmentsSpec_3.map((segment) => segment[i]);
         const spec_3_dB_at_idx  = segmentsSpec_3_dB.map((segment) => segment[i]);
         const spec_3_dBC_at_idx = segmentsSpec_3_dBC.map((segment) => segment[i]);
@@ -190,5 +191,6 @@ export class OneThirdOctaveChartComponent implements OnInit, AfterViewInit {
 
       return { ponderation, ponderationc, noPonderation };
     }
+
   }
 }
