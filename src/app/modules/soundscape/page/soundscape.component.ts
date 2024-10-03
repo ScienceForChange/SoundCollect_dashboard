@@ -43,7 +43,7 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
   private draw!: MapboxDraw;
   private observationsService = inject(ObservationsService);
   private observations$!: Subscription;
-  private language: string = localStorage.getItem('locale') || 'ca';  
+  private language: string = localStorage.getItem('locale') || 'ca';
 
   public observations!: Observations[];
   public points: [number, number][] = [];
@@ -577,15 +577,15 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
     //   };
     // });
 
-    this.map.on('click', 'LineString', (e:any) => {
-      this.map.getCanvas().style.cursor = 'inherit';
-      for( let feature of e.features) {
-        if (feature.properties.type === 'LineString' && feature.properties.id !== undefined) {
-          this.map.setFilter('lineLayer-select', ['==', 'id', feature.properties.id]);
-          return;
-        }
-      };
-    });
+    // this.map.on('click', 'LineString', (e:any) => {
+    //   this.map.getCanvas().style.cursor = 'inherit';
+    //   for( let feature of e.features) {
+    //     if (feature.properties.type === 'LineString' && feature.properties.id !== undefined) {
+    //       this.map.setFilter('lineLayer-select', ['==', 'id', feature.properties.id]);
+    //       return;
+    //     }
+    //   };
+    // });
 
     // this.map.on('mouseleave', 'LineString', (e:any) => {
     //   this.map.getCanvas().style.cursor = 'inherit';
