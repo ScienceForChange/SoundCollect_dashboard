@@ -8,10 +8,10 @@ export interface Observations {
 }
 
 export interface ObservationsDataChart {
-    date: string;
-    obs: Observations[];
-    count: number;
-    completeDay: Date;
+    date:         string;
+    obs:          Observations[];
+    count:        number;
+    completeDay:  Date;
   }
 
 export interface ObservationsAttributes {
@@ -45,7 +45,7 @@ export interface ObservationsAttributes {
     uneventful:             number | string;
     calm:                   number | string;
     annoying:               number | string;
-    eventfull:               number | string;
+    eventfull:              number | string;
     monotonous:             number | string;
     overall:                number | string;
     user_id:                string;
@@ -56,33 +56,34 @@ export interface ObservationsAttributes {
 }
 
 export interface Segment {
-    position: number,
-    start_latitude: string,
-    start_longitude: string,
-    end_latitude: string,
-    end_longitude: string,
-    L90: number,
-    L10: number,
-    LAeq: number,
-    LAmax: number,
-    LAmin: number,
-    freq_3: number[],
-    spec_3: number[],
-    spec_3_dB: number[],
+    position:         number,
+    start_latitude:   string,
+    start_longitude:  string,
+    end_latitude:     string,
+    end_longitude:    string,
+    L90:              number,
+    L10:              number,
+    LAeq:             number,
+    LAmax:            number,
+    LAmin:            number,
+    freq_3:           number[],
+    spec_3:           number[],
+    spec_3_dB:        number[],
+    spec_3_dBC:       number[],
 }
 
 export interface SegmentParameters {
-  L10:                    number;
-  L90:                    number;
-  LAeq:                   number;
-  LAeqT:                  number[] | number;
-  pause:                  boolean;
+  L10:    number;
+  L90:    number;
+  LAeq:   number;
+  LAeqT:  number[] | number;
+  pause:  boolean;
 }
 
 
 export interface ObservationsRelationships {
-    user:  User;
-    types: ObservationsType[];
+    user:     User;
+    types:    ObservationsType[];
     segments: Segment[];
 }
 
@@ -104,8 +105,8 @@ interface UserAttributes {
     profile:    Profile;
     created_at: Date;
     updated_at: Date;
-    level: number,
-    is_expert: boolean,
+    level:      number,
+    is_expert:  boolean,
 }
 
 interface Profile {
