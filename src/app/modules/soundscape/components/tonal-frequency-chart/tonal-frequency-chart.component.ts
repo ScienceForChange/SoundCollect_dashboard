@@ -182,7 +182,7 @@ export class TonalFrequencyChartComponent implements OnInit, OnDestroy {
       (segment) => segment.map((segment) => segment.spec_3_dBC ? segment.spec_3_dBC : [0])
     ).flat()
 
-    for (let i = 0; i < this.hertzLevels.length; i++) {
+    for (let i = 0; i < this.hertzLevels.length - 1; i++) {
       const spec_3_at_idx     = observationsSegmentsSpec_3.map((segment) => segment[i] ? segment[i] : 0)
       const spec_3_dB_at_idx  = observationsSegmentsSpec_3_dB.map((segment) => segment[i] ? segment[i] : 0);
       const spec_3_dBC_at_idx = observationsSegmentsSpec_3_dBC.map((segment) => segment[i] ? segment[i] : 0);
@@ -195,6 +195,8 @@ export class TonalFrequencyChartComponent implements OnInit, OnDestroy {
       ponderation.push(energeticAvgPond);
       ponderationc.push(energeticAvgPondC);
     }
+
+    console.log(noPonderation, ponderation, ponderationc);
 
     return { ponderation, ponderationc, noPonderation };
 
