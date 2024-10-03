@@ -14,6 +14,7 @@ import { LegendComponent } from 'echarts/components';
 import { Observations } from '../../../../models/observations';
 import { ObservationsService } from '../../../../services/observations/observations.service';
 import energeticAvg from '../../../../../utils/energeticAvg';
+import { consumerPollProducersForChange } from '@angular/core/primitives/signals';
 
 echarts.use([LegendComponent, BarChart, CanvasRenderer,]);
 
@@ -35,7 +36,7 @@ export class TonalFrequencyChartComponent implements OnInit, OnDestroy {
   private options! : echarts.EChartsCoreOption;
   public totalObservationTypes:number = 0
   private observations$!: Subscription;
-  private hertzLevels: number[] = [];
+  private hertzLevels: Array<number|string> = [];
 
   ngOnInit(): void {
     let chartDom = document.getElementById('tonalFrequencyChart')!;
@@ -48,7 +49,8 @@ export class TonalFrequencyChartComponent implements OnInit, OnDestroy {
         return obs.relationships.segments[0].spec_3 || obs.relationships.segments[0].spec_3_dB;
       });
       if(this.observations.length !== 0){
-        this.hertzLevels = this.observations[0].relationships.segments[0].freq_3;
+        this.hertzLevels = [...this.observations[0].relationships.segments[0].freq_3];
+        this.hertzLevels.push('Lea LAea LCea');
       }
       this.updateChart();
     });
@@ -57,20 +59,25 @@ export class TonalFrequencyChartComponent implements OnInit, OnDestroy {
   }
 
   private updateYAxis(event:any){
-      let name = this.translate.instant('soundscape.tonalFrequency.presure');
-      let isWithPonderationSelected= !Object.values(event.selected)[1] && Object.values(event.selected)[0]
-      if(isWithPonderationSelected) name = this.translate.instant('soundscape.tonalFrequency.pressurePonderation')
-      this.options = {
-        ...this.options,
-        yAxis: {
-          name: name,
-          nameLocation: 'middle',
-          nameGap: 35,
-          type: 'value',
-        },
-  }
-  // Apply the updated options to the chart
-  this.chart.setOption(this.options);
+    let name = this.translate.instant('soundscape.tonalFrequency.presure');
+    this.hertzLevels[this.hertzLevels.length - 1] = '';
+    if(event.selected.dB){
+      name += ` ${this.translate.instant('soundscape.tonalFrequency.ponderation')}`;
+      this.hertzLevels[this.hertzLevels.length - 1] = 'Lea';
+    }
+    if(event.selected.dBA){
+      name += ` ${this.translate.instant('soundscape.tonalFrequency.noPonderation')}`;
+      this.hertzLevels[this.hertzLevels.length - 1] += ' LAea';
+    }
+    if(event.selected.dBC){
+      name += ` ${this.translate.instant('soundscape.tonalFrequency.ponderation-c')}`;
+      this.hertzLevels[this.hertzLevels.length - 1] += ' LCea';
+    }
+
+    this.options = {...this.options, yAxis: {name: name, nameLocation: 'middle', nameGap: 35, type: 'value'}}
+
+    // Apply the updated options to the chart
+    this.chart.setOption(this.options);
   }
 
   private updateChart(): void {
@@ -82,23 +89,13 @@ export class TonalFrequencyChartComponent implements OnInit, OnDestroy {
       bottom: 80
     };
 
-
     const seriesData: {
-      ponderation: number[];
       noPonderation: number[];
+      ponderation: number[];
+      ponderationc: number[];
     } = this.calculateDataFromObservations();
 
     const series = [
-      {
-        name: this.translate.instant(
-          'soundscape.tonalFrequency.noPonderation'
-        ),
-        type: 'bar',
-        label: {
-          show: false,
-        },
-        data: seriesData.ponderation,
-      },
       {
         name: this.translate.instant('soundscape.tonalFrequency.ponderation'),
         type: 'bar',
@@ -107,12 +104,27 @@ export class TonalFrequencyChartComponent implements OnInit, OnDestroy {
         },
         data: seriesData.noPonderation,
       },
+      {
+        name: this.translate.instant('soundscape.tonalFrequency.noPonderation'),
+        type: 'bar',
+        label: {
+          show: false,
+        },
+        data: seriesData.ponderation,
+      },
+      {
+        name: this.translate.instant('soundscape.tonalFrequency.ponderation-c'),
+        type: 'bar',
+        label: {
+          show: false,
+        },
+        data: seriesData.ponderationc,
+      },
     ];
 
     this.options = {
       grid,
       legend: {
-        selectedMode: true,
         top:40
       },
       xAxis: {
@@ -129,7 +141,7 @@ export class TonalFrequencyChartComponent implements OnInit, OnDestroy {
 
       },
       yAxis: {
-        name: this.translate.instant('soundscape.tonalFrequency.presure'),
+        name: ` ${this.translate.instant('soundscape.tonalFrequency.presure')} ${this.translate.instant('soundscape.tonalFrequency.ponderation')} ${this.translate.instant('soundscape.tonalFrequency.noPonderation')} ${this.translate.instant('soundscape.tonalFrequency.ponderation-c')} `,
         nameLocation: 'middle',
         nameTextStyle:{
           fontSize: 15,
@@ -148,18 +160,18 @@ export class TonalFrequencyChartComponent implements OnInit, OnDestroy {
         }
       },
       series,
-
     }
+
     this.chart.hideLoading();
     this.chart.setOption(this.options);
   }
 
-  private calculateDataFromObservations(): {
-    ponderation: number[];
-    noPonderation: number[];
-  } {
+  private calculateDataFromObservations(): { ponderation: number[]; ponderationc: number[]; noPonderation: number[]; } {
+
     let ponderation: number[] = [];
+    let ponderationc: number[] = [];
     let noPonderation: number[] = [];
+
     const observationsSegmentsSpec_3 = this.observations.map((obs) => obs.relationships.segments).map(
       (segment) => segment.map((segment) => segment.spec_3)
     ).flat()
@@ -167,18 +179,20 @@ export class TonalFrequencyChartComponent implements OnInit, OnDestroy {
       (segment) => segment.map((segment) => segment.spec_3_dB)
     ).flat()
 
-      for (let i = 0; i < this.hertzLevels.length; i++) {
-        const spec_3_at_idx = observationsSegmentsSpec_3.map((segment) => segment[i]);
-        const spec_3_dB_at_idx = observationsSegmentsSpec_3_dB.map((segment) => segment[i]);
+    for (let i = 0; i < this.hertzLevels.length; i++) {
+      const spec_3_at_idx = observationsSegmentsSpec_3.map((segment) => segment[i]);
+      const spec_3_dB_at_idx = observationsSegmentsSpec_3_dB.map((segment) => segment[i]);
 
-        const energeticAvgNoPond = energeticAvg(spec_3_dB_at_idx);
-        const energeticAvgPond = energeticAvg(spec_3_at_idx);
+      const energeticAvgNoPond = energeticAvg(spec_3_dB_at_idx);
+      const energeticAvgPond = energeticAvg(spec_3_at_idx);
 
-        noPonderation.push(energeticAvgNoPond);
-        ponderation.push(energeticAvgPond);
-      }
+      noPonderation.push(energeticAvgNoPond);
+      ponderation.push(energeticAvgPond);
+      ponderationc.push(energeticAvgPond);
+    }
 
-      return { ponderation, noPonderation };
+    return { ponderation, ponderationc, noPonderation };
+
   }
 
   ngOnDestroy(): void {
