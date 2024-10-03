@@ -290,7 +290,9 @@
       "pressurePonderation": "Presión sonora dBA",
       "ponderation": "dB",
       "noPonderation": "dBA",
-      "content": "Este gráfico muestra como se distribuye la energía de los sonidos en el área seleccionada a lo largo de un espectro de frecuencias. Su utilidad radica en identificar si predominan las frecuencias bajas o altas en el área de estudio. Las frecuencias bajas representan sonidos graves, como el retumbar de un motor, mientras que las frecuencias altas incluyen sonidos agudos, como el canto de un pájaro. El gráfico permite alternar entre el nivel de presión sonora sin ponderación (Leq) y con ponderación A (LAeq)."
+      "content": "Este gráfico muestra como se distribuye la energía de los sonidos en el área seleccionada a lo largo de un espectro de frecuencias. Su utilidad radica en identificar si predominan las frecuencias bajas o altas en el área de estudio. Las frecuencias bajas representan sonidos graves, como el retumbar de un motor, mientras que las frecuencias altas incluyen sonidos agudos, como el canto de un pájaro. El gráfico permite alternar entre el nivel de presión sonora sin ponderación (Leq) y con ponderación A (LAeq).",
+      "ponderation-c": "dBC",
+      "presure": "Presión sonora"
     },
     "physcoAcustic": {
       "title": "Análisis psicoacústico",
