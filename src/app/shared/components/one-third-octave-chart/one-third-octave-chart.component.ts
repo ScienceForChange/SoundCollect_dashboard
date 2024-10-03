@@ -39,7 +39,7 @@ export class OneThirdOctaveChartComponent implements OnInit, AfterViewInit {
       PieChart,
     ]);
     if(this.observationSelected){
-      this.hertzLevels = [...this.observationSelected.relationships.segments[0].freq_3];
+      this.hertzLevels = this.observationSelected.relationships.segments[0].freq_3;
       this.hertzLevels.push('Lea LAea LCea');
     }
   }
