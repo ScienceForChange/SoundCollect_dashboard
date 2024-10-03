@@ -3,6 +3,7 @@ import { Component, EventEmitter, inject, Input, Output, WritableSignal } from '
 import { HttpClient } from '@angular/common/http';
 import { MapService } from '../../service/map.service';
 import { FeatureCollection, Geometry } from 'geojson';
+import { Feature } from '@turf/turf';
 
 @Component({
   selector: 'app-map-tool-bar',
@@ -50,7 +51,7 @@ export class MapToolBarComponent {
   }
 
   addGPGKLayers(event: any): void {
-    // pintamos las capas en el mapa
-    this.mapService.addGeoJson(event.originalEvent.body as FeatureCollection<Geometry>);
+    this.mapService.addGeoJson(event.originalEvent.body as {type: string; features: Feature<Geometry, { [name: string]: any; }>[], name: string}[]);
   }
+
 }

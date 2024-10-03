@@ -1,12 +1,10 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 
 import { LngLat, LngLatBounds, Map } from 'mapbox-gl';
 
 import { FeatureCollection, Geometry } from 'geojson';
 
 import { BehaviorSubject } from 'rxjs';
-
-import { TranslateService } from '@ngx-translate/core';
 
 import { Feature } from '@turf/turf';
 
@@ -17,6 +15,13 @@ import { Observations } from '../../../models/observations';
 import { StudyZone } from '../../../models/study-zone';
 import { StudyZoneService } from '../../../services/study-zone/study-zone.service';
 import { MessageService } from 'primeng/api';
+
+interface MapLayer {
+  id: number;
+  name: string;
+  color: string;
+  features: Feature<Geometry, { [name: string]: any; }>[];
+}
 
 @Injectable({
   providedIn: 'root',
@@ -32,6 +37,8 @@ export class MapService {
 
   public isFilterActive: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public isFilterBtnDisbaled: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
+  public mapLayers: BehaviorSubject<MapLayer[]> = new BehaviorSubject<MapLayer[]>([]);
+
 
   private mapObservations: MapObservation[] = [];
   private filteredFeatures: Feature[] = [];
@@ -43,6 +50,7 @@ export class MapService {
     type: 'FeatureCollection',
     features: [],
   };
+
 
   public mapSettings: {
     zoom: number;
@@ -462,169 +470,168 @@ export class MapService {
     this.map.fitBounds(this.defaultBbox, { padding: { top: 10, bottom: 10, left: 10, right: 10 } });
   }
 
-  public addGeoJson(data:GeoJSON.FeatureCollection<GeoJSON.Geometry>) {
+  public addGeoJson(layers:{type: string; features: Feature<Geometry, { [name: string]: any; }>[], name: string}[]) {
 
+    if (!this.isMapReady) return;
 
+    let  mapLayers: MapLayer[] = [];
 
-    const layer = 'waterway-label';
-    // De existir ya la fuente Y capas, eliminarla y continuar
-    if (this.map.getSource('gpkg-polygons')) {
-      this.map.removeLayer('gpkg-polygons');
-      this.map.removeLayer('gpkg-polygons-lines');
-      this.map.removeSource('gpkg-polygons');
-    }
-    if (this.map.getSource('gpkg-lines')) {
-      this.map.removeLayer('gpkg-lines');
-      this.map.removeSource('gpkg-lines');
-    }
-    if (this.map.getSource('gpkg-points')) {
-      this.map.removeLayer('gpkg-points');
-      this.map.removeSource('gpkg-points');
-    }
-
-    let polygons: GeoJSON.FeatureCollection<GeoJSON.Geometry> = {
-      type: 'FeatureCollection',
-      features: [],
-    };
-    let lines: GeoJSON.FeatureCollection<GeoJSON.Geometry> = {
-      type: 'FeatureCollection',
-      features: [],
-    };
-    let points: GeoJSON.FeatureCollection<GeoJSON.Geometry> = {
-      type: 'FeatureCollection',
-      features: [],
-    };
-
-    // Añadir la capa dependiendo del tipo de geometría
-    data.features.forEach((feature) => {
-      const geometryType = feature.geometry.type;
-
-      if(geometryType === 'Polygon' || geometryType === 'MultiPolygon') {
-        polygons.features.push(feature);
-      }
-      else if(geometryType === 'LineString' || geometryType === 'MultiLineString') {
-        lines.features.push(feature);
-      }
-      else if(geometryType === 'Point' || geometryType === 'MultiPoint') {
-        points.features.push(feature);
-      }
+    layers.forEach((layer, index) => {
+      mapLayers.push({
+        id: index,
+        name: layer.name && layer.name !== "" ? layer.name : `Unnamed layer ${index}`,
+        color: `#${Math.floor(Math.random()*16777215).toString(16)}`,
+        features: layer.features
+      });
     });
 
-    if(polygons.features.length > 0) {
+    this.mapLayers.next(mapLayers);
 
-      // Añadir fuente de polígonos
-      this.map.addSource('gpkg-polygons', {
-        type: 'geojson',
-        data: polygons,
+    mapLayers.forEach((layer, index) => {
+
+      const name = 'waterway-label';
+
+      let polygons: GeoJSON.FeatureCollection<GeoJSON.Geometry> = {
+        type: 'FeatureCollection',
+        features: [],
+      };
+      let lines: GeoJSON.FeatureCollection<GeoJSON.Geometry> = {
+        type: 'FeatureCollection',
+        features: [],
+      };
+      let points: GeoJSON.FeatureCollection<GeoJSON.Geometry> = {
+        type: 'FeatureCollection',
+        features: [],
+      };
+
+      // Añadir la capa dependiendo del tipo de geometría
+      layer.features.forEach((feature) => {
+        const geometryType = feature.geometry.type;
+
+        if(geometryType === 'Polygon' || geometryType === 'MultiPolygon') {
+          polygons.features.push(feature);
+        }
+        else if(geometryType === 'LineString' || geometryType === 'MultiLineString') {
+          lines.features.push(feature);
+        }
+        else if(geometryType === 'Point' || geometryType === 'MultiPoint') {
+          points.features.push(feature);
+        }
       });
 
-      // Añadir capa de polígonos
-      this.map.addLayer({
-        id: 'gpkg-polygons',
-        type: 'fill',
-        source: 'gpkg-polygons',
-        paint: {
-          'fill-color': '#088',
-          'fill-opacity': 0.2,
-        },
-        filter: ['==', '$type', 'Polygon'],
-      });
+      if(polygons.features.length > 0) {
 
-      // Añadir capa de líneas para los polígonos
-      this.map.addLayer({
-        id: 'gpkg-polygons-lines',
-        type: 'line',
-        source: 'gpkg-polygons',
-        paint: {
-          'line-color': '#088',
-          'line-width': 2,
-        },
-        filter: ['==', '$type', 'Polygon'],
-      });
+        // Añadir fuente de polígonos
+        this.map.addSource(layer.name + '-polygons', {
+          type: 'geojson',
+          data: polygons,
+        });
 
-      this.map.moveLayer('gpkg-polygons-lines', layer);
-      this.map.moveLayer('gpkg-polygons', layer);
-      // Añadimos evento de click
-      // this.map.on('click', 'gpkg-polygons', (e) => {
-      //   const feature = e.features[0];
-      //   this.messageService.add({
-      //     severity: 'info',
-      //     summary: 'Polígono seleccionado',
-      //     detail: this.getAllFeatureProperties(feature),
-      //   });
-      // });
+        // Añadir capa de polígonos
+        this.map.addLayer({
+          id: layer.name + '-polygons',
+          type: 'fill',
+          source: layer.name + '-polygons',
+          paint: {
+            'fill-color': layer.color,
+            'fill-opacity': 0.2,
+          },
+          filter: ['==', '$type', 'Polygon'],
+        });
 
-    }
+        // Añadir capa de líneas para los polígonos
+        this.map.addLayer({
+          id: layer.name + '-polygons-lines',
+          type: 'line',
+          source: layer.name + '-polygons',
+          paint: {
+            'line-color': layer.color,
+            'line-width': 2,
+          },
+          filter: ['==', '$type', 'Polygon'],
+        });
 
-    if(lines.features.length > 0) {
+        //this.map.moveLayer('gpkg-polygons-lines', name);
+        //this.map.moveLayer('gpkg-polygons', name);
+        // Añadimos evento de click
+        // this.map.on('click', 'gpkg-polygons', (e) => {
+        //   const feature = e.features[0];
+        //   this.messageService.add({
+        //     severity: 'info',
+        //     summary: 'Polígono seleccionado',
+        //     detail: this.getAllFeatureProperties(feature),
+        //   });
+        // });
 
-      // Añadir fuente de líneas
-      this.map.addSource('gpkg-lines', {
-        type: 'geojson',
-        data: lines,
-      });
+      }
 
-      // Añadir capa de líneas
-      this.map.addLayer({
-        id: 'gpkg-lines',
-        type: 'line',
-        source: 'gpkg-lines',
-        paint: {
-          'line-color': '#088',
-          'line-width': 2,
-        },
-        filter: ['==', '$type', 'LineString'],
-      });
+      if(lines.features.length > 0) {
 
-      this.map.moveLayer('gpkg-lines', layer);
+        // Añadir fuente de líneas
+        this.map.addSource(layer.name + '-lines', {
+          type: 'geojson',
+          data: lines,
+        });
 
-      // Añadimos evento de click
-      // this.map.on('click', 'gpkg-lines', (e) => {
-      //   const feature = e.features[0];
-      //   this.messageService.add({
-      //     severity: 'info',
-      //     summary: 'Linea seleccionada',
-      //     detail: this.getAllFeatureProperties(feature),
-      //   });
-      // });
+        // Añadir capa de líneas
+        this.map.addLayer({
+          id: layer.name + '-lines',
+          type: 'line',
+          source: layer.name + '-lines',
+          paint: {
+            'line-color': layer.color,
+            'line-width': 2,
+          },
+          filter: ['==', '$type', 'LineString'],
+        });
 
-    }
+        this.map.moveLayer(layer.name + '-lines', name);
 
-    if(points.features.length > 0) {
+        // Añadimos evento de click
+        // this.map.on('click', 'gpkg-lines', (e) => {
+        //   const feature = e.features[0];
+        //   this.messageService.add({
+        //     severity: 'info',
+        //     summary: 'Linea seleccionada',
+        //     detail: this.getAllFeatureProperties(feature),
+        //   });
+        // });
 
-      // Añadir fuente de puntos
-      this.map.addSource('gpkg-points', {
-        type: 'geojson',
-        data: points,
-      });
+      }
 
-      // Añadir capa de puntos
-      this.map.addLayer({
-        id: 'gpkg-points',
-        type: 'circle',
-        source: 'gpkg-points',
-        paint: {
-          'circle-radius': 5,
-          'circle-color': '#088',
-        },
-        filter: ['==', '$type', 'Point'],
-      });
+      if(points.features.length > 0) {
 
-      this.map.moveLayer('gpkg-points', layer);
+        // Añadir fuente de puntos
+        this.map.addSource(layer.name + '-points', {
+          type: 'geojson',
+          data: points,
+        });
 
-      // Añadimos evento de click
-      // this.map.on('click', 'gpkg-points', (e) => {
-      //   const feature = e.features[0];
-      //   this.messageService.add({
-      //     severity: 'info',
-      //     summary: 'Punto seleccionada',
-      //     detail: this.getAllFeatureProperties(feature),
-      //   });
-      // });
-    }
+        // Añadir capa de puntos
+        this.map.addLayer({
+          id: layer.name + '-points',
+          type: 'circle',
+          source: layer.name + '-points',
+          paint: {
+            'circle-radius': 5,
+            'circle-color': layer.color,
+          },
+          filter: ['==', '$type', 'Point'],
+        });
 
+        this.map.moveLayer(layer.name + '-points', name);
 
-
+        // Añadimos evento de click
+        // this.map.on('click', 'gpkg-points', (e) => {
+        //   const feature = e.features[0];
+        //   this.messageService.add({
+        //     severity: 'info',
+        //     summary: 'Punto seleccionada',
+        //     detail: this.getAllFeatureProperties(feature),
+        //   });
+        // });
+      }
+    });
   }
 
   private getAllFeatureProperties(feature: any): string {
