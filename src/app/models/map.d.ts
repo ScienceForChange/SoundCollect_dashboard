@@ -21,5 +21,6 @@ interface MapLayer {
   name: string;
   slug: string;
   color: string;
+  show: boolean = true;
   features: Feature<Geometry, { [name: string]: any; }>[];
 }

@@ -486,14 +486,15 @@ export class MapService {
         name: name,
         slug: slug,
         color: color,
-        features: layer.features
+        show: true,
+        features: layer.features,
       });
     });
 
     loadedMapLayers = [...loadedMapLayers, ...mapLayers];
 
     this.mapLayers.next(loadedMapLayers);
-    
+
     mapLayers.forEach((layer, index) => {
 
       const name = 'waterway-label';
@@ -648,5 +649,59 @@ export class MapService {
     }
     return properties;
   }
+
+  public toggleLayerVisibility(layerId: number) {
+    this.mapLayers.getValue().forEach((layer) => {
+      if(layer.id === layerId) {
+        if(this.map.getLayer(layer.slug + '-polygons')) {
+          if(this.map.getLayoutProperty(layer.slug + '-polygons', 'visibility') === 'visible' || !this.map.getLayoutProperty(layer.slug + '-polygons', 'visibility')){
+            console.log(this.map.getLayoutProperty(layer.slug + '-polygons', 'visibility'));
+            this.map.setLayoutProperty(layer.slug + '-polygons', 'visibility', 'none');
+            this.map.setLayoutProperty(layer.slug + '-polygons-lines', 'visibility', 'none');
+          }
+          else{
+            this.map.setLayoutProperty(layer.slug + '-polygons', 'visibility', 'visible');
+            this.map.setLayoutProperty(layer.slug + '-polygons-lines', 'visibility', 'visible');
+          }
+        }
+        if(this.map.getLayer(layer.slug + '-lines')) {
+          if(this.map.getLayoutProperty(layer.slug + '-lines', 'visibility') === 'visible' || !this.map.getLayoutProperty(layer.slug + '-lines', 'visibility'))
+            this.map.setLayoutProperty(layer.slug + '-lines', 'visibility', 'none');
+          else
+            this.map.setLayoutProperty(layer.slug + '-lines', 'visibility', 'visible');
+        }
+        if(this.map.getLayer(layer.slug + '-points')) {
+          if(this.map.getLayoutProperty(layer.slug + '-points', 'visibility') === 'visible' || !this.map.getLayoutProperty(layer.slug + '-points', 'visibility'))
+            this.map.setLayoutProperty(layer.slug + '-points', 'visibility', 'none');
+          else
+            this.map.setLayoutProperty(layer.slug + '-points', 'visibility', 'visible');
+        }
+
+      }
+    });
+  }
+
+  deleteLayer(layerId: number) {
+    let mapLayers = this.mapLayers.getValue();
+    let layer = mapLayers.find((layer) => layer.id === layerId);
+
+    if(this.map.getLayer(layer.slug + '-polygons')) this.map.removeLayer(layer.slug + '-polygons');
+    if(this.map.getLayer(layer.slug + '-polygons-lines')) this.map.removeLayer(layer.slug + '-polygons-lines');
+    if(this.map.getLayer(layer.slug + '-lines')) this.map.removeLayer(layer.slug + '-lines');
+    if(this.map.getLayer(layer.slug + '-points')) this.map.removeLayer(layer.slug + '-points');
+
+    this.mapLayers.next(mapLayers.filter((layer) => layer.id !== layerId));
+  }
+
+  changeLayerColor(layerId: number, color: string) {
+    let mapLayers = this.mapLayers.getValue();
+    let layer = mapLayers.find((layer) => layer.id === layerId);
+
+    if(this.map.getLayer(layer.slug + '-polygons')) this.map.setPaintProperty(layer.slug + '-polygons', 'fill-color', color);
+    if(this.map.getLayer(layer.slug + '-polygons-lines')) this.map.setPaintProperty(layer.slug + '-polygons-lines', 'line-color', color);
+    if(this.map.getLayer(layer.slug + '-lines')) this.map.setPaintProperty(layer.slug + '-lines', 'line-color', color);
+    if(this.map.getLayer(layer.slug + '-points')) this.map.setPaintProperty(layer.slug + '-points', 'circle-color', color);
+  }
+
 
 }

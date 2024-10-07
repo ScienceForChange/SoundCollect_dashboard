@@ -5,6 +5,7 @@ import { Feature } from '@turf/turf';
 
 import { environment } from './../../../../../environments/environment.development';
 import { MapLayer } from '../../../../models/map';
+import { ColorPickerChangeEvent } from 'primeng/colorpicker';
 
 
 
@@ -41,6 +42,16 @@ export class MapLayersComponent implements OnInit {
   }
 
   toggleGPGKLayerVisibility(id: number): void {
-    alert('toggleLayerVisibility');
+    this.mapService.toggleLayerVisibility(id);
   }
+
+  changeGPGKLayerColor(id: number, event: ColorPickerChangeEvent): void {
+    console.log(event.value as string);
+    this.mapService.changeLayerColor(id, event.value as string);
+  }
+
+  deleteGPGKLayer(id: number): void {
+    this.mapService.deleteLayer(id);
+  }
+
 }
