@@ -196,8 +196,6 @@ export class TonalFrequencyChartComponent implements OnInit, OnDestroy {
       ponderationc.push(energeticAvgPondC);
     }
 
-    console.log(noPonderation, ponderation, ponderationc);
-
     return { ponderation, ponderationc, noPonderation };
 
   }

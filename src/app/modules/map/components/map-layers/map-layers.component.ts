@@ -46,7 +46,6 @@ export class MapLayersComponent implements OnInit {
   }
 
   changeGPGKLayerColor(id: number, event: ColorPickerChangeEvent): void {
-    console.log(event.value as string);
     this.mapService.changeLayerColor(id, event.value as string);
   }
 

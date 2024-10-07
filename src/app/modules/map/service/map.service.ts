@@ -655,7 +655,6 @@ export class MapService {
       if(layer.id === layerId) {
         if(this.map.getLayer(layer.slug + '-polygons')) {
           if(this.map.getLayoutProperty(layer.slug + '-polygons', 'visibility') === 'visible' || !this.map.getLayoutProperty(layer.slug + '-polygons', 'visibility')){
-            console.log(this.map.getLayoutProperty(layer.slug + '-polygons', 'visibility'));
             this.map.setLayoutProperty(layer.slug + '-polygons', 'visibility', 'none');
             this.map.setLayoutProperty(layer.slug + '-polygons-lines', 'visibility', 'none');
           }
