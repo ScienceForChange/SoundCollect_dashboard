@@ -109,5 +109,6 @@ export class MapZoneStudyLayersComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
+    this.mapService.mapLayers.next([]);
   }
 }

@@ -14,4 +14,50 @@
     <p-radioButton value="satellite-streets-v12" [(ngModel)]="layerId" (onClick)="toggleLayerVisibility('satellite-streets-v12')"/>
     <label for="satellite-streets-v12" class="ml-2"> {{"map.layers.satellite" | translate}} </label>
   </div>
+  <div class="flex align-items-between mt-3">
+    <h3>más capas</h3>
+    <div>
+
+      <p-fileUpload
+      mode="basic"
+      name="files[]"
+      chooseLabel="{{ 'map.filters.addGPKP' | translate }}"
+      accept=".gpkg,.kml"
+      maxFileSize="10000000"
+      [multiple]="true"
+      [url]="environment.BACKEND_BASE_URL + '/map/gpkg-kml-to-geojson'"
+      [auto]="true"
+      (onUpload)="addGPGKLayers($event)"
+    />
+    </div>
+  </div>
+
+  @for( mapLayer of mapLayers; track mapLayer; let i = $index){
+    <div class="flex align-items-between w-100 mt-3">
+      <div class="">
+        <p-radioButton
+          [inputId]="'mapLayer' + mapLayer.id"
+          name="mapLayer"
+          [(ngModel)]="mapLayer.id"
+          [value]="mapLayer.id"
+          (onClick)="toggleGPGKLayerVisibility(mapLayer.id)"
+        />
+        <label [htmlFor]="'mapLayer' + mapLayer.id" class="ml-2">
+          {{ mapLayer.name }}
+        </label>
+      </div>
+      <div class="flex align-items-center mt-3">
+        <p-button
+          [disabled]="!mapLayer"
+          label="{{ 'map.layers.show' | translate }}"
+          tooltipPosition="bottom"
+        />
+        <p-button
+          label="{{ 'map.layers.delete' | translate }}"
+          tooltipPosition="bottom"
+          />
+
+      </div>
+    </div>
+  }
 </p-sidebar>
