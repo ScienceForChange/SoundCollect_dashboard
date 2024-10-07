@@ -1,3 +1,4 @@
+import { Geometry } from '@turf/turf';
 import { Segment } from './observations';
 
 export interface MapObservation {
@@ -13,4 +14,13 @@ export interface MapObservation {
   influence?:number;
   path: Segment[];
   user_level: number;
+}
+
+interface MapLayer {
+  id: number;
+  name: string;
+  slug: string;
+  color: string;
+  show: boolean = true;
+  features: Feature<Geometry, { [name: string]: any; }>[];
 }
