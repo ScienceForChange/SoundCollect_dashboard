@@ -30,6 +30,7 @@ import { MapZoneStudyLayersComponent } from './components/map-study-zone-layers/
 import { TranslateModule } from '@ngx-translate/core';
 import { SharedComponentsModule } from "../../shared/shared.module";
 import { FileUploadModule } from 'primeng/fileupload';
+import { ColorPickerModule } from 'primeng/colorpicker';
 
 
 @NgModule({
@@ -64,6 +65,7 @@ import { FileUploadModule } from 'primeng/fileupload';
     TranslateModule,
     SharedComponentsModule,
     FileUploadModule,
+    ColorPickerModule,
 ],
 })
 export class MapModule {}

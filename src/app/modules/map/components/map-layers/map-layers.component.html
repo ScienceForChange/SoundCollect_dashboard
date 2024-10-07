@@ -14,4 +14,39 @@
     <p-radioButton value="satellite-streets-v12" [(ngModel)]="layerId" (onClick)="toggleLayerVisibility('satellite-streets-v12')"/>
     <label for="satellite-streets-v12" class="ml-2"> {{"map.layers.satellite" | translate}} </label>
   </div>
+  <div class="flex justify-content-end mt-3">
+    <p-fileUpload
+      mode="basic"
+      name="files[]"
+      chooseLabel="{{ 'map.filters.addGPKP' | translate }}"
+      accept=".gpkg,.kml"
+      maxFileSize="10000000"
+      [multiple]="true"
+      [url]="environment.BACKEND_BASE_URL + '/map/gpkg-kml-to-geojson'"
+      [auto]="true"
+      (onUpload)="addGPGKLayers($event)"
+    />
+  </div>
+
+  @for( mapLayer of mapLayers; track mapLayer; let i = $index){
+    <div class="flex justify-content-between align-items-center mt-2">
+      <div class="">
+        <p-checkbox
+          [inputId]="'mapLayer' + mapLayer.id"
+          [(ngModel)]="mapLayer.show"
+          binary="true"
+          name="mapLayer"
+          (onChange)="toggleGPGKLayerVisibility(mapLayer.id)"
+        />
+        <label [htmlFor]="'mapLayer' + mapLayer.id" class="ml-2">
+          {{ mapLayer.name }}
+        </label>
+      </div>
+      <div class="flex align-items-center">
+        <p-colorPicker [(ngModel)]="mapLayer.color" (onChange)="changeGPGKLayerColor(mapLayer.id, $event)" [style]="{width: '30px', height: '30px'}"/>
+        <p-button icon="pi pi-trash" [rounded]="true" [text]="true" severity="danger" (onClick)="deleteGPGKLayer(mapLayer.id)" />
+
+      </div>
+    </div>
+  }
 </p-sidebar>

@@ -9,19 +9,12 @@ import { BehaviorSubject } from 'rxjs';
 import { Feature } from '@turf/turf';
 
 import { ObservationsService } from '../../../services/observations/observations.service';
-import { MapObservation } from '../../../models/map';
+import { MapLayer, MapObservation } from '../../../models/map';
 import { FormFilterValues } from '../../../models/forms';
 import { Observations } from '../../../models/observations';
 import { StudyZone } from '../../../models/study-zone';
 import { StudyZoneService } from '../../../services/study-zone/study-zone.service';
 import { MessageService } from 'primeng/api';
-
-interface MapLayer {
-  id: number;
-  name: string;
-  color: string;
-  features: Feature<Geometry, { [name: string]: any; }>[];
-}
 
 @Injectable({
   providedIn: 'root',
@@ -474,18 +467,33 @@ export class MapService {
 
     if (!this.isMapReady) return;
 
-    let  mapLayers: MapLayer[] = [];
+    let mapLayers: MapLayer[] = [];
+
+    let loadedMapLayers = this.mapLayers.getValue();
+
+    let countMapLayers = loadedMapLayers.length ;
 
     layers.forEach((layer, index) => {
+      let id = countMapLayers + 1 + index;
+      let name = layer.name && layer.name !== "" ? layer.name : `Unnamed layer`;
+      let slug = name.toLowerCase() + ` ${id}`.replace(/ /g, '_').replace(/[^\w-]+/g,'');
+      let color = `#${Math.floor(Math.random()*16777215).toString(16)}`;
+      while(color.length < 7) {
+        color = color + '0';
+      }
       mapLayers.push({
-        id: index,
-        name: layer.name && layer.name !== "" ? layer.name : `Unnamed layer ${index}`,
-        color: `#${Math.floor(Math.random()*16777215).toString(16)}`,
-        features: layer.features
+        id: id,
+        name: name,
+        slug: slug,
+        color: color,
+        show: true,
+        features: layer.features,
       });
     });
 
-    this.mapLayers.next(mapLayers);
+    loadedMapLayers = [...loadedMapLayers, ...mapLayers];
+
+    this.mapLayers.next(loadedMapLayers);
 
     mapLayers.forEach((layer, index) => {
 
@@ -522,16 +530,16 @@ export class MapService {
       if(polygons.features.length > 0) {
 
         // Añadir fuente de polígonos
-        this.map.addSource(layer.name + '-polygons', {
+        this.map.addSource(layer.slug + '-polygons', {
           type: 'geojson',
           data: polygons,
         });
 
         // Añadir capa de polígonos
         this.map.addLayer({
-          id: layer.name + '-polygons',
+          id: layer.slug + '-polygons',
           type: 'fill',
-          source: layer.name + '-polygons',
+          source: layer.slug + '-polygons',
           paint: {
             'fill-color': layer.color,
             'fill-opacity': 0.2,
@@ -541,9 +549,9 @@ export class MapService {
 
         // Añadir capa de líneas para los polígonos
         this.map.addLayer({
-          id: layer.name + '-polygons-lines',
+          id: layer.slug + '-polygons-lines',
           type: 'line',
-          source: layer.name + '-polygons',
+          source: layer.slug + '-polygons',
           paint: {
             'line-color': layer.color,
             'line-width': 2,
@@ -551,8 +559,8 @@ export class MapService {
           filter: ['==', '$type', 'Polygon'],
         });
 
-        //this.map.moveLayer('gpkg-polygons-lines', name);
-        //this.map.moveLayer('gpkg-polygons', name);
+        this.map.moveLayer(layer.slug + '-polygons-lines', name);
+        this.map.moveLayer(layer.slug + '-polygons', name);
         // Añadimos evento de click
         // this.map.on('click', 'gpkg-polygons', (e) => {
         //   const feature = e.features[0];
@@ -568,16 +576,16 @@ export class MapService {
       if(lines.features.length > 0) {
 
         // Añadir fuente de líneas
-        this.map.addSource(layer.name + '-lines', {
+        this.map.addSource(layer.slug + '-lines', {
           type: 'geojson',
           data: lines,
         });
 
         // Añadir capa de líneas
         this.map.addLayer({
-          id: layer.name + '-lines',
+          id: layer.slug + '-lines',
           type: 'line',
-          source: layer.name + '-lines',
+          source: layer.slug + '-lines',
           paint: {
             'line-color': layer.color,
             'line-width': 2,
@@ -585,7 +593,7 @@ export class MapService {
           filter: ['==', '$type', 'LineString'],
         });
 
-        this.map.moveLayer(layer.name + '-lines', name);
+        this.map.moveLayer(layer.slug + '-lines', name);
 
         // Añadimos evento de click
         // this.map.on('click', 'gpkg-lines', (e) => {
@@ -602,16 +610,16 @@ export class MapService {
       if(points.features.length > 0) {
 
         // Añadir fuente de puntos
-        this.map.addSource(layer.name + '-points', {
+        this.map.addSource(layer.slug + '-points', {
           type: 'geojson',
           data: points,
         });
 
         // Añadir capa de puntos
         this.map.addLayer({
-          id: layer.name + '-points',
+          id: layer.slug + '-points',
           type: 'circle',
-          source: layer.name + '-points',
+          source: layer.slug + '-points',
           paint: {
             'circle-radius': 5,
             'circle-color': layer.color,
@@ -619,7 +627,7 @@ export class MapService {
           filter: ['==', '$type', 'Point'],
         });
 
-        this.map.moveLayer(layer.name + '-points', name);
+        this.map.moveLayer(layer.slug + '-points', name);
 
         // Añadimos evento de click
         // this.map.on('click', 'gpkg-points', (e) => {
@@ -641,5 +649,59 @@ export class MapService {
     }
     return properties;
   }
+
+  public toggleLayerVisibility(layerId: number) {
+    this.mapLayers.getValue().forEach((layer) => {
+      if(layer.id === layerId) {
+        if(this.map.getLayer(layer.slug + '-polygons')) {
+          if(this.map.getLayoutProperty(layer.slug + '-polygons', 'visibility') === 'visible' || !this.map.getLayoutProperty(layer.slug + '-polygons', 'visibility')){
+            console.log(this.map.getLayoutProperty(layer.slug + '-polygons', 'visibility'));
+            this.map.setLayoutProperty(layer.slug + '-polygons', 'visibility', 'none');
+            this.map.setLayoutProperty(layer.slug + '-polygons-lines', 'visibility', 'none');
+          }
+          else{
+            this.map.setLayoutProperty(layer.slug + '-polygons', 'visibility', 'visible');
+            this.map.setLayoutProperty(layer.slug + '-polygons-lines', 'visibility', 'visible');
+          }
+        }
+        if(this.map.getLayer(layer.slug + '-lines')) {
+          if(this.map.getLayoutProperty(layer.slug + '-lines', 'visibility') === 'visible' || !this.map.getLayoutProperty(layer.slug + '-lines', 'visibility'))
+            this.map.setLayoutProperty(layer.slug + '-lines', 'visibility', 'none');
+          else
+            this.map.setLayoutProperty(layer.slug + '-lines', 'visibility', 'visible');
+        }
+        if(this.map.getLayer(layer.slug + '-points')) {
+          if(this.map.getLayoutProperty(layer.slug + '-points', 'visibility') === 'visible' || !this.map.getLayoutProperty(layer.slug + '-points', 'visibility'))
+            this.map.setLayoutProperty(layer.slug + '-points', 'visibility', 'none');
+          else
+            this.map.setLayoutProperty(layer.slug + '-points', 'visibility', 'visible');
+        }
+
+      }
+    });
+  }
+
+  deleteLayer(layerId: number) {
+    let mapLayers = this.mapLayers.getValue();
+    let layer = mapLayers.find((layer) => layer.id === layerId);
+
+    if(this.map.getLayer(layer.slug + '-polygons')) this.map.removeLayer(layer.slug + '-polygons');
+    if(this.map.getLayer(layer.slug + '-polygons-lines')) this.map.removeLayer(layer.slug + '-polygons-lines');
+    if(this.map.getLayer(layer.slug + '-lines')) this.map.removeLayer(layer.slug + '-lines');
+    if(this.map.getLayer(layer.slug + '-points')) this.map.removeLayer(layer.slug + '-points');
+
+    this.mapLayers.next(mapLayers.filter((layer) => layer.id !== layerId));
+  }
+
+  changeLayerColor(layerId: number, color: string) {
+    let mapLayers = this.mapLayers.getValue();
+    let layer = mapLayers.find((layer) => layer.id === layerId);
+
+    if(this.map.getLayer(layer.slug + '-polygons')) this.map.setPaintProperty(layer.slug + '-polygons', 'fill-color', color);
+    if(this.map.getLayer(layer.slug + '-polygons-lines')) this.map.setPaintProperty(layer.slug + '-polygons-lines', 'line-color', color);
+    if(this.map.getLayer(layer.slug + '-lines')) this.map.setPaintProperty(layer.slug + '-lines', 'line-color', color);
+    if(this.map.getLayer(layer.slug + '-points')) this.map.setPaintProperty(layer.slug + '-points', 'circle-color', color);
+  }
+
 
 }
