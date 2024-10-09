@@ -324,8 +324,8 @@ export class MapService {
       },
       paint: {
         'line-color': '#333',
-        'line-width': 3,
-        'line-gap-width': 5,
+        'line-width': 26,
+        'line-gap-width': 0,
       },
       filter: ['==', 'id', ''], // Filtro vacío para iniciar
     });
@@ -347,12 +347,13 @@ export class MapService {
           '#FFF', // Dasharray si pause es 1
           ['get', 'color'], // Sin dasharray si pause no es 1
         ],
-        'line-width': ['get', 'width'],
+        'line-width': 20,//['get', 'width'],
         'line-dasharray': [
-          'case',
-          ['==', ['get', 'pause'], true],
-          [2, 3], // Dasharray si pause es 1
-          [1, 0], // Sin dasharray si pause no es 1
+          0,1.2
+          // 'case',
+          // ['==', ['get', 'pause'], true],
+          // [2, 3], // Dasharray si pause es 1
+          // [1, 0], // Sin dasharray si pause no es 1
         ],
       },
     });
