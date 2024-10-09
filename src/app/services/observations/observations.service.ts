@@ -349,40 +349,40 @@ export class ObservationsService {
             return '#333';
         }
       }
-
+      let linestrings: Feature[] = []
       //Crear polilineas para las observaciones, esto añade el borde negro a las observaciones para mejorar la visibilidad
-      let linestrings: Feature[] = observations.map((obs) => ({
-        type: 'Feature',
-        geometry: {
-          type: 'LineString',
-          //hacemos un reduce de sengments para combertirlos en un Linestring
-          coordinates: obs.relationships.segments.reduce(
-            (
-              acc: turf.Position[],
-              segment: any,
-              index: number
-            ): turf.Position[] => {
-              acc.push([
-                Number(segment.start_longitude),
-                Number(segment.start_latitude),
-              ]);
-              if (index + 1 === obs.relationships.segments.length)
-                acc.push([
-                  Number(segment.end_longitude),
-                  Number(segment.end_latitude),
-                ]);
-              return acc;
-            },
-            []
-          ),
-        },
-        properties: {
-          id: obs.id,
-          type: 'LineString',
-          color: '#333',
-          width: 6,
-        },
-      }));
+      // linestrings = observations.map((obs) => ({
+      //   type: 'Feature',
+      //   geometry: {
+      //     type: 'LineString',
+      //     //hacemos un reduce de sengments para combertirlos en un Linestring
+      //     coordinates: obs.relationships.segments.reduce(
+      //       (
+      //         acc: turf.Position[],
+      //         segment: any,
+      //         index: number
+      //       ): turf.Position[] => {
+      //         acc.push([
+      //           Number(segment.start_longitude),
+      //           Number(segment.start_latitude),
+      //         ]);
+      //         if (index + 1 === obs.relationships.segments.length)
+      //           acc.push([
+      //             Number(segment.end_longitude),
+      //             Number(segment.end_latitude),
+      //           ]);
+      //         return acc;
+      //       },
+      //       []
+      //     ),
+      //   },
+      //   properties: {
+      //     id: obs.id,
+      //     type: 'LineString',
+      //     color: '#333',
+      //     width: 6,
+      //   },
+      // }));
 
       //Obtener los segmentos de las polilineas
       linestrings = linestrings.concat(
@@ -408,9 +408,8 @@ export class ObservationsService {
                 properties: {
                   id: obs.id,
                   type: 'Line',
-                  color: obs.relationships.segments[i].LAeq
-                    ? getColor(obs.relationships.segments[i].LAeq)
-                    : null,
+                  LAeq: obs.relationships.segments[i].LAeq ? obs.relationships.segments[i].LAeq : null,
+                  color: obs.relationships.segments[i].LAeq ? getColor(obs.relationships.segments[i].LAeq) : null,
                   width: 3,
                   pause: obs.relationships.segments[i].LAeq ? false : true, //TODO: Añadir el valor de pause
                 },
