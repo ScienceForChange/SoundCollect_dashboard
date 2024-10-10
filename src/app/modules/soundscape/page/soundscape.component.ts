@@ -101,7 +101,6 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
       this.polylines.update(() => this.observationsService.getLineStringFromObservations(this.observations));
       this.startPoints.update(() => this.observationsService.getStartPointsFromObservations(this.observations));
       this.updateMapSource();
-      console.log(this.polylines());
 
     })
 
@@ -192,7 +191,11 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
   */
   public onMapLoad() {
 
+    //agregamos controles de zoom al mapa
+    this.map.addControl(new mapboxgl.NavigationControl(),'bottom-right');
+
     const selectionColor = '#C19FD9';
+
 
     this.draw = new MapboxDraw({
       userProperties: true,
@@ -209,7 +212,7 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
           'paint': {
             'fill-color': selectionColor,
             'fill-outline-color': selectionColor,
-            'fill-opacity': 0.1
+            'fill-opacity': 0.3
           }
         },
         {
@@ -221,7 +224,7 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
           'paint': {
             'fill-color': selectionColor,
             'fill-outline-color': selectionColor,
-            'fill-opacity': 0.1
+            'fill-opacity': 0.3
           }
         },
         {
