@@ -22,6 +22,7 @@ import { QualitativeDataChartComponent } from './components/qualitative-data-cha
 import { TagCloudComponent } from './components/tag-cloud/tag-cloud.component';
 import { TonalFrequencyChartComponent } from './components/tonal-frequency-chart/tonal-frequency-chart.component';
 import { PhychoacusticsComponent } from './components/phychoacustics/phychoacustics.component';
+import { SurveyChartComponent } from './components/survey-chart/survey-chart.component';
 
 
 
@@ -38,6 +39,7 @@ import { PhychoacusticsComponent } from './components/phychoacustics/phychoacust
     TemporalEvolutionSoundLevelChartComponent,
     TonalFrequencyChartComponent,
     PhychoacusticsComponent,
+    SurveyChartComponent,
   ],
   imports: [
     ButtonModule,

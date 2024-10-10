@@ -553,6 +553,10 @@ export class TemporalEvolutionSoundLevelChartComponent
             fontSize: 15,
             fontWeight: 600,
           },
+          min: function (value) {
+            let min = Math.floor(value.min / 10) * 10;
+            return min;
+          }
         },
         series: [
           {
