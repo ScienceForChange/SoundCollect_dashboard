@@ -108,6 +108,8 @@ export class TagCloudComponent implements OnInit, OnDestroy{
     this.tags = [];
 
     const wordsArray = _.words(this.text);
+    console.log(wordsArray);
+    // Contamos las palabras y eliminamos las que no tienen sentido
     const wordCount:[string, number][] = Object.entries(
       _.countBy(
         wordsArray
@@ -117,6 +119,7 @@ export class TagCloudComponent implements OnInit, OnDestroy{
       )
     );
 
+    // Ordenamos el array de mayor a menor
     this.tags = wordCount.map((word: [string, number]) => {
       return { key: word[0], value: word[1] };
     });

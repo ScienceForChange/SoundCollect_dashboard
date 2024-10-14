@@ -345,7 +345,19 @@
       "content": "This word cloud is generated from the answers to the open question: 'What measures would you propose to acoustically protect this space?' The visualization highlights user suggestions, showing the most frequent words or phrases in larger size, making it easier to identify the most popular or relevant measures to improve noise protection in the study area."
     },
     "description": "Define a study area and adjust the time period to evaluate the tranquility of the area. It analyzes both qualitative acoustic perception and quantitative sound pressure levels.",
-    "title": "Analysis"
+    "title": "Analysis",
+    "survey": {
+      "pleasant": "Pleasant",
+      "chaotic": "Chaotic",
+      "vibrant": "Vibrant",
+      "uneventful": "Uneventful",
+      "calm": "Calm",
+      "annoying": "Annoying",
+      "eventful": "Eventful",
+      "monotonous": "Monotonous",
+      "average": "Average",
+      "all": "All observations"
+    }
   },
   "admin": {
     "studyZone": {
