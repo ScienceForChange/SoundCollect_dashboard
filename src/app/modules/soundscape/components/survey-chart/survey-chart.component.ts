@@ -167,8 +167,6 @@ export class SurveyChartComponent implements OnInit, OnDestroy{
     let average = survey.reduce((acc, survey) => {
       return acc.map((value, index) => value + survey[index]);
     }, [0, 0, 0, 0, 0, 0, 0, 0]).map(value => value / survey.length);
-    console.log(average);
-
 
     return {survey: survey,average: average};
   }
