@@ -104,6 +104,7 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
 
     })
 
+
     effect(() => {
       if (this.polygonFilter()){
 
@@ -190,7 +191,11 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
   */
   public onMapLoad() {
 
+    //agregamos controles de zoom al mapa
+    this.map.addControl(new mapboxgl.NavigationControl(),'bottom-right');
+
     const selectionColor = '#C19FD9';
+
 
     this.draw = new MapboxDraw({
       userProperties: true,
@@ -207,7 +212,7 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
           'paint': {
             'fill-color': selectionColor,
             'fill-outline-color': selectionColor,
-            'fill-opacity': 0.1
+            'fill-opacity': 0.3
           }
         },
         {
@@ -219,7 +224,7 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
           'paint': {
             'fill-color': selectionColor,
             'fill-outline-color': selectionColor,
-            'fill-opacity': 0.1
+            'fill-opacity': 0.3
           }
         },
         {
@@ -487,7 +492,7 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
       }
     });
 
-    // // resaltar la línea a la que se hace hover de color negro
+    // resaltar la línea a la que se hace hover de color negro
     // this.map.addLayer({
     //   id: 'lineLayer-hover',
     //   type: 'line',
@@ -505,23 +510,23 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
     //   filter: ['==', 'id', '']  // Filtro vacío para iniciar
     // });
 
-    // // resaltar la línea seleccionada de color naranja
-    // this.map.addLayer({
-    //   id: 'lineLayer-select',
-    //   type: 'line',
-    //   source: 'polylines',
-    //   layout: {
+    // resaltar la línea seleccionada de color naranja
+    this.map.addLayer({
+      id: 'lineLayer-select',
+      type: 'line',
+      source: 'polylines',
+      layout: {
 
-    //     'line-join': 'round',
-    //     'line-cap': 'round'
-    //   },
-    //   paint: {
-    //       'line-color': '#FF7A1F',
-    //       'line-width': 4,
-    //       'line-gap-width': 5,
-    //   },
-    //   filter: ['==', 'id', '']  // Filtro vacío para iniciar
-    // });
+        'line-join': 'round',
+        'line-cap': 'round'
+      },
+      paint: {
+          'line-color': '#FF7A1F',
+          'line-width': 4,
+          'line-gap-width': 5,
+      },
+      filter: ['==', 'id', '']  // Filtro vacío para iniciar
+    });
 
     // Agregar capa para los paths individuales
     this.map.addLayer({
@@ -543,12 +548,13 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
           ['get', 'color'] // Sin dasharray si pause no es 1
         ]
        ,
-        'line-width': ['get', 'width'],
+        'line-width': 20,//['get', 'width'],
         "line-dasharray":  [
-          'case',
-          ['==', ['get', 'pause'], true],
-          [2, 3], // Dasharray si pause es 1
-          [1, 0] // Sin dasharray si pause no es 1
+          0, 1.2
+          // 'case',
+          // ['==', ['get', 'pause'], true],
+          // [2, 3], // Dasharray si pause es 1
+          // [1, 0] // Sin dasharray si pause no es 1
         ]
       }
     });
@@ -559,7 +565,7 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
       type: 'circle',
       source: 'startPoints',
       paint: {
-        'circle-radius': 3,
+        'circle-radius': 6,
         'circle-color': '#6D6',
         'circle-pitch-scale': 'viewport',
         'circle-stroke-color': '#333',

@@ -75,7 +75,7 @@ export class StudyZoneMapService {
       this.updateMapSource();
     });
     this.studyZoneSelected$.subscribe((studyZone) => {
-      
+
       if (studyZone) this.selectedStudyZone(studyZone.id);
     });
   }
@@ -161,7 +161,7 @@ export class StudyZoneMapService {
           paint: {
             'fill-color': selectionColor,
             'fill-outline-color': selectionColor,
-            'fill-opacity': 0.1,
+            'fill-opacity': 0.3,
           },
         },
         {
@@ -171,7 +171,7 @@ export class StudyZoneMapService {
           paint: {
             'fill-color': selectionColor,
             'fill-outline-color': selectionColor,
-            'fill-opacity': 0.1,
+            'fill-opacity': 0.3,
           },
         },
         {
@@ -351,7 +351,7 @@ export class StudyZoneMapService {
           paint: {
             'fill-color': '#404040',
             'fill-outline-color': '#404040',
-            'fill-opacity': 0.1,
+            'fill-opacity': 0.3,
           },
         },
         {
@@ -410,7 +410,7 @@ export class StudyZoneMapService {
 
   }
 
-  
+
   // Funcion para dibujar un polígono en la capa de zonas de estudio seleccionada
   public drawPolygonFromId(id: number) {
     this.toggleStudyZonesVisibility()
@@ -493,7 +493,7 @@ export class StudyZoneMapService {
           ['==', ['get', "status"], 'selected'], "#0AA",
           "#FF7A1F"
         ],
-        'fill-opacity': 0.2,
+        'fill-opacity': 0.3,
       },
       layout: {
         'visibility': 'visible'
@@ -792,7 +792,7 @@ export class StudyZoneMapService {
       newFeaturePolygon.properties['status'] = 'selected';
     }
     source.setData({ features: newFeaturesPolygons, ...restPolygons });
-  
+
   }
 
 

@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 
-import { LngLat, LngLatBounds, Map } from 'mapbox-gl';
+import mapboxgl, { LngLat, LngLatBounds, Map } from 'mapbox-gl';
 
 import { FeatureCollection, Geometry } from 'geojson';
 
@@ -135,9 +135,7 @@ export class MapService {
       source.setData(geoJson as FeatureCollection<Geometry>);
     } else {
       this.map.on('load', () => {
-        let source = this.map.getSource(
-          'observations'
-        ) as mapboxgl.GeoJSONSource;
+        let source = this.map.getSource('observations') as mapboxgl.GeoJSONSource;
         source.setData(geoJson as FeatureCollection<Geometry>);
       });
     }
@@ -145,6 +143,8 @@ export class MapService {
 
   public setMap(map: Map): void {
     this.map = map;
+    //agregamos controles de zoom al mapa
+    this.map.addControl(new mapboxgl.NavigationControl(),'bottom-right');
     this.flyToDefaultBbox();
   }
 
@@ -324,8 +324,8 @@ export class MapService {
       },
       paint: {
         'line-color': '#333',
-        'line-width': 3,
-        'line-gap-width': 5,
+        'line-width': 16,
+        'line-gap-width': 0,
       },
       filter: ['==', 'id', ''], // Filtro vacío para iniciar
     });
@@ -347,12 +347,13 @@ export class MapService {
           '#FFF', // Dasharray si pause es 1
           ['get', 'color'], // Sin dasharray si pause no es 1
         ],
-        'line-width': ['get', 'width'],
+        'line-width': 10,//['get', 'width'],
         'line-dasharray': [
-          'case',
-          ['==', ['get', 'pause'], true],
-          [2, 3], // Dasharray si pause es 1
-          [1, 0], // Sin dasharray si pause no es 1
+          0,1.15
+          // 'case',
+          // ['==', ['get', 'pause'], true],
+          // [2, 3], // Dasharray si pause es 1
+          // [1, 0], // Sin dasharray si pause no es 1
         ],
       },
     });
