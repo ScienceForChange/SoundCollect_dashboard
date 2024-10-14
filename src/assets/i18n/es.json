@@ -346,7 +346,19 @@
       "content": "Esta nube de palabras se genera a partir de las respuestas a la pregunta abierta: '¿Qué medidas propondrías para proteger acústicamente este espacio?' La visualización destaca las sugerencias de los usuarios, mostrando en mayor tamaño las palabras o frases más frecuentes, lo que facilita identificar las medidas más populares o relevantes para mejorar la protección acústica en la zona de estudio."
     },
     "description": "Define una zona de estudio y ajusta el período de tiempo para evaluar la tranquilidad del área. Analiza tanto la percepción acústica cualitativa como los niveles de presión sonora cuantitativos.",
-    "title": "Análisis"
+    "title": "Análisis",
+    "survey": {
+      "pleasant": "Agradable",
+      "chaotic": "Caótico",
+      "vibrant": "Estimulante",
+      "uneventful": "Sin actividad",
+      "calm": "Calmado",
+      "annoying": "Desagradable",
+      "eventful": "Con actividad",
+      "monotonous": "Monótono",
+      "average": "Media",
+      "all": "Todas las observaciones"
+    }
   },
   "admin": {
     "studyZone": {

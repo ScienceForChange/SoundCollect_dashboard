@@ -345,7 +345,19 @@
       "content": "Aquest núvol de paraules es genera a partir de les respostes a la pregunta oberta: “Quines mesures proposaries per a protegir acústicament aquest espai?” La visualització destaca els suggeriments dels usuaris, mostrant en major grandària les paraules o frases més freqüents, la qual cosa facilita identificar les mesures més populars o rellevants per a millorar la protecció acústica en la zona d'estudi."
     },
     "description": "Defineix una zona d'estudi i ajusta el període de temps per a avaluar la tranquil·litat de l'àrea. Analitza tant la percepció acústica qualitativa com els nivells de pressió sonora quantitatius.",
-    "title": "Anàlisi"
+    "title": "Anàlisi",
+    "survey": {
+      "pleasant": "Agradable",
+      "chaotic": "Caòtic",
+      "vibrant": "Estimulant",
+      "uneventful": "Sense activitat",
+      "calm": "Calmat",
+      "annoying": "Desagradable",
+      "eventful": "Amb activitat",
+      "monotonous": "Monòton",
+      "average": "Mitjana",
+      "all": "Totes les observacions"
+    }
   },
   "admin": {
     "studyZone": {
