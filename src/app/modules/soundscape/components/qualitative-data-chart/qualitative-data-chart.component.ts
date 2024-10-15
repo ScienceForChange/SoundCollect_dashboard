@@ -38,8 +38,7 @@ export class QualitativeDataChartComponent implements AfterViewInit {
   public updateChart(): void {
 
     const data = this.getDataFromObservations();
-    const { closePoints, otherPoints } = this.classifyData(data);
-
+    const { closePoints, otherPoints, convexHull } = this.classifyData(data);
     const option = {
       xAxis: {
         min: -1,
@@ -68,46 +67,60 @@ export class QualitativeDataChartComponent implements AfterViewInit {
       },
       series: [
         {
+          type: 'custom',
+          renderItem: function (params:any, api:any) {
+            if (params.context.rendered) {
+              return 0;
+            }
+            params.context.rendered = true;
+    
+            let points: number[][] = [];
+            for (let i = 0; i < convexHull.length; i++) {
+              points.push(api.coord(convexHull[i]));
+            }
+            let color = 'rgba(128, 128, 128, 0.3)';
+    
+            return {
+              type: 'polygon',
+              transition: ['shape'],
+              shape: {
+                points: points
+              },
+              style: api.style({
+                fill: 'rgba(255, 128, 128, 0.3)',
+                stroke: 'rgba(255, 128, 128, 1)'
+              })
+            };
+          },
+          z: 100000,
+          clip: true,
+          data: convexHull,
+
+        },
+        {
           name: this.translate.instant('soundscape.quas.activity&pleasantness'),
           type: 'scatter',
           data: [...closePoints],
           encode: { tooltip: [0, 1] },
-          symbolSize: 20,
+          symbolSize: 10,
+          z:1,
           itemStyle: {
-            color: 'blue'
+            color: 'blue' //'red'
           },
-          // markArea: {
-          //   silent: true,
-          //   itemStyle: {
-          //     color: 'rgba(128, 128, 128, .3)'
-          //   },
-          //   data: [
-          //     [{
-          //       coord: [
-          //         Math.min(...closePoints.map(p => p[0])),
-          //         Math.min(...closePoints.map(p => p[1]))
-          //       ]
-          //     },
-          //     {
-          //       coord: [
-          //         Math.max(...closePoints.map(p => p[0])),
-          //         Math.max(...closePoints.map(p => p[1]))
-          //       ]
-          //     }]
-          //   ]
-          // }
         },
         {
          name: 'Other Points',
          type: 'scatter',
          data: otherPoints,
          encode: { tooltip: [0, 1] },
-         symbolSize: 20,
+         symbolSize: 10,
+         z:2,
          itemStyle: {
            color: 'blue' //'red'
          }
-        }
-      ]
+        },
+        
+      ],
     };
 
     this.chart.setOption(option);
@@ -115,9 +128,11 @@ export class QualitativeDataChartComponent implements AfterViewInit {
 
   private getDataFromObservations(): number[][] {
 
-    let data = this.observations.map(observation => {
+    let data = this.observations
       //TODO: cambiar la condición de pleasant por si el usuario es o no experto
-      if(observation.attributes.pleasant !== "N/A"){
+      .filter( observation => observation.attributes.pleasant !== "N/A" && observation.attributes.pleasant )
+      .map(observation => {
+      
 
         const p:number  = Number(observation.attributes.pleasant);
         const ch:number = Number(observation.attributes.chaotic);
@@ -125,7 +140,7 @@ export class QualitativeDataChartComponent implements AfterViewInit {
         const u:number  = Number(observation.attributes.uneventful);
         const ca:number = Number(observation.attributes.calm);
         const a:number  = Number(observation.attributes.annoying);
-        const e:number  = Number(observation.attributes.eventful !== "N/A" ? observation.attributes.eventful : 5);
+        const e:number  = Number(observation.attributes.eventful);
         const m:number  = Number(observation.attributes.monotonous);
 
         const cos45:number = Math.cos(45 * Math.PI / 180);
@@ -136,16 +151,9 @@ export class QualitativeDataChartComponent implements AfterViewInit {
         return [Math.round((activityLevel / 9.657) * 100) / 100, Math.round((pleasantnessLevel / 9.657) * 100) / 100];
 
       }
-      else{
-        return [];
-        //mockup de datos entre -1 y 1
-        return [Math.random() * (1 - (-1)) + (-1), Math.random() * (1 - (-1)) + (-1)];
-      }
+    );
 
-
-    });
-
-    return data;
+    return data ;
 
   }
 
@@ -157,7 +165,7 @@ export class QualitativeDataChartComponent implements AfterViewInit {
     return Math.sqrt(Math.pow(point1[0] - point2[0], 2) + Math.pow(point1[1] - point2[1], 2));
   }
   // Clasifica los datos en dos grupos, los más cercanos y los demás
-  classifyData(data: number[][]): { closePoints: number[][], otherPoints: number[][] } {
+  classifyData(data: number[][]): { closePoints: number[][], otherPoints: number[][], convexHull: number[][] } {
     const distances: { point: number[], sumDistances: number }[] = data.map(point => ({
       point,
       sumDistances: data.reduce((sum, otherPoint) => sum + this.calculateDistance(point, otherPoint), 0)
@@ -168,8 +176,33 @@ export class QualitativeDataChartComponent implements AfterViewInit {
     const halfLength = Math.ceil(distances.length / 2);
     const closePoints = distances.slice(0, halfLength).map(d => d.point);
     const otherPoints = distances.slice(halfLength).map(d => d.point);
+    const convexHull = this.convexHull(closePoints);
 
-    return { closePoints, otherPoints };
+
+    return { closePoints, otherPoints, convexHull};
+  }
+
+  private convexHull(points: number[][]): number[][] {
+
+    const cross = (O: number[], A: number[], B: number[]) => (A[0] - O[0]) * (B[1] - O[1]) - (A[1] - O[1]) * (B[0] - O[0]);
+    const sortPoints = points.sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+    const lower = [];
+    for (const point of sortPoints) {
+      while (lower.length >= 2 && cross(lower[lower.length - 2], lower[lower.length - 1], point) <= 0) {
+        lower.pop();
+      }
+      lower.push(point);
+    }
+    const upper = [];
+    for (const point of sortPoints.slice().reverse()) {
+      while (upper.length >= 2 && cross(upper[upper.length - 2], upper[upper.length - 1], point) <= 0) {
+        upper.pop();
+      }
+      upper.push(point);
+    }
+    upper.pop();
+    lower.pop();
+    return lower.concat(upper);
   }
 
 }
