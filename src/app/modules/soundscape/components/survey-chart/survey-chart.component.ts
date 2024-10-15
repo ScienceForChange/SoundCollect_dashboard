@@ -56,7 +56,7 @@ export class SurveyChartComponent implements OnInit, OnDestroy{
       '#4682b4', // Azul acero
       '#3cb371'  // Verde mar medio
     ];
-    const data = this.getDataFromObservations().survey.slice(0, 5).map((survey, index) => {
+    const data = this.getDataFromObservations().survey.map((survey, index) => {
       return {
         name: this.translate.instant('soundscape.survey.all'),
         type: 'radar',
@@ -147,22 +147,22 @@ export class SurveyChartComponent implements OnInit, OnDestroy{
     // filtrar las observaciones de expertos
     let expertObservations = this.observations.filter(observation => observation.relationships.user.attributes.is_expert === true);
     
-    // obtenemos los datos de encuenstas
-    let survey = expertObservations.map(observation => 
+    
+    let survey = expertObservations.filter(observation => observation.attributes.calm !== "N/A" && observation.attributes.calm !== null).map(observation => 
       {
       return [
-          // mockeamos los datos del survey, valores de 1 a 5
-          Math.floor(Math.random() * 5) + 1,//observation.attributes.annoying,
-          Math.floor(Math.random() * 5) + 1,// observation.attributes.calm,
-          Math.floor(Math.random() * 5) + 1,// observation.attributes.chaotic,
-          Math.floor(Math.random() * 5) + 1,// observation.attributes.eventful,
-          Math.floor(Math.random() * 5) + 1,// observation.attributes.monotonous,
-          Math.floor(Math.random() * 5) + 1,// observation.attributes.pleasant,
-          Math.floor(Math.random() * 5) + 1,// observation.attributes.uneventful,
-          Math.floor(Math.random() * 5) + 1,// observation.attributes.vibrant
+        Number(observation.attributes.pleasant),
+        Number(observation.attributes.calm),
+        Number(observation.attributes.vibrant),
+        Number(observation.attributes.chaotic),
+        Number(observation.attributes.uneventful),
+        Number(observation.attributes.annoying),
+        Number(observation.attributes.eventful),
+        Number(observation.attributes.monotonous),
         ];
       }
     );
+
     // calculamos la media de las encuestas
     let average = survey.reduce((acc, survey) => {
       return acc.map((value, index) => value + survey[index]);

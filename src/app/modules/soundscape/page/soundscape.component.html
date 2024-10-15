@@ -47,13 +47,12 @@
   </div>
   <div class="flex flex-wrap w-full">
     <div #map class="map-container"></div>
-
-      <div class="col-12 flex">
-        <app-sound-levels-chart class="card w-full" />
-      </div>
-      <div class="col-12 flex">
-        <app-pressure-chart class="card w-full" />
-      </div>
+    <div class="col-12 flex">
+      <app-sound-levels-chart class="card w-full" />
+    </div>
+    <div class="col-12 flex">
+      <app-pressure-chart class="card w-full" />
+    </div>
     <div class="col-12 flex">
       <app-temporal-evolution-sound-level-chart class="card w-full" [observations]="observations"/>
     </div>
