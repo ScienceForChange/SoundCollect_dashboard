@@ -45,7 +45,7 @@ export interface ObservationsAttributes {
     uneventful:             number | string;
     calm:                   number | string;
     annoying:               number | string;
-    eventful:              number | string;
+    eventful:               number | string;
     monotonous:             number | string;
     overall:                number | string;
     user_id:                string;
