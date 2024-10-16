@@ -1,0 +1,14 @@
+
+:host ::ng-deep .pi-eye,
+:host ::ng-deep .pi-eye-slash {
+  transform: scale(1.6);
+  margin-right: 1rem;
+  color: var(--primary-color) !important;
+}
+#login-logo{
+  width: 100%;
+  height: auto;
+  max-width: 555px;
+  border-radius: 20px;
+  margin-bottom: 50px;
+}

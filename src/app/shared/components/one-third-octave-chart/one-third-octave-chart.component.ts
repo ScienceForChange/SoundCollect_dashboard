@@ -24,7 +24,7 @@ export class OneThirdOctaveChartComponent implements OnInit, AfterViewInit {
   private options!: echarts.EChartsCoreOption;
   private loadingOptions = {
     text: this.translate.instant('app.loading'),
-    color: '#FF7A1F',
+    color: '#00FFBF',
   };
 
   public totalObservationTypes: number = 0;
