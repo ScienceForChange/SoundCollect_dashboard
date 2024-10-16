@@ -19,16 +19,7 @@ export interface UserLogin {
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styles: [
-    `
-      :host ::ng-deep .pi-eye,
-      :host ::ng-deep .pi-eye-slash {
-        transform: scale(1.6);
-        margin-right: 1rem;
-        color: var(--primary-color) !important;
-      }
-    `,
-  ],
+  styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
   private authService = inject(AuthService);

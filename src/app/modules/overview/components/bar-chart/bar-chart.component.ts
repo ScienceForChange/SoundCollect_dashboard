@@ -65,7 +65,7 @@ export class BarChartComponent implements OnInit, AfterViewInit, OnDestroy {
   );
   private loadingOptions = {
     text: this.translate.instant('app.loading'),
-    color: '#FF7A1F',
+    color: '#00FFBF',
   };
   public filtersForm!: FormGroup
 
