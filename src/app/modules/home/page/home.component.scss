@@ -40,16 +40,17 @@
 
 }
 .bg-color-green {
-  background: linear-gradient(to left bottom, #206A7199, #206A7133 80%);
+  background: linear-gradient(to left bottom, #00cc99, white 80%);
 }
 .bg-color-orange {
-  background: linear-gradient(to left bottom, #FF7A1F99, #FF7A1F33 80%);
+  background: linear-gradient(to left bottom, #6FCB67, #B7E5B3 80%);
 }
 #logo{
   width: 100%;
   height: 100%;
-  max-width: 150px;
+  max-width: 250px;
   display: flex;
   justify-content: center;
   align-items: center;
+  border-radius: 10px;
 }

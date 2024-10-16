@@ -16,17 +16,17 @@ $gutter: 1rem; //for primeflex grid system
 
 :root {
   //PRIMARY
-  --blue: #{$blue};
-  --blue-light: #{$blue-light};
-  --blue-lighter: #{$blue-lighter};
-  --blue-transparency: #{$blue-transparency};
+  --green: #{$green};
+  --green-light: #{$green-light};
+  --green-lighter: #{$green-lighter};
+  --green-transparency: #{$green-transparency};
 
   //SECONDARY
 
-  --orange: #{$orange};
-  --orange-light: #{$orange-light};
-  --orange-lighter: #{$orange-lighter};
-  --orange-transparency: #{$orange-transparency};
+  --red: #{$red};
+  --red-light: #{$red-light};
+  --red-lighter: #{$red-lighter};
+  --red-transparency: #{$red-transparency};
 }
 body {
   font-family: Space Grotesk;
