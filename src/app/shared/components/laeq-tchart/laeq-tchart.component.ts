@@ -34,7 +34,7 @@ export class LAeqTChartComponent implements OnInit, AfterViewInit {
   private options: EChartsOption;
   private loadingOptions = {
     text: this.translations.instant('app.loading'),
-    color: '#FF7A1F',
+    color: '#00FFBF',
   };
 
   ngOnInit(): void {

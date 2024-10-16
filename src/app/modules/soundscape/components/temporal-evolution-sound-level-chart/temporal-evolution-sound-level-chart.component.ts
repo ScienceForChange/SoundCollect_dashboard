@@ -115,7 +115,7 @@ export class TemporalEvolutionSoundLevelChartComponent
   private options: EChartsOption;
   private loadingOptions = {
     text: this.translations.instant('app.loading'),
-    color: '#FF7A1F',
+    color: '#00FFBF',
   };
   public firstDay!: Date;
   public lastDay!: Date;
