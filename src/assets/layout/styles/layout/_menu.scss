@@ -41,12 +41,12 @@
     }
 
     &.active {
-      background: var(--orange-transparency);
+      background: var(--green-transparency);
       border-color: var(--primary-color);
     }
 
     &:hover {
-      background-color: var(--orange-transparency);
+      background-color: var(--green-transparency);
     }
 
     &:focus {
@@ -142,7 +142,7 @@
     }
 
     &:hover {
-      background-color: var(--orange-transparency);
+      background-color: var(--green-transparency);
     }
 
     &:focus {
@@ -218,7 +218,7 @@
         .p-menuitem-content {
           border-radius: 12px !important;
           &:hover {
-            background-color: var(--orange-transparency) !important;
+            background-color: var(--green-transparency) !important;
             border-radius: 12px !important;
             transition: none;
           }
