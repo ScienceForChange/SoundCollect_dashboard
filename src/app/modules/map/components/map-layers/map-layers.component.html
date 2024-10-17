@@ -14,13 +14,13 @@
     <p-radioButton value="satellite-streets-v12" [(ngModel)]="layerId" (onClick)="toggleLayerVisibility('satellite-streets-v12')"/>
     <label for="satellite-streets-v12" class="ml-2"> {{"map.layers.satellite" | translate}} </label>
   </div>
-  <div class="flex justify-content-end mt-3">
+  <div class="flex justify-content-start mt-3">
     <p-fileUpload
       mode="basic"
       name="files[]"
       chooseLabel="{{ 'map.filters.addGPKP' | translate }}"
       accept=".gpkg,.kml"
-      maxFileSize="10000000"
+      maxFileSize="20000000"
       [multiple]="true"
       [url]="environment.BACKEND_BASE_URL + '/map/gpkg-kml-to-geojson'"
       [auto]="true"

@@ -15,36 +15,32 @@
   </ng-template>
   @if(observationSelected){
   <div class="flex flex-column justify-content-center align-items-center gap-3">
-    @if(observationSelected.attributes.images &&
-    observationSelected.attributes.images.length >= 1){
-    <img
-      [src]="observationSelected.attributes.images[0]"
-      width="400"
-      height="300"
-      class="border-round-md"
-      style="object-fit: cover"
-    />
-    }
     <div class="w-full">
       <!-- Información general -->
       <h3 class="text-left headline-s font-medium">
         {{ "map.infoModal.information" | translate }}
       </h3>
-      <h4 class="title-m mb-0">
-        {{ "map.infoModal.typeOfSound" | translate }}
-      </h4>
-      <ul class="body-m mt-0">
-        @for(typeOfSound of observationSelected.relationships.types; track
-        $index){
-        <li>
-          {{ typeOfSound.name }}
-        </li>
+        @if(observationSelected.attributes.images &&
+        observationSelected.attributes.images.length >= 1){
+          <p-galleria
+            [value]="observationSelected.attributes.images"
+            [showIndicators]="true"
+            [showThumbnails]="false"
+            [containerStyle]="{ 'max-width': '100%' }">
+                <ng-template pTemplate="item" let-item>
+                  <div class="flex justify-content-center w-100" [style]="'height:400px; overflow: hidden;'">
+                    <img [src]="item" style="height: 100%; display: block; border-radius: 8px;" />
+                  </div>
+                </ng-template>
+          </p-galleria>
         }
+
+      <ul class="body-m mt-0">
+        <li>
+          <span class="font-medium">{{ "map.infoModal.date" | translate }}:</span>
+          {{ observationSelected.attributes.created_at }}
+        </li>
       </ul>
-      <h4 class="title-m mb-0">{{ "map.infoModal.data" | translate }}</h4>
-      <p class="body-m">
-        {{ observationSelected.attributes.created_at }}
-      </p>
       <!-- Información meteorológica -->
       <h3 class="text-left headline-s font-medium">{{ "map.infoModal.meteorologyInfo" | translate }}</h3>
       <div class="flex gap-2">
@@ -89,16 +85,16 @@
       <h3 class="text-left headline-s font-medium">{{ "map.infoModal.audioRegister" | translate }}</h3>
       <ul class="body-m mt-0">
         <li>
+          <span class="font-medium">{{ "map.infoModal.SPLEquivalent" | translate }}:</span>
+          {{ observationSelected.attributes.Leq }}
+        </li>
+        <li>
           <span class="font-medium">{{ "map.infoModal.L10Level" | translate }}:</span>
           {{ observationSelected.attributes.L10 }}
         </li>
         <li>
           <span class="font-medium">{{ "map.infoModal.L90Level" | translate }}:</span>
           {{ observationSelected.attributes.L90 }}
-        </li>
-        <li>
-          <span class="font-medium">{{ "map.infoModal.SPLEquivalent" | translate }}:</span>
-          {{ observationSelected.attributes.Leq }}
         </li>
         <li>
           <span class="font-medium">{{ "map.infoModal.LmaxLevel" | translate }}:</span>
@@ -115,8 +111,68 @@
       <app-laeq-tchart [observationSelected]="observationSelected" />
       <h3 class="text-left headline-s font-medium">{{ "map.infoModal.1/3Octave" | translate }}:</h3>
       <app-one-third-octave-chart [observationSelected]="observationSelected" />
-    </div>
-  </div>
 
+
+    <h3 class="text-left headline-s font-medium">
+      {{ "map.infoModal.acousticData" | translate }}
+    </h3>
+    <ul class="body-m mt-0">
+      <li *ngIf="observationSelected.attributes.loudness_N && observationSelected.attributes.loudness_N !== '' ">
+        <span class="font-medium">{{ 'map.infoModal.loudness' | translate }}:</span>
+        {{ observationSelected.attributes.loudness_N | number: '1.1-1' }}
+      </li>
+      <li *ngIf="observationSelected.attributes.sharpness_S && observationSelected.attributes.sharpness_S !== '' ">
+        <span class="font-medium">{{ 'map.infoModal.sharpness' | translate }}:</span>
+        {{ observationSelected.attributes.sharpness_S | number: '1.2-2' }}
+      </li>
+      <li *ngIf="observationSelected.attributes.roughtness && observationSelected.attributes.roughtness !== '' ">
+        <span class="font-medium">{{ 'map.infoModal.roughness' | translate }}:</span>
+        {{ observationSelected.attributes.roughtness_R }}
+      </li>
+      <li *ngIf="observationSelected.attributes.fluctuation_strength_F && observationSelected.attributes.fluctuation_strength_F !== '' ">
+        <span class="font-medium">{{ 'map.infoModal.strength' | translate }}:</span>
+        {{ observationSelected.attributes.fluctuation_strength_F | number: '1.5-5' }}
+      </li>
+      <!--Tonalidad pendiente-->
+    </ul>
+
+    <h3 class="text-left headline-s font-medium">
+      {{ "map.infoModal.perceptionData" | translate }}
+    </h3>
+    <ul class="body-m mt-0">
+      <li>
+        <span class="font-medium">{{ "map.infoModal.typeOfSound" | translate }}</span>
+        <ul class="body-m mt-0">
+          @for(typeOfSound of observationSelected.relationships.types; track
+          $index){
+          <li>
+            {{ typeOfSound.name }}
+          </li>
+          }
+        </ul>
+      </li>
+      <li>
+        <span class="font-medium">{{ "map.infoModal.quiet" | translate }}:</span>
+        {{ observationSelected.attributes.quiet }}
+      </li>
+      <li>
+        <span class="font-medium">{{ "map.infoModal.cleanliness" | translate }}:</span>
+        {{ observationSelected.attributes.cleanliness }}
+      </li>
+      <li>
+        <span class="font-medium">{{ "map.infoModal.accessibility" | translate }}:</span>
+        {{ observationSelected.attributes.accessibility }}
+      </li>
+      <li>
+        <span class="font-medium">{{ "map.infoModal.safety" | translate }}:</span>
+        {{ observationSelected.attributes.safety }}
+      </li>
+      <li>
+        <span class="font-medium">{{ "map.infoModal.positiveInfluence" | translate }}:</span>
+        {{ observationSelected.attributes.influence }}
+      </li>
+    </ul>
+  </div>
+</div>
   }
 </p-sidebar>
