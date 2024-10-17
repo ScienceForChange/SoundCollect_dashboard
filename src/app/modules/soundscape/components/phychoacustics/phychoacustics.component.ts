@@ -93,6 +93,10 @@ export class PhychoacusticsComponent
   private data: ObsData[] = [];
   private subscriptions = new Subscription();
 
+
+  //definimos la diferencia minima entre max y min para que la barra sea visible si los valores minimos y maximos son iguales
+  minDiff:number = 0.05;
+
   public selectedType: string = 'SHARPNESS';
   public buttonOptions: { value: string; label: string }[] = [
     {
@@ -150,6 +154,20 @@ export class PhychoacusticsComponent
   }
 
   public updateType() {
+    /*
+    *   definimos la diferencia minima entre max y min para que la barra sea visible
+    *   si los valores minimos y maximos son iguales en funcion del tipo de dato seleccionado
+    */
+    if(this.selectedType === 'LOUDNESS'){
+      this.minDiff = 0.8;
+    }else if(this.selectedType === 'FLUCTUATION_STRENGTH'){
+      this.minDiff = 0.0001;
+    }else if(this.selectedType === 'ROUGHNESS'){
+      //TODO: pendiente de confirmar
+    }else{
+      this.minDiff = 0.05;
+    }
+    // actualizamos el grafico
     this.updateChart(this.observations);
   }
 
@@ -166,6 +184,7 @@ export class PhychoacusticsComponent
     });
     const data = this.groupObsByHours(dataFiltered);
 
+    console.log(data);
     this.options = {
       ...this.options,
       yAxis: {
@@ -191,7 +210,8 @@ export class PhychoacusticsComponent
               color: 'transparent',
             },
           },
-          data: data.map((obsData) => obsData.min),
+          // Si los valores son iguales, se resta el valor minimo para que la barra sea visible
+          data: data.map((obsData) => obsData.min === obsData.max && obsData.numOfObs > 0 ? obsData.min - (this.minDiff/2) : obsData.min),
         },
         {
           name: this.translations.instant(
@@ -199,7 +219,8 @@ export class PhychoacusticsComponent
           ),
           type: 'bar',
           stack: 'Total',
-          data: data.map((obsData) => obsData.max),
+          // Si los valores son iguales, se suma el valor minimo para que la barra sea visible
+          data: data.map((obsData) => obsData.min === obsData.max && obsData.numOfObs > 0 ? this.minDiff/2 : obsData.max - obsData.min),
         },
       ],
     };
@@ -285,6 +306,7 @@ export class PhychoacusticsComponent
       if (isObsAttribute && isObsAttributeNotStringNull) return true;
       return false;
     });
+
     const data = this.groupObsByHours(dataFiltered);
     this.options = {
       tooltip: {
@@ -324,11 +346,7 @@ export class PhychoacusticsComponent
         },
       },
       yAxis: {
-        name:
-          this.translations.instant(typeOfDataTranslated[this.selectedType]) +
-          ' (' +
-          typeOfUnits[this.selectedType] +
-          ')',
+        name: this.translations.instant(typeOfDataTranslated[this.selectedType]) + ' (' +  typeOfUnits[this.selectedType] + ')',
         nameLocation: 'middle',
         nameGap: 45,
         nameTextStyle: {
