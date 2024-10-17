@@ -65,14 +65,14 @@
         "cookies": "Política de cookies"
       },
       "allRightsReserved": "Tots els drets reservats",
-      "smallText": "SoundCollect és un projecte coordinat per <a href='https://scienceforchange.eu' target='_blank'>Science For Change</a> dins de la convocatòria del programa operatiu del FEDER de Catalunya 2021-2027 amb número de referència del Contracte EC-2023-89."
+      "smallText": "SonsCat és un projecte coordinat per <a href='https://scienceforchange.eu' target='_blank'>Science For Change</a> dins de la convocatòria del programa operatiu del FEDER de Catalunya 2021-2027 amb número de referència del Contracte EC-2023-89."
     },
     "header": {
-      "wellcome": "Et donem la benvinguda a la plataforma de visualització de dades de SoundCollect!",
+      "wellcome": "Et donem la benvinguda a la plataforma de visualització de dades de SonsCat!",
       "text": "Aquesta eina ha estat creada per portar la informació sobre les àrees tranquil·les directament al teu abast."
     },
     "whatToDo": {
-      "text1": "La nostra plataforma web és un visor de dades interactiu que transforma la informació recopilada per l'aplicació SoundCollect en estadístiques i anàlisis detallades. Tant si ets un/a ciutadà/na interessat/ada en la qualitat sonora del teu entorn, com si ets una persona experta en acústica, aquesta plataforma t'ofereix tot el que necessites per explorar i entendre els paisatges sonors urbans. Recorda que està demostrat que el paisatge sonor urbà,  és un element que afecta i condiciona de forma rellevant la qualitat de vida de les persones.",
+      "text1": "La nostra plataforma web és un visor de dades interactiu que transforma la informació recopilada per l'aplicació SonsCat en estadístiques i anàlisis detallades. Tant si ets un/a ciutadà/na interessat/ada en la qualitat sonora del teu entorn, com si ets una persona experta en acústica, aquesta plataforma t'ofereix tot el que necessites per explorar i entendre els paisatges sonors urbans. Recorda que està demostrat que el paisatge sonor urbà,  és un element que afecta i condiciona de forma rellevant la qualitat de vida de les persones.",
       "listTitle": "Què pots fer a la plataforma?",
       "listItem1": {
         "text": "Visualitza totes les observacions realitzades per la comunitat. Utilitza els filtres per interactuar amb les dades i descobrir zones d'interès.",
@@ -146,7 +146,7 @@
       "axisX": "Temps (segons)",
       "axisY": "Nivell de pressió sonora (dBA)"
     },
-    "description": "Consulta estadístiques detallades sobre l'ús de SoundCollect a Catalunya i accedeix a diferents indicadors.",
+    "description": "Consulta estadístiques detallades sobre l'ús de SonsCat a Catalunya i accedeix a diferents indicadors.",
     "title": "Mapa sonor col·laboratiu",
     "infoModal": {
       "title": "Detall de l'Observació",
@@ -195,7 +195,7 @@
         "date": "Data",
         "numObs": "Observacions"
       },
-      "title": "Evolució temporal dels registres en SoundCollect",
+      "title": "Evolució temporal dels registres en SonsCat",
       "content": "Aquesta gràfica mostra com varia l'activitat de les persones usuàries al llarg del temps. Et permet identificar patrons d'ús i dates clau, ajudant a avaluar la participació i planificar activitats participatives."
     },
     "observationsNumber": {
@@ -203,7 +203,7 @@
       "average": "Mitjana de registres per mes per usuari/a",
       "users": "Nombre total d'usuaris/es"
     },
-    "description": "Consulta estadístiques detallades sobre l'ús de SoundCollect a Catalunya i accedeix a diferents indicadors.",
+    "description": "Consulta estadístiques detallades sobre l'ús de SonsCat a Catalunya i accedeix a diferents indicadors.",
     "title": "Resum"
   },
   "soundscape": {
