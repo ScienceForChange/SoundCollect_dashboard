@@ -13,7 +13,7 @@
     [inputId]="'studyZoneNull'"
     name="studyZone"
     [(ngModel)]="layerId"
-    [value]="null" 
+    [value]="null"
     (onClick)="toggleLayerVisibility(null, $event)"
   />
   <label [htmlFor]="'studyZoneNull'" class="ml-2">
@@ -22,17 +22,18 @@
 </div>
 @for(studyZone of studyZones; track trackById; let i = $index){
   @if(studyZone.is_visible){
-  <div class="flex align-items-center mt-3">
+    <div class="flex align-items-center mt-3">
       <p-radioButton
         [inputId]="'studyZone' + studyZone.id"
         name="studyZone"
         [(ngModel)]="layerId"
-        [value]="studyZone.id" 
+        [value]="studyZone.id"
         (onClick)="toggleLayerVisibility(studyZone.id, $event)"
       />
       <label [htmlFor]="'studyZone' + studyZone.id " class="ml-2">
         {{ studyZone.name }}
       </label>
+      <p-button icon="pi pi-info-circle" class="ml-2" [rounded]="true"  [text]="true" (onClick)="showModal(studyZone.id)"></p-button>
     </div>
   }
 }
