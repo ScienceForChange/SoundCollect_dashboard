@@ -159,13 +159,25 @@
       "temperature": "Temperatura",
       "pressure": "Pressió",
       "audioRegister": "Àudio registrat",
-      "L10Level": "Nivell percentil L10",
-      "L90Level": "Nivell percentil L90",
+      "L10Level": "Nivell percentil LA10",
+      "L90Level": "Nivell percentil LA90",
       "SPLEquivalent": "Nivell SPL equivalent LAeq",
       "LmaxLevel": "Nivell màxim Lmax",
       "LminLevel": "Nivell mínim Lmin",
       "LAeqt": "Nivell SPL continu equivalent LAeq,t",
-      "1/3Octave": "1/3 d'octava"
+      "1/3Octave": "1/3 d'octava",
+      "date": "Data",
+      "loudness": "Sonoritat",
+      "sharpness": "Nitidesa",
+      "roughness": "Aspror",
+      "strength": "Força fluctant",
+      "quiet": "Grau de tranquil·litat",
+      "accessibility": "Valoració de l'accessibilitat",
+      "safety": "Valoració de la seguretat",
+      "cleanliness": "Valoració de la neteja i el manteniment",
+      "positiveInfluence": "Influeixen positivament en els estats d'anim/emocions",
+      "perceptionData": "Dades de percepció",
+      "acousticData": "Dades psicoacústiques"
     }
   },
   "overview": {

@@ -159,13 +159,25 @@
       "temperature": "Temperature",
       "pressure": "Pressure",
       "audioRegister": "Recorded audio",
-      "L10Level": "L10 percentile level",
-      "L90Level": "L90 percentile level",
+      "L10Level": "LA10 percentile level",
+      "L90Level": "LA90 percentile level",
       "SPLEquivalent": "Equivalent SPL level LAeq",
       "LmaxLevel": "Maximum level Lmax",
       "LminLevel": "Minimum level Lmin",
       "LAeqt": "Equivalent continuous SPL level LAeq,t",
-      "1/3Octave": "1/3 octave"
+      "1/3Octave": "1/3 octave",
+      "date": "Date",
+      "loudness": "Loudness",
+      "sharpness": "Sharpness",
+      "roughness": "Roughness",
+      "strength": "Fluctuation Strength",
+      "quiet": "Degree of quiet",
+      "cleanliness": "Assessment of cleaning and maintenance",
+      "accessibility": " Assessment of accessibility",
+      "safety": "Assessment of safety",
+      "positiveInfluence": "They positively influence moods/emotions",
+      "perceptionData": "Perception data",
+      "acousticData": "Psychoacoustic data"
     }
   },
   "overview": {

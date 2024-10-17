@@ -16,6 +16,7 @@ import { ObservationInfoModalComponent } from './components/observation-info-mod
 import { LAeqTChartComponent } from './components/laeq-tchart/laeq-tchart.component';
 import { OneThirdOctaveChartComponent } from './components/one-third-octave-chart/one-third-octave-chart.component';
 import { ObservationMapModalComponent } from './components/observation-map-modal/observation-map-modal.component';
+import { GalleriaModule } from 'primeng/galleria';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { ObservationMapModalComponent } from './components/observation-map-modal
     HttpClientModule,
     IconModule,
     TranslateModule,
-    SidebarModule
+    SidebarModule,
+    GalleriaModule,
   ],
 })
 export class SharedComponentsModule {}

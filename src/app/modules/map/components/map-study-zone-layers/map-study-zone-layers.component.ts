@@ -106,6 +106,9 @@ export class MapZoneStudyLayersComponent implements OnInit, OnDestroy {
     ];
   }
 
+  showModal(id:number){
+    this.mapService.showStudyZoneModal(id);
+  }
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
