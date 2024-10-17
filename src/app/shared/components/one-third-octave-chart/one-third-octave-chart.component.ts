@@ -186,9 +186,9 @@ export class OneThirdOctaveChartComponent implements OnInit, AfterViewInit {
         const energeticAvgPond    = energeticAvg(spec_3_at_idx);
         const energeticAvgPondC   = energeticAvg(spec_3_dBC_at_idx);
 
-        noPonderation.push(energeticAvgNoPond);
-        ponderation.push(energeticAvgPond);
-        ponderationc.push(energeticAvgPondC);
+        noPonderation.push(Math.trunc(energeticAvgNoPond * 10) / 10);
+        ponderation.push(Math.trunc(energeticAvgPond * 10) / 10);
+        ponderationc.push(Math.trunc(energeticAvgPondC * 10) / 10);
       }
 
       return { ponderation, ponderationc, noPonderation };
