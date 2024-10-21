@@ -7,7 +7,7 @@ import MapboxDraw from '@mapbox/mapbox-gl-draw';
 
 import { Subscription } from 'rxjs';
 
-import { GeoJSONObject} from '@turf/turf';
+import { GeoJSONObject } from '@turf/turf';
 
 import { Observations } from '../../../models/observations';
 import { ObservationsService } from '../../../services/observations/observations.service';
@@ -72,7 +72,7 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
     bounds: new LngLatBounds(new LngLat(-90, 90), new LngLat(90, -90)),
     clusterMaxZoom: 17,
   };
-
+  private defaultBbox:[[number, number], [number, number]] = [[0.048229834542042, 40.416428760865], [3.3736729893935, 42.914194523824]]; // Catalonia bbox
   private hourRage:{[key: string]: string[] | null[]} = {
     [TimeFilter.MORNING]:   ["07:00:00", "19:00:00"],
     [TimeFilter.AFTERNOON]: ["19:00:00", "23:59:59"],
@@ -196,6 +196,7 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
 
     const selectionColor = '#C19FD9';
 
+    this.flyToDefaultBbox();
 
     this.draw = new MapboxDraw({
       userProperties: true,
@@ -489,7 +490,10 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
       data: {
         type: 'FeatureCollection',
         features: this.startPoints()
-      }
+      },
+      cluster: true,
+      clusterMaxZoom: 14,
+      clusterRadius: 50
     });
 
     // resaltar la línea a la que se hace hover de color negro
@@ -511,21 +515,33 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
     // });
 
     // resaltar la línea seleccionada de color naranja
+
+    // Agregar capa para los paths individuales
     this.map.addLayer({
-      id: 'lineLayer-select',
+      id: 'LineString',
       type: 'line',
       source: 'polylines',
+      minzoom: 15,
       layout: {
-
         'line-join': 'round',
-        'line-cap': 'round'
+        'line-cap': 'round',
       },
       paint: {
-          'line-color': '#FF7A1F',
-          'line-width': 4,
-          'line-gap-width': 5,
+        'line-color': [
+          'case',
+          ['==', ['get', 'pause'], true],
+          '#FFF', // Dasharray si pause es 1
+          ['get', 'color'], // Sin dasharray si pause no es 1
+        ],
+        'line-width': 10,//['get', 'width'],
+        'line-dasharray': [
+          0,1.15
+          // 'case',
+          // ['==', ['get', 'pause'], true],
+          // [2, 3], // Dasharray si pause es 1
+          // [1, 0], // Sin dasharray si pause no es 1
+        ],
       },
-      filter: ['==', 'id', '']  // Filtro vacío para iniciar
     });
 
     // Agregar capa para los paths individuales
@@ -559,11 +575,54 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
       }
     });
 
-    // Agregar icono de inicio
+
+    // cluster de los puntos de inicio
     this.map.addLayer({
-      id: 'start',
+      id: 'clusters',
       type: 'circle',
       source: 'startPoints',
+      filter: ['has', 'point_count'],
+      paint: {
+        'circle-color': [
+          'step',
+          ['get', 'point_count'],
+          '#51bbd6',
+          100,
+          '#f1f075',
+          750,
+          '#f28cb1'
+        ],
+        'circle-radius': [
+          'step',
+          ['get', 'point_count'],
+          20,
+          100,
+          30,
+          750,
+          40
+        ]
+      }
+    });
+
+    // cluster count
+    this.map.addLayer({
+      id: 'cluster-count',
+      type: 'symbol',
+      source: 'startPoints',
+      filter: ['has', 'point_count'],
+      layout: {
+        'text-field': ['get', 'point_count_abbreviated'],
+        'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+        'text-size': 12
+      }
+    });
+
+    // cluster de los puntos de inicio
+    this.map.addLayer({
+      id: 'unclustered-point',
+      type: 'circle',
+      source: 'startPoints',
+      filter: ['!', ['has', 'point_count']],
       paint: {
         'circle-radius': 6,
         'circle-color': '#6D6',
@@ -573,6 +632,23 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
       }
     });
 
+    this.map.on('click', 'clusters', (e) => {
+      const features = this.map.queryRenderedFeatures(e.point, {
+        layers: ['clusters']
+      });
+      const clusterId = features[0].properties['cluster_id'];
+      (this.map.getSource('startPoints') as mapboxgl.GeoJSONSource).getClusterExpansionZoom(
+        clusterId,
+        (err, zoom) => {
+          if (err) return;
+
+          this.map.easeTo({
+              center: (features[0].geometry as GeoJSON.Point).coordinates as [number, number],
+              zoom: zoom
+          });
+        }
+      );
+    });
     // this.map.on('mouseenter', 'LineString', (e:any) => {
     //   this.map.getCanvas().style.cursor = 'pointer';
     //   for( let feature of e.features) {
@@ -631,6 +707,10 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
     if(option === 'GPKG'){
       this.observationsService.downloadGPKG()
     }
+  }
+
+  public flyToDefaultBbox() {
+    this.map.fitBounds(this.defaultBbox, { padding: { top: 10, bottom: 10, left: 10, right: 10 } });
   }
 
   ngOnDestroy(): void {
