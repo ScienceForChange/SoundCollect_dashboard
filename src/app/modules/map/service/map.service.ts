@@ -6,7 +6,6 @@ import { FeatureCollection, Geometry } from 'geojson';
 
 import { BehaviorSubject } from 'rxjs';
 
-import { Feature } from '@turf/turf';
 
 import { ObservationsService } from '../../../services/observations/observations.service';
 import { MapLayer, MapObservation } from '../../../models/map';
@@ -15,6 +14,14 @@ import { Observations } from '../../../models/observations';
 import { StudyZone } from '../../../models/study-zone';
 import { StudyZoneService } from '../../../services/study-zone/study-zone.service';
 import { MessageService } from 'primeng/api';
+import { GeoJSONObject } from '@turf/turf';
+
+export interface Feature<G extends GeoJSON.Geometry | null = GeoJSON.Geometry, P = { [name: string]: any } | null> extends GeoJSONObject {
+  type: "Feature";
+  geometry: G;
+  id?: string | number | undefined;
+  properties: P;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -35,15 +42,14 @@ export class MapService {
 
   private mapObservations: MapObservation[] = [];
   private filteredFeatures: Feature[] = [];
-  public features$: BehaviorSubject<Feature[]> = new BehaviorSubject<Feature[]>(
-    []
-  );
+  private filteredStartPointsFeature: Feature[] = [];
+  public features$: BehaviorSubject<Feature[]> = new BehaviorSubject<Feature[]>([]);
+  public startPointsFeatures$: BehaviorSubject<Feature[]> = new BehaviorSubject<Feature[]>([]);
   private language: string = localStorage.getItem('locale') || 'ca';
   public initialGeoJson: { type: string; features: Feature[] } = {
     type: 'FeatureCollection',
     features: [],
   };
-
 
   public mapSettings: {
     zoom: number;
@@ -55,7 +61,7 @@ export class MapService {
     clusterMaxZoom: number;
   } = {
     zoom: 10,
-    mapStyle: 'mapbox://styles/mapbox/light-v10',
+    mapStyle: 'mapbox://styles/mapbox/light-v11',
     centerMapLocation: [2.1487613, 41.3776589],
     minZoom: 2,
     maxZoom: 17,
@@ -82,10 +88,10 @@ export class MapService {
       if (!this.map) return;
       if (isFilterActive) {
         //update the geojson
-        this.updateSourceObservations(this.filteredFeatures);
+        this.updateSourceObservations(this.filteredFeatures, this.filteredStartPointsFeature);
       } else {
         //update the geojson
-        this.updateSourceObservations(this.features$.getValue());
+        this.updateSourceObservations(this.features$.getValue(), this.startPointsFeatures$.getValue());
       }
     });
   }
@@ -93,13 +99,14 @@ export class MapService {
   //Conseguir todos los sonidos en el constructor
   public getAllMapObservations(): void {
     if (this.mapObservations.length > 0) {
-      this.updateSourceObservations(this.features$.getValue());
+      this.updateSourceObservations(this.features$.getValue(), this.startPointsFeatures$.getValue());
       return;
     }
 
     this.observationsService.observations$.subscribe((data) => {
       try {
         const features = this.observationsService.getLineStringFromObservations(data);
+        const startPoints = this.observationsService.getStartPointsFromObservations(data);
         this.mapObservations = data.map((obs) => ({
           id:         obs.id,
           user_id:    obs.relationships.user.id,
@@ -115,7 +122,7 @@ export class MapService {
           path:       obs.relationships.segments,
         }));
         this.features$.next(features as Feature[]);
-        this.updateSourceObservations(features as Feature[]);
+        this.updateSourceObservations(features as Feature[], startPoints as Feature[]);
       } catch (error) {
         console.error(error);
         throw Error(`Error getting all observations ${error}`);
@@ -123,24 +130,33 @@ export class MapService {
     });
   }
 
-  public updateSourceObservations(features: Feature[]): void {
+  public updateSourceObservations(features: Feature[], startPointFeatures: Feature[]): void {
     if (!this.isMapReady) return;
     let isSource = !!this.map.getSource('observations');
     let geoJson = {
       type: 'FeatureCollection' as const,
       features: features,
     };
+    let startPointsGeoJson = {
+      type: 'FeatureCollection' as const,
+      features: startPointFeatures,
+    };
+
     if (isSource) {
       let source = this.map.getSource('observations') as mapboxgl.GeoJSONSource;
+      let sourceStartPoints = this.map.getSource('startPoints') as mapboxgl.GeoJSONSource;
       source.setData(geoJson as FeatureCollection<Geometry>);
+      sourceStartPoints.setData(startPointsGeoJson as FeatureCollection<Geometry>);
     } else {
       this.map.on('load', () => {
         let source = this.map.getSource('observations') as mapboxgl.GeoJSONSource;
+        let sourceStartPoints = this.map.getSource('startPoints') as mapboxgl.GeoJSONSource;
         source.setData(geoJson as FeatureCollection<Geometry>);
+        sourceStartPoints.setData(startPointsGeoJson as FeatureCollection<Geometry>);
       });
     }
   }
-
+  
   public setMap(map: Map): void {
     this.map = map;
     //agregamos controles de zoom al mapa
@@ -264,11 +280,12 @@ export class MapService {
 
       //Get all features
       const features = this.observationsService.getLineStringFromObservations(observations);
+      const startPoints = this.observationsService.getStartPointsFromObservations(observations);
 
       this.filteredFeatures = features as Feature[];
 
       //update the geojson
-      this.updateSourceObservations(features as Feature[]);
+      this.updateSourceObservations(features as Feature[], startPoints as Feature[]);
     } catch (error) {
       console.error(error);
       throw Error(`Error filtering map observations ${error}`);
@@ -276,6 +293,7 @@ export class MapService {
   }
 
   private buildClustersAndLayers(features: Feature[]): void {
+
     //Añadir la fuente de datos para las lineas de atributo path
     this.map.addSource('observations', {
       type: 'geojson',
@@ -284,6 +302,7 @@ export class MapService {
         features: features as Feature<Geometry,{[name: string]: any;}>[],
       },
     });
+
     //Añadir source para los polygonos de las zonas de estudio
     this.map.addSource('studyZone', {
       type: 'geojson',
@@ -292,6 +311,19 @@ export class MapService {
         features: [],
       },
     });
+
+    //Añadir source para los puntos de inicio de las rutas
+    this.map.addSource('startPoints', {
+      type: 'geojson',
+      data: {
+        type: 'FeatureCollection',
+        features: [],
+      },
+      cluster: true,
+      clusterMaxZoom: 14,
+      clusterRadius: 50
+    });
+
     //Relleno zona de estudio
     this.map.addLayer({
       id: 'studyZone',
@@ -335,7 +367,7 @@ export class MapService {
       id: 'LineString',
       type: 'line',
       source: 'observations',
-      //minzoom: 20,
+      minzoom: 15,
       layout: {
         'line-join': 'round',
         'line-cap': 'round',
@@ -356,6 +388,80 @@ export class MapService {
           // [1, 0], // Sin dasharray si pause no es 1
         ],
       },
+    });
+
+    // cluster de los puntos de inicio
+    this.map.addLayer({
+      id: 'clusters',
+      type: 'circle',
+      source: 'startPoints',
+      filter: ['has', 'point_count'],
+      paint: {
+        'circle-color': [
+          'step',
+          ['get', 'point_count'],
+          '#51bbd6',
+          100,
+          '#f1f075',
+          750,
+          '#f28cb1'
+        ],
+        'circle-radius': [
+          'step',
+          ['get', 'point_count'],
+          20,
+          100,
+          30,
+          750,
+          40
+        ]
+      }
+    });
+
+    // cluster count
+    this.map.addLayer({
+      id: 'cluster-count',
+      type: 'symbol',
+      source: 'startPoints',
+      filter: ['has', 'point_count'],
+      layout: {
+        'text-field': ['get', 'point_count_abbreviated'],
+        'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+        'text-size': 12
+      }
+    });
+
+    // cluster de los puntos de inicio
+    this.map.addLayer({
+      id: 'unclustered-point',
+      type: 'circle',
+      source: 'startPoints',
+      filter: ['!', ['has', 'point_count']],
+      paint: {
+        'circle-radius': 6,
+        'circle-color': '#6D6',
+        'circle-pitch-scale': 'viewport',
+        'circle-stroke-color': '#333',
+        'circle-stroke-width': 2,
+      }
+    });
+
+    this.map.on('click', 'clusters', (e) => {
+      const features = this.map.queryRenderedFeatures(e.point, {
+        layers: ['clusters']
+      });
+      const clusterId = features[0].properties['cluster_id'];
+      (this.map.getSource('startPoints') as mapboxgl.GeoJSONSource).getClusterExpansionZoom(
+        clusterId,
+        (err, zoom) => {
+          if (err) return;
+
+          this.map.easeTo({
+              center: (features[0].geometry as GeoJSON.Point).coordinates as [number, number],
+              zoom: zoom
+          });
+        }
+      );
     });
 
     this.map.moveLayer('studyZoneLines', 'lineLayer-hover');

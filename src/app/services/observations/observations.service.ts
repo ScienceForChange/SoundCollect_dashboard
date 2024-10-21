@@ -427,9 +427,7 @@ export class ObservationsService {
     }
   }
 
-  public getStartPointsFromObservations(
-    observations: Observations[] = this.observations$.getValue()
-  ): Feature[] | null {
+  public getStartPointsFromObservations(observations: Observations[] = this.observations$.getValue()): Feature[] | null {
     try {
       observations = observations.filter(
         (obs) => obs.relationships.segments.length > 0
