@@ -29,7 +29,7 @@ type EChartsOption = echarts.ComposeOption<
   templateUrl: './bar-chart.component.html',
   styleUrl: './bar-chart.component.scss',
 })
-export class BarChartComponent implements OnInit, AfterViewInit, OnDestroy {
+export class BarChartComponent implements OnInit, OnDestroy {
   private translate = inject(TranslateService);
   private observationService: ObservationsService = inject(ObservationsService);
   private subscriptions = new Subscription();
@@ -42,7 +42,8 @@ export class BarChartComponent implements OnInit, AfterViewInit, OnDestroy {
   private options: EChartsOption;
   public timesFilter = {
     DELETE: 'delete',
-    WEEK: 'week',
+    WEEKDAYS: 'weekdays',
+    WEEKS: 'weeks',
     MONTH: 'month',
     YEAR: 'year',
   };
@@ -101,138 +102,9 @@ export class BarChartComponent implements OnInit, AfterViewInit, OnDestroy {
       this.observationService.getAllObservationsFormated().subscribe((data) => {
         this.minDate = data[0].completeDay;
       })
-  }
 
-  private updateChart(xAxis: string[], serieData: number[]) {
-    this.options = {
-      xAxis: {
-        type: 'category',
-        data: xAxis,
-      },
-      series: [
-        {
-          data: serieData,
-          type: 'bar',
-        },
-      ],
-    };
-    this.myChart.setOption(this.options);
-  }
 
-  private currentWeek(date: Date) {
-    const day = new Intl.DateTimeFormat('ca', { weekday: 'long' }).format(date);
-    return day;
-  }
 
-  public timeFilter(filter: string) {
-    try {
-      //Get obs filtered by the days selected
-      const values = this.filtersForm.value;
-      const obsFiltered = this.observations.filter((obs) => {
-        const isBeforeToday = obs.completeDay <= values.daysFilter[1];
-        const isAfterLastDay30 = obs.completeDay >= values.daysFilter[0];
-        if (isBeforeToday && isAfterLastDay30) return true;
-        return false;
-      });
-      let filteredObsByTime = obsFiltered;
-      let dataXaxis: string[] = [];
-      let dataSerie: number[] = [];
-      if (filter !== this.timesFilter.DELETE) {
-        if (filter === this.timesFilter.WEEK) {
-          const daysOfWeekSelected = obsFiltered.reduce((acc, curr) => {
-            if (acc.includes(this.currentWeek(curr.completeDay))) return acc;
-            return [...acc, this.currentWeek(curr.completeDay)];
-          }, []);
-          const series = daysOfWeekSelected.map((day) => {
-            const groupOfDaySelected = obsFiltered.filter(
-              (obs) => this.currentWeek(obs.completeDay) === day
-            );
-            return groupOfDaySelected.reduce(
-              (acc, curr) => acc + curr.count,
-              0
-            );
-          });
-          dataXaxis = this.daysOfWeek;
-          dataSerie = this.daysOfWeek.map((count) => {
-            const index = daysOfWeekSelected.indexOf(count);
-            return series[index];
-          });
-        }
-        if (filter === this.timesFilter.MONTH) {
-          const months: number[] = obsFiltered.reduce((acc, curr) => {
-            const month = curr.completeDay.getMonth();
-            if (acc.includes(month)) return acc;
-            return [...acc, month];
-          }, []);
-          dataXaxis = months.map((month) =>
-            new Intl.DateTimeFormat('ca-ES', { month: 'long' }).format(
-              new Date(0, month)
-            )
-          );
-          dataSerie = months.map((month) => {
-            const groupOfMonthsSelected = obsFiltered.filter((obs) => {
-              const obsMonth = obs.completeDay.getMonth();
-              return obsMonth === month;
-            });
-            return groupOfMonthsSelected.reduce(
-              (acc, curr) => acc + curr.count,
-              0
-            );
-          });
-        }
-        if (filter === this.timesFilter.YEAR) {
-          dataXaxis = obsFiltered.reduce((acc, curr) => {
-            const year = curr.completeDay.getFullYear();
-            if (acc.includes(year)) return acc;
-            return [...acc, year];
-          }, []);
-          dataSerie = dataXaxis.map((year) => {
-            const groupOfYearsSelected = obsFiltered.filter((obs) => {
-              const obsMonth = obs.completeDay.getFullYear();
-              return obsMonth === +year;
-            });
-            return groupOfYearsSelected.reduce(
-              (acc, curr) => acc + curr.count,
-              0
-            );
-          });
-        }
-      } else {
-        dataXaxis = this.getFirstDayOfEachMonth(filteredObsByTime);
-        dataSerie = filteredObsByTime.map((obs) => obs.count);
-      }
-      this.obsFiltered = filteredObsByTime;
-      this.updateChart(dataXaxis, dataSerie);
-      this.timeFilterSelected = filter;
-    } catch (error) {
-      console.error('timeFilter',error)
-      throw Error('Error time Filtering', error);
-    }
-  }
-
-  private getFirstDayOfEachMonth(arr: ObservationsDataChart[]) {
-    try {
-      const arrOfFirstDays = arr
-        .reduce((acc, curr) => {
-          const month = curr.completeDay.getMonth();
-          const isNextMonth = acc.some(
-            (obs) => new Date(obs.completeDay).getMonth() === month
-          );
-          if (isNextMonth) return [...acc, ''];
-          return [...acc, curr];
-        }, [])
-        .map((obs) => {
-          if (obs === '') return '';
-          return obs.date;
-        });
-      return arrOfFirstDays;
-    } catch (error) {
-      console.error('getFirst',error)
-      throw Error('Error getting first day of each month', error);
-    }
-  }
-
-  async ngAfterViewInit(): Promise<void> {
     const chartDom = document.getElementById('bar-chart-container');
     this.myChart = echarts.init(chartDom);
     this.myChart.showLoading('default', this.loadingOptions);
@@ -315,6 +187,178 @@ export class BarChartComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       })
     );
+  }
+
+  private updateChart(xAxis: string[], serieData: number[]) {
+    this.options = {
+      xAxis: {
+        type: 'category',
+        data: xAxis,
+      },
+      series: [
+        {
+          data: serieData,
+          type: 'bar',
+        },
+      ],
+    };
+    this.myChart.setOption(this.options);
+  }
+
+  private currentWeek(date: Date) {
+    const day = new Intl.DateTimeFormat('ca', { weekday: 'long' }).format(date);
+    return day;
+  }
+
+  private currentYearWeek(date: Date) {
+    //calculamos la semana del año teniendo en cuenta que la primera semana del año no tiene por que empezar en lunes y que la semana actual puede empezar en el año anterior
+    function getWeek(date: Date) {
+      const dateCopy = new Date(date.getTime());
+      dateCopy.setHours(0, 0, 0, 0);
+      dateCopy.setDate(dateCopy.getDate() + 3 - ((dateCopy.getDay() + 6) % 7));
+      const week1 = new Date(dateCopy.getFullYear(), 0, 4);
+      return ( 1 + Math.round(((dateCopy.getTime() - week1.getTime()) / 86400000 -3 + ((week1.getDay() + 6) % 7)) / 7 ) );
+    }
+
+    const week = getWeek(date);
+    return `${date.getFullYear()}-${week}`;
+  }
+
+  public timeFilter(filter: string) {
+    try {
+      //Get obs filtered by the days selected
+      const values = this.filtersForm.value;
+      const obsFiltered = this.observations.filter((obs) => {
+        const isBeforeToday = obs.completeDay <= values.daysFilter[1];
+        const isAfterLastDay30 = obs.completeDay >= values.daysFilter[0];
+        if (isBeforeToday && isAfterLastDay30) return true;
+        return false;
+      });
+      let filteredObsByTime = obsFiltered;
+      let dataXaxis: string[] = [];
+      let dataSerie: number[] = [];
+      if (filter !== this.timesFilter.DELETE) {
+
+        //Semenas seleccionadas en el filtro, en la fila x mostramos el numero de la semana en el año
+        if (filter === this.timesFilter.WEEKS) {
+
+          const weeksSelected = obsFiltered.reduce((acc, curr) => {
+            if (acc.includes(this.currentYearWeek(curr.completeDay))) return acc;
+            return [...acc, this.currentYearWeek(curr.completeDay)];
+          }, []);
+          const series = weeksSelected.map((week) => {
+            const groupOfWeekSelected = obsFiltered.filter(
+              (obs) => this.currentYearWeek(obs.completeDay) === week
+            );
+            return groupOfWeekSelected.reduce(
+              (acc, curr) => acc + curr.count,
+              0
+            );
+          });
+          dataXaxis = weeksSelected.map((week) => week);
+          dataSerie = weeksSelected.map((week) => {
+            const index = weeksSelected.indexOf(week);
+            return series[index];
+          });
+        }
+
+        //Dias de la semana
+        if (filter === this.timesFilter.WEEKDAYS) {
+          const daysOfWeekSelected = obsFiltered.reduce((acc, curr) => {
+            if (acc.includes(this.currentWeek(curr.completeDay))) return acc;
+            return [...acc, this.currentWeek(curr.completeDay)];
+          }, []);
+          const series = daysOfWeekSelected.map((day) => {
+            const groupOfDaySelected = obsFiltered.filter(
+              (obs) => this.currentWeek(obs.completeDay) === day
+            );
+            return groupOfDaySelected.reduce(
+              (acc, curr) => acc + curr.count,
+              0
+            );
+          });
+          dataXaxis = this.daysOfWeek;
+          dataSerie = this.daysOfWeek.map((count) => {
+            const index = daysOfWeekSelected.indexOf(count);
+            return series[index];
+          });
+        }
+
+        //mes
+        if (filter === this.timesFilter.MONTH) {
+          const months: number[] = obsFiltered.reduce((acc, curr) => {
+            const month = curr.completeDay.getMonth();
+            if (acc.includes(month)) return acc;
+            return [...acc, month];
+          }, []);
+          dataXaxis = months.map((month) =>
+            new Intl.DateTimeFormat('ca-ES', { month: 'long' }).format(
+              new Date(0, month)
+            )
+          );
+          dataSerie = months.map((month) => {
+            const groupOfMonthsSelected = obsFiltered.filter((obs) => {
+              const obsMonth = obs.completeDay.getMonth();
+              return obsMonth === month;
+            });
+            return groupOfMonthsSelected.reduce(
+              (acc, curr) => acc + curr.count,
+              0
+            );
+          });
+        }
+
+        //año
+        if (filter === this.timesFilter.YEAR) {
+          dataXaxis = obsFiltered.reduce((acc, curr) => {
+            const year = curr.completeDay.getFullYear();
+            if (acc.includes(year)) return acc;
+            return [...acc, year];
+          }, []);
+          dataSerie = dataXaxis.map((year) => {
+            const groupOfYearsSelected = obsFiltered.filter((obs) => {
+              const obsMonth = obs.completeDay.getFullYear();
+              return obsMonth === +year;
+            });
+            return groupOfYearsSelected.reduce(
+              (acc, curr) => acc + curr.count,
+              0
+            );
+          });
+        }
+      } else {
+        dataXaxis = this.getFirstDayOfEachMonth(filteredObsByTime);
+        dataSerie = filteredObsByTime.map((obs) => obs.count);
+      }
+      this.obsFiltered = filteredObsByTime;
+      this.updateChart(dataXaxis, dataSerie);
+      this.timeFilterSelected = filter;
+    } catch (error) {
+      console.error('timeFilter',error)
+      throw Error('Error time Filtering', error);
+    }
+  }
+
+  private getFirstDayOfEachMonth(arr: ObservationsDataChart[]) {
+    try {
+      const arrOfFirstDays = arr
+        .reduce((acc, curr) => {
+          const month = curr.completeDay.getMonth();
+          const isNextMonth = acc.some(
+            (obs) => new Date(obs.completeDay).getMonth() === month
+          );
+          if (isNextMonth) return [...acc, ''];
+          return [...acc, curr];
+        }, [])
+        .map((obs) => {
+          if (obs === '') return '';
+          return obs.date;
+        });
+      return arrOfFirstDays;
+    } catch (error) {
+      console.error('getFirst',error)
+      throw Error('Error getting first day of each month', error);
+    }
   }
 
   ngOnDestroy(): void {

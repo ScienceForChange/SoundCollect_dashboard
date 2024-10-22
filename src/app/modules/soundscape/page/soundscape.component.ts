@@ -544,38 +544,6 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
       },
     });
 
-    // Agregar capa para los paths individuales
-    this.map.addLayer({
-      id: 'LineString',
-      type: 'line',
-      //filtramos si es zoom es mayor que 14
-      //minzoom: 14,
-      source: 'polylines',
-      layout: {
-        'line-join': 'round',
-        'line-cap': 'round'
-      },
-      paint: {
-        'line-color':
-        [
-          'case',
-          ['==', ['get', 'pause'], true],
-          '#FFF', // Dasharray si pause es 1
-          ['get', 'color'] // Sin dasharray si pause no es 1
-        ]
-       ,
-        'line-width': 20,//['get', 'width'],
-        "line-dasharray":  [
-          0, 1.2
-          // 'case',
-          // ['==', ['get', 'pause'], true],
-          // [2, 3], // Dasharray si pause es 1
-          // [1, 0] // Sin dasharray si pause no es 1
-        ]
-      }
-    });
-
-
     // cluster de los puntos de inicio
     this.map.addLayer({
       id: 'clusters',
