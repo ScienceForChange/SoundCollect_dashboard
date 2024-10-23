@@ -28,7 +28,7 @@ import { CallbackDataParams } from 'echarts/types/dist/shared';
 import { SeriesOption } from 'echarts';
 
 import type { Observations } from '../../../../models/observations';
-import energeticAvg from '../../../../../utils/energeticAvg';
+import { energeticAvg, energeticSum } from '../../../../../utils/energeticAvg';
 import { ObservationsService } from '../../../../services/observations/observations.service';
 import roundTwoLastDecimals from '../../../../../utils/twoDecimalsRounded';
 

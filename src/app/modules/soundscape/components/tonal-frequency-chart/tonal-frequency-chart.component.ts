@@ -13,7 +13,7 @@ import { LegendComponent } from 'echarts/components';
 
 import { Observations } from '../../../../models/observations';
 import { ObservationsService } from '../../../../services/observations/observations.service';
-import energeticAvg from '../../../../../utils/energeticAvg';
+import { energeticAvg, energeticSum } from '../../../../../utils/energeticAvg';
 import { consumerPollProducersForChange } from '@angular/core/primitives/signals';
 
 echarts.use([LegendComponent, BarChart, CanvasRenderer,]);
