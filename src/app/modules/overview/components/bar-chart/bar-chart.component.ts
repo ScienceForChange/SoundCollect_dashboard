@@ -19,6 +19,7 @@ import { CallbackDataParams } from 'echarts/types/dist/shared';
 import { ObservationsService } from '../../../../services/observations/observations.service';
 import { ObservationsDataChart } from '../../../../models/observations';
 import { Subscription } from 'rxjs';
+import { set } from 'lodash';
 
 type EChartsOption = echarts.ComposeOption<
   GridComponentOption | BarSeriesOption
@@ -90,6 +91,24 @@ export class BarChartComponent implements OnInit, OnDestroy {
               if (isBeforeToday && isAfterLastDay30) return true;
               return false;
             });
+
+            // añadimos observaciones vacias para los dias que no hay observaciones
+            const firstDay = new Date(values.daysFilter[0]);
+            const lastDay = new Date(values.daysFilter[1]);
+            const diffTime = Math.abs(lastDay.getTime() - firstDay.getTime());
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            const dateArray = Array.from(
+              { length: diffDays },
+              //sumamos un dia a la fecha para que empiece en el dia seleccionado
+              (_, i) => new Date(firstDay.setDate(firstDay.getDate() + 1))
+            );
+            this.obsFiltered = dateArray.reduce<ObservationsDataChart[]>((acc, curr) => {
+              const isObs = acc.some((obs) => obs.completeDay.getTime() === curr.getTime());
+              if (isObs) return acc;
+              const currFormatted = curr.getDate() + '/' + (curr.getMonth() + 1) + '/' + curr.getFullYear();
+              return [...acc, { completeDay: curr, count: 0, date: currFormatted, obs: [] }];
+            }, [...this.obsFiltered]);
+
             const dataXaxis = this.getFirstDayOfEachMonth(this.obsFiltered);
             const dataSerie = this.obsFiltered.map((obs) => obs.count);
 
@@ -114,17 +133,31 @@ export class BarChartComponent implements OnInit, OnDestroy {
         try {
           this.observations = data;
           this.minDate = data[0].completeDay;
-          const arr30DaysBefore = data.filter((obs) => {
+          this.obsFiltered = data.filter((obs) => {
             const isBeforeToday = obs.completeDay <= this.today;
             const isAfterLastDay30 = obs.completeDay >= this.lastDay30;
             if (isBeforeToday && isAfterLastDay30) return true;
             return false;
           });
+           // añadimos observaciones vacias para los dias que no hay observaciones
+          const firstDay = new Date(this.lastDay30);
+          const lastDay = new Date(this.today);
+          const diffTime = Math.abs(lastDay.getTime() - firstDay.getTime());
+          const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+          const dateArray = Array.from(
+            { length: diffDays },
+            //sumamos un dia a la fecha para que empiece en el dia seleccionado
+            (_, i) => new Date(firstDay.setDate(firstDay.getDate() + 1))
+          );
+          this.obsFiltered = dateArray.reduce<ObservationsDataChart[]>((acc, curr) => {
+            const isObs = acc.some((obs) => obs.completeDay.getTime() === curr.getTime());
+            if (isObs) return acc;
+            const currFormatted = curr.getDate() + '/' + (curr.getMonth() + 1) + '/' + curr.getFullYear();
+            return [...acc, { completeDay: curr, count: 0, date: currFormatted, obs: [] }];
+          }, [...this.obsFiltered]);
 
-          this.obsFiltered = arr30DaysBefore;
 
-          const getFirstDayOfEachMonth =
-            this.getFirstDayOfEachMonth(arr30DaysBefore);
+          const getFirstDayOfEachMonth = this.getFirstDayOfEachMonth(this.obsFiltered);
 
           this.options = {
             tooltip: {
@@ -173,7 +206,7 @@ export class BarChartComponent implements OnInit, OnDestroy {
             },
             series: [
               {
-                data: arr30DaysBefore.map((obs) => obs.count),
+                data: this.obsFiltered.map((obs) => obs.count),
                 type: 'bar',
               },
             ],
@@ -219,7 +252,6 @@ export class BarChartComponent implements OnInit, OnDestroy {
       const week1 = new Date(dateCopy.getFullYear(), 0, 4);
       return ( 1 + Math.round(((dateCopy.getTime() - week1.getTime()) / 86400000 -3 + ((week1.getDay() + 6) % 7)) / 7 ) );
     }
-
     const week = getWeek(date);
     return `${date.getFullYear()}-${week}`;
   }
@@ -228,12 +260,29 @@ export class BarChartComponent implements OnInit, OnDestroy {
     try {
       //Get obs filtered by the days selected
       const values = this.filtersForm.value;
-      const obsFiltered = this.observations.filter((obs) => {
+      let obsFiltered = this.observations.filter((obs) => {
         const isBeforeToday = obs.completeDay <= values.daysFilter[1];
         const isAfterLastDay30 = obs.completeDay >= values.daysFilter[0];
         if (isBeforeToday && isAfterLastDay30) return true;
         return false;
       });
+      // añadimos observaciones vacias para los dias que no hay observaciones
+      const firstDay = new Date(values.daysFilter[0]);
+      const lastDay = new Date(values.daysFilter[1]);
+      const diffTime = Math.abs(lastDay.getTime() - firstDay.getTime());
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      const dateArray = Array.from(
+        { length: diffDays },
+        (_, i) => new Date(firstDay.setDate(firstDay.getDate() + 1))
+      );
+      obsFiltered = dateArray.reduce<ObservationsDataChart[]>((acc, curr) => {
+        const isObs = acc.some((obs) => obs.completeDay.getTime() === curr.getTime());
+        if (isObs) return acc;
+        const currFormatted = curr.getDate() + '/' + (curr.getMonth() + 1) + '/' + curr.getFullYear();
+        return [...acc, { completeDay: curr, count: 0, date: currFormatted, obs: [] }];
+      }, [...obsFiltered]);
+
+
       let filteredObsByTime = obsFiltered;
       let dataXaxis: string[] = [];
       let dataSerie: number[] = [];
@@ -241,7 +290,6 @@ export class BarChartComponent implements OnInit, OnDestroy {
 
         //Semenas seleccionadas en el filtro, en la fila x mostramos el numero de la semana en el año
         if (filter === this.timesFilter.WEEKS) {
-
           const weeksSelected = obsFiltered.reduce((acc, curr) => {
             if (acc.includes(this.currentYearWeek(curr.completeDay))) return acc;
             return [...acc, this.currentYearWeek(curr.completeDay)];
