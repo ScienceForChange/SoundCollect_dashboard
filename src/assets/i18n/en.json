@@ -303,7 +303,8 @@
       "ponderation": "dB",
       "noPonderation": "dBA",
       "content": "This graph shows how the energy of sounds in the selected area is distributed along a frequency spectrum. Its usefulness lies in identifying whether low or high frequencies predominate in the study area. Low frequencies represent low-pitched sounds, such as the rumble of an engine, while high frequencies include high-pitched sounds, such as a bird chirping. The graph allows you to switch between the sound pressure level without weighting (Leq) and with A weighting (LAeq).",
-      "ponderation-c": "dBC"
+      "ponderation-c": "dBC",
+      "global": "Overall sound level"
     },
     "physcoAcustic": {
       "title": "Psychoacoustic analysis",
