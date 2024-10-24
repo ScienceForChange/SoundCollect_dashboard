@@ -8,7 +8,8 @@ import { CanvasRenderer } from 'echarts/renderers';
 import { GridComponent, LegendComponent } from 'echarts/components';
 
 import { Observations } from '../../../models/observations';
-import energeticAvg from '../../../../utils/energeticAvg';
+import { energeticAvg, energeticSum } from '../../../../utils/energeticAvg';
+import { get } from 'lodash';
 
 @Component({
   selector: 'app-one-third-octave-chart',
@@ -39,29 +40,16 @@ export class OneThirdOctaveChartComponent implements OnInit, AfterViewInit {
       PieChart,
     ]);
     if(this.observationSelected){
-      this.hertzLevels = this.observationSelected.relationships.segments[0].freq_3;
-      this.hertzLevels.push('Lea LAea LCea');
+      let xArray: any[] = [...this.observationSelected.relationships.segments[0].freq_3];
+      xArray.push(this.translate.instant('soundscape.tonalFrequency.global'));
+      this.hertzLevels = xArray;
     }
   }
 
   private updateYAxis(event:any){
     let name = this.translate.instant('soundscape.tonalFrequency.presure');
     this.hertzLevels[this.hertzLevels.length - 1] = '';
-    if(event.selected.dB){
-      name += ` ${this.translate.instant('soundscape.tonalFrequency.ponderation')}`;
-      this.hertzLevels[this.hertzLevels.length - 1] = 'Lea';
-    }
-    if(event.selected.dBA){
-      name += ` ${this.translate.instant('soundscape.tonalFrequency.noPonderation')}`;
-      this.hertzLevels[this.hertzLevels.length - 1] += ' LAea';
-    }
-    if(event.selected.dBC){
-      name += ` ${this.translate.instant('soundscape.tonalFrequency.ponderation-c')}`;
-      this.hertzLevels[this.hertzLevels.length - 1] += ' LCea';
-    }
-
     this.options = {...this.options, yAxis: {name: name, nameLocation: 'middle', nameGap: 35, type: 'value'}}
-
     // Apply the updated options to the chart
     this.myBarChart.setOption(this.options);
   }
@@ -103,8 +91,9 @@ export class OneThirdOctaveChartComponent implements OnInit, AfterViewInit {
             show: false,
           },
           data: seriesData.ponderationc,
-        },
+        }
       ];
+      series[1].data.push(Number(this.observationSelected.attributes.Leq));
 
       const grid = {
         left: 50,
@@ -157,42 +146,41 @@ export class OneThirdOctaveChartComponent implements OnInit, AfterViewInit {
     }, 100);
   }
 
-  private calculateDataFromObservations(): { ponderation: number[]; ponderationc: number[]; noPonderation: number[]; } {
+  private calculateDataFromObservations(): { ponderation: number[]; ponderationc: number[]; noPonderation: number[] } {
 
     let ponderation: number[] = [];
     let ponderationc: number[] = [];
     let noPonderation: number[] = [];
 
-    const segmentsSpec_3 = this.observationSelected.relationships.segments.map(
-      (segment) => segment.spec_3
-    );
-    const segmentsSpec_3_dB = this.observationSelected.relationships.segments.map(
-      (segment) => segment.spec_3_dB
-    );
-    const segmentsSpec_3_dBC = this.observationSelected.relationships.segments.map(
-      (segment) => segment.spec_3_dBC
-    );
-
+    const segmentsSpec_3      = this.observationSelected.relationships.segments.map((segment) => segment.spec_3);
+    const segmentsSpec_3_dB   = this.observationSelected.relationships.segments.map((segment) => segment.spec_3_dB);
+    const segmentsSpec_3_dBC  = this.observationSelected.relationships.segments.map((segment) => segment.spec_3_dBC);
+    
     if (!segmentsSpec_3[0] || !segmentsSpec_3_dB[0] || !segmentsSpec_3_dBC[0]) {
       return { ponderation, ponderationc, noPonderation };
     }
     else {
       for (let i = 0; i < this.hertzLevels.length - 1; i++) {
-        const spec_3_at_idx     = segmentsSpec_3.map((segment) => segment[i]);
-        const spec_3_dB_at_idx  = segmentsSpec_3_dB.map((segment) => segment[i]);
-        const spec_3_dBC_at_idx = segmentsSpec_3_dBC.map((segment) => segment[i]);
+        const spec_3_at_idx       = segmentsSpec_3.map((segment) => segment[i]);
+        const spec_3_dB_at_idx    = segmentsSpec_3_dB.map((segment) => segment[i]);
+        const spec_3_dBC_at_idx   = segmentsSpec_3_dBC.map((segment) => segment[i]);
 
-        const energeticAvgNoPond  = energeticAvg(spec_3_dB_at_idx);
-        const energeticAvgPond    = energeticAvg(spec_3_at_idx);
-        const energeticAvgPondC   = energeticAvg(spec_3_dBC_at_idx);
+        const energeticAvgNoPond  = energeticSum(spec_3_dB_at_idx);
+        const energeticAvgPond    = energeticSum(spec_3_at_idx);
+        const energeticAvgPondC   = energeticSum(spec_3_dBC_at_idx);
 
         noPonderation.push(Math.trunc(energeticAvgNoPond * 10) / 10);
         ponderation.push(Math.trunc(energeticAvgPond * 10) / 10);
         ponderationc.push(Math.trunc(energeticAvgPondC * 10) / 10);
       }
+      // Añadimos el valor del Nivel sonoro global (última columna de la gráfica)
+      noPonderation.push(Math.trunc(energeticSum(noPonderation)* 10) / 10);
+      ponderation.push(Math.trunc(energeticSum(ponderation)* 10) / 10);
+      ponderationc.push(Math.trunc(energeticSum(ponderationc)* 10) / 10);
 
       return { ponderation, ponderationc, noPonderation };
     }
 
   }
+
 }

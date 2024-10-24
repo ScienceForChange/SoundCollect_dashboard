@@ -54,7 +54,8 @@
     "studyZones": "Zonas de Estudio",
     "administrators": "Administradores/as",
     "roles": "Roles",
-    "users": "Usuarios/as d'App"
+    "users": "Usuarios/as d'App",
+    "weekdays": "Días de la semana"
   },
   "home": {
     "footer": {
@@ -65,14 +66,14 @@
         "cookies": "Política de cookies"
       },
       "allRightsReserved": "Todos los derechos reservados",
-      "smallText": "SonsCat es un proyecto coordinado por <a href='https://scienceforchange.eu' target='_blank'>Science For Change</a> dentro de la convocatoria del programa operativo del FEDER de Cataluña 2021-2027 con número de referencia del Contrato EC-2023-89"
+      "smallText": "sonsCAT es un proyecto coordinado por <a href='https://scienceforchange.eu' target='_blank'>Science For Change</a> dentro de la convocatoria del programa operativo del FEDER de Cataluña 2021-2027 con número de referencia del Contrato EC-2023-89"
     },
     "header": {
-      "wellcome": "¡Te damos la bienvenida a la plataforma de visualización de datos de SonsCat!",
+      "wellcome": "¡Te damos la bienvenida a la plataforma de visualización de datos de sonsCAT!",
       "text": "Esta herramienta ha sido creada para llevar la información sobre las áreas tranquilas directamente a tu alcance."
     },
     "whatToDo": {
-      "text1": "Nuestra plataforma web es un visor de datos interactivo que transforma la información recopilada por la aplicación SonsCat en estadísticas y análisis detallados. Tanto si eres un/a ciudadano/a interesado/a en la calidad sonora de tu entorno, como si eres una persona experta en acústica, esta plataforma te ofrece todo lo que necesitas para explorar y entender los paisajes sonoros urbanos. Recuerda que está demostrado que el paisaje sonoro urbano es un elemento que afecta y condiciona de forma relevante la calidad de vida de las personas.",
+      "text1": "Esta plataforma web es un visor de datos interactivo que transforma la información recopilada por la aplicación sonsCAT en estadísticas y análisis detallados. Tanto si eres un/a ciudadano/a interesado/a en la calidad sonora de tu entorno, como si eres una persona experta en acústica, esta plataforma te ofrece todo lo que necesitas para explorar y entender los paisajes sonoros urbanos. Recuerda que está demostrado que el paisaje sonoro urbano es un elemento que afecta y condiciona de forma relevante la calidad de vida de las personas.",
       "listTitle": "¿Qué puedes hacer en la plataforma?",
       "listItem1": {
         "text": "Visualiza todas las observaciones realizadas por la comunidad. Usa los filtros para interactuar con los datos y descubrir zonas de interés.",
@@ -146,7 +147,7 @@
       "axisX": "Tiempo (segundos)",
       "axisY": "Nivel de presión sonora (dBA)"
     },
-    "description": "Consulta estadísticas detalladas sobre el uso de SonsCat en Cataluña y accede a distintos indicadores.",
+    "description": "Consulta estadísticas detalladas sobre el uso de sonsCAT en Cataluña y accede a distintos indicadores.",
     "title": "Mapa sonoro colaborativo",
     "infoModal": {
       "title": "Detalle de la Observación",
@@ -165,7 +166,7 @@
       "LmaxLevel": "Nivel máximo Lmax",
       "LminLevel": "Nivel mínimo Lmin",
       "LAeqt": "Nivel SPL continuo equivalente LAeq,t",
-      "1/3Octave": "1/3 de octava",
+      "1/3Octave": "Distribución espectral de 1/3 de octava",
       "date": "Fecha",
       "loudness": "Sonoridad",
       "sharpness": "Nitidez",
@@ -195,7 +196,7 @@
         "date": "Fecha",
         "numObs": "Observaciones"
       },
-      "title": "Evolución temporal de los registros en SonsCat",
+      "title": "Evolución temporal de los registros en sonsCAT",
       "content": "Esta gráfica muestra cómo varía la actividad de las personas usuarias a lo largo del tiempo. Te permite identificar patrones de uso y fechas clave, ayudando a evaluar la participación y planificar actividades participativas."
     },
     "observationsNumber": {
@@ -203,7 +204,7 @@
       "average": "Media de registros por mes por usuario/a",
       "users": "Número total de usuarios/as"
     },
-    "description": "Consulta estadísticas detalladas sobre el uso de SonsCat en Cataluña y accede a distintos indicadores.",
+    "description": "Consulta estadísticas detalladas sobre el uso de sonsCAT en Cataluña y accede a distintos indicadores.",
     "title": "Resumen"
   },
   "soundscape": {
@@ -296,15 +297,16 @@
       }
     },
     "tonalFrequency": {
-      "title": "Gráfica de 1/3 de octava",
+      "title": "Distribución espectral de 1/3 de octava",
       "frequency": "Frecuencia (Hercio)",
       "pressure": "Presión sonora",
       "pressurePonderation": "Presión sonora dBA",
-      "ponderation": "dB",
+      "ponderation": "dBZ",
       "noPonderation": "dBA",
       "content": "Este gráfico muestra como se distribuye la energía de los sonidos en el área seleccionada a lo largo de un espectro de frecuencias. Su utilidad radica en identificar si predominan las frecuencias bajas o altas en el área de estudio. Las frecuencias bajas representan sonidos graves, como el retumbar de un motor, mientras que las frecuencias altas incluyen sonidos agudos, como el canto de un pájaro. El gráfico permite alternar entre el nivel de presión sonora sin ponderación (Leq) y con ponderación A (LAeq).",
       "ponderation-c": "dBC",
-      "presure": "Presión sonora"
+      "presure": "Presión sonora",
+      "global": "Nivel sonoro total"
     },
     "physcoAcustic": {
       "title": "Análisis psicoacústico",

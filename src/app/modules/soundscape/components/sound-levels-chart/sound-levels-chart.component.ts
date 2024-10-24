@@ -19,7 +19,7 @@ import { CanvasRenderer } from 'echarts/renderers';
 
 import { Observations } from '../../../../models/observations';
 import { ObservationsService } from '../../../../services/observations/observations.service';
-import energeticAvg from '../../../../../utils/energeticAvg';
+import { energeticAvg, energeticSum } from '../../../../../utils/energeticAvg';
 import roundTwoLastDecimals from '../../../../../utils/twoDecimalsRounded';
 
 type EChartsOption = echarts.EChartsCoreOption;

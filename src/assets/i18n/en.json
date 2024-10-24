@@ -54,7 +54,8 @@
     "studyZones": "Study Zones",
     "administrators": "Administrators",
     "roles": "Roles",
-    "users": "App users"
+    "users": "App users",
+    "weekdays": "Days of the week"
   },
   "home": {
     "footer": {
@@ -65,14 +66,14 @@
         "cookies": "Cookies policy"
       },
       "allRightsReserved": "All rights reserved",
-      "smallText": "SonsCat is a project coordinated by <a href='https://scienceforchange.eu' target='_blank'>Science For Change</a> within the call for the FEDER operational program of Catalonia 2021-2027 with reference number of Contract EC-2023-89"
+      "smallText": "sonsCAT is a project coordinated by <a href='https://scienceforchange.eu' target='_blank'>Science For Change</a> within the call for the FEDER operational program of Catalonia 2021-2027 with reference number of Contract EC-2023-89"
     },
     "header": {
-      "wellcome": "Welcome to the SonsCat data visualization platform!",
+      "wellcome": "Welcome to the sonsCAT data visualization platform!",
       "text": "This tool has been created to bring information about quiet areas directly within your reach."
     },
     "whatToDo": {
-      "text1": "Our web platform is an interactive data viewer that transforms the information collected by the SonsCat application into detailed statistics and analysis. Whether you are a citizen interested in the sound quality of your environment or an acoustic expert, this platform offers you everything you need to explore and understand urban sound landscapes. Remember that it has been demonstrated that the urban sound landscape is an element that affects and conditions the quality of life of people in a relevant way.",
+      "text1": "This web platform is an interactive data viewer that transforms the information collected by the sonsCAT application into detailed statistics and analysis. Whether you are a citizen interested in the sound quality of your environment or an acoustic expert, this platform offers you everything you need to explore and understand urban sound landscapes. Remember that it has been demonstrated that the urban sound landscape is an element that affects and conditions the quality of life of people in a relevant way.",
       "listTitle": "What can you do on the platform?",
       "listItem1": {
         "title": "Explore the collaborative sound map:",
@@ -146,7 +147,7 @@
       "axisX": "Time (seconds)",
       "axisY": "Sound pressure level (dBA)"
     },
-    "description": "Consult detailed statistics on the use of SonsCat in Catalonia and access different indicators.",
+    "description": "Consult detailed statistics on the use of sonsCAT in Catalonia and access different indicators.",
     "title": "Collaborative sound map",
     "infoModal": {
       "title": "Observation Detail",
@@ -195,7 +196,7 @@
         "date": "Date",
         "numObs": "Observations"
       },
-      "title": "Temporal evolution of records in SonsCat",
+      "title": "Temporal evolution of records in sonsCAT",
       "content": "This graph shows how user activity varies over time. It allows you to identify usage patterns and key dates, helping to evaluate participation and plan participatory activities."
     },
     "observationsNumber": {
@@ -203,7 +204,7 @@
       "average": "Average number of registrations per month per user",
       "users": "Total number of users"
     },
-    "description": "Consult detailed statistics on the use of SonsCat in Catalonia and access different indicators.",
+    "description": "Consult detailed statistics on the use of sonsCAT in Catalonia and access different indicators.",
     "title": "Summary"
   },
   "soundscape": {
@@ -300,10 +301,11 @@
       "frequency": "Frequency (Hertz)",
       "presure": "Sound pressure",
       "pressurePonderation": "Sound pressure dBA",
-      "ponderation": "dB",
+      "ponderation": "dBZ",
       "noPonderation": "dBA",
       "content": "This graph shows how the energy of sounds in the selected area is distributed along a frequency spectrum. Its usefulness lies in identifying whether low or high frequencies predominate in the study area. Low frequencies represent low-pitched sounds, such as the rumble of an engine, while high frequencies include high-pitched sounds, such as a bird chirping. The graph allows you to switch between the sound pressure level without weighting (Leq) and with A weighting (LAeq).",
-      "ponderation-c": "dBC"
+      "ponderation-c": "dBC",
+      "global": "Overall sound level"
     },
     "physcoAcustic": {
       "title": "Psychoacoustic analysis",
