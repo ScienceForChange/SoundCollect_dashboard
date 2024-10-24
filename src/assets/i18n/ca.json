@@ -54,7 +54,8 @@
     "studyZones": "Zones d'Estudi",
     "administrators": "Administradors/es",
     "roles": "Rols",
-    "users": "Usuaris/es de App"
+    "users": "Usuaris/es de App",
+    "weekdays": "Dies de la setmana"
   },
   "home": {
     "footer": {
@@ -65,14 +66,14 @@
         "cookies": "Política de cookies"
       },
       "allRightsReserved": "Tots els drets reservats",
-      "smallText": "SonsCat és un projecte coordinat per <a href='https://scienceforchange.eu' target='_blank'>Science For Change</a> dins de la convocatòria del programa operatiu del FEDER de Catalunya 2021-2027 amb número de referència del Contracte EC-2023-89."
+      "smallText": "sonsCAT és un projecte coordinat per <a href='https://scienceforchange.eu' target='_blank'>Science For Change</a> dins de la convocatòria del programa operatiu del FEDER de Catalunya 2021-2027 amb número de referència del Contracte EC-2023-89."
     },
     "header": {
-      "wellcome": "Et donem la benvinguda a la plataforma de visualització de dades de SonsCat!",
+      "wellcome": "Et donem la benvinguda a la plataforma de visualització de dades de sonsCAT!",
       "text": "Aquesta eina ha estat creada per portar la informació sobre les àrees tranquil·les directament al teu abast."
     },
     "whatToDo": {
-      "text1": "La nostra plataforma web és un visor de dades interactiu que transforma la informació recopilada per l'aplicació SonsCat en estadístiques i anàlisis detallades. Tant si ets un/a ciutadà/na interessat/ada en la qualitat sonora del teu entorn, com si ets una persona experta en acústica, aquesta plataforma t'ofereix tot el que necessites per explorar i entendre els paisatges sonors urbans. Recorda que està demostrat que el paisatge sonor urbà,  és un element que afecta i condiciona de forma rellevant la qualitat de vida de les persones.",
+      "text1": "Aquesta plataforma web és un visor de dades interactiu que transforma la informació recopilada per l'aplicació sonsCAT en estadístiques i anàlisis detallades. Tant si ets un/a ciutadà/na interessat/ada en la qualitat sonora del teu entorn, com si ets una persona experta en acústica, aquesta plataforma t'ofereix tot el que necessites per explorar i entendre els paisatges sonors urbans. Recorda que està demostrat que el paisatge sonor urbà,  és un element que afecta i condiciona de forma rellevant la qualitat de vida de les persones.",
       "listTitle": "Què pots fer a la plataforma?",
       "listItem1": {
         "text": "Visualitza totes les observacions realitzades per la comunitat. Utilitza els filtres per interactuar amb les dades i descobrir zones d'interès.",
@@ -97,7 +98,7 @@
       "listItem1": {
         "title": "Calibratge de dispositius mòbils:",
         "text": "Només es consideraran les dades de persones usuàries que hagin calibrat els seus dispositius mòbils correctament. T'expliquem per què per a nosaltres el calibratge és clau:",
-        "text1": "El calibratge adequat assegura que les dades siguin precises i de confiança. Amb el temps, factors com el desgast o canvis en l'entorn poden desviar els resultats.",
+        "text1": "El calibratge adequat assegura que les dades siguin precises i de confiança. Sense aquest calibratge els diferents dispositius mòbils poden tenir desviacions importants en els resultats dels mesuraments.",
         "text2": "El calibratge garanteix que els mesuraments realitzats en diferents moments o condicions siguin comparables. Això permet obtenir resultats consistents i repetir mesuraments amb confiança al llarg del temps."
       },
       "listItem2": {
@@ -146,7 +147,7 @@
       "axisX": "Temps (segons)",
       "axisY": "Nivell de pressió sonora (dBA)"
     },
-    "description": "Consulta estadístiques detallades sobre l'ús de SonsCat a Catalunya i accedeix a diferents indicadors.",
+    "description": "Consulta estadístiques detallades sobre l'ús de sonsCAT a Catalunya i accedeix a diferents indicadors.",
     "title": "Mapa sonor col·laboratiu",
     "infoModal": {
       "title": "Detall de l'Observació",
@@ -165,7 +166,7 @@
       "LmaxLevel": "Nivell màxim Lmax",
       "LminLevel": "Nivell mínim Lmin",
       "LAeqt": "Nivell SPL continu equivalent LAeq,t",
-      "1/3Octave": "1/3 d'octava",
+      "1/3Octave": "Distribució espectral en 1/3 d’octava",
       "date": "Data",
       "loudness": "Sonoritat",
       "sharpness": "Nitidesa",
@@ -195,7 +196,7 @@
         "date": "Data",
         "numObs": "Observacions"
       },
-      "title": "Evolució temporal dels registres en SonsCat",
+      "title": "Evolució temporal dels registres en sonsCAT",
       "content": "Aquesta gràfica mostra com varia l'activitat de les persones usuàries al llarg del temps. Et permet identificar patrons d'ús i dates clau, ajudant a avaluar la participació i planificar activitats participatives."
     },
     "observationsNumber": {
@@ -203,7 +204,7 @@
       "average": "Mitjana de registres per mes per usuari/a",
       "users": "Nombre total d'usuaris/es"
     },
-    "description": "Consulta estadístiques detallades sobre l'ús de SonsCat a Catalunya i accedeix a diferents indicadors.",
+    "description": "Consulta estadístiques detallades sobre l'ús de sonsCAT a Catalunya i accedeix a diferents indicadors.",
     "title": "Resum"
   },
   "soundscape": {
@@ -287,7 +288,8 @@
     "qualitativeData": {
       "title": "Diagrama de dispersió del paisatge sonor",
       "content1": "El diagrama de dispersió del paisatge sonor ofereix una visió detallada de com les persones usuàries perceben l'entorn acústic en dues dimensions clau: l'agradabilitat i l'activitat del paisatge sonor, seguint la norma ISO 12913:2004 sobre paisatge sonor. La gràfica agrupa la informació en quatre quadrants del pla cartesià:",
-      "content2": "Diagrama de dispersió adaptat de: Mitchell A, Aletta F, Kang J. How to analyse and represent quantitative soundscape data. JASA Express Lett. 2022 Mar;2(3):037201. doi: 10.1121/10.0009794.",
+      "content2": "A més, la zona ombrejada al voltant del contorn de percentil 50 indica l'àrea que inclou el 50% de les respostes, reflectint les percepcions més habituals entre els participants.",
+      "content3": "Diagrama de dispersió adaptat de: Mitchell A, Aletta F, Kang J. How to analyse and represent quantitative soundscape data. JASA Express Lett. 2022 Mar;2(3):037201. doi: 10.1121/10.0009794.",
       "content": {
         "list1": "Quadrant superior esquerre (caòtics): Paisatges sonors amb predomini de sons desagradables que generen incomoditat o angoixa.",
         "list2": "Quadrant inferior esquerre (monòtons): Paisatges sonors que no són ni agradables ni actius, mancant d'elements interessants o atractius.",
@@ -296,25 +298,25 @@
       }
     },
     "tonalFrequency": {
-      "title": "Gràfica d'1/3 d'octava",
+      "title": "Distribució espectral en 1/3 d’octava",
       "frequency": "Freqüència (Hertz)",
       "presure": "Pressió sonora",
       "pressurePonderation": "Pressió sonora dBA",
-      "ponderation": "dB",
+      "ponderation": "dBZ",
       "noPonderation": "dBA",
-      "content": "Aquest gràfic mostra com es distribueix l'energia dels sons en l'àrea seleccionada al llarg d'un espectre de freqüències. La seva utilitat radica a identificar si predominen les freqüències baixes o altes en l'àrea d'estudi. Les freqüències baixes representen sons greus, com el retrunyir d'un motor, mentre que les freqüències altes inclouen sons aguts, com el cant d'un ocell. El gràfic permet alternar entre el nivell de pressió sonora sense ponderació (Leq) i amb ponderació A (LAeq).",
+      "content": "Aquest gràfic mostra com es distribueix l'energia dels sons en l'àrea seleccionada al llarg d'un espectre de freqüències. La seva utilitat radica a identificar si predominen les freqüències baixes o altes en l'àrea d'estudi. Les freqüències baixes representen sons greus, com el retrunyir d'un motor, mentre que les freqüències altes inclouen sons aguts, com el cant d'un ocell. El gràfic permet alternar entre el nivell de pressió sonora sense ponderació (LZeq) i amb ponderació A (LAeq) i amb ponderació C (LCeq).",
       "ponderation-c": "dBC"
     },
     "physcoAcustic": {
       "title": "Anàlisi psicoacústic",
       "content": {
-        "title1": "LOUDNESS (Sonoritat)",
-        "content1": "El paràmetre psicoacústic Loudness (o sonoritat) és una mesura subjectiva de la intensitat amb la qual un soroll és percebut per l'oïda humana. Aquest paràmetre depèn de la freqüència i, per tant, dos events sonors amb el mateix nivell sonor, però diferent freqüència no sempre resulta en la mateixa sensació de volum en l'oïda humana. La unitat de mesura és el “sone”, i mitjançant aquest paràmetre es pot representar la sensació humana al volum del soroll de forma lineal. Per tant, un to que es percep que te el doble de volum d’un altre tindrà una sonoritat el doble de gran.",
-        "title2": "SHARPNESS (Nitidesa)",
+        "title1": "Sonoritat (Loudnes)",
+        "content1": "és una mesura subjectiva de la intensitat amb la qual un soroll és percebut per l'oïda humana. Aquest paràmetre depèn de la freqüència i, per tant, dos events sonors amb el mateix nivell sonor, però diferent freqüència no sempre resulta en la mateixa sensació de volum en l'oïda humana. La unitat de mesura és el “sone”, i mitjançant aquest paràmetre es pot representar la sensació humana al volum del soroll de forma lineal. Per tant, un to que es percep que te el doble de volum d’un altre tindrà una sonoritat el doble de gran.",
+        "title2": "Sonoritat (Loudnes)",
         "content2": "La nitidesa és un paràmetre que descriu com de penetrant i esmolat es percep un so. Sons amb més energia en les freqüències agudes solen ser percebuts com a més aguts, per exemple, sons de sirenes. Es mesura en acum. Com més gran és l’agudesa, més penetrant es percep el so.",
-        "title3": "ROUGHNESS (Aspror)",
+        "title3": "Aspror (Roughness)",
         "content3": "L'aspror es refereix a les ràpides variacions d’amplitud en el so, percebudes com a irregularitats. Es mesura en asper. Sons amb una alta rugositat poden ser molestos per a l’oïda humana.",
-        "title4": "FLUCTUATION STRENGTH (Força fluctant)",
+        "title4": "Força fluctant (Fluctuation stregnth)",
         "content4": "Aquest paràmetre mesura la percepció de fluctuacions lentes en la intensitat sonora d’un so. Es mesura en vacil. És particularment rellevant en sons musicals o sorolls de màquines."
       },
       "types": {
@@ -367,8 +369,11 @@
       "annoying": "Desagradable",
       "eventful": "Amb activitat",
       "monotonous": "Monòton",
-      "average": "Mitjana",
-      "all": "Totes les observacions"
+      "average": "Percepció del paisatge sonor per atributs",
+      "all": "Totes les observacions",
+      "title": "Percepció del paisatge sonor per atributs",
+      "content1": "Aquest gràfic de radar mostra l'anàlisi de les respostes sobre els atributs de percepció del paisatge sonor, avaluats mitjançant una escala Likert de 1 a 5. El gràfic consta de 8 eixos, cadascun corresponent a un atribut específic de percepció: amb activitat, estimulant, agradable, calmat, sense activitat, monòton, desagradable i caòtic. El punt central del gràfic correspon a la resposta neutra (0).",
+      "content2": "L'objectiu d'aquest gràfic és identificar el \"pic\" que assenyala el caràcter general del paisatge sonor. Aquest pic indica un major acord en la percepció d'un atribut concret. A més de les respostes individuals, el gràfic inclou valors mitjans, que representen el promig aritmètic de les respostes. Si els valors es distancien del centre, significa que hi ha més variabilitat en les respostes dels participants. Així, aquest gràfic permet visualitzar tant les tendències com les divergències en la percepció del paisatge sonor."
     }
   },
   "admin": {
