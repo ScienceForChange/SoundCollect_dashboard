@@ -173,12 +173,21 @@ export class OneThirdOctaveChartComponent implements OnInit, AfterViewInit {
         ponderation.push(Math.trunc(energeticAvgPond * 10) / 10);
         ponderationc.push(Math.trunc(energeticAvgPondC * 10) / 10);
       }
-      // Añadimos el valor del Nivel sonoro global (última columna de la gráfica)
-      noPonderation.push(Math.trunc(energeticSum(noPonderation)* 10) / 10);
-      ponderation.push(Math.trunc(energeticSum(ponderation)* 10) / 10);
-      ponderationc.push(Math.trunc(energeticSum(ponderationc)* 10) / 10);
+      
+      // separamos los valores de cada segmento en un array ordenado por frecuencia
+      const segment_total_spec_3_at_idx = this.observationSelected.relationships.segments.map((segment) => segment.spec_3);
+      const segment_total_spec_3_dB_at_idx = this.observationSelected.relationships.segments.map((segment) => segment.spec_3_dB);
+      const segment_total_spec_3_dBC_at_idx = this.observationSelected.relationships.segments.map((segment) => segment.spec_3_dBC);
 
-      testEnergeticSum();
+      // obtenemos la suma energetica de cada segmento
+      const total_spec_3_at_idx = segment_total_spec_3_at_idx.map((segment) => energeticSum(segment));
+      const total_spec_3_dB_at_idx = segment_total_spec_3_dB_at_idx.map((segment) => energeticSum(segment));
+      const total_spec_3_dBC_at_idx = segment_total_spec_3_dBC_at_idx.map((segment) => energeticSum(segment));
+
+      // obtenemos la suma energetica de todos los segmentos
+      noPonderation.push(Math.trunc(energeticSum(total_spec_3_at_idx) * 10) / 10);
+      ponderation.push(Math.trunc(energeticSum(total_spec_3_dB_at_idx) * 10) / 10);
+      ponderationc.push(Math.trunc(energeticSum(total_spec_3_dBC_at_idx) * 10) / 10);
 
       return { ponderation, ponderationc, noPonderation };
     }
