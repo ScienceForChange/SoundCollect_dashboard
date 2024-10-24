@@ -24,3 +24,23 @@ export function energeticSum(values: number[]): number {
   return energeticSum;
 }
 
+export function testEnergeticSum() {
+  const values = [
+    [23, 40, 23],
+    [20, 50, 20],
+    [24, 63, 24],
+    [28, 25, 28],
+    [32, 24, 32],
+    [37, 32, 37],
+    [44, 36, 44],
+    [46, 40, 46],
+    [53, 44, 53],
+    [27, 47, 27]
+  ];
+  const result : number[]= [];
+  for (let i = 0; i < values.length; i++) {
+    result.push(energeticSum(values[i]));
+  }
+  console.log(result);
+  
+}
