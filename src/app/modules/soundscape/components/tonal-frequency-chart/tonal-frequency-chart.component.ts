@@ -13,7 +13,7 @@ import { LegendComponent } from 'echarts/components';
 
 import { Observations } from '../../../../models/observations';
 import { ObservationsService } from '../../../../services/observations/observations.service';
-import energeticAvg from '../../../../../utils/energeticAvg';
+import { energeticAvg, energeticSum } from '../../../../../utils/energeticAvg';
 import { consumerPollProducersForChange } from '@angular/core/primitives/signals';
 
 echarts.use([LegendComponent, BarChart, CanvasRenderer,]);
@@ -49,8 +49,9 @@ export class TonalFrequencyChartComponent implements OnInit, OnDestroy {
         return obs.relationships.segments[0].spec_3 || obs.relationships.segments[0].spec_3_dB;
       });
       if(this.observations.length !== 0){
-        this.hertzLevels = [...this.observations[0].relationships.segments[0].freq_3];
-        this.hertzLevels.push('Lea LAea LCea');
+        let xArray: any[] = [...this.observations[0].relationships.segments[0].freq_3];
+        xArray.push(this.translate.instant('soundscape.tonalFrequency.global'));
+        this.hertzLevels = xArray;
       }
       this.updateChart();
     });
@@ -60,20 +61,6 @@ export class TonalFrequencyChartComponent implements OnInit, OnDestroy {
 
   private updateYAxis(event:any){
     let name = this.translate.instant('soundscape.tonalFrequency.presure');
-    this.hertzLevels[this.hertzLevels.length - 1] = '';
-    if(event.selected.dB){
-      name += ` ${this.translate.instant('soundscape.tonalFrequency.ponderation')}`;
-      this.hertzLevels[this.hertzLevels.length - 1] = 'Lea';
-    }
-    if(event.selected.dBA){
-      name += ` ${this.translate.instant('soundscape.tonalFrequency.noPonderation')}`;
-      this.hertzLevels[this.hertzLevels.length - 1] += ' LAea';
-    }
-    if(event.selected.dBC){
-      name += ` ${this.translate.instant('soundscape.tonalFrequency.ponderation-c')}`;
-      this.hertzLevels[this.hertzLevels.length - 1] += ' LCea';
-    }
-
     this.options = {...this.options, yAxis: {name: name, nameLocation: 'middle', nameGap: 35, type: 'value'}}
 
     // Apply the updated options to the chart
@@ -187,14 +174,18 @@ export class TonalFrequencyChartComponent implements OnInit, OnDestroy {
       const spec_3_dB_at_idx  = observationsSegmentsSpec_3_dB.map((segment) => segment[i] ? segment[i] : 0);
       const spec_3_dBC_at_idx = observationsSegmentsSpec_3_dBC.map((segment) => segment[i] ? segment[i] : 0);
 
-      const energeticAvgNoPond  = energeticAvg(spec_3_dB_at_idx);
-      const energeticAvgPond    = energeticAvg(spec_3_at_idx);
-      const energeticAvgPondC   = energeticAvg(spec_3_dBC_at_idx);
+      const energeticAvgNoPond  = energeticSum(spec_3_dB_at_idx);
+      const energeticAvgPond    = energeticSum(spec_3_at_idx);
+      const energeticAvgPondC   = energeticSum(spec_3_dBC_at_idx);
 
       noPonderation.push(Math.trunc(energeticAvgNoPond * 10) / 10);
       ponderation.push(Math.trunc(energeticAvgPond * 10) / 10);
       ponderationc.push(Math.trunc(energeticAvgPondC * 10) / 10);
     }
+
+    noPonderation.push(Math.trunc(energeticSum(noPonderation) * 10) / 10);
+    ponderation.push(Math.trunc(energeticSum(ponderation) * 10) / 10);
+    ponderationc.push(Math.trunc(energeticSum(ponderationc) * 10) / 10);
 
     return { ponderation, ponderationc, noPonderation };
 
