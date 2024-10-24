@@ -147,18 +147,18 @@ export class SurveyChartComponent implements OnInit, OnDestroy{
     // filtrar las observaciones de expertos
     let expertObservations = this.observations.filter(observation => observation.relationships.user.attributes.is_expert === true);
     
-    
+
     let survey = expertObservations.filter(observation => observation.attributes.calm !== "N/A" && observation.attributes.calm !== null).map(observation => 
       {
-      return [
-        Number(observation.attributes.pleasant),
-        Number(observation.attributes.calm),
-        Number(observation.attributes.vibrant),
-        Number(observation.attributes.chaotic),
-        Number(observation.attributes.uneventful),
-        Number(observation.attributes.annoying),
-        Number(observation.attributes.eventful),
-        Number(observation.attributes.monotonous),
+        return [
+          Number(observation.attributes.pleasant),
+          Number(observation.attributes.calm),
+          Number(observation.attributes.vibrant),
+          Number(observation.attributes.chaotic),
+          Number(observation.attributes.uneventful),
+          Number(observation.attributes.annoying),
+          Number(observation.attributes.eventful),
+          Number(observation.attributes.monotonous),
         ];
       }
     );
