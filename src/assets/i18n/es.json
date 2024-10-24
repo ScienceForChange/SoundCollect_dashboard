@@ -73,7 +73,7 @@
       "text": "Esta herramienta ha sido creada para llevar la información sobre las áreas tranquilas directamente a tu alcance."
     },
     "whatToDo": {
-      "text1": "La plataforma web es un visor de datos interactivo que transforma la información recopilada por la aplicación sonsCAT en estadísticas y análisis detallados. Tanto si eres un/a ciudadano/a interesado/a en la calidad sonora de tu entorno, como si eres una persona experta en acústica, esta plataforma te ofrece todo lo que necesitas para explorar y entender los paisajes sonoros urbanos. Recuerda que está demostrado que el paisaje sonoro urbano es un elemento que afecta y condiciona de forma relevante la calidad de vida de las personas.",
+      "text1": "Esta plataforma web es un visor de datos interactivo que transforma la información recopilada por la aplicación sonsCAT en estadísticas y análisis detallados. Tanto si eres un/a ciudadano/a interesado/a en la calidad sonora de tu entorno, como si eres una persona experta en acústica, esta plataforma te ofrece todo lo que necesitas para explorar y entender los paisajes sonoros urbanos. Recuerda que está demostrado que el paisaje sonoro urbano es un elemento que afecta y condiciona de forma relevante la calidad de vida de las personas.",
       "listTitle": "¿Qué puedes hacer en la plataforma?",
       "listItem1": {
         "text": "Visualiza todas las observaciones realizadas por la comunidad. Usa los filtros para interactuar con los datos y descubrir zonas de interés.",
@@ -166,7 +166,7 @@
       "LmaxLevel": "Nivel máximo Lmax",
       "LminLevel": "Nivel mínimo Lmin",
       "LAeqt": "Nivel SPL continuo equivalente LAeq,t",
-      "1/3Octave": "1/3 de octava",
+      "1/3Octave": "Distribución espectral de 1/3 de octava",
       "date": "Fecha",
       "loudness": "Sonoridad",
       "sharpness": "Nitidez",
@@ -297,11 +297,11 @@
       }
     },
     "tonalFrequency": {
-      "title": "Gráfica de 1/3 de octava",
+      "title": "Distribución espectral de 1/3 de octava",
       "frequency": "Frecuencia (Hercio)",
       "pressure": "Presión sonora",
       "pressurePonderation": "Presión sonora dBA",
-      "ponderation": "dB",
+      "ponderation": "dBZ",
       "noPonderation": "dBA",
       "content": "Este gráfico muestra como se distribuye la energía de los sonidos en el área seleccionada a lo largo de un espectro de frecuencias. Su utilidad radica en identificar si predominan las frecuencias bajas o altas en el área de estudio. Las frecuencias bajas representan sonidos graves, como el retumbar de un motor, mientras que las frecuencias altas incluyen sonidos agudos, como el canto de un pájaro. El gráfico permite alternar entre el nivel de presión sonora sin ponderación (Leq) y con ponderación A (LAeq).",
       "ponderation-c": "dBC",
