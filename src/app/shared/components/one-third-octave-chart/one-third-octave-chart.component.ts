@@ -8,7 +8,7 @@ import { CanvasRenderer } from 'echarts/renderers';
 import { GridComponent, LegendComponent } from 'echarts/components';
 
 import { Observations } from '../../../models/observations';
-import { energeticAvg, energeticSum } from '../../../../utils/energeticAvg';
+import { energeticAvg, energeticSum, testEnergeticSum } from '../../../../utils/energeticAvg';
 import { get } from 'lodash';
 
 @Component({
@@ -177,6 +177,8 @@ export class OneThirdOctaveChartComponent implements OnInit, AfterViewInit {
       noPonderation.push(Math.trunc(energeticSum(noPonderation)* 10) / 10);
       ponderation.push(Math.trunc(energeticSum(ponderation)* 10) / 10);
       ponderationc.push(Math.trunc(energeticSum(ponderationc)* 10) / 10);
+
+      testEnergeticSum();
 
       return { ponderation, ponderationc, noPonderation };
     }
