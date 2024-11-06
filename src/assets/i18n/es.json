@@ -379,7 +379,8 @@
       "map": {
         "createFilter": "Crear zona de estudio",
         "deleteFilter": "Borrar zona de estudio",
-        "saveStudyZone": "Guardar zona de estudio"
+        "saveStudyZone": "Guardar zona de estudio",
+        "cancelDrawing": "Cancelar"
       },
       "form": {
         "title": "Informació de la zona d'estudi",

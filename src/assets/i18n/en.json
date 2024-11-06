@@ -378,7 +378,8 @@
       "map": {
         "createFilter": "Create study area",
         "deleteFilter": "Delete study area",
-        "saveStudyZone": "Save study area"
+        "saveStudyZone": "Save study area",
+        "cancelDrawing": "Cancel"
       },
       "form": {
         "title": "Information about the study area",

@@ -27,6 +27,7 @@ export class StudyZoneMapComponent {
   @Output() toggleStudyZoneForm: EventEmitter<void> = new EventEmitter<void>();
 
   polygonFilter = signal<any | undefined>(undefined);
+  drawing       = signal<boolean>(false);
 
   private language: string = localStorage.getItem('locale') || 'ca';
 
@@ -45,15 +46,47 @@ export class StudyZoneMapComponent {
 
   ngOnInit(): void {
     this.polygonFilter = this.studyZoneMapService.polygonFilter;
-
+    this.drawing = this.studyZoneMapService.drawing;
   }
 
   drawPolygonFilter() {
+    this.drawing.update(() => true);
     this.studyZoneMapService.drawPolygonFilter();
+
+    let i = 0;
+    const interval = setInterval(() => {
+      this.studyZoneMapService.resizeMap();
+      i++;
+      if (i === 50) {
+        clearInterval(interval);
+      }
+    }, 10);
+
   }
 
   deletePolygonFilter() {
+    this.drawing.update(() => false);
     this.studyZoneMapService.deletePolygonFilter();
+    let i = 0;
+    const interval = setInterval(() => {
+      this.studyZoneMapService.resizeMap();
+      i++;
+      if (i === 50) {
+        clearInterval(interval);
+      }
+    }, 10);
+  }
+  cancelPolygonFilter() {
+    this.drawing.update(() => false);
+    this.studyZoneMapService.cancelPolygonFilter();
+    let i = 0;
+    const interval = setInterval(() => {
+      this.studyZoneMapService.resizeMap();
+      i++;
+      if (i === 50) {
+        clearInterval(interval);
+      }
+    }, 10);
   }
 
   ngAfterViewInit(): void {

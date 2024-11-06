@@ -1,27 +1,35 @@
 <div class="container" id="map">
   <div id="toolsBar">
-    
+
     <ng-template [ngxPermissionsOnly]="['CREATE-STUDY-ZONES']">
       <div class="tools gap-3">
         @if (!polygonFilter()) {
-        <p-button (click)="drawPolygonFilter()">
-          <i class="pi pi-pencil mr-2"></i>
-          <span>{{ "admin.studyZone.map.createFilter" | translate }}</span>
-        </p-button>
+          @if(!drawing()) {
+            <p-button (click)="drawPolygonFilter()" >
+              <i class="pi pi-pencil mr-2"></i>
+              <span>{{ "admin.studyZone.map.createFilter" | translate }}</span>
+            </p-button>
+          }
+          @else{
+            <button pButton type="button" class="p-button-danger" icon="pi pi-times mr-2" (click)="cancelPolygonFilter()">
+              <span> {{ "admin.studyZone.map.cancelDrawing" | translate }}</span>
+            </button>
+          }
         } @else {
-        <p-button (click)="deletePolygonFilter()">
-          <i class="pi pi-trash mr-2"></i>
-          <span>{{ "admin.studyZone.map.deleteFilter" | translate }}</span>
-        </p-button>
+          <button pButton type="button" class="p-button-danger" icon="pi pi-trash mr-2" (click)="deletePolygonFilter()">
+            <span> {{ "admin.studyZone.map.deleteFilter" | translate }}</span>
+          </button>
         }
       </div>
-      <p-button
-        (click)="toggleStudyZoneForm.emit()"
-        [disabled]="!this.polygonFilter()"
-      >
-        <i class="pi pi-cloud-upload mr-2"></i>
-        <span>{{ "admin.studyZone.map.saveStudyZone" | translate }}</span>
-      </p-button>
+      @if(this.polygonFilter()){
+        <p-button
+          (click)="toggleStudyZoneForm.emit()"
+
+        >
+          <i class="pi pi-save mr-2"></i>
+          <span>{{ "admin.studyZone.map.saveStudyZone" | translate }}</span>
+        </p-button>
+      }
     </ng-template>
     <p-button
       (onClick)="toggleShowMapLayers()"
