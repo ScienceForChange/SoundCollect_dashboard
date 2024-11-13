@@ -413,7 +413,8 @@
           "createDetail": "La zona d'estudi s'ha creat correctament",
           "errorSummary": "Ha succeït un error",
           "errorDetail": "No s'ha pogut crear la zona d'estudi,tenca el formulari i torna a intentar-ho"
-        }
+        },
+        "first-step": "Informació bàsica"
       },
       "list": {
         "title": "Llistat de zones d'estudi",
@@ -518,8 +519,11 @@
     "title": "Observacions",
     "show": "Veure info"
   },
-  "studyZones": "Zones d'estudi",
   "studyzones": {
-    "title": "Zones d'Estudi"
+    "title": "Zones d'Estudi",
+    "edit": "Editar",
+    "delete": "Esborrar",
+    "show": "Mostrar",
+    "hide": "Amagar"
   }
 }

@@ -409,7 +409,8 @@
           "createDetail": "Study area has been successfully created",
           "errorSummary": "An error has occurred",
           "errorDetail": "Study area could not be created, please close the form and try again"
-        }
+        },
+        "first-step": "Basic information"
       },
       "list": {
         "title": "List of study areas",
@@ -515,6 +516,10 @@
   },
   "studyZones": "Study Zones",
   "studyzones": {
-    "title": "Study Zones"
+    "title": "Study Zones",
+    "edit": "Editar",
+    "delete": "Delete",
+    "show": "Show",
+    "hide": "Hide"
   }
 }

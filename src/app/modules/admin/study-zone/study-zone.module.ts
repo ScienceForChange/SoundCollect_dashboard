@@ -16,6 +16,7 @@ import { DividerModule } from 'primeng/divider';
 import { TableModule } from 'primeng/table';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { ToastModule } from 'primeng/toast';
+import { StepperModule } from 'primeng/stepper';
 
 
 import { StudyZoneComponent } from './page/study-zone.component';
@@ -51,7 +52,8 @@ import { MenubarModule } from 'primeng/menubar';
     TableModule,
     ToastModule,
     MenubarModule,
-    NgxPermissionsModule
+    NgxPermissionsModule,
+    StepperModule
   ],
 })
 export class StudyZoneModule {}

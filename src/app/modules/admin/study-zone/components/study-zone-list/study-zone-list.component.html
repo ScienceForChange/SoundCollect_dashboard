@@ -34,11 +34,29 @@
         <ng-template [ngxPermissionsOnly]="['UPDATE-STUDY-ZONES','DELETE-STUDY-ZONES']">
           <td class="flex justify-content-end gap-2">
             <ng-template [ngxPermissionsOnly]="['UPDATE-STUDY-ZONES']">
-              <button pButton type="button" [icon]="studyZone.is_visible ? 'pi pi-times' : 'pi pi-check'" (click)="toggleEnableStudyZone(studyZone.id)"></button>
-              <button pButton type="button" class="p-button-warning" icon="pi pi-pencil" (click)="editStudyZone(studyZone.id)"></button>
+
+              <button pButton 
+              type="button" 
+              [ngClass]="{ 'p-button-secondary' : studyZone.is_visible }" 
+              [icon]="studyZone.is_visible ? 'pi pi-eye-slash' : 'pi pi-eye'" 
+              [pTooltip]="(studyZone.is_visible ? 'studyzones.show' : 'studyzones.hide') | translate" 
+              tooltipPosition="top" 
+              (click)="toggleEnableStudyZone(studyZone.id)"
+              ></button>
+
+              <button pButton 
+              type="button" 
+              class="p-button-warning" 
+              icon="pi pi-pencil" 
+              [pTooltip]="'studyzones.edit' | translate" 
+              tooltipPosition="top" 
+              (click)="editStudyZone(studyZone.id)"
+              >
+              </button>
+
             </ng-template>
             <ng-template [ngxPermissionsOnly]="['DELETE-STUDY-ZONES']">
-              <button pButton type="button" class="p-button-danger" icon="pi pi-trash" (click)="confirmDeleteStudyZone($event, studyZone.id)"></button>
+              <button pButton type="button" class="p-button-danger" icon="pi pi-trash" [pTooltip]="'studyzones.delete' | translate" tooltipPosition="top" (click)="confirmDeleteStudyZone($event, studyZone.id)"></button>
             </ng-template>
           </td>
         </ng-template>

@@ -383,7 +383,7 @@
         "cancelDrawing": "Cancelar"
       },
       "form": {
-        "title": "Informació de la zona d'estudi",
+        "title": "Información de la zona de estudio",
         "name": "Nombre",
         "description": "Descripción",
         "conclusion": "Conclusión",
@@ -410,7 +410,8 @@
           "createDetail": "La zona de estudio se ha creado correctamente",
           "errorSummary": "Ha sucedido un error",
           "errorDetail": "No se ha podido crear la zona de estudio, cierra el formulario y vuelve a intentarlo"
-        }
+        },
+        "first-step": "Información básica"
       },
       "list": {
         "title": "Listado de Zonas de Estudio",
@@ -517,6 +518,10 @@
   },
   "studyZones": "Zonas de estudio",
   "studyzones": {
-    "title": "Zonas de Estudio"
+    "title": "Zonas de Estudio",
+    "edit": "Editar",
+    "delete": "Borrar",
+    "show": "Mostrar",
+    "hide": "Ocultar"
   }
 }
