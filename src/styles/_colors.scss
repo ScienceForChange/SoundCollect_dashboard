@@ -1,16 +1,16 @@
 //PRIMARY
 
-$green: #6FCB67;
-$green-light: #93D88D;
-$green-lighter: #00FFBF;
-$green-transparency: rgba(0, 204, 153, 0.2);
+$blue: #206A71;
+$blue-light: #2F929B;
+$blue-lighter: #DEEEEF;
+$blue-transparency: rgba(32, 106, 113, 0.2);
 
 //SECONDARY
 
-$red: #FF3333;
-$red-light: #ff6666;
-$red-lighter: #ff9999;
-$red-transparency: rgba(192, 0, 0, 0.2);
+$orange: #FF7A1F;
+$orange-light: #FDA568;
+$orange-lighter: #ffe6d6;
+$orange-transparency: rgba(255, 122, 31, 0.2);
 
 //GREYSCALE
 
@@ -22,7 +22,7 @@ $grey-dark: #626260;
 $black: #191919;
 
 //OTHERS
-$red: #c00000;
-$error: #c00000;
+$red: #d33f3f;
+$error: #d33f3f;
 
-$focus-ring: 0 0 0 0.2rem $green-transparency !important;
+$focus-ring: 0 0 0 0.2rem $orange-transparency !important;

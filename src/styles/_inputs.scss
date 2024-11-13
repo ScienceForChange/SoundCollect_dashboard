@@ -6,8 +6,8 @@
     height: 40px;
   }
  .p-checkbox-box.p-highlight:hover {
-    border-color: var(--green);
-    background: var(--green);
+    border-color: var(--orange);
+    background: var(--orange);
   }
 }
 
@@ -40,7 +40,7 @@ p-dropdownitem {
 .step-marker {
   transform: translateX(-50%);
   top: -3px;
-  background: var(--green-transparency);
+  background: var(--orange-transparency);
   z-index: 0;
   top:0;
   border-radius: 100%;
