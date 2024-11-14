@@ -34,12 +34,12 @@
         <ng-template [ngxPermissionsOnly]="['UPDATE-STUDY-ZONES','DELETE-STUDY-ZONES']">
           <td class="flex justify-content-end gap-2">
             <ng-template [ngxPermissionsOnly]="['UPDATE-STUDY-ZONES']">
-
+              
               <button pButton 
               type="button" 
-              [ngClass]="{ 'p-button-secondary' : studyZone.is_visible }" 
-              [icon]="studyZone.is_visible ? 'pi pi-eye-slash' : 'pi pi-eye'" 
-              [pTooltip]="(studyZone.is_visible ? 'studyzones.show' : 'studyzones.hide') | translate" 
+              [ngClass]="{ 'p-button-secondary' : !studyZone.is_visible }" 
+              [icon]="!studyZone.is_visible ? 'pi pi-eye-slash' : 'pi pi-eye'" 
+              [pTooltip]="(!studyZone.is_visible ? 'studyzones.show' : 'studyzones.hide') | translate" 
               tooltipPosition="top" 
               (click)="toggleEnableStudyZone(studyZone.id)"
               ></button>
