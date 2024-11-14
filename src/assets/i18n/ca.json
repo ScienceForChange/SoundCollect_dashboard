@@ -382,7 +382,8 @@
       "map": {
         "createFilter": "Crear zona d'estudi",
         "deleteFilter": "Esborrar zona d'estudi",
-        "saveStudyZone": "Guardar zona d'estudi"
+        "saveStudyZone": "Guardar zona d'estudi",
+        "cancelDrawing": "Cancelar"
       },
       "form": {
         "title": "Informació de la zona d'estudi",
@@ -412,7 +413,13 @@
           "createDetail": "La zona d'estudi s'ha creat correctament",
           "errorSummary": "Ha succeït un error",
           "errorDetail": "No s'ha pogut crear la zona d'estudi,tenca el formulari i torna a intentar-ho"
-        }
+        },
+        "first-step": "Informació bàsica",
+        "second-step": "Arxius",
+        "third-step": "Col·laboradors",
+        "file": "Arxiu",
+        "collaborator": "Col·laborador",
+        "collaborators": "Col·laboradors"
       },
       "list": {
         "title": "Llistat de zones d'estudi",
@@ -517,8 +524,11 @@
     "title": "Observacions",
     "show": "Veure info"
   },
-  "studyZones": "Zones d'estudi",
   "studyzones": {
-    "title": "Zones d'Estudi"
+    "title": "Zones d'Estudi",
+    "edit": "Editar",
+    "delete": "Esborrar",
+    "show": "Mostrar",
+    "hide": "Amagar"
   }
 }

@@ -1,18 +1,18 @@
 button.btn-primary,
 input[type="button"].btn-primary,
 button.btn-primary {
-  background-color: $green;
-  border: $green;
+  background-color: $blue;
+  border: $blue;
   color: $black;
   &:hover,
   &:active,
   &:focus-visible,
   &:first-child:active {
-    background-color: $green;
+    background-color: $blue;
     color: $black;
   }
   &:disabled {
-    background-color: $green-light;
+    background-color: $blue-light;
   }
 }
 
@@ -93,8 +93,8 @@ button.btn-white {
   &:active,
   &:focus-visible,
   &:first-child:active {
-    border-color: $green;
-    color: $green;
+    border-color: $blue;
+    color: $blue;
   }
   &:disabled {
     background-color: $grey-light;
@@ -181,7 +181,7 @@ button.close {
 }
 
 .p-button.p-button-outlined:not(:disabled):active {
-  background-color: $red-light;
+  background-color: $orange-light;
 }
 p-button{
   button{

@@ -14,6 +14,8 @@ export class StudyZoneComponent implements OnDestroy {
   private studyZoneMapService = inject(StudyZoneMapService);
   private subscriptions = new Subscription();
   studyZoneFormVisible = signal<boolean>(false);
+  drawing = signal<boolean>(false);
+  polygonFilter = signal<any | undefined>(undefined);
   visibleDialog: boolean = false;
   studyZoneSelected!: StudyZone;
 
@@ -26,6 +28,8 @@ export class StudyZoneComponent implements OnDestroy {
         this.studyZoneSelected = value;
       })
     );
+    this.drawing        = this.studyZoneMapService.drawing;
+    this.polygonFilter  = this.studyZoneMapService.polygonFilter;
   }
 
   toggleStudyZoneForm() {

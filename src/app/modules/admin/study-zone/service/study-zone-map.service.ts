@@ -7,6 +7,8 @@ import MapboxDraw from '@mapbox/mapbox-gl-draw';
 import { StudyZoneService } from '../../../../services/study-zone/study-zone.service';
 import { StudyZone } from '../../../../models/study-zone';
 import { BehaviorSubject } from 'rxjs';
+import { set } from 'lodash';
+import { duration } from 'moment';
 
 interface Feature<G extends GeoJSON.Geometry | null = GeoJSON.Geometry,P = { [name: string]: any } | null> extends GeoJSONObject {
   type: 'Feature';
@@ -23,6 +25,7 @@ export class StudyZoneMapService {
   private studyZoneService = inject(StudyZoneService);
 
   public polygonFilter = signal<any | undefined>(undefined);
+  public drawing = signal<boolean>(false);
   public polylines = signal<Feature[]>([]);
   public startPoints = signal<Feature[]>([]);
   public studyZones = signal<Feature[]>([]);
@@ -90,12 +93,21 @@ export class StudyZoneMapService {
   }
 
   public deletePolygonFilter() {
+    if(this.polygonFilter() !== undefined) this.draw.delete(this.polygonFilter().id);
+    this.draw.changeMode('draw_polygon');
+    this.drawing.update(() => true);
+    this.polygonFilter.update(() => undefined);
+  }
+
+  public cancelPolygonFilter() {
+    this.draw.changeMode('simple_select');
+    if(this.polygonFilter() !== undefined) this.draw.delete(this.polygonFilter().id);
     this.toggleObservationsVisibility();
     this.toggleStudyZonesVisibility();
-    this.draw.delete(this.polygonFilter().id);
     this.selectedPolygon = undefined;
     this.polygonFilter.update(() => undefined);
   }
+
 
   private getFilteredObservations(event: any) {
     this.polygonFilter.update(() => event.features[0]);
@@ -141,8 +153,24 @@ export class StudyZoneMapService {
 
   }
 
+  public resizeMap() {
+    if (this.map) {
+      this.map.resize();
+    }
+  }
+
   public onMapLoad() {
     const selectionColor = '#C19FD9';
+
+    this.map.on('draw.modechange' as MapEvent, (e: any) => {
+      if (e.mode !== 'draw_polygon' && e.mode !== 'draw_line_string') {
+        if(this.polygonFilter() === undefined){
+          this.drawing.update(() => false);
+          this.deletePolygonFilter();
+        }
+      }
+    });
+
 
     this.draw = new MapboxDraw({
       userProperties: true,

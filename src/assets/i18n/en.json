@@ -378,7 +378,8 @@
       "map": {
         "createFilter": "Create study area",
         "deleteFilter": "Delete study area",
-        "saveStudyZone": "Save study area"
+        "saveStudyZone": "Save study area",
+        "cancelDrawing": "Cancel"
       },
       "form": {
         "title": "Information about the study area",
@@ -408,7 +409,13 @@
           "createDetail": "Study area has been successfully created",
           "errorSummary": "An error has occurred",
           "errorDetail": "Study area could not be created, please close the form and try again"
-        }
+        },
+        "first-step": "Basic information",
+        "second-step": "Files",
+        "third-step": "Collaborators",
+        "file": "File",
+        "collaborator": "Collaborator",
+        "collaborators": "Collaborators"
       },
       "list": {
         "title": "List of study areas",
@@ -514,6 +521,10 @@
   },
   "studyZones": "Study Zones",
   "studyzones": {
-    "title": "Study Zones"
+    "title": "Study Zones",
+    "edit": "Editar",
+    "delete": "Delete",
+    "show": "Show",
+    "hide": "Hide"
   }
 }

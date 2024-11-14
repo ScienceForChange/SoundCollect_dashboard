@@ -379,10 +379,11 @@
       "map": {
         "createFilter": "Crear zona de estudio",
         "deleteFilter": "Borrar zona de estudio",
-        "saveStudyZone": "Guardar zona de estudio"
+        "saveStudyZone": "Guardar zona de estudio",
+        "cancelDrawing": "Cancelar"
       },
       "form": {
-        "title": "Informació de la zona d'estudi",
+        "title": "Información de la zona de estudio",
         "name": "Nombre",
         "description": "Descripción",
         "conclusion": "Conclusión",
@@ -409,7 +410,13 @@
           "createDetail": "La zona de estudio se ha creado correctamente",
           "errorSummary": "Ha sucedido un error",
           "errorDetail": "No se ha podido crear la zona de estudio, cierra el formulario y vuelve a intentarlo"
-        }
+        },
+        "first-step": "Información básica",
+        "second-step": "Archivos",
+        "third-step": "Colaboradores",
+        "file": "Archivo",
+        "collaborator": "Colaborador",
+        "collaborators": "Colaboradores"
       },
       "list": {
         "title": "Listado de Zonas de Estudio",
@@ -516,6 +523,10 @@
   },
   "studyZones": "Zonas de estudio",
   "studyzones": {
-    "title": "Zonas de Estudio"
+    "title": "Zonas de Estudio",
+    "edit": "Editar",
+    "delete": "Borrar",
+    "show": "Mostrar",
+    "hide": "Ocultar"
   }
 }

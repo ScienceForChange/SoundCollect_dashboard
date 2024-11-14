@@ -1,3 +1,4 @@
+import { AuthService } from './../../../../../services/auth/auth.service';
 import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import {
   AbstractControl,
@@ -18,6 +19,7 @@ import { StudyZoneMapService } from '../../service/study-zone-map.service';
 
 import compareObjectsValues from '../../../../../../utils/compareObjects';
 import { TranslateService } from '@ngx-translate/core';
+import { User } from '../../../../../models/observations';
 
 @Component({
   selector: 'app-study-zone-form',
@@ -29,6 +31,7 @@ export class StudyZoneFormComponent {
   private studyZoneService = inject(StudyZoneService);
   private studyZoneMapService = inject(StudyZoneMapService);
   private translations = inject(TranslateService);
+  private authService = inject(AuthService);
 
   @Input() visible: boolean = false;
   @Output() toggleStudyZoneForm: EventEmitter<void> = new EventEmitter<void>();
@@ -36,7 +39,7 @@ export class StudyZoneFormComponent {
   private polygon: any = null;
 
   studyZoneForm: FormGroup = new FormGroup({
-    user_id: new FormControl('', [Validators.required]),
+    user_id: new FormControl(),
     name: new FormControl('', [Validators.required]),
     description: new FormControl('', [Validators.required]),
     conclusion: new FormControl(''),

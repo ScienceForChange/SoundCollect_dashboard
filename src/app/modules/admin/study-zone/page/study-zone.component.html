@@ -5,14 +5,17 @@
   </ng-template>
 </p-menubar>
 
-<section class="flex flex-wrap flex-1 w-100">
-  <div class="col-12 lg:col-6 xl:col-8">
+<section class="flex flex-wrap md:flex-nowrap flex-1 w-100">
+  <div id="map" class="col-12 lg:col-6 xl:col-8" [ngClass]="{'lg:col-12 xl:col-12': drawing() || polygonFilter()}">
     <app-study-zone-map (toggleStudyZoneForm)="toggleStudyZoneForm()" />
   </div>
-  <div class="col-12 lg:col-6 xl:col-4">
-    <app-study-zone-list (toggleStudyZoneForm)="toggleStudyZoneForm()" />
-  </div>
-  @if(studyZoneFormVisible()){
+  @if(!drawing() && !polygonFilter()) {
+    <div class="col-12 lg:col-6 xl:col-4">
+      <app-study-zone-list (toggleStudyZoneForm)="toggleStudyZoneForm()" />
+    </div>
+  }
+  
+  @if(studyZoneFormVisible()) {
     <app-study-zone-form [visible]="studyZoneFormVisible()" (toggleStudyZoneForm)="toggleStudyZoneForm()"/>
   }
   @if(visibleDialog) {
