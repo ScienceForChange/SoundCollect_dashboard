@@ -2,233 +2,314 @@
   header="{{ 'admin.studyZone.form.title' | translate }}"
   [modal]="true"
   [(visible)]="visible"
-  [style]="{ minHeight: '80dvh', maxWidth: '40dvw' }"
   [closable]="false"
->
+  >
   <form [formGroup]="studyZoneForm" class="flex flex-column mt-5">
-    <span class="p-float-label">
-      <input
-        formControlName="name"
-        class="w-full md:w-30rem"
-        style="padding: 1rem"
-        name="name"
-        type="text"
-        required
-        pInputText
-      />
-      <label for="name">{{ "admin.studyZone.form.name" | translate }}</label>
-    </span>
-    <span class="p-float-label mt-5">
-      <textarea
-        formControlName="description"
-        class="w-full md:w-30rem"
-        style="padding: 1rem"
-        name="description"
-        required
-        pInputTextarea
-      ></textarea>
-      <label for="description">{{
-        "admin.studyZone.form.description" | translate
-      }}</label>
-    </span>
-    <span class="p-float-label mt-5">
-      <textarea
-        formControlName="conclusion"
-        class="w-full md:w-30rem"
-        style="padding: 1rem"
-        name="conclusion"
-        pInputTextarea
-      ></textarea>
-      <label for="conclusion">{{
-        "admin.studyZone.form.conclusion" | translate
-      }}</label>
-    </span>
-    <span class="p-float-label mt-5">
-      <p-calendar
-        formControlName="start_end_dates"
-        dateFormat="yy-mm-dd"
-        [selectionMode]="'range'"
-        [touchUI]="true"
-        required
-      />
-      <label for="conclusion">{{
-        "admin.studyZone.form.startEndDate" | translate
-      }}</label>
-    </span>
-    <p-divider class="mt-3 mb-3" />
-    <div class="flex flex-column gap-3">
-      <span>{{ "admin.studyZone.form.addFiles" | translate }}</span>
-      @if(documents.controls[0]){
-      <div formArrayName="documents" class="flex flex-column gap-5 mt-5">
-        <div
-          *ngFor="let document of documents.controls; let i = index"
-          [formGroupName]="i"
-          class="flex flex-column gap-3"
-        >
-          <span class="p-float-label">
-            <input
-              formControlName="name"
-              class="w-full md:w-30rem"
-              style="padding: 1rem"
-              name="name"
-              type="text"
-              required
-              pInputText
-            />
-            <label for="name">{{
-              "admin.studyZone.form.nameFile" | translate
-            }}</label>
-          </span>
-          @if(!studyZoneSelected?.documents[i]?.file_data){
-          <p-fileUpload
-            mode="basic"
-            chooseLabel="{{ 'admin.studyZone.form.addFile' | translate }}"
-            chooseIcon="pi pi-upload"
-            accept="image/*, application/pdf"
-            maxFileSize="10000000"
-            required
-            (onSelect)="onUploadFile($event, i, true)"
-          />
-          }
-          <p-button
-            icon="pi pi-trash"
-            type="button"
-            label="{{ 'admin.studyZone.form.deleteFile' | translate }}"
-            severity="secondary"
-            (click)="removeDocument(i)"
-          />
-        </div>
-      </div>
-      <p-divider class="mt-3 mb-3" />
-      }
-      <p-button
-        type="button"
-        icon="pi pi-plus"
-        label="{{ 'admin.studyZone.form.addDocument' | translate }}"
-        (click)="addDocument()"
-      />
-    </div>
-    <p-divider class="mt-3 mb-3" />
-    <div class="flex flex-column gap-3">
-      <span>{{ "admin.studyZone.form.addCollaborator" | translate }}</span>
-      @if(collaborators.controls[0]){
-      <div formArrayName="collaborators" class="flex flex-column gap-5">
-        <div
-          *ngFor="let collaborator of collaborators.controls; let i = index"
-          [formGroupName]="i"
-          class="flex flex-column gap-5 mt-5"
-        >
-          <span class="p-float-label">
-            <input
-              formControlName="collaborator_name"
-              class="w-full md:w-30rem"
-              style="padding: 1rem"
-              name="collaborator_name"
-              type="text"
-              required
-              pInputText
-            />
-            <label for="collaborator_name">{{
-              "admin.studyZone.form.collaboratorName" | translate
-            }}</label>
-          </span>
-          <span class="p-float-label">
-            <input
-              formControlName="contact_name"
-              class="w-full md:w-30rem"
-              style="padding: 1rem"
-              name="contact_name"
-              type="text"
-              required
-              pInputText
-            />
-            <label for="contact_name">{{
-              "admin.studyZone.form.contactName" | translate
-            }}</label>
-          </span>
-          <span class="p-float-label">
-            <input
-              formControlName="contact_email"
-              class="w-full md:w-30rem"
-              style="padding: 1rem"
-              name="contact_email"
-              type="email"
-              required
-              pInputText
-            />
-            <label for="contact_email">{{
-              "admin.studyZone.form.contactEmail" | translate
-            }}</label>
-          </span>
-          <span class="p-float-label">
-            <input
-              formControlName="contact_phone"
-              class="w-full md:w-30rem"
-              style="padding: 1rem"
-              name="contact_phone"
-              type="text"
-              required
-              pInputText
-            />
-            <label for="contact_phone">{{
-              "admin.studyZone.form.contactPhone" | translate
-            }}</label>
-          </span>
-          <!-- TODO SOLUCIONAR ESTO -->
-          @if(!collaborator.value.logo_data){
-          <p-fileUpload
-            mode="basic"
-            chooseLabel="{{ 'admin.studyZone.form.addLogo' | translate }}"
-            chooseIcon="pi pi-upload"
-            accept="image/*"
-            maxFileSize="500000"
-            required
-            (onSelect)="onUploadFile($event, i, false)"
-          />
-          } @else {
-          <img
-            [src]="collaborator.value.logo_data"
-            [alt]="collaborator.value.collaborator_name"
-            width="400"
-            height="100"
-            style="object-fit: cover; object-position: center"
-          />
-          <p-button
-            icon="pi pi-trash"
-            type="button"
-            label="{{ 'admin.studyZone.form.deleteLogo' | translate }}"
-            severity="secondary"
-            (click)="removeCollaboratorsLogo(i)"
-          />
-          }
-          <p-button
-            type="button"
-            icon="pi pi-trash"
-            label="{{ 'admin.studyZone.form.delete' | translate }}"
-            severity="secondary"
-            (click)="removeCollaborator(i)"
-          />
-        </div>
-      </div>
-      <p-divider class="mt-3 mb-3" />
-      }
-      <p-button
-        type="button"
-        icon="pi pi-plus"
-        label="{{ 'admin.studyZone.form.addCollaborator' | translate }}"
-        (click)="addCollaborator()"
-      />
-    </div>
-    <div class="flex justify-content-center gap-2 w-full mt-5">
+    <p-stepper orientation="vertical">
+      <p-stepperPanel header="{{ 'admin.studyZone.form.first-step' | translate }}">
+        <ng-template pTemplate="content" let-nextCallback="nextCallback" let-index="index">
+          <div class="flex flex-column pt-5 mb-3">
+            <div class="flex flex-column">
+              <span class="p-float-label">
+                <input
+                  formControlName="name"
+                  class="w-full "
+                  style="padding: 1rem"
+                  name="name"
+                  type="text"
+                  required
+                  pInputText
+                />
+                <label for="name">{{ "admin.studyZone.form.name" | translate }}</label>
+              </span>
+              <span class="p-float-label mt-5">
+                <textarea
+                  formControlName="description"
+                  class="w-full md:w-30rem"
+                  style="padding: 1rem"
+                  name="description"
+                  required
+                  pInputTextarea
+                ></textarea>
+                <label for="description">{{
+                  "admin.studyZone.form.description" | translate
+                }}</label>
+              </span>
+              <span class="p-float-label mt-5">
+                <textarea
+                  formControlName="conclusion"
+                  class="w-full md:w-30rem"
+                  style="padding: 1rem"
+                  name="conclusion"
+                  pInputTextarea
+                ></textarea>
+                <label for="conclusion">{{
+                  "admin.studyZone.form.conclusion" | translate
+                }}</label>
+              </span>
+              <span class="p-float-label mt-5">
+                <p-calendar
+                  formControlName="start_end_dates"
+                  dateFormat="yy-mm-dd"
+                  [selectionMode]="'range'"
+                  [touchUI]="true"
+                  required
+                />
+                <label for="conclusion">{{
+                  "admin.studyZone.form.startEndDate" | translate
+                }}</label>
+              </span>
+
+            </div>
+          </div>
+          <p-divider/>
+          <div class="flex py-3 justify-content-end">
+            <p-button 
+            icon="pi pi-arrow-down" 
+            iconPos="right" 
+            (onClick)="nextCallback.emit()" />
+          </div>
+        </ng-template>
+      </p-stepperPanel>
+
+      <p-stepperPanel header="{{ 'admin.studyZone.form.second-step' | translate }}">
+        <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback" let-index="index">
+          <div class="flex flex-column">
+            <div class="mb-3">
+              <div class="flex justify-content-between">
+                <div class="flex flex-column w-full gap-3">
+                  <div class="step-header flex justify-content-between align-items-center py-3">
+                    <h5 class="m-0">
+                      {{documents.controls.length}}
+                      {{ "admin.studyZone.form.file" | translate }}@if(documents.controls.length !== 1){s}
+                    </h5>
+                    <p-button
+                      type="button"
+                      [pTooltip]="'admin.studyZone.form.addFile' | translate"
+                      [tooltipPosition]="'top'"
+                      icon="pi pi-plus"
+                      [rounded]="true"
+                      (click)="addDocument()"
+                    />
+                  </div>
+
+                  @if(documents.controls[0]){
+                    <div formArrayName="documents" class="flex w-full flex-column gap-5">
+                      <div
+                        *ngFor="let document of documents.controls; let i = index"
+                        [formGroupName]="i"
+                        class="flex justify-content-center align-items-center gap-2"
+                      >
+                        <span class="p-float-label w-full">
+                          <input
+                          class="w-full"
+                          formControlName="name"
+                          name="name"
+                          type="text"
+                          required
+                          pInputText
+                          />
+                          <label for="name">{{
+                            "admin.studyZone.form.nameFile" | translate
+                          }}</label>
+                        </span>
+                        @if(!studyZoneSelected?.documents[i]?.file_data){
+                          <p-fileUpload
+                            mode="basic"
+                            [pTooltip]="'admin.studyZone.form.addFile' | translate"
+                            tooltipPosition="top"
+                            chooseIcon="pi pi-file"
+                            accept="image/*, application/pdf"
+                            maxFileSize="10000000"
+                            [uploadIcon]="'pi pi-check'"
+                            [uploadLabel]="''"         
+                            [uploadStyleClass]="'p-button-success'"        
+                            required
+                            (onSelect)="onUploadFile($event, i, true)"
+                          />
+                        }
+                        <p-button
+                          icon="pi pi-trash"
+                          type="button"
+                          [pTooltip]="'admin.studyZone.form.deleteFile' | translate"
+                          tooltipPosition="top"
+                          [rounded]="true"
+                          severity="secondary"
+                          (click)="removeDocument(i)"
+                        />
+                        </div>
+                      </div>
+                    <p-divider/>
+                  }
+                </div>
+              </div>
+            </div>
+            <div class="flex py-3 justify-content-between">
+              <p-button 
+                icon="pi pi-arrow-up" 
+                (onClick)="prevCallback.emit()" />
+              <p-button 
+                icon="pi pi-arrow-down" 
+                iconPos="right" 
+                (onClick)="nextCallback.emit()" />
+            </div>
+          </div>
+        </ng-template>
+      </p-stepperPanel>
+      
+      <p-stepperPanel header="{{ 'admin.studyZone.form.third-step' | translate }}">
+        <ng-template pTemplate="content" let-prevCallback="prevCallback" let-index="index">
+          <div class="flex flex-column">
+            <div class="mb-3">
+              <div class="flex justify-content-between">
+                <div class="flex flex-column w-full">
+                  <div class="step-header flex justify-content-between align-items-center py-3">
+                    <h5 class="m-0">
+                      {{collaborators.controls.length}}
+                      @if(collaborators.controls.length === 1){ 
+                        {{ "admin.studyZone.form.collaborator" | translate }}
+                      }
+                      @else {
+                        {{ "admin.studyZone.form.collaborators" | translate }}
+                      }
+                    </h5>
+                    <p-button
+                      type="button"
+                      [pTooltip]="'admin.studyZone.form.addCollaborator' | translate"
+                      [tooltipPosition]="'top'"
+                      icon="pi pi-plus"
+                      [rounded]="true"
+                      (click)="addCollaborator()"
+                    />
+                  </div>
+                  @if(collaborators.controls[0]){
+                    <div formArrayName="collaborators" class="flex flex-column gap-5 mt-5">
+                      <div
+                        *ngFor="let collaborator of collaborators.controls; let i = index"
+                        [formGroupName]="i"
+                        class="flex flex-column gap-5"
+                      >
+                        <div class="flex justify-content-between align-items-center">
+                          <h5 class="m-0">
+                            @if(collaborator){
+                              {{collaborator.value.collaborator_name}}
+                            }
+                          </h5>
+                          <div>
+                            <p-button
+                              type="button"
+                              icon="pi pi-trash"
+                              [pTooltip]=" 'admin.studyZone.form.delete' | translate "
+                              tooltipPosition="top"
+                              [rounded]="true"
+                              severity="secondary"
+                              (click)="removeCollaborator(i)"
+                            />
+                          </div>
+                        </div>
+                        <span class="p-float-label w-full">
+                          <input
+                            formControlName="collaborator_name"
+                            class="w-full"
+                            name="collaborator_name"
+                            type="text"
+                            required
+                            pInputText
+                          />
+                          <label for="collaborator_name">{{
+                            "admin.studyZone.form.collaboratorName" | translate
+                          }}</label>
+                        </span>
+                        <span class="p-float-label">
+                          <input
+                            formControlName="contact_name"
+                            class="w-full"
+                            name="contact_name"
+                            type="text"
+                            required
+                            pInputText
+                          />
+                          <label for="contact_name">{{
+                            "admin.studyZone.form.contactName" | translate
+                          }}</label>
+                        </span>
+                        <span class="p-float-label">
+                          <input
+                            formControlName="contact_email"
+                            class="w-full"
+                            name="contact_email"
+                            type="email"
+                            required
+                            pInputText
+                          />
+                          <label for="contact_email">{{
+                            "admin.studyZone.form.contactEmail" | translate
+                          }}</label>
+                        </span>
+                        <span class="p-float-label">
+                          <input
+                            formControlName="contact_phone"
+                            class="w-full"
+                            name="contact_phone"
+                            type="text"
+                            required
+                            pInputText
+                          />
+                          <label for="contact_phone">{{
+                            "admin.studyZone.form.contactPhone" | translate
+                          }}</label>
+                        </span>
+                        <!-- TODO SOLUCIONAR ESTO -->
+                        @if(!collaborator.value.logo_data){
+                          <p-fileUpload
+                            mode="basic"
+                            chooseLabel="{{ 'admin.studyZone.form.addLogo' | translate }}"
+                            chooseIcon="pi pi-upload"
+                            accept="image/*"
+                            maxFileSize="500000"
+                            required
+                            (onSelect)="onUploadFile($event, i, false)"
+                          />
+                        } @else {
+                          <div class="flex justify-content-start align-items-end gap-3">
+                            <img
+                              [src]="collaborator.value.logo_data"
+                              [alt]="collaborator.value.collaborator_name"
+                            />
+                            <p-button
+                              icon="pi pi-trash"
+                              type="button"
+                              label="{{ 'admin.studyZone.form.deleteLogo' | translate }}"
+                              severity="secondary"
+                              (click)="removeCollaboratorsLogo(i)"
+                            />
+                          </div>
+                        }
+                        <p-divider />
+                      </div>
+                    </div>
+                  }
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="flex py-3 justify-content-between">
+            <p-button 
+            icon="pi pi-arrow-up" 
+            (onClick)="prevCallback.emit()" />
+          </div>
+        </ng-template>
+      </p-stepperPanel>
+      
+    </p-stepper>
+    <div class="flex justify-content-between gap-2 w-full mt-5">
       <p-button
         label="{{ 'admin.studyZone.form.cancel' | translate }}"
         severity="secondary"
-        (onClick)="toggleDialog()"
-      />
-      <p-button
+        (onClick)="toggleDialog()" />
+      <p-button [disabled]="!studyZoneForm.valid"
         label="{{ 'admin.studyZone.form.saveStudyZone' | translate }}"
-        (onClick)="submit()"
-      />
+        (onClick)="submit()" />
     </div>
   </form>
 </p-dialog>

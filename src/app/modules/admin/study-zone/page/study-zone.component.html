@@ -14,7 +14,8 @@
       <app-study-zone-list (toggleStudyZoneForm)="toggleStudyZoneForm()" />
     </div>
   }
-  @if(studyZoneFormVisible()){
+  
+  @if(studyZoneFormVisible()) {
     <app-study-zone-form [visible]="studyZoneFormVisible()" (toggleStudyZoneForm)="toggleStudyZoneForm()"/>
   }
   @if(visibleDialog) {
