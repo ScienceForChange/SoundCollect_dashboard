@@ -7366,8 +7366,8 @@
     outline-color: transparent;
   }
   .p-stepper .p-stepper-header .p-stepper-action .p-stepper-number {
-    color: #64748b;
-    border: 1px solid #e2e8f0;
+    color: #8b7d64;
+    border: 1px solid #f0ede2;
     border-width: 2px;
     background: #ffffff;
     min-width: 2rem;
@@ -7389,8 +7389,8 @@
     box-shadow: none;
   }
   .p-stepper .p-stepper-header.p-highlight .p-stepper-number {
-    background: #EFF6FF;
-    color: #1D4ED8;
+    background: #fff8ef;
+    color: #d8881d;
   }
   .p-stepper .p-stepper-header.p-highlight .p-stepper-title {
     color: #334155;
@@ -7401,7 +7401,7 @@
     box-shadow: none;
   }
   .p-stepper .p-stepper-header:has(~ .p-highlight) .p-stepper-separator {
-    background-color: #3B82F6;
+    background-color: #f6a13b;
   }
   .p-stepper .p-stepper-panels {
     background: #ffffff;
@@ -7409,7 +7409,7 @@
     color: #334155;
   }
   .p-stepper .p-stepper-separator {
-    background-color: #e2e8f0;
+    background-color: #f0ebe2;
     width: 100%;
     height: 2px;
     margin-inline-start: 1rem;
@@ -7447,7 +7447,7 @@
     margin-inline-start: calc(1.4rem);
   }
   .p-stepper.p-stepper-vertical .p-stepper-panel:has(~ .p-stepper-panel-active) .p-stepper-separator {
-    background-color: #3B82F6;
+    background-color: #f6a13b;
   }
   .p-stepper.p-stepper-vertical .p-stepper-panel:last-of-type .p-stepper-content {
     padding-left: 3rem;

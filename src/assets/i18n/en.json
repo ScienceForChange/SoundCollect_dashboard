@@ -410,7 +410,12 @@
           "errorSummary": "An error has occurred",
           "errorDetail": "Study area could not be created, please close the form and try again"
         },
-        "first-step": "Basic information"
+        "first-step": "Basic information",
+        "second-step": "Files",
+        "third-step": "Collaborators",
+        "file": "File",
+        "collaborator": "Collaborator",
+        "collaborators": "Collaborators"
       },
       "list": {
         "title": "List of study areas",

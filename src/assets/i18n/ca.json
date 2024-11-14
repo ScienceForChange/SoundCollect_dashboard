@@ -414,7 +414,12 @@
           "errorSummary": "Ha succeït un error",
           "errorDetail": "No s'ha pogut crear la zona d'estudi,tenca el formulari i torna a intentar-ho"
         },
-        "first-step": "Informació bàsica"
+        "first-step": "Informació bàsica",
+        "second-step": "Arxius",
+        "third-step": "Col·laboradors",
+        "file": "Arxiu",
+        "collaborator": "Col·laborador",
+        "collaborators": "Col·laboradors"
       },
       "list": {
         "title": "Llistat de zones d'estudi",

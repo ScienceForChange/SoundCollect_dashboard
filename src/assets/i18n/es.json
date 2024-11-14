@@ -411,7 +411,12 @@
           "errorSummary": "Ha sucedido un error",
           "errorDetail": "No se ha podido crear la zona de estudio, cierra el formulario y vuelve a intentarlo"
         },
-        "first-step": "Información básica"
+        "first-step": "Información básica",
+        "second-step": "Archivos",
+        "third-step": "Colaboradores",
+        "file": "Archivo",
+        "collaborator": "Colaborador",
+        "collaborators": "Colaboradores"
       },
       "list": {
         "title": "Listado de Zonas de Estudio",

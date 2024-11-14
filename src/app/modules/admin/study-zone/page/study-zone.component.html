@@ -15,8 +15,9 @@
     </div>
   }
   
-  <app-study-zone-form [visible]="studyZoneFormVisible()" (toggleStudyZoneForm)="toggleStudyZoneForm()"/>
-  
+  @if(studyZoneFormVisible()) {
+    <app-study-zone-form [visible]="studyZoneFormVisible()" (toggleStudyZoneForm)="toggleStudyZoneForm()"/>
+  }
   @if(visibleDialog) {
     <app-study-zone-dialog [visible]="visibleDialog" [studyZone]="studyZoneSelected"/>
   }
