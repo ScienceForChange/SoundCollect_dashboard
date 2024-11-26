@@ -20,7 +20,7 @@
       name="files[]"
       chooseLabel="{{ 'map.filters.addGPKP' | translate }}"
       accept=".gpkg,.kml"
-      maxFileSize="20000000"
+      maxFileSize="100000000"
       [multiple]="true"
       [url]="environment.BACKEND_BASE_URL + '/map/gpkg-kml-to-geojson'"
       [auto]="true"
