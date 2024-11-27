@@ -130,14 +130,14 @@ export class SurveyChartComponent implements OnInit, OnDestroy{
       },
       radar: {
         indicator: [
+          { name: this.translate.instant('soundscape.survey.eventful'),   min: min, max: max },
+          { name: this.translate.instant('soundscape.survey.vibrant'),    min: min, max: max },
           { name: this.translate.instant('soundscape.survey.pleasant'),   min: min, max: max },
           { name: this.translate.instant('soundscape.survey.calm'),       min: min, max: max },
-          { name: this.translate.instant('soundscape.survey.vibrant'),    min: min, max: max },
-          { name: this.translate.instant('soundscape.survey.chaotic'),    min: min, max: max },
           { name: this.translate.instant('soundscape.survey.uneventful'), min: min, max: max },
+          { name: this.translate.instant('soundscape.survey.monotonous'), min: min, max: max },
           { name: this.translate.instant('soundscape.survey.annoying'),   min: min, max: max },
-          { name: this.translate.instant('soundscape.survey.eventful'),   min: min, max: max },
-          { name: this.translate.instant('soundscape.survey.monotonous'), min: min, max: max }
+          { name: this.translate.instant('soundscape.survey.chaotic'),    min: min, max: max },
         ]
       },
       series: data
