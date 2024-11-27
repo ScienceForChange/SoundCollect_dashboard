@@ -1,12 +1,13 @@
 import {
   Component,
   HostListener,
+  Input,
   OnDestroy,
   OnInit,
   inject,
 } from '@angular/core';
 
-import { Subscription } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 
 import * as echarts from 'echarts/core';
 import {
@@ -41,7 +42,13 @@ export class SoundLevelsChartComponent implements OnInit, OnDestroy {
   onResize(event: any) {
     this.chart.resize();
   }
-  private observations!: Observations[];
+
+  private observationsSubject =  new BehaviorSubject<Observations[]>([]);
+  @Input() set filteredObs(value: Observations[]) {
+    this.observationsSubject.next(value);
+  }
+  private observations: Observations[];
+  
   private chart: echarts.ECharts;
   private max: Number = 0;
   private observationsService = inject(ObservationsService);
@@ -63,7 +70,7 @@ export class SoundLevelsChartComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     let chartDom = document.getElementById('levelsChart')!;
     this.chart = echarts.init(chartDom);
-    this.observations$ = this.observationsService.observations$.subscribe(
+    this.observations$ = this.observationsSubject.subscribe(
       (observations: Observations[]) => {
         this.observations = observations;
         this.updateChart();

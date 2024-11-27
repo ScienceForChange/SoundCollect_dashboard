@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, effect, ElementRef, EventEmitter, inject, Input, OnInit, Output, signal, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, effect, ElementRef, EventEmitter, inject, Input, OnDestroy, OnInit, Output, signal, ViewChild } from '@angular/core';
 import { Observations } from '../../../models/observations';
 import mapboxgl, { IControl, LngLat, LngLatBounds, Map, MapEvent, } from 'mapbox-gl';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
@@ -17,7 +17,7 @@ export interface Feature<G extends GeoJSON.Geometry | null = GeoJSON.Geometry, P
   templateUrl: './observation-map-modal.component.html',
   styleUrl: './observation-map-modal.component.scss'
 })
-export class ObservationMapModalComponent implements AfterViewInit {
+export class ObservationMapModalComponent implements AfterViewInit, OnDestroy {
 
   private observations: Observations[] = [];
   private observationsService: ObservationsService = inject(ObservationsService);
@@ -193,4 +193,7 @@ export class ObservationMapModalComponent implements AfterViewInit {
     }
   }
 
+  ngOnDestroy(): void {
+    this.map.remove();
+  }
 }

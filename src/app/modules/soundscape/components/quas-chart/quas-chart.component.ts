@@ -1,6 +1,6 @@
-import { Component, HostListener, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, HostListener, Input, OnDestroy, OnInit, inject } from '@angular/core';
 
-import { Subscription } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 
 import { TranslateService } from '@ngx-translate/core';
 
@@ -25,11 +25,14 @@ export class QuasChartComponent implements OnInit, OnDestroy{
   onResize(event: any) {
     this.chart.resize();
   }
-  private observations!: Observations[];
+  private observationsSubject =  new BehaviorSubject<Observations[]>([]);
+  @Input() set filteredObs(value: Observations[]) {
+    this.observationsSubject.next(value);
+  }
+  private observations: Observations[];
   private chart: echarts.ECharts;
   private option! : echarts.EChartsCoreOption;
   public totalObservationTypes:number = 0
-  private observationsService = inject(ObservationsService);
   private translations = inject(TranslateService);
   private observations$!: Subscription;
   private quietTypesLabel = [
@@ -43,7 +46,7 @@ export class QuasChartComponent implements OnInit, OnDestroy{
   ngOnInit(): void {
     let chartDom = document.getElementById('quasChart')!;
     this.chart = echarts.init(chartDom);
-    this.observations$ = this.observationsService.observations$.subscribe((observations: Observations[]) => {
+    this.observations$ = this.observationsSubject.subscribe((observations: Observations[]) => {
       this.observations = observations;
       this.updateChart();
     });

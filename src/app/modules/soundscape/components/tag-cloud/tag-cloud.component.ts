@@ -1,6 +1,6 @@
-import { Component, HostListener, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, HostListener, Input, OnDestroy, OnInit, inject } from '@angular/core';
 
-import { Subscription } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 
 import * as _ from 'lodash';
 
@@ -26,7 +26,13 @@ export class TagCloudComponent implements OnInit, OnDestroy{
       this.chart.resize();
     }
   }
-  private observations!: Observations[];
+  
+  private observationsSubject =  new BehaviorSubject<Observations[]>([]);
+  @Input() set filteredObs(value: Observations[]) {
+    this.observationsSubject.next(value);
+  }
+  private observations: Observations[];
+
   private observationsService = inject(ObservationsService);
   private observations$!: Subscription;
 
@@ -39,7 +45,7 @@ export class TagCloudComponent implements OnInit, OnDestroy{
 
     fetch('assets/stopWords/ca.json').then(response => response.json()).then(data => {
       this.stopWords = data;
-      this.observations$ = this.observationsService.observations$.subscribe((observations: Observations[]) => {
+      this.observations$ = this.observationsSubject.subscribe((observations: Observations[]) => {
         this.observations = observations;
         this.getTagsFromObservations();
         this.getWordFrequency();

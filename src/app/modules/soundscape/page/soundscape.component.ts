@@ -46,6 +46,7 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
   private language: string = localStorage.getItem('locale') || 'ca';
 
   public observations!: Observations[];
+  public observationSelected: Observations | null = null;
   public points: [number, number][] = [];
   public polylines = signal<Feature[]>([]);
   public startPoints = signal<Feature[]>([]);
@@ -95,36 +96,29 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
   ];
   constructor() {
 
-    this.observations$ = this.observationsService.observations$.subscribe((observations) => {
-
-      this.observations = observations
+    this.observations = this.observationsService.observations$.value;
+    if(this.observations.length === 0){
+      this.observations$ = this.observationsService.observations$.subscribe((observations) => {
+        this.observations = observations;
+        this.polylines.update(() => this.observationsService.getLineStringFromObservations(this.observations));
+        this.startPoints.update(() => this.observationsService.getStartPointsFromObservations(this.observations));
+        this.updateMapSource();
+      }) 
+    }
+    else{
       this.polylines.update(() => this.observationsService.getLineStringFromObservations(this.observations));
       this.startPoints.update(() => this.observationsService.getStartPointsFromObservations(this.observations));
       this.updateMapSource();
-
-    })
+    }
 
 
     effect(() => {
+
       if (this.polygonFilter()){
-
         this.filterActive = true;
-
-        let initalHour = this.hourRage[this.timeFilter()][0] ? String(this.hourRage[this.timeFilter()][0]) : "00:00:00";
-        let finalHour = this.hourRage[this.timeFilter()][1] ? String(this.hourRage[this.timeFilter()][1]) : "23:59:59";
-        this.observationsService.getObservationsByPolygonAndHours(
-          this.polygonFilter().geometry.coordinates[0].map((coo:number) => String(coo).replace(',', ' ')),
-          [initalHour, finalHour]
-        ).subscribe({
-          next: (observations) => {
-            this.observations = observations;
-            this.updateMapSource();
-          },
-          error: (error) => {
-            console.error(error);
-          }
-        });
+        this.getFilteredObservationsByPolygon();
       }
+
     });
 
   }
@@ -140,8 +134,12 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
     this.draw.delete(this.polygonFilter().id);
     this.selectedPolygon = undefined;
     this.polygonFilter.update(() => undefined);
-    this.observationsService.getAllObservations();
+    this.observations = this.observationsService.observations$.value;
+    this.polylines.update(() => this.observationsService.getLineStringFromObservations(this.observations));
+    this.startPoints.update(() => this.observationsService.getStartPointsFromObservations(this.observations));
+    this.updateMapSource();
     this.filterActive = false;
+    this.unsellectObservation();
   }
 
   public toggleShowMapLayers(): void {
@@ -463,14 +461,17 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
   }
 
   private onDrawCreated(event: any) {
+    this.unsellectObservation();
     this.getFilteredObservations(event);
   }
 
   private onDrawUpdated(event: any) {
+    this.unsellectObservation();
     this.getFilteredObservations(event);
   }
 
   private getFilteredObservations(event: any) {
+    this.unsellectObservation();
     this.polygonFilter.update(() => event.features[0]);
   }
 
@@ -497,24 +498,41 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
     });
 
     // resaltar la línea a la que se hace hover de color negro
-    // this.map.addLayer({
-    //   id: 'lineLayer-hover',
-    //   type: 'line',
-    //   source: 'polylines',
-    //   layout: {
-
-    //     'line-join': 'round',
-    //     'line-cap': 'round'
-    //   },
-    //   paint: {
-    //       'line-color': '#333',
-    //       'line-width': 3,
-    //       'line-gap-width': 5,
-    //   },
-    //   filter: ['==', 'id', '']  // Filtro vacío para iniciar
-    // });
+    this.map.addLayer({
+      id: 'lineLayer-hover',
+      type: 'line',
+      source: 'polylines',
+      minzoom: 15,
+      layout: {
+        'line-join': 'round',
+        'line-cap': 'round'
+      },
+      paint: {
+        'line-color': '#FF7A1F',
+        'line-opacity': 0.5,
+        'line-width': 16,
+        'line-gap-width': 0,
+      },
+      filter: ['==', 'id', '']  // Filtro vacío para iniciar
+    });
 
     // resaltar la línea seleccionada de color naranja
+    this.map.addLayer({
+      id: 'lineLayer-select',
+      type: 'line',
+      source: 'polylines',
+      minzoom: 15,
+      layout: {
+        'line-join': 'round',
+        'line-cap': 'round'
+      },
+      paint: {
+        'line-color': '#333',
+        'line-width': 16,
+        'line-gap-width': 0,
+      },
+      filter: ['==', 'id', '']  // Filtro vacío para iniciar
+    });
 
     // Agregar capa para los paths individuales
     this.map.addLayer({
@@ -617,32 +635,62 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
         }
       );
     });
-    // this.map.on('mouseenter', 'LineString', (e:any) => {
-    //   this.map.getCanvas().style.cursor = 'pointer';
-    //   for( let feature of e.features) {
-    //     if (feature.properties.type === 'LineString' && feature.properties.id !== undefined) {
-    //       this.map.setFilter('lineLayer-hover', ['==', 'id', feature.properties.id]);
-    //       return;
-    //     }
-    //   };
-    // });
+    
+    this.map.on('mouseenter', 'LineString', (e:any) => {
+      this.map.getCanvas().style.cursor = 'pointer';
+      const id = e.features[0].properties.id;
+      this.map.setFilter('lineLayer-hover', ['==', 'id', id]);
+    });
 
-    // this.map.on('click', 'LineString', (e:any) => {
-    //   this.map.getCanvas().style.cursor = 'inherit';
-    //   for( let feature of e.features) {
-    //     if (feature.properties.type === 'LineString' && feature.properties.id !== undefined) {
-    //       this.map.setFilter('lineLayer-select', ['==', 'id', feature.properties.id]);
-    //       return;
-    //     }
-    //   };
-    // });
+    this.map.on('click', 'LineString', (e:any) => {
+      this.map.getCanvas().style.cursor = 'inherit';
+      if(!this.observationSelected || this.observationSelected.id !== e.features[0].properties.id){
+        this.observationSelected = this.observationsService.observations$.value.find((obs) => obs.id === e.features[0].properties.id);
+        this.observations = [this.observationSelected];
+        const id = e.features[0].properties.id;
+        this.map.setFilter('lineLayer-select', ['==', 'id', id]);
+      }
+      else{
+        if(this.polygonFilter()){
+          this.filterActive = true;
+          this.getFilteredObservationsByPolygon();
+        }
+        this.observations = this.observationsService.observations$.value;
 
-    // this.map.on('mouseleave', 'LineString', (e:any) => {
-    //   this.map.getCanvas().style.cursor = 'inherit';
-    //   this.map.setFilter('lineLayer-hover', ['==', 'id', '']);
-    // });
+        this.observationSelected = null
+        this.map.setFilter('lineLayer-select', ['==', 'id', '']);
+      }
+    });
+
+    this.map.on('mouseleave', 'LineString', (e:any) => {
+      this.map.getCanvas().style.cursor = 'inherit';
+      this.map.setFilter('lineLayer-hover', ['==', 'id', '']);
+    });
 
   };
+
+  private getFilteredObservationsByPolygon() {
+
+    let initalHour = this.hourRage[this.timeFilter()][0] ? String(this.hourRage[this.timeFilter()][0]) : "00:00:00";
+    let finalHour = this.hourRage[this.timeFilter()][1] ? String(this.hourRage[this.timeFilter()][1]) : "23:59:59";
+    this.observationsService.getObservationsByPolygonAndHours(
+      this.polygonFilter().geometry.coordinates[0].map((coo:number) => String(coo).replace(',', ' ')),
+      [initalHour, finalHour]
+    ).subscribe({
+      next: (observations) => {
+        this.observations = observations;
+        this.updateMapSource();
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
+  }
+  
+  private unsellectObservation() {
+    this.observationSelected = null
+    this.map.setFilter('lineLayer-select', ['==', 'id', '']);
+  }
 
   private updateMapSource() {
 
@@ -682,8 +730,10 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.observations$.unsubscribe();
-    this.observationsService.getAllObservations()
+    if (this.observations$) this.observations$.unsubscribe();
+    if (this.map) {
+      this.map.remove();
+    }
   }
 }
 
