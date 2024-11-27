@@ -8,7 +8,7 @@ import {
   inject,
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 
 import * as echarts from 'echarts/core';
@@ -107,8 +107,13 @@ export class TemporalEvolutionSoundLevelChartComponent
   onResize(event: any) {
     this.myChart.resize();
   }
-  @Input() observations: Observations[];
-  private observationsService = inject(ObservationsService);
+
+  private observationsSubject =  new BehaviorSubject<Observations[]>([]);
+  @Input() set filteredObs(value: Observations[]) {
+    this.observationsSubject.next(value);
+  }
+  private observations: Observations[];
+
   private translations = inject(TranslateService);
   private subscriptions = new Subscription();
   private myChart!: echarts.ECharts;
@@ -142,7 +147,7 @@ export class TemporalEvolutionSoundLevelChartComponent
       ),
       night: this.translations.instant('soundscape.temporalEvolution.night'),
     };
-    const obsSubscription = this.observationsService.observations$.subscribe(
+    const obsSubscription = this.observationsSubject.subscribe(
       (observations: Observations[]) => {
         try {
           this.observations = observations;

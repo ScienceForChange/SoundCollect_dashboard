@@ -7,7 +7,7 @@
   [closeOnEscape]="true"
 >
 <div
-  class="flex align-items-center mt-3"
+  class="flex align-items-center mt-3 mb-5"
 >
   <p-radioButton
     [inputId]="'studyZoneNull'"
@@ -22,7 +22,7 @@
 </div>
 @for(studyZone of studyZones; track trackById; let i = $index){
   @if(studyZone.is_visible){
-    <div class="flex align-items-center mt-3">
+    <div class="flex align-items-center">
       <p-radioButton
         [inputId]="'studyZone' + studyZone.id"
         name="studyZone"

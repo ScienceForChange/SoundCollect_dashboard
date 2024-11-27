@@ -35,7 +35,9 @@ export class ObservationsService {
 
   loading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    this.getAllObservations();
+  }
 
   public getAllObservations(): Promise<void> {
     return new Promise<void>((resolve, reject) => {
@@ -475,7 +477,6 @@ export class ObservationsService {
       )
       .pipe(
         map(({ data }) => {
-          this.observations$.next(data);
           this.loading$.next(false);
           return data;
         })
@@ -499,7 +500,6 @@ export class ObservationsService {
       )
       .pipe(
         map(({ data }) => {
-          this.observations$.next(data);
           this.loading$.next(false);
           return data;
         })
