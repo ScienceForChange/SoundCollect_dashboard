@@ -109,12 +109,12 @@ export class PhychoacusticsComponent
         'soundscape.physcoAcustic.types.sharpness'
       ),
     },
-    {
+    /*{
       value: 'ROUGHNESS',
       label: this.translations.instant(
         'soundscape.physcoAcustic.types.roughtness'
       ),
-    },
+    },*/
     {
       value: 'LOUDNESS',
       label: this.translations.instant(

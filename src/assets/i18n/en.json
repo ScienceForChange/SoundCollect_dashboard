@@ -211,7 +211,7 @@
     "observations": "Observations",
     "titleMenu": "Analysis",
     "map": {
-      "createFilter": "Create a study area",
+      "createFilter": "Create filter",
       "editFilter": "Edit filter",
       "deleteFilter": "Delete filter",
       "kmlDownload": "KML Format",
