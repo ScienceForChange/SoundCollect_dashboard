@@ -1,6 +1,6 @@
-import { Component, HostListener, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostListener, inject, Input, OnDestroy, OnInit } from '@angular/core';
 
-import { Subscription } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 
 import { random } from 'lodash';
 
@@ -24,14 +24,20 @@ echarts.use([LegendComponent, BarChart, CanvasRenderer,]);
   styleUrl: './tonal-frequency-chart.component.scss'
 })
 export class TonalFrequencyChartComponent implements OnInit, OnDestroy {
-  private observationsService = inject(ObservationsService);
+
+
+  private observationsSubject =  new BehaviorSubject<Observations[]>([]);
+  @Input() set filteredObs(value: Observations[]) {
+    this.observationsSubject.next(value);
+  }
+  private observations: Observations[];
+
   private translate = inject(TranslateService);
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     this.chart.resize();
   }
-  private observations!: Observations[];
   private chart: echarts.ECharts;
   private options! : echarts.EChartsCoreOption;
   public totalObservationTypes:number = 0
@@ -42,7 +48,7 @@ export class TonalFrequencyChartComponent implements OnInit, OnDestroy {
     let chartDom = document.getElementById('tonalFrequencyChart')!;
     this.chart = echarts.init(chartDom);
 
-    this.observations$ = this.observationsService.observations$.subscribe((observations: Observations[]) => {
+    this.observations$ = this.observationsSubject.subscribe((observations: Observations[]) => {
       //Filter because we only want observations with segments thath have value
       this.observations = observations.filter((obs) => {
         if(obs.relationships.segments.length === 0) return false;

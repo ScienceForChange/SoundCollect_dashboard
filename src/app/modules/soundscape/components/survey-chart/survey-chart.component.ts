@@ -1,8 +1,8 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { Observations } from '../../../../models/observations';
 import { ObservationsService } from '../../../../services/observations/observations.service';
 import { TranslateService } from '@ngx-translate/core';
-import { Subscription } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import * as echarts from 'echarts/core';
 
 interface Survey {
@@ -27,15 +27,18 @@ export class SurveyChartComponent implements OnInit, OnDestroy{
   private chart: echarts.ECharts;
   private option! : echarts.EChartsCoreOption;
   public totalObservationTypes:number = 0
-  private observationsService = inject(ObservationsService);
   private translate = inject(TranslateService);
   private observations$!: Subscription;
-  private observations: Observations[] = [];
+  private observationsSubject =  new BehaviorSubject<Observations[]>([]);
+  @Input() set filteredObs(value: Observations[]) {
+    this.observationsSubject.next(value);
+  }
+  private observations: Observations[];
 
   ngOnInit(): void {
     let chartDom = document.getElementById('surveyChart')!;
     this.chart = echarts.init(chartDom);
-    this.observations$ = this.observationsService.observations$.subscribe((observations: Observations[]) => {
+    this.observations$ = this.observationsSubject.subscribe((observations: Observations[]) => {
       this.observations = observations;
       this.updateChart();
     });
@@ -127,14 +130,14 @@ export class SurveyChartComponent implements OnInit, OnDestroy{
       },
       radar: {
         indicator: [
+          { name: this.translate.instant('soundscape.survey.eventful'),   min: min, max: max },
+          { name: this.translate.instant('soundscape.survey.vibrant'),    min: min, max: max },
           { name: this.translate.instant('soundscape.survey.pleasant'),   min: min, max: max },
           { name: this.translate.instant('soundscape.survey.calm'),       min: min, max: max },
-          { name: this.translate.instant('soundscape.survey.vibrant'),    min: min, max: max },
-          { name: this.translate.instant('soundscape.survey.chaotic'),    min: min, max: max },
           { name: this.translate.instant('soundscape.survey.uneventful'), min: min, max: max },
+          { name: this.translate.instant('soundscape.survey.monotonous'), min: min, max: max },
           { name: this.translate.instant('soundscape.survey.annoying'),   min: min, max: max },
-          { name: this.translate.instant('soundscape.survey.eventful'),   min: min, max: max },
-          { name: this.translate.instant('soundscape.survey.monotonous'), min: min, max: max }
+          { name: this.translate.instant('soundscape.survey.chaotic'),    min: min, max: max },
         ]
       },
       series: data

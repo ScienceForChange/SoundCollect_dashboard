@@ -3,10 +3,11 @@ import {
   Component,
   HostListener,
   inject,
+  Input,
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 
 import { TranslateService } from '@ngx-translate/core';
 
@@ -77,13 +78,16 @@ export class PhychoacusticsComponent
   implements OnInit, AfterViewInit, OnDestroy
 {
   private translations = inject(TranslateService);
-  private observationsService = inject(ObservationsService);
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     this.myChart.resize();
   }
-  private observations: Observations[] = [];
+  private observationsSubject =  new BehaviorSubject<Observations[]>([]);
+  @Input() set filteredObs(value: Observations[]) {
+    this.observationsSubject.next(value);
+  }
+  private observations: Observations[];
   private myChart!: echarts.ECharts;
   private options: EChartsOption;
   private loadingOptions = {
@@ -105,12 +109,12 @@ export class PhychoacusticsComponent
         'soundscape.physcoAcustic.types.sharpness'
       ),
     },
-    {
+    /*{
       value: 'ROUGHNESS',
       label: this.translations.instant(
         'soundscape.physcoAcustic.types.roughtness'
       ),
-    },
+    },*/
     {
       value: 'LOUDNESS',
       label: this.translations.instant(
@@ -134,7 +138,7 @@ export class PhychoacusticsComponent
       BarChart,
       CanvasRenderer,
     ]);
-    const obsSubscription = this.observationsService.observations$.subscribe(
+    const obsSubscription = this.observationsSubject.subscribe(
       (observations: Observations[]) => {
         try {
           this.observations = observations;

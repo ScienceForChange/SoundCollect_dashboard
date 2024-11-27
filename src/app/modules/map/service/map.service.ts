@@ -69,13 +69,10 @@ export class MapService {
     clusterMaxZoom: 17,
   };
   public observationSelected!: Observations;
-  public isOpenObservationInfoModal: BehaviorSubject<boolean> =
-    new BehaviorSubject<boolean>(false);
 
-  public studyZoneSelected$: BehaviorSubject<StudyZone | null> =
-    new BehaviorSubject<StudyZone | null>(null);
-  public studyZoneDialogVisible$: BehaviorSubject<boolean> =
-    new BehaviorSubject<boolean>(false);
+  public isOpenObservationInfoModal: BehaviorSubject<boolean>   = new BehaviorSubject<boolean>(false);
+  public studyZoneSelected$: BehaviorSubject<StudyZone | null>  = new BehaviorSubject<StudyZone | null>(null);
+  public studyZoneDialogVisible$: BehaviorSubject<boolean>      = new BehaviorSubject<boolean>(false);
 
   private defaultBbox:[[number, number], [number, number]] = [[0.048229834542042, 40.416428760865], [3.3736729893935, 42.914194523824]]; // Catalonia bbox
 
@@ -98,37 +95,43 @@ export class MapService {
 
   //Conseguir todos los sonidos en el constructor
   public getAllMapObservations(): void {
-    if (this.mapObservations.length > 0) {
-      this.updateSourceObservations(this.features$.getValue(), this.startPointsFeatures$.getValue());
+    if(this.observationsService.observations$.getValue().length === 0) {      
+      this.observationsService.observations$.subscribe((data) => {
+        this.prepareDataForMap(data);
+      })
       return;
     }
-
-    this.observationsService.observations$.subscribe((data) => {
-      try {
-        const features = this.observationsService.getLineStringFromObservations(data);
-        const startPoints = this.observationsService.getStartPointsFromObservations(data);
-        this.mapObservations = data.map((obs) => ({
-          id:         obs.id,
-          user_id:    obs.relationships.user.id,
-          user_level: obs.relationships.user.attributes.level,
-          latitude:   obs.attributes.latitude,
-          longitude:  obs.attributes.longitude,
-          created_at: new Date(obs.attributes.created_at),
-          types:      obs.relationships.types.map((type) => type.id),
-          Leq:        obs.attributes.Leq,
-          userType:   obs.relationships.user.type,
-          quiet:      obs.attributes.quiet,
-          influence:  +obs.attributes.influence,
-          path:       obs.relationships.segments,
-        }));
-        this.features$.next(features as Feature[]);
-        this.updateSourceObservations(features as Feature[], startPoints as Feature[]);
-      } catch (error) {
-        console.error(error);
-        throw Error(`Error getting all observations ${error}`);
-      }
-    });
+      
+    this.prepareDataForMap(this.observationsService.observations$.getValue());
+    
   }
+
+  private prepareDataForMap(data: Observations[]): void {
+    try {
+      const features = this.observationsService.getLineStringFromObservations(data);
+      const startPoints = this.observationsService.getStartPointsFromObservations(data);
+      this.mapObservations = data.map((obs) => ({
+        id:         obs.id,
+        user_id:    obs.relationships.user.id,
+        user_level: obs.relationships.user.attributes.level,
+        latitude:   obs.attributes.latitude,
+        longitude:  obs.attributes.longitude,
+        created_at: new Date(obs.attributes.created_at),
+        types:      obs.relationships.types.map((type) => type.id),
+        Leq:        obs.attributes.Leq,
+        userType:   obs.relationships.user.type,
+        quiet:      obs.attributes.quiet,
+        influence:  +obs.attributes.influence,
+        path:       obs.relationships.segments,
+      }));
+      this.features$.next(features as Feature[]);
+      this.updateSourceObservations(features as Feature[], startPoints as Feature[]);
+    } catch (error) {
+      console.error(error);
+      throw Error(`Error getting all observations ${error}`);
+    }
+  }
+    
 
   public updateSourceObservations(features: Feature[], startPointFeatures: Feature[]): void {
     if (!this.isMapReady) return;
@@ -538,13 +541,13 @@ export class MapService {
     // Add event listeners for 'mouseenter' and 'mouseleave' events on layers
     this.map.on('mouseenter', 'LineString', this.mouseEvent.bind(this));
     this.map.on('mouseleave', 'LineString', this.mouseEvent.bind(this));
-    this.map.on('mouseenter', 'studyZone', (e: any) => {
+    /*this.map.on('mouseenter', 'studyZone', (e: any) => {
       this.map.getCanvas().style.cursor = 'pointer';
     });
 
     this.map.on('mouseleave', 'studyZone', (e: any) => {
       this.map.getCanvas().style.cursor = 'inherit';
-    });
+    });*/
 
     this.map.on('click', 'LineString', (e) => {
       const feature = e.features[0];
@@ -556,12 +559,12 @@ export class MapService {
       this.isOpenObservationInfoModal.next(true);
     });
 
-    this.map.on('click', 'studyZone', (e: any) => {
+    /*this.map.on('click', 'studyZone', (e: any) => {
       this.map.getCanvas().style.cursor = 'inherit';
       if (e.features.length > 0) {
         this.showStudyZoneModal(e.features[0].properties.id);
       }
-    });
+    });*/
   }
 
   public flyToDefaultBbox() {
@@ -812,5 +815,11 @@ export class MapService {
     if(this.isOpenObservationInfoModal.getValue()) return;
     this.selectStudyZone(id);
     this.studyZoneDialogVisible$.next(true);
+  }
+
+  getObservationsByPolygonAndDates( polygon: string[], hourDates: [string, string] ){
+    this.observationsService.getObservationsByPolygonAndDates( polygon, hourDates ).subscribe((data) => {
+      this.prepareDataForMap(data);
+    });
   }
 }

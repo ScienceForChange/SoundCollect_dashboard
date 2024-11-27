@@ -54,7 +54,7 @@ export class MapZoneStudyLayersComponent implements OnInit, OnDestroy {
     this.mapService.eraseAllSZPolygons();
 
     if (layerId === null) {
-      this.observationsService.getAllObservations();
+      this.mapService.getAllMapObservations();
       this.mapService.flyToDefaultBbox();
       return;
     }
@@ -73,12 +73,7 @@ export class MapZoneStudyLayersComponent implements OnInit, OnDestroy {
     let poligonCoordiantes = studyZoneSelected.boundaries.coordinates[0].map((coo:any) => {
       return `${coo[1]} ${coo[0]}`;
     });
-    this.observationsService.getObservationsByPolygonAndDates( poligonCoordiantes, [String(studyZoneSelected.start_date), String(studyZoneSelected.end_date)]).subscribe({
-      error: (error) => {
-        console.error(error);
-      }
-    });
-
+    this.mapService.getObservationsByPolygonAndDates(poligonCoordiantes, [String(studyZoneSelected.start_date), String(studyZoneSelected.end_date)]);
   }
 
   private getBboxFromPolygon(polygon: Number[][]): [[number, number], [number, number]] {

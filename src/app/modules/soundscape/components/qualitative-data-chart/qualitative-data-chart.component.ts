@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, HostListener, Input, inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Subscription } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 
 import * as echarts from 'echarts';
 import { Observations } from '../../../../models/observations';
@@ -19,9 +19,12 @@ export class QualitativeDataChartComponent implements AfterViewInit {
   onResize(event: any) {
     this.chart.resize();
   }
-  private observations!: Observations[];
+  private observationsSubject =  new BehaviorSubject<Observations[]>([]);
+  @Input() set filteredObs(value: Observations[]) {
+    this.observationsSubject.next(value);
+  }
+  private observations: Observations[];
   private observations$!: Subscription;
-  private observationsService = inject(ObservationsService);
   private translate = inject(TranslateService);
 
   ngAfterViewInit(): void {
@@ -29,7 +32,7 @@ export class QualitativeDataChartComponent implements AfterViewInit {
     const chartDom = document.getElementById('qualitativeDataChart')!;
     this.chart = echarts.init(chartDom);
 
-    this.observations$ = this.observationsService.observations$.subscribe((observations: Observations[]) => {
+    this.observations$ = this.observationsSubject.subscribe((observations: Observations[]) => {
       this.observations = observations;
       this.updateChart();
     });

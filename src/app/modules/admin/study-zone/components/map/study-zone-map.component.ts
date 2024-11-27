@@ -3,6 +3,7 @@ import {
   ElementRef,
   EventEmitter,
   inject,
+  OnDestroy,
   Output,
   signal,
   ViewChild,
@@ -19,7 +20,7 @@ import { StudyZoneMapService } from '../../service/study-zone-map.service';
   templateUrl: './study-zone-map.component.html',
   styleUrl: './study-zone-map.component.scss',
 })
-export class StudyZoneMapComponent {
+export class StudyZoneMapComponent  implements OnDestroy{
   private studyZoneMapService = inject(StudyZoneMapService);
 
   @ViewChild('map') mapContainer!: ElementRef;
@@ -126,4 +127,9 @@ export class StudyZoneMapComponent {
       );
     });
   }
+
+  ngOnDestroy(): void {
+    this.studyZoneMapService.map.remove();
+  };
+
 }

@@ -19,7 +19,7 @@
         [maxDate]="today"
       />
     </form>
-    <p-button  label="{{'app.weekdays' | translate }}" [disabled]="timeFilterSelected === timesFilter.WEEKDAYS || !obsFiltered.length" (onClick)="timeFilter(timesFilter.WEEKDAYS)" />
+    <!--p-button  label="{{'app.weekdays' | translate }}" [disabled]="timeFilterSelected === timesFilter.WEEKDAYS || !obsFiltered.length" (onClick)="timeFilter(timesFilter.WEEKDAYS)" /-->
     <p-button  label="{{'app.weeks' | translate }}" [disabled]="timeFilterSelected === timesFilter.WEEKS || !obsFiltered.length" (onClick)="timeFilter(timesFilter.WEEKS)" />
     <p-button  label="{{'app.months' | translate }}" [disabled]="timeFilterSelected === timesFilter.MONTH || !obsFiltered.length" (onClick)="timeFilter(timesFilter.MONTH)" />
     <p-button  label="{{'app.years' | translate }}" [disabled]="timeFilterSelected === timesFilter.YEAR || !obsFiltered.length" (onClick)="timeFilter(timesFilter.YEAR)" />

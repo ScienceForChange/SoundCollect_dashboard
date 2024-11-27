@@ -211,7 +211,7 @@
     "observations": "Observacions",
     "titleMenu": "Anàlisi",
     "map": {
-      "createFilter": "Crear zona d'estudi",
+      "createFilter": "Crear filtre",
       "editFilter": "Editar filtre",
       "deleteFilter": "Eliminar filtre",
       "kmlDownload": "Format KML",

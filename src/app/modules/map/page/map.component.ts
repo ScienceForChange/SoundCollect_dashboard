@@ -30,8 +30,6 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   @ViewChild('mapDiv') mapDivElement!: ElementRef;
   private mapService = inject(MapService);
   private studyZoneService = inject(StudyZoneService);
-  private observationsService = inject(ObservationsService);
-
 
   public showFilters: WritableSignal<boolean> = signal<boolean>(false);
   public showMapLayers: WritableSignal<boolean> = signal<boolean>(false);
@@ -124,8 +122,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   }
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
-    this.mapService.map = null;
+    this.mapService.map.remove();
     this.mapService.studyZoneDialogVisible$.next(false);
-    this.observationsService.getAllObservations();
   }
 }
