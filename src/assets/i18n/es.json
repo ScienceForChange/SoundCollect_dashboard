@@ -371,7 +371,10 @@
       "eventful": "Con actividad",
       "monotonous": "Monótono",
       "average": "Media",
-      "all": "Todas las observaciones"
+      "all": "Todas las observaciones",
+      "content1": "Este gráfico de radar muestra el análisis de las respuestas sobre los atributos de percepción del paisaje sonoro, evaluados mediante una escala Likert de 1 a 5. El gráfico consta de ocho ejes, cada uno correspondiente a un atributo específico de percepción: con actividad, estimulante, agradable, calmado, sin actividad, monótono, desagradable y caótico. El punto central del gráfico corresponde a la respuesta neutra (0).",
+      "title": "Percepción del paisaje sonoro por atributos",
+      "content2": "El objetivo de este gráfico es identificar el \"pico\" que señala el carácter general del paisaje sonoro. Este pico indica un mayor acuerdo en la percepción de un atributo concreto. Además de las respuestas individuales, el gráfico incluye valores medios, que representan el promedio aritmético de las respuestas. Si los valores se alejan del centro, significa que hay más variabilidad en las respuestas de los participantes. Así, este gráfico permite visualizar tanto las tendencias como las divergencias en la percepción del paisaje sonoro."
     }
   },
   "admin": {
