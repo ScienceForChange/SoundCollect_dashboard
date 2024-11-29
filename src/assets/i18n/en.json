@@ -370,7 +370,10 @@
       "eventful": "Eventful",
       "monotonous": "Monotonous",
       "average": "Average",
-      "all": "All observations"
+      "all": "All observations",
+      "title": "Perception of the soundscape by attributes",
+      "content1": "This radar chart presents an analysis of responses regarding soundscape perception attributes, evaluated using a Likert scale from 1 to 5. The chart has eight axes, each corresponding to a specific perception attribute: active, stimulating, pleasant, calm, inactive, monotonous, unpleasant, and chaotic. The center point of the chart represents the neutral response (0).",
+      "content2": "The purpose of this chart is to identify the \"peak\" that indicates the overall character of the soundscape. This peak highlights greater agreement in the perception of a specific attribute. In addition to individual responses, the chart includes average values, which represent the arithmetic mean of the responses. If the values are farther from centre, it means there is more variability in participants' responses. Thus, this chart allows for the visualization of both trends and divergences in soundscape perception."
     }
   },
   "admin": {
