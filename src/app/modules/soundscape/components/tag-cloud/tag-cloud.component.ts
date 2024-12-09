@@ -43,8 +43,21 @@ export class TagCloudComponent implements OnInit, OnDestroy{
 
   ngOnInit() {
 
-    fetch('assets/stopWords/ca.json').then(response => response.json()).then(data => {
-      this.stopWords = data;
+    const stopWordLists = [
+      'assets/stopWords/ca.json',
+      'assets/stopWords/en.json',
+      'assets/stopWords/es.json',
+    ]
+
+    Promise.all(stopWordLists.map(list =>
+      fetch(list).then(response => {
+        if (!response.ok) {
+          throw new Error(`Error fetching ${list}`);
+        }
+        return response.json();
+      })
+    )).then(response => response).then(data => {
+      this.stopWords = data.flat();
       this.observations$ = this.observationsSubject.subscribe((observations: Observations[]) => {
         this.observations = observations;
         this.getTagsFromObservations();
@@ -114,7 +127,7 @@ export class TagCloudComponent implements OnInit, OnDestroy{
     this.tags = [];
 
     const wordsArray = _.words(this.text);
-    console.log(wordsArray);
+    //console.log(wordsArray);
     // Contamos las palabras y eliminamos las que no tienen sentido
     const wordCount:[string, number][] = Object.entries(
       _.countBy(

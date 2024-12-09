@@ -1,6 +1,5 @@
 import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { Observations } from '../../../../models/observations';
-import { ObservationsService } from '../../../../services/observations/observations.service';
 import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import * as echarts from 'echarts/core';
@@ -44,21 +43,23 @@ export class SurveyChartComponent implements OnInit, OnDestroy{
     });
   }
 
+
   private updateChart(): void {
 
     //array de colores para 10 observaciones, ningun color se repite ni se acerca al rojo
     let colors = [
-      '#00a6ac', // Verde azulado
-      '#00d2d5', // Aqua claro
-      '#1e90ff', // Azul dodger
-      '#32cd32', // Verde lima
-      '#9370db', // Púrpura mediana
-      '#ffd700', // Dorado
-      '#8a2be2', // Azul violeta
-      '#40e0d0', // Turquesa
-      '#4682b4', // Azul acero
-      '#3cb371'  // Verde mar medio
-    ];
+      'rgba(0, 166, 172, 0.1)',  // Verde azulado
+      'rgba(0, 210, 213, 0.1)',  // Aqua claro
+      'rgba(30, 144, 255, 0.1)', // Azul dodger
+      'rgba(50, 205, 50, 0.1)',  // Verde lima
+      'rgba(147, 112, 219, 0.1)',// Púrpura mediana
+      'rgba(255, 215, 0, 0.1)',  // Dorado
+      'rgba(138, 43, 226, 0.1)', // Azul violeta
+      'rgba(64, 224, 208, 0.1)',// Turquesa
+      'rgba(70, 130, 180, 0.1)',// Azul acero
+      'rgba(60, 179, 113, 0.1)' // Verde mar medio
+    ];    
+
     const data = this.getDataFromObservations().survey.map((survey, index) => {
       return {
         name: this.translate.instant('soundscape.survey.all'),
@@ -67,7 +68,7 @@ export class SurveyChartComponent implements OnInit, OnDestroy{
           trigger: 'observations'
         },
         itemStyle: {
-          color: colors[index],
+          color: "rgba(30, 144, 255, 0.15)"//colors[index],
         },
         label: null,
         data: [
