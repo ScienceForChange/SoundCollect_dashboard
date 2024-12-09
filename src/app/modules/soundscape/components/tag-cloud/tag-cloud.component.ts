@@ -127,7 +127,7 @@ export class TagCloudComponent implements OnInit, OnDestroy{
     this.tags = [];
 
     const wordsArray = _.words(this.text);
-    console.log(wordsArray);
+    //console.log(wordsArray);
     // Contamos las palabras y eliminamos las que no tienen sentido
     const wordCount:[string, number][] = Object.entries(
       _.countBy(
