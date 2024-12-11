@@ -3,11 +3,47 @@
   flex-direction: column;
   flex: 1 1 auto;
   position: relative;
+
+  #map-legend{
+    display: flex;
+    align-self: flex-start;
+    position: absolute;
+    top: 160px;
+    left: 18px;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #DDD;
+    border-radius: 5px;
+    min-width: max-content;
+    pointer-events: none;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 2;
+    .legend{
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+      pointer-events: none;
+      .color{
+        display: block;
+        height: 10px;
+        width: 10px;
+        border-radius: 10px;
+        box-shadow: inset 0 0 1px 1px  rgba($color: #000000, $alpha: .2);
+        pointer-events: none;
+      }
+      span{
+        pointer-events: none;
+      }
+    }
+  }
+
   #toolsBar{
     display: flex;
     flex-basis: 1;
     gap:0.8rem;
-    justify-content: end;
+    justify-content: space-between;
     margin-bottom: -70px;
     padding: 1.2rem;
     pointer-events: none;
@@ -23,6 +59,7 @@
       pointer-events: auto;
     }
     .tools{
+      margin-left: auto;
       align-items: end;
       display: flex;
       flex-direction: column;

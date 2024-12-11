@@ -7,6 +7,15 @@
     </p>
   </div>
 
+  <div id="map-legend">
+    @for(legend of legendData; track legend){
+      <div class="legend">
+        <div class="color" [style]="{backgroundColor: legend.color}"></div>
+        <span>{{legend.dba}}</span>
+      </div>
+    }
+  </div>
+  
   <div id="toolsBar">
     <div class="tools gap-3">
 
@@ -36,11 +45,11 @@
           </div>
         </div>
       }
-      </div>
-      <p-button
-      (onClick)="toggleShowMapLayers()"
-      pTooltip="{{'map.layers.title' | translate}}"
-      tooltipPosition="bottom"
+    </div>
+    <p-button
+    (onClick)="toggleShowMapLayers()"
+    pTooltip="{{'map.layers.title' | translate}}"
+    tooltipPosition="bottom"
     >
       <i class="pi pi-clone"></i>
     </p-button>

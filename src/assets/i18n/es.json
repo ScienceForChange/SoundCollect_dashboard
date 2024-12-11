@@ -61,9 +61,13 @@
     "footer": {
       "legal": {
         "legalNotice": "Aviso legal",
+        "legalNoticeLink": "https://mediambient.gencat.cat/es/05_ambits_dactuacio/atmosfera/contaminacio_acustica/sensibilitzacio-educacio-ambiental/sonscat/avis-legal-sonscat/",
         "terms": "Términos y condiciones",
+        "termsLink": "https://mediambient.gencat.cat/es/05_ambits_dactuacio/atmosfera/contaminacio_acustica/sensibilitzacio-educacio-ambiental/sonscat/",
         "privacy": "Política de privacidad",
-        "cookies": "Política de cookies"
+        "privacyLink": "https://mediambient.gencat.cat/es/05_ambits_dactuacio/atmosfera/contaminacio_acustica/sensibilitzacio-educacio-ambiental/sonscat/politica-privacitat/",
+        "cookies": "Política de cookies",
+        "cookiesLink": "https://mediambient.gencat.cat/es/05_ambits_dactuacio/atmosfera/contaminacio_acustica/sensibilitzacio-educacio-ambiental/sonscat/politica-privacitat/"
       },
       "allRightsReserved": "Todos los derechos reservados",
       "smallText": "sonsCAT es un proyecto coordinado por <a href='https://scienceforchange.eu' target='_blank'>Science For Change</a> dentro de la convocatoria del programa operativo del FEDER de Cataluña 2021-2027 con número de referencia del Contrato EC-2023-89"
