@@ -80,6 +80,18 @@ export class SoundscapeComponent implements AfterViewInit, OnDestroy {
     [TimeFilter.NIGHT]:     ["00:00:00", "07:00:00"],
     [TimeFilter.WHOLEDAY]:  ["00:00:00", "23:59:59"],
   };
+  public legendData: {dba: string, color: string }[] = [
+    {dba: '< 35 dBA',    color: '#B7CE8E'},
+    {dba: '35 - 40 dBA', color: '#1D8435'},
+    {dba: '40 - 45 dBA', color: '#0E4C3C'},
+    {dba: '45 - 50 dBA', color: '#ECD721'},
+    {dba: '50 - 55 dBA', color: '#9F6F2C'},
+    {dba: '55 - 60 dBA', color: '#EF7926'},
+    {dba: '60 - 65 dBA', color: '#C71932'},
+    {dba: '65 - 70 dBA', color: '#8D1A27'},
+    {dba: '70 - 75 dBA', color: '#88497B'},
+    {dba: '75 - 80 dBA', color: '#18558C'}
+  ];
   public items = [
     {
       label: this.translations.instant('soundscape.map.gpkgDownload'),
