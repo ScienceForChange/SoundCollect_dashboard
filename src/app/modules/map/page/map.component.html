@@ -34,5 +34,15 @@
     [studyZone]="studyZoneSelected"
   />
   }
+
+  <div id="map-legend">
+    @for(legend of legendData; track legend){
+      <div class="legend">
+        <div class="color" [style]="{backgroundColor: legend.color}"></div>
+        <span>{{legend.dba}}</span>
+      </div>
+    }
+  </div>
+  
   <div #mapDiv class="map-container"></div>
 </div>
